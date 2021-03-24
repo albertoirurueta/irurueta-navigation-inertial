@@ -1,0 +1,696 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>FrameBodyKinematics.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">FrameBodyKinematics.java</span></div><h1>FrameBodyKinematics.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
+import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains a body kinematics measurement (accelerometer + gyroscope) along with
+ * the corresponding frame (position, orientation and velocity) where the
+ * kinematics measurement was made.
+ */
+public class FrameBodyKinematics implements Serializable, Cloneable {
+
+    /**
+     * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
+     */
+    private BodyKinematics mKinematics;
+
+    /**
+     * Contains current body position, velocity (which will typically be zero) and orientation
+     * resolved around ECEF axes.
+     */
+    private ECEFFrame mFrame;
+
+    /**
+     * Contains body position, velocity (which will typically be zero) and orientation
+     * resolved around ECEF axes of previous IMU measurement.
+     */
+    private ECEFFrame mPreviousFrame;
+
+    /**
+     * Time interval expressed in seconds (s) between IMU measurements used to obtain
+     * current frame and previous frame.
+     */
+    private double mTimeInterval;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L62">    public FrameBodyKinematics() {</span>
+<span class="fc" id="L63">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     */
+<span class="fc" id="L70">    public FrameBodyKinematics(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L71">        mKinematics = kinematics;</span>
+<span class="fc" id="L72">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     */
+<span class="fc" id="L79">    public FrameBodyKinematics(final ECEFFrame frame) {</span>
+<span class="fc" id="L80">        mFrame = frame;</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it will be
+     *              converted to its corresponding ECEF frame.
+     */
+<span class="fc" id="L89">    public FrameBodyKinematics(final NEDFrame frame) {</span>
+<span class="fc" id="L90">        setNedFrame(frame);</span>
+<span class="fc" id="L91">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval time interval expressed in seconds (s) between IMU measurements
+     *                     used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+<span class="fc" id="L100">    public FrameBodyKinematics(final double timeInterval) {</span>
+<span class="fc" id="L101">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L102">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param timeInterval time interval between IMU measurements used to obtain
+     *                     current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+<span class="fc" id="L111">    public FrameBodyKinematics(final Time timeInterval) {</span>
+<span class="fc" id="L112">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L113">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     */
+    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame) {
+<span class="fc" id="L122">        this(frame);</span>
+<span class="fc" id="L123">        mPreviousFrame = previousFrame;</span>
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     */
+    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame) {
+<span class="fc" id="L135">        this(frame);</span>
+<span class="fc" id="L136">        setPreviousNedFrame(previousFrame);</span>
+<span class="fc" id="L137">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU measurements
+     *                      used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame,
+                               final double timeInterval) {
+<span class="fc" id="L150">        this(frame, previousFrame);</span>
+<span class="fc" id="L151">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L152">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame,
+                               final Time timeInterval) {
+<span class="fc" id="L165">        this(frame, previousFrame);</span>
+<span class="fc" id="L166">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L167">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU measurements
+     *                      used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame,
+                               final double timeInterval) {
+<span class="fc" id="L182">        this(frame, previousFrame);</span>
+<span class="fc" id="L183">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L184">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame,
+                               final Time timeInterval) {
+<span class="fc" id="L199">        this(frame, previousFrame);</span>
+<span class="fc" id="L200">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L201">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     * @param frame      ECEF frame associated to measurement.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame) {
+<span class="fc" id="L210">        this(kinematics);</span>
+<span class="fc" id="L211">        mFrame = frame;</span>
+<span class="fc" id="L212">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics current body kinematics measurement.
+     * @param frame      NED frame associated to measurement. Internally it will be
+     *                   converted to its corresponding ECEF frame.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame) {
+<span class="fc" id="L222">        this(kinematics);</span>
+<span class="fc" id="L223">        setNedFrame(frame);</span>
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
+                               final ECEFFrame previousFrame) {
+<span class="fc" id="L235">        this(kinematics, frame);</span>
+<span class="fc" id="L236">        mPreviousFrame = previousFrame;</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
+                               final NEDFrame previousFrame) {
+<span class="fc" id="L250">        this(kinematics, frame);</span>
+<span class="fc" id="L251">        setPreviousNedFrame(previousFrame);</span>
+<span class="fc" id="L252">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU measurements
+     *                      used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
+                               final ECEFFrame previousFrame, final double timeInterval) {
+<span class="fc" id="L266">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L267">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L268">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current ECEF frame associated to measurement.
+     * @param previousFrame previous ECEF frame associated to measurement.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
+                               final ECEFFrame previousFrame, final Time timeInterval) {
+<span class="fc" id="L282">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L283">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L284">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval expressed in seconds (s) between IMU measurements
+     *                      used to obtain current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
+                               final NEDFrame previousFrame, final double timeInterval) {
+<span class="fc" id="L300">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L301">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L302">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param kinematics    current body kinematics measurement.
+     * @param frame         current NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param previousFrame previous NED frame associated to measurement. Internally it
+     *                      will be converted to its corresponding ECEF frame.
+     * @param timeInterval  time interval between IMU measurements used to obtain
+     *                      current frame and previous frame.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
+                               final NEDFrame previousFrame, final Time timeInterval) {
+<span class="fc" id="L318">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L319">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L320">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L327">    public FrameBodyKinematics(final FrameBodyKinematics input) {</span>
+<span class="fc" id="L328">        copyFrom(input);</span>
+<span class="fc" id="L329">    }</span>
+
+    /**
+     * Gets current body kinematics measurement. Contains accelerometer and gyroscope
+     * measurements.
+     *
+     * @return current body kinematics measurement.
+     */
+    public BodyKinematics getKinematics() {
+<span class="fc" id="L338">        return mKinematics;</span>
+    }
+
+    /**
+     * Sets current body kinematics measurement. Contains accelerometer and gyroscope
+     * measurements.
+     *
+     * @param kinematics current body kinematics measurement to be set.
+     */
+    public void setKinematics(final BodyKinematics kinematics) {
+<span class="fc" id="L348">        mKinematics = kinematics;</span>
+<span class="fc" id="L349">    }</span>
+
+    /**
+     * Gets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around ECEF axes associated to body kinematics measurement.
+     *
+     * @return current ECEF frame associated to body kinematics measurement or null if
+     * not available.
+     */
+    public ECEFFrame getFrame() {
+<span class="fc" id="L361">        return mFrame;</span>
+    }
+
+    /**
+     * Sets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around ECEF axes associated to body kinematics measurement.
+     *
+     * @param frame current ECEF frame
+     */
+    public void setFrame(final ECEFFrame frame) {
+<span class="fc" id="L373">        mFrame = frame;</span>
+<span class="fc" id="L374">    }</span>
+
+    /**
+     * Gets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around NED axes associated to body kinematics measurement.
+     *
+     * @return current NED frame associated to body kinematics measurement or null if
+     * not available.
+     */
+    public NEDFrame getNedFrame() {
+<span class="fc bfc" id="L386" title="All 2 branches covered.">        return mFrame != null ?</span>
+<span class="fc" id="L387">                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;</span>
+    }
+
+    /**
+     * Gets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around NED axes associated to body kinematics measurement.
+     *
+     * @param result instance where result data will be stored if available.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getNedFrame(final NEDFrame result) {
+<span class="fc bfc" id="L400" title="All 2 branches covered.">        if (mFrame != null) {</span>
+<span class="fc" id="L401">            ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);</span>
+<span class="fc" id="L402">            return true;</span>
+        } else {
+<span class="fc" id="L404">            return false;</span>
+        }
+    }
+
+    /**
+     * Sets current body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around NED axes associated to body kinematics measurement.
+     * &lt;p&gt;
+     * This method will internally store the corresponding ECEF frame to provided
+     * NED frame value.
+     *
+     * @param nedFrame current NED frame associated to body kinematics measurement
+     *                 to be set.
+     */
+    public void setNedFrame(final NEDFrame nedFrame) {
+<span class="pc bpc" id="L421" title="1 of 2 branches missed.">        if (nedFrame != null) {</span>
+<span class="pc bpc" id="L422" title="1 of 2 branches missed.">            if (mFrame != null) {</span>
+<span class="nc" id="L423">                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+            } else {
+<span class="fc" id="L425">                mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);</span>
+            }
+        } else {
+<span class="nc" id="L428">            mFrame = null;</span>
+        }
+<span class="fc" id="L430">    }</span>
+
+    /**
+     * Gets previous body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around ECEF axes associated to previous body kinematics measurement.
+     *
+     * @return previous ECEF frame associated to previous body kinematics measurement or
+     * null if not available.
+     */
+    public ECEFFrame getPreviousFrame() {
+<span class="fc" id="L442">        return mPreviousFrame;</span>
+    }
+
+    /**
+     * Sets previous body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around ECEF axes associated to previous body kinematics measurement.
+     *
+     * @param previousFrame previous ECEF frame associated to previous body kinematics
+     *                      measurement.
+     */
+    public void setPreviousFrame(final ECEFFrame previousFrame) {
+<span class="fc" id="L455">        mPreviousFrame = previousFrame;</span>
+<span class="fc" id="L456">    }</span>
+
+    /**
+     * Gets previous body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around NED axes associated to previous body kinematics measurement.
+     *
+     * @return previous NED frame associated to previous body kinematics measurement or
+     * null if not available.
+     */
+    public NEDFrame getPreviousNedFrame() {
+<span class="fc bfc" id="L468" title="All 2 branches covered.">        return mPreviousFrame != null ?</span>
+<span class="fc" id="L469">                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mPreviousFrame) : null;</span>
+    }
+
+    /**
+     * Gets previous body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around NED axes associated to previous body kinematics measurement.
+     *
+     * @param result instance where result data will be stored if available.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getPreviousNedFrame(final NEDFrame result) {
+<span class="fc bfc" id="L482" title="All 2 branches covered.">        if (mPreviousFrame != null) {</span>
+<span class="fc" id="L483">            ECEFtoNEDFrameConverter.convertECEFtoNED(mPreviousFrame, result);</span>
+<span class="fc" id="L484">            return true;</span>
+        } else {
+<span class="fc" id="L486">            return false;</span>
+        }
+    }
+
+    /**
+     * Sets previous body position (which will typically remain constant),
+     * velocity (which will typically be zero) and orientation (which usually changes
+     * with each measurement to perform calibration of a single device) resolved
+     * around NED axes associated to previous body kinematics measurement.
+     *
+     * @param previousNedFrame previous NED frame associated to body kinematics
+     *                         measurement to be set.
+     */
+    public void setPreviousNedFrame(final NEDFrame previousNedFrame) {
+<span class="pc bpc" id="L500" title="1 of 2 branches missed.">        if (previousNedFrame != null) {</span>
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">            if (mPreviousFrame != null) {</span>
+<span class="nc" id="L502">                NEDtoECEFFrameConverter.convertNEDtoECEF(previousNedFrame, mPreviousFrame);</span>
+            } else {
+<span class="fc" id="L504">                mPreviousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(</span>
+                        previousNedFrame);
+            }
+        } else {
+<span class="nc" id="L508">            mPreviousFrame = null;</span>
+        }
+<span class="fc" id="L510">    }</span>
+
+    /**
+     * Gets time interval expressed in seconds (s) between IMU measurements used to
+     * obtain current frame and previous frame.
+     *
+     * @return time interval expressed in seconds (s) between IMU measurements.
+     */
+    public double getTimeInterval() {
+<span class="fc" id="L519">        return mTimeInterval;</span>
+    }
+
+    /**
+     * Sets time interval expressed in seconds (s) between IMU measurements used to
+     * obtain current frame and previous frame.
+     *
+     * @param timeInterval time interval expressed in seconds (s) between IMU
+     *                     measurements.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setTimeInterval(final double timeInterval) {
+<span class="fc bfc" id="L531" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L532">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L535">        mTimeInterval = timeInterval;</span>
+<span class="fc" id="L536">    }</span>
+
+    /**
+     * Gets time interval between IMU measurements used to obtain current frame and
+     * previous frame.
+     *
+     * @return time interval between IMU measurements.
+     */
+    public Time getTimeIntervalAsTime() {
+<span class="fc" id="L545">        return new Time(mTimeInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Gets time interval between IMU measurements used to obtain current frame and
+     * previous frame.
+     *
+     * @param result instance where result will be stored.
+     */
+    public void getTimeIntervalAsTime(final Time result) {
+<span class="fc" id="L555">        result.setValue(mTimeInterval);</span>
+<span class="fc" id="L556">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L557">    }</span>
+
+    /**
+     * Sets time interval between IMU measurements used to obtain current frame and
+     * previous frame.
+     *
+     * @param timeInterval time interval between IMU measurements to be set.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setTimeInterval(final Time timeInterval) {
+<span class="fc" id="L567">        setTimeInterval(TimeConverter.convert(</span>
+<span class="fc" id="L568">                timeInterval.getValue().doubleValue(), timeInterval.getUnit(),</span>
+                TimeUnit.SECOND));
+<span class="fc" id="L570">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy dara from.
+     */
+    public void copyFrom(final FrameBodyKinematics input) {
+<span class="fc bfc" id="L578" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
+<span class="fc bfc" id="L579" title="All 2 branches covered.">            if (mKinematics == null) {</span>
+<span class="fc" id="L580">                mKinematics = new BodyKinematics(input.mKinematics);</span>
+            } else {
+<span class="fc" id="L582">                mKinematics.copyFrom(input.mKinematics);</span>
+            }
+        } else {
+<span class="fc" id="L585">            mKinematics = null;</span>
+        }
+
+<span class="fc bfc" id="L588" title="All 2 branches covered.">        if (input.mFrame != null) {</span>
+<span class="fc bfc" id="L589" title="All 2 branches covered.">            if (mFrame == null) {</span>
+<span class="fc" id="L590">                mFrame = new ECEFFrame(input.mFrame);</span>
+            } else {
+<span class="fc" id="L592">                mFrame.copyFrom(input.mFrame);</span>
+            }
+        } else {
+<span class="fc" id="L595">            mFrame = null;</span>
+        }
+
+<span class="fc bfc" id="L598" title="All 2 branches covered.">        if (input.mPreviousFrame != null) {</span>
+<span class="fc bfc" id="L599" title="All 2 branches covered.">            if (mPreviousFrame == null) {</span>
+<span class="fc" id="L600">                mPreviousFrame = new ECEFFrame(input.mPreviousFrame);</span>
+            } else {
+<span class="fc" id="L602">                mPreviousFrame.copyFrom(input.mPreviousFrame);</span>
+            }
+        } else {
+<span class="fc" id="L605">            mPreviousFrame = null;</span>
+        }
+
+<span class="fc" id="L608">        mTimeInterval = input.mTimeInterval;</span>
+<span class="fc" id="L609">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final FrameBodyKinematics output) {
+<span class="fc" id="L617">        output.copyFrom(this);</span>
+<span class="fc" id="L618">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L628">        return Objects.hash(mKinematics, mFrame, mPreviousFrame, mTimeInterval);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final FrameBodyKinematics other) {
+<span class="fc" id="L638">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between kinematics and frame values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(final FrameBodyKinematics other, final double threshold) {
+<span class="fc bfc" id="L651" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L652">            return false;</span>
+        }
+
+<span class="pc bpc" id="L655" title="2 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
+<span class="pc bpc" id="L656" title="4 of 8 branches missed.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
+                &amp;&amp; ((other.mFrame == null &amp;&amp; mFrame == null)
+<span class="pc bpc" id="L658" title="5 of 8 branches missed.">                || (mFrame != null &amp;&amp; mFrame.equals(other.mFrame, threshold)))</span>
+                &amp;&amp; ((other.mPreviousFrame == null &amp;&amp; mPreviousFrame == null)
+<span class="pc bpc" id="L660" title="1 of 2 branches missed.">                || (mPreviousFrame != null &amp;&amp; mPreviousFrame.equals(other.mPreviousFrame, threshold)))</span>
+<span class="pc bpc" id="L661" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimeInterval - mTimeInterval) &lt;= threshold;</span>
+    }
+
+    /**
+     * Checks if provided object is a FrameBodyKinematics instance having exactly the same
+     * contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L673" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L674">            return true;</span>
+        }
+<span class="fc bfc" id="L676" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L677">            return false;</span>
+        }
+<span class="fc" id="L679">        final FrameBodyKinematics other = (FrameBodyKinematics) obj;</span>
+<span class="fc" id="L680">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L691">        final FrameBodyKinematics result = (FrameBodyKinematics) super.clone();</span>
+<span class="fc" id="L692">        copyTo(result);</span>
+<span class="fc" id="L693">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

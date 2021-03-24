@@ -1,0 +1,2106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.accelerometer</a> &gt; <span class="el_source">PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.java</span></div><h1>PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.accelerometer;
+
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
+import com.irurueta.numerical.robust.PROSACRobustEstimator;
+import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
+import com.irurueta.numerical.robust.RobustEstimator;
+import com.irurueta.numerical.robust.RobustEstimatorException;
+import com.irurueta.numerical.robust.RobustEstimatorMethod;
+import com.irurueta.units.Acceleration;
+import java.util.List;
+
+/**
+ * Robustly estimates accelerometer cross couplings and scaling factors
+ * using a PROSAC algorithm to discard outliers.
+ * &lt;p&gt;
+ * To use this calibrator at least 7 measurements taken at a single position
+ * where gravity norm is known must be taken at 7 different unknown
+ * orientations and zero velocity when common z-axis
+ * is assumed, otherwise at least 10 measurements are required.
+ * &lt;p&gt;
+ * Measured specific force is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     fmeas = ba + (I + Ma) * ftrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - fmeas is the measured specific force. This is a 3x1 vector.
+ * - ba is accelerometer bias. Ideally, on a perfect accelerometer, this should be a
+ * 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
+ * a perfect accelerometer, this should be a 3x3 zero matrix.
+ * - ftrue is ground-trush specific force.
+ * - w is measurement noise.
+ */
+public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator extends
+        RobustKnownBiasAndGravityNormAccelerometerCalibrator {
+
+    /**
+     * Constant defining default threshold to determine whether samples are inliers or not.
+     */
+    public static final double DEFAULT_THRESHOLD = 1e-2;
+
+    /**
+     * Minimum value that can be set as threshold.
+     * Threshold must be strictly greater than 0.0.
+     */
+    public static final double MIN_THRESHOLD = 0.0;
+
+    /**
+     * Indicates that by default inliers will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_INLIERS = false;
+
+    /**
+     * Indicates that by default residuals will only be computed but not kept.
+     */
+    public static final boolean DEFAULT_COMPUTE_AND_KEEP_RESIDUALS = false;
+
+    /**
+     * Threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on distance between estimated position and
+     * distances provided for each sample.
+     */
+<span class="fc" id="L83">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     */
+<span class="fc" id="L88">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     */
+<span class="fc" id="L93">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+
+    /**
+     * Quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     */
+    private double[] mQualityScores;
+
+    /**
+     * Constructor.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator() {
+<span class="fc" id="L105">        super();</span>
+<span class="fc" id="L106">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to be notified of events such as when estimation
+     *                 starts, ends or its progress significantly changes.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L116">        super(listener);</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body kinematics measurements with standard
+     *                     deviations taken at the same position with zero velocity
+     *                     and unknown different orientations.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L128">        super(measurements);</span>
+<span class="fc" id="L129">    }</span>
+
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common for
+     *                       accelerometer and gyroscope.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final boolean commonAxisUsed) {
+<span class="fc" id="L140">        super(commonAxisUsed);</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known accelerometer bias. This must have length 3 and is expressed
+     *             in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] bias) {
+<span class="fc" id="L152">        super(bias);</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Matrix bias) {
+<span class="fc" id="L163">        super(bias);</span>
+<span class="fc" id="L164">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param bias      known accelerometer bias.
+     * @param initialMa initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L176">        super(bias, initialMa);</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm) {
+<span class="fc" id="L188">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L189">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L204">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L205">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L223">        super(groundTruthGravityNorm, measurements, listener);</span>
+<span class="fc" id="L224">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L242">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L264">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L265">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L284">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L285">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L306">        super(groundTruthGravityNorm, measurements, bias, listener);</span>
+<span class="fc" id="L307">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias) {
+<span class="fc" id="L328">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias);
+<span class="fc" id="L330">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is
+     *                               expressed in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L353">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, listener);
+<span class="fc" id="L355">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias) {
+<span class="fc" id="L373">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L374">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L394">        super(groundTruthGravityNorm, measurements, bias, listener);</span>
+<span class="fc" id="L395">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias) {
+<span class="fc" id="L415">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias);
+<span class="fc" id="L417">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L439">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, listener);
+<span class="fc" id="L441">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L461">        super(groundTruthGravityNorm, measurements, bias, initialMa);</span>
+<span class="fc" id="L462">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L484">        super(groundTruthGravityNorm, measurements, bias, initialMa,</span>
+                listener);
+<span class="fc" id="L486">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L509">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, initialMa);
+<span class="fc" id="L511">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L536">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, initialMa, listener);
+<span class="fc" id="L538">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm) {
+<span class="fc" id="L548">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L549">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L563">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L564">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L581">        super(groundTruthGravityNorm, measurements,</span>
+                listener);
+<span class="fc" id="L583">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L600">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed);
+<span class="fc" id="L602">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L622">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, listener);
+<span class="fc" id="L624">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L642">        super(groundTruthGravityNorm, measurements,</span>
+                bias);
+<span class="fc" id="L644">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L664">        super(groundTruthGravityNorm, measurements,</span>
+                bias, listener);
+<span class="fc" id="L666">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias) {
+<span class="fc" id="L686">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias);
+<span class="fc" id="L688">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L710">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias, listener);
+<span class="fc" id="L712">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias) {
+<span class="fc" id="L729">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L730">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L749">        super(groundTruthGravityNorm, measurements, bias, listener);</span>
+<span class="fc" id="L750">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias) {
+<span class="fc" id="L769">        super(groundTruthGravityNorm, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L770">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L791">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias, listener);
+<span class="fc" id="L793">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L812">        super(groundTruthGravityNorm, measurements, bias, initialMa);</span>
+<span class="fc" id="L813">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L834">        super(groundTruthGravityNorm, measurements, bias, initialMa,</span>
+                listener);
+<span class="fc" id="L836">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L858">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, initialMa);
+<span class="fc" id="L860">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L884">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, initialMa, listener);
+<span class="fc" id="L886">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L907">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L908">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L909">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L933">        super(groundTruthGravityNorm, measurements, listener);</span>
+<span class="fc" id="L934">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L935">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L959">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L960">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L961">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L988">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L989">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L990">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L1015">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L1016">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1017">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1044">        super(groundTruthGravityNorm, measurements, bias, listener);</span>
+<span class="fc" id="L1045">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1046">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias) {
+<span class="fc" id="L1073">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias);
+<span class="fc" id="L1075">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1076">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is
+     *                               expressed in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1105">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, listener);
+<span class="fc" id="L1107">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1108">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias) {
+<span class="fc" id="L1132">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L1133">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1134">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1160">        super(groundTruthGravityNorm, measurements, bias, listener);</span>
+<span class="fc" id="L1161">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1162">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias) {
+<span class="fc" id="L1188">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias);
+<span class="fc" id="L1190">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1191">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1219">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, listener);
+<span class="fc" id="L1221">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1222">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L1248">        super(groundTruthGravityNorm, measurements, bias, initialMa);</span>
+<span class="fc" id="L1249">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1250">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1278">        super(groundTruthGravityNorm, measurements, bias, initialMa,</span>
+                listener);
+<span class="fc" id="L1280">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1281">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L1310">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, initialMa);
+<span class="fc" id="L1312">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1313">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm expressed in meters per
+     *                               squared second (m/s^2).
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is
+     *                                  smaller than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Double groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1344">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+                bias, initialMa, listener);
+<span class="fc" id="L1346">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1347">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm) {
+<span class="fc" id="L1363">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L1364">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1365">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
+<span class="fc" id="L1385">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L1386">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1387">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1410">        super(groundTruthGravityNorm, measurements,</span>
+                listener);
+<span class="fc" id="L1412">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1413">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L1436">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed);
+<span class="fc" id="L1438">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1439">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           list of body kinematics measurements taken at a given position with
+     *                               different unknown orientations and containing the standard deviations
+     *                               of accelerometer and gyroscope measurements.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param listener               listener to be notified of events such as when estimation
+     *                               starts, ends or its progress significantly changes.
+     * @throws IllegalArgumentException if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1465">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, listener);
+<span class="fc" id="L1467">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1468">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias) {
+<span class="fc" id="L1492">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L1493">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1494">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1520">        super(groundTruthGravityNorm, measurements,</span>
+                bias, listener);
+<span class="fc" id="L1522">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1523">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias) {
+<span class="fc" id="L1549">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias);
+<span class="fc" id="L1551">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1552">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias. This must have length 3 and is expressed
+     *                               in meters per squared second (m/s^2).
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias array does not have length 3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final double[] bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1580">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias, listener);
+<span class="fc" id="L1582">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1583">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias) {
+<span class="fc" id="L1606">        super(groundTruthGravityNorm, measurements, bias);</span>
+<span class="fc" id="L1607">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1608">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param initialBias            initial bias to find a solution.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix initialBias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1633">        super(groundTruthGravityNorm, measurements,</span>
+                initialBias, listener);
+<span class="fc" id="L1635">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1636">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param initialBias            initial bias to find a solution.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialBias) {
+<span class="fc" id="L1661">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, initialBias);
+<span class="fc" id="L1663">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1664">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1691">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias, listener);
+<span class="fc" id="L1693">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1694">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa) {
+<span class="fc" id="L1719">        super(groundTruthGravityNorm, measurements, bias, initialMa);</span>
+<span class="fc" id="L1720">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1721">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final Matrix bias, final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1748">        super(groundTruthGravityNorm, measurements,</span>
+                bias, initialMa, listener);
+<span class="fc" id="L1750">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1751">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa) {
+<span class="fc" id="L1779">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias, initialMa);
+<span class="fc" id="L1781">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1782">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param qualityScores          quality scores corresponding to each provided
+     *                               measurement. The larger the score value the better
+     *                               the quality of the sample.
+     * @param groundTruthGravityNorm ground truth gravity norm.
+     * @param measurements           collection of body kinematics measurements with standard
+     *                               deviations taken at the same position with zero velocity
+     *                               and unknown different orientations.
+     * @param commonAxisUsed         indicates whether z-axis is assumed to be common for
+     *                               accelerometer and gyroscope.
+     * @param bias                   known accelerometer bias.
+     * @param initialMa              initial scale factors and cross coupling errors matrix.
+     * @param listener               listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
+     *                                  scaling and coupling error matrix is not 3x3 or
+     *                                  if provided gravity norm value is negative or
+     *                                  if provided quality scores length is smaller
+     *                                  than 10 or 13 samples.
+     */
+    public PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
+            final double[] qualityScores,
+            final Acceleration groundTruthGravityNorm,
+            final List&lt;StandardDeviationBodyKinematics&gt; measurements,
+            final boolean commonAxisUsed, final Matrix bias,
+            final Matrix initialMa,
+            final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
+<span class="fc" id="L1812">        super(groundTruthGravityNorm, measurements,</span>
+                commonAxisUsed, bias, initialMa, listener);
+<span class="fc" id="L1814">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1815">    }</span>
+
+    /**
+     * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @return threshold to determine whether samples are inliers or not.
+     */
+    public double getThreshold() {
+<span class="fc" id="L1825">        return mThreshold;</span>
+    }
+
+    /**
+     * Sets threshold to determine whether samples are inliers or not when testing possible solutions.
+     * The threshold refers to the amount of error on norm between measured specific forces and the
+     * ones generated with estimated calibration parameters provided for each sample.
+     *
+     * @param threshold threshold to determine whether samples are inliers or not.
+     * @throws IllegalArgumentException if provided value is equal or less than zero.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    public void setThreshold(final double threshold) throws LockedException {
+<span class="fc bfc" id="L1838" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1839">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1841" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L1842">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1844">        mThreshold = threshold;</span>
+<span class="fc" id="L1845">    }</span>
+
+    /**
+     * Returns quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @return quality scores corresponding to each sample.
+     */
+    @Override
+    public double[] getQualityScores() {
+<span class="fc" id="L1855">        return mQualityScores;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * The larger the score value the better the quality of the sample.
+     *
+     * @param qualityScores quality scores corresponding to each sample.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than minimum required samples
+     *                                  (10 or 13).
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setQualityScores(final double[] qualityScores)
+            throws LockedException {
+<span class="pc bpc" id="L1871" title="1 of 2 branches missed.">        if (mRunning) {</span>
+<span class="nc" id="L1872">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1874">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1875">    }</span>
+
+    /**
+     * Indicates whether calibrator is ready to find a solution.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L1884" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L1885" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
+    }
+
+    /**
+     * Indicates whether inliers must be computed and kept.
+     *
+     * @return true if inliers must be computed and kept, false if inliers
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepInliersEnabled() {
+<span class="fc" id="L1895">        return mComputeAndKeepInliers;</span>
+    }
+
+    /**
+     * Specifies whether inliers must be computed and kept.
+     *
+     * @param computeAndKeepInliers true if inliers must be computed and kept,
+     *                              false if inliers only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
+            throws LockedException {
+<span class="fc bfc" id="L1907" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1908">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1910">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L1911">    }</span>
+
+    /**
+     * Indicates whether residuals must be computed and kept.
+     *
+     * @return true if residuals must be computed and kept, false if residuals
+     * only need to be computed but not kept.
+     */
+    public boolean isComputeAndKeepResiduals() {
+<span class="fc" id="L1920">        return mComputeAndKeepResiduals;</span>
+    }
+
+    /**
+     * Specifies whether residuals must be computed and kept.
+     *
+     * @param computeAndKeepResiduals true if residuals must be computed and kept,
+     *                                false if residuals only need to be computed but not kept.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setComputeAndKeepResidualsEnabled(
+            final boolean computeAndKeepResiduals)
+            throws LockedException {
+<span class="fc bfc" id="L1933" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1934">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1936">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L1937">    }</span>
+
+    /**
+     * Estimates accelerometer calibration parameters scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if estimation fails for numerical reasons.
+     */
+    @Override
+    public void calibrate() throws LockedException, NotReadyException, CalibrationException {
+<span class="fc bfc" id="L1949" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1950">            throw new LockedException();</span>
+        }
+<span class="pc bpc" id="L1952" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1953">            throw new NotReadyException();</span>
+        }
+
+<span class="fc" id="L1956">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+                new PROSACRobustEstimator&lt;&gt;(
+<span class="fc" id="L1958">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                            @Override
+                            public double[] getQualityScores() {
+<span class="fc" id="L1961">                                return mQualityScores;</span>
+                            }
+
+                            @Override
+                            public double getThreshold() {
+<span class="fc" id="L1966">                                return mThreshold;</span>
+                            }
+
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L1971">                                return mMeasurements.size();</span>
+                            }
+
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L1976">                                return mPreliminarySubsetSize;</span>
+                            }
+
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L1983">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1984">                            }</span>
+
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation,
+                                    final int i) {
+<span class="fc" id="L1990">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
+                            }
+
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L1995">                                return PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this.isReady();</span>
+                            }
+
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+<span class="fc" id="L2001">                            }</span>
+
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+<span class="fc" id="L2006">                            }</span>
+
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final int iteration) {
+<span class="pc bpc" id="L2012" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L2013">                                    mListener.onCalibrateNextIteration(</span>
+                                            PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
+                                            iteration);
+                                }
+<span class="fc" id="L2017">                            }</span>
+
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final float progress) {
+<span class="nc bnc" id="L2023" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L2024">                                    mListener.onCalibrateProgressChange(</span>
+                                            PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator.this,
+                                            progress);
+                                }
+<span class="nc" id="L2028">                            }</span>
+                        });
+
+        try {
+<span class="fc" id="L2032">            mRunning = true;</span>
+
+<span class="pc bpc" id="L2034" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L2035">                mListener.onCalibrateStart(this);</span>
+            }
+
+<span class="fc" id="L2038">            mInliersData = null;</span>
+<span class="pc bpc" id="L2039" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+                    mComputeAndKeepInliers || mRefineResult);
+<span class="pc bpc" id="L2041" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+                    mComputeAndKeepResiduals || mRefineResult);
+<span class="fc" id="L2043">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L2044">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L2045">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L2046">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L2047">            mInliersData = innerEstimator.getInliersData();</span>
+
+<span class="fc" id="L2049">            attemptRefine(preliminaryResult);</span>
+
+<span class="pc bpc" id="L2051" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L2052">                mListener.onCalibrateEnd(this);</span>
+            }
+
+<span class="nc" id="L2055">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L2056">            throw new LockedException(e);</span>
+<span class="nc" id="L2057">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L2058">            throw new NotReadyException(e);</span>
+<span class="nc" id="L2059">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L2060">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L2062">            mRunning = false;</span>
+        }
+<span class="fc" id="L2064">    }</span>
+
+    /**
+     * Returns method being used for robust estimation.
+     *
+     * @return method being used for robust estimation.
+     */
+    @Override
+    public RobustEstimatorMethod getMethod() {
+<span class="fc" id="L2073">        return RobustEstimatorMethod.PROSAC;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L2084">        return true;</span>
+    }
+
+    /**
+     * Sets quality scores corresponding to each provided sample.
+     * This method is used internally and does not check whether instance is
+     * locked or not.
+     *
+     * @param qualityScores quality scores to be set.
+     * @throws IllegalArgumentException if provided quality scores length
+     *                                  is smaller than the minimum required
+     *                                  number of samples (10 or 13).
+     */
+    private void internalSetQualityScores(final double[] qualityScores) {
+<span class="pc bpc" id="L2098" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L2099" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
+<span class="fc" id="L2100">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2103">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L2104">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

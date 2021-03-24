@@ -1,0 +1,1956 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSGNSSTightlyCoupledKalmanFilteredEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSGNSSTightlyCoupledKalmanFilteredEstimator.java</span></div><h1>INSGNSSTightlyCoupledKalmanFilteredEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.frames.CoordinateTransformation;
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+import com.irurueta.navigation.gnss.GNSSEstimation;
+import com.irurueta.navigation.gnss.GNSSException;
+import com.irurueta.navigation.gnss.GNSSLeastSquaresPositionAndVelocityEstimator;
+import com.irurueta.navigation.gnss.GNSSMeasurement;
+import com.irurueta.navigation.inertial.navigators.ECEFInertialNavigator;
+import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
+import com.irurueta.units.Time;
+import com.irurueta.units.TimeConverter;
+import com.irurueta.units.TimeUnit;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
+/**
+ * Calculates position, velocity, attitude, clock offset, clock drift and IMU biases
+ * using a GNSS unweighted iterated least squares estimator along with an INS tightly
+ * coupled Kalman filter to take into account inertial measurements to
+ * smooth results.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * https://github.com/ymjdz/MATLAB-Codes/blob/master/Tightly_coupled_INS_GNSS.m
+ */
+public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
+
+    /**
+     * Internal estimator to compute least squares solution for GNSS measurements.
+     */
+<span class="fc" id="L52">    private final GNSSLeastSquaresPositionAndVelocityEstimator mLsEstimator</span>
+            = new GNSSLeastSquaresPositionAndVelocityEstimator();
+
+    /**
+     * Listener to notify events raised by this instance.
+     */
+    private INSGNSSTightlyCoupledKalmanFilteredEstimatorListener mListener;
+
+    /**
+     * Minimum epoch interval expressed in seconds (s) between consecutive
+     * propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     */
+    private double mEpochInterval;
+
+    /**
+     * INS/GNSS tightly coupled Kalman filter configuration parameters (usually
+     * obtained through calibration).
+     */
+    private INSTightlyCoupledKalmanConfig mConfig;
+
+    /**
+     * GNSS measurements of a collection of satellites.
+     */
+    private Collection&lt;GNSSMeasurement&gt; mMeasurements;
+
+    /**
+     * Last provided user kinematics containing applied specific force and
+     * angular rates resolved in body axes.
+     */
+    private BodyKinematics mKinematics;
+
+    /**
+     * Contains last provided user kinematics minus currently estimated bias
+     * for acceleration and angular rate values.
+     */
+    private BodyKinematics mCorrectedKinematics;
+
+    /**
+     * Internally keeps user position, velocity and attitude.
+     */
+    private ECEFFrame mFrame;
+
+    /**
+     * Configuration containing uncertainty measures to set initial covariance matrix
+     * within estimated state.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * GNSS and INS measurements until convergence is reached.
+     */
+    private INSTightlyCoupledKalmanInitializerConfig mInitialConfig;
+
+    /**
+     * Current estimation containing user ECEF position, user ECEF velocity, clock offset
+     * and clock drift.
+     */
+    private GNSSEstimation mEstimation;
+
+    /**
+     * Current Kalman filter state containing current INS/GNSS estimation along with
+     * Kalman filter covariance error matrix.
+     */
+    private INSTightlyCoupledKalmanState mState;
+
+    /**
+     * Timestamp expressed in seconds since epoch time when Kalman filter state
+     * was last propagated.
+     */
+    private Double mLastStateTimestamp;
+
+    /**
+     * Indicates whether this estimator is running or not.
+     */
+    private boolean mRunning;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L130">    public INSGNSSTightlyCoupledKalmanFilteredEstimator() {</span>
+<span class="fc" id="L131">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config INS/GNSS Kalman filter configuration parameters (usually obtained
+     *               through calibration).
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+<span class="fc" id="L140">            final INSTightlyCoupledKalmanConfig config) {</span>
+<span class="fc" id="L141">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L142">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+<span class="fc" id="L152">            final double epochInterval) {</span>
+        try {
+<span class="fc" id="L154">            setEpochInterval(epochInterval);</span>
+<span class="nc" id="L155">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L157">        }</span>
+<span class="fc" id="L158">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to notify events raised by this instance.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+<span class="fc" id="L166">            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {</span>
+<span class="fc" id="L167">        mListener = listener;</span>
+<span class="fc" id="L168">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval) {
+<span class="fc" id="L181">        this(epochInterval);</span>
+<span class="fc" id="L182">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config   INS/GNSS tightly coupled Kalman filter configuration parameters
+     *                 (usually obtained through calibration).
+     * @param listener listener to notify events raised by this instance.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L195">        this(config);</span>
+<span class="fc" id="L196">        mListener = listener;</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L210">        this(epochInterval);</span>
+<span class="fc" id="L211">        mListener = listener;</span>
+<span class="fc" id="L212">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L227">        this(config, epochInterval);</span>
+<span class="fc" id="L228">        mListener = listener;</span>
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(final Time epochInterval) {
+<span class="fc" id="L239">        this(TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L240">                epochInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L241">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval) {
+<span class="fc" id="L254">        this(config, TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L255">                epochInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L256">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L269">        this(epochInterval);</span>
+<span class="fc" id="L270">        mListener = listener;</span>
+<span class="fc" id="L271">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L286">        this(config, epochInterval);</span>
+<span class="fc" id="L287">        mListener = listener;</span>
+<span class="fc" id="L288">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c body-to-ECEF coordinate transformation defining the initial body
+     *          attitude.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L301">        this();</span>
+        try {
+<span class="fc" id="L303">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L304">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L306">        }</span>
+<span class="fc" id="L307">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config INS/GNSS Kalman filter configuration parameters (usually obtained
+     *               through calibration).
+     * @param c      body-to-ECEF coordinate transformation defining the initial body
+     *               attitude.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L323">        this(c);</span>
+<span class="fc" id="L324">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L325">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval, final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L341">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L343">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L344">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L346">        }</span>
+<span class="fc" id="L347">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param c        body-to-ECEF coordinate transformation defining the initial body
+     *                 attitude.
+     * @param listener listener to notify events raised by this instance.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L362">        this(c);</span>
+<span class="fc" id="L363">        mListener = listener;</span>
+<span class="fc" id="L364">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L383">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L385">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L386">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L388">        }</span>
+<span class="fc" id="L389">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config   INS/GNSS tightly coupled Kalman filter configuration parameters
+     *                 (usually obtained through calibration).
+     * @param c        body-to-ECEF coordinate transformation defining the initial body
+     *                 attitude.
+     * @param listener listener to notify events raised by this instance.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L407">        this(config, listener);</span>
+        try {
+<span class="fc" id="L409">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L410">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L412">        }</span>
+<span class="fc" id="L413">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L432">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L434">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L435">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L437">        }</span>
+<span class="fc" id="L438">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L459">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L461">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L462">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L464">        }</span>
+<span class="fc" id="L465">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval, final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L481">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L483">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L484">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L486">        }</span>
+<span class="fc" id="L487">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L506">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L508">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L509">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L511">        }</span>
+<span class="fc" id="L512">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L531">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L533">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L534">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L536">        }</span>
+<span class="fc" id="L537">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L558">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L560">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L561">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L563">        }</span>
+<span class="fc" id="L564">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L574">        this();</span>
+        try {
+<span class="fc" id="L576">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L577">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L579">        }</span>
+<span class="fc" id="L580">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS Kalman filter configuration parameters (usually obtained
+     *                      through calibration).
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L593">        this(config);</span>
+        try {
+<span class="fc" id="L595">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L596">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L598">        }</span>
+<span class="fc" id="L599">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L613">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L615">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L616">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L618">        }</span>
+<span class="fc" id="L619">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L631">        this(initialConfig);</span>
+<span class="fc" id="L632">        mListener = listener;</span>
+<span class="fc" id="L633">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L649">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L651">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L652">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L654">        }</span>
+<span class="fc" id="L655">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration parameters
+     *                      (usually obtained through calibration).
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L670">        this(config, listener);</span>
+        try {
+<span class="fc" id="L672">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L673">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L675">        }</span>
+<span class="fc" id="L676">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L692">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L694">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L695">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L697">        }</span>
+<span class="fc" id="L698">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L716">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L718">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L719">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L721">        }</span>
+<span class="fc" id="L722">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L736">        this(epochInterval);</span>
+        try {
+<span class="fc" id="L738">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L739">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L741">        }</span>
+<span class="fc" id="L742">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
+<span class="fc" id="L758">        this(config, epochInterval);</span>
+        try {
+<span class="fc" id="L760">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L761">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L763">        }</span>
+<span class="fc" id="L764">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L780">        this(epochInterval, listener);</span>
+        try {
+<span class="fc" id="L782">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L783">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L785">        }</span>
+<span class="fc" id="L786">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
+<span class="fc" id="L804">        this(config, epochInterval, listener);</span>
+        try {
+<span class="fc" id="L806">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L807">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L809">        }</span>
+<span class="fc" id="L810">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L826">        this(c);</span>
+        try {
+<span class="fc" id="L828">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L829">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L831">        }</span>
+<span class="fc" id="L832">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS Kalman filter configuration parameters (usually obtained
+     *                      through calibration).
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L851">        this(config, c);</span>
+        try {
+<span class="fc" id="L853">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L854">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L856">        }</span>
+<span class="fc" id="L857">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L877">        this(epochInterval, c);</span>
+        try {
+<span class="fc" id="L879">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L880">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L882">        }</span>
+<span class="fc" id="L883">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L901">        this(c, listener);</span>
+        try {
+<span class="fc" id="L903">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L904">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L906">        }</span>
+<span class="fc" id="L907">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L929">        this(config, epochInterval, c);</span>
+        try {
+<span class="fc" id="L931">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L932">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L934">        }</span>
+<span class="fc" id="L935">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration parameters
+     *                      (usually obtained through calibration).
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L956">        this(config, c, listener);</span>
+        try {
+<span class="fc" id="L958">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L959">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L961">        }</span>
+<span class="fc" id="L962">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L984">        this(epochInterval, c, listener);</span>
+        try {
+<span class="fc" id="L986">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L987">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L989">        }</span>
+<span class="fc" id="L990">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final double epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1014">        this(config, epochInterval, c, listener);</span>
+        try {
+<span class="fc" id="L1016">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1017">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1019">        }</span>
+<span class="fc" id="L1020">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1040">        this(epochInterval, c);</span>
+        try {
+<span class="fc" id="L1042">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1043">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1045">        }</span>
+<span class="fc" id="L1046">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1068">        this(config, epochInterval, c);</span>
+        try {
+<span class="fc" id="L1070">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1071">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1073">        }</span>
+<span class="fc" id="L1074">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1096">        this(epochInterval, c, listener);</span>
+        try {
+<span class="fc" id="L1098">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1099">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1101">        }</span>
+<span class="fc" id="L1102">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param config        INS/GNSS tightly coupled Kalman filter configuration
+     *                      parameters (usually obtained through calibration).
+     * @param epochInterval minimum epoch interval between consecutive
+     *                      propagations or measurements.
+     * @param initialConfig initial INS tightly coupled Kalman configuration to
+     *                      set proper initial covariance during filter initialization.
+     * @param c             body-to-ECEF coordinate transformation defining the initial body
+     *                      attitude.
+     * @param listener      listener to notify events raised by this instance.
+     * @throws IllegalArgumentException                      if provided epoch interval is negative.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimator(
+            final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig,
+            final CoordinateTransformation c,
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws InvalidSourceAndDestinationFrameTypeException {
+<span class="fc" id="L1126">        this(config, epochInterval, c, listener);</span>
+        try {
+<span class="fc" id="L1128">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1129">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L1131">        }</span>
+<span class="fc" id="L1132">    }</span>
+
+    /**
+     * Gets listener to notify events raised by this instance.
+     *
+     * @return listener to notify events raised by this instance.
+     */
+    public INSGNSSTightlyCoupledKalmanFilteredEstimatorListener getListener() {
+<span class="fc" id="L1140">        return mListener;</span>
+    }
+
+    /**
+     * Sets listener to notify events raised by this instance.
+     *
+     * @param listener listener to notify events raised by this instance.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setListener(
+            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
+            throws LockedException {
+<span class="fc bfc" id="L1152" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1153">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1156">        mListener = listener;</span>
+<span class="fc" id="L1157">    }</span>
+
+    /**
+     * Gets minimum epoch interval expressed in seconds (s) between consecutive
+     * propagations or measurements expressed in seconds.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @return minimum epoch interval between consecutive propagations or
+     * measurements.
+     */
+    public double getEpochInterval() {
+<span class="fc" id="L1169">        return mEpochInterval;</span>
+    }
+
+    /**
+     * Sets minimum epoch interval expressed in seconds (s) between consecutive
+     * propagations or measurements expressed in seconds.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @param epochInterval minimum epoch interval expressed in seconds (s) between
+     *                      consecutive propagations or measurements.
+     * @throws LockedException          if this estimator is already running.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public void setEpochInterval(final double epochInterval) throws LockedException {
+<span class="fc bfc" id="L1184" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1185">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1188" title="All 2 branches covered.">        if (epochInterval &lt; 0.0) {</span>
+<span class="fc" id="L1189">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1192">        mEpochInterval = epochInterval;</span>
+<span class="fc" id="L1193">    }</span>
+
+    /**
+     * Gets minimum epoch interval between consecutive propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @param result instance where minimum epoch interval will be stored.
+     */
+    public void getEpochIntervalAsTime(final Time result) {
+<span class="fc" id="L1203">        result.setValue(mEpochInterval);</span>
+<span class="fc" id="L1204">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1205">    }</span>
+
+    /**
+     * Gets minimum epoch interval between consecutive propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @return minimum epoch interval.
+     */
+    public Time getEpochIntervalAsTime() {
+<span class="fc" id="L1215">        return new Time(mEpochInterval, TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Sets minimum epoch interval between consecutive propagations or measurements.
+     * Attempting to propagate results using Kalman filter or updating measurements
+     * when intervals are less than this value, will be ignored.
+     *
+     * @param epochInterval minimum epoch interval.
+     * @throws LockedException          if this estimator is already running.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
+     */
+    public void setEpochInterval(final Time epochInterval) throws LockedException {
+<span class="fc" id="L1228">        final double epochIntervalSeconds = TimeConverter.convert(</span>
+<span class="fc" id="L1229">                epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L1230">                epochInterval.getUnit(), TimeUnit.SECOND);</span>
+<span class="fc" id="L1231">        setEpochInterval(epochIntervalSeconds);</span>
+<span class="fc" id="L1232">    }</span>
+
+    /**
+     * Gets INS/GNSS tightly coupled Kalman configuration parameters (usually
+     * obtained through calibration).
+     *
+     * @param result instance where INS/GNSS tightly coupled Kalman configuration
+     *               parameters will be stored.
+     * @return true if result instance is updated, false otherwise.
+     */
+    public boolean getConfig(final INSTightlyCoupledKalmanConfig result) {
+<span class="fc bfc" id="L1243" title="All 2 branches covered.">        if (mConfig != null) {</span>
+<span class="fc" id="L1244">            result.copyFrom(mConfig);</span>
+<span class="fc" id="L1245">            return true;</span>
+        } else {
+<span class="fc" id="L1247">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets INS/GNSS tightly coupled Kalman configuration parameters (usually
+     * obtained through calibration).
+     *
+     * @return INS/GNSS tightly coupled Kalman configuration parameters.
+     */
+    public INSTightlyCoupledKalmanConfig getConfig() {
+<span class="fc" id="L1258">        return mConfig;</span>
+    }
+
+    /**
+     * Sets INS/GNSS tightly coupled Kalman configuration parameters (usually
+     * obtained through calibration).
+     *
+     * @param config INS/GNSS tightly coupled Kalman configuration parameters
+     *               to be set.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setConfig(final INSTightlyCoupledKalmanConfig config)
+            throws LockedException {
+<span class="fc bfc" id="L1271" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1272">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1275">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L1276">    }</span>
+
+    /**
+     * Gets body-to-ECEF coordinate transformation defining the body attitude.
+     * This can be used to set the initial body attitude before starting the
+     * estimator, or to update body attitude between INS/GNSS measurement updates.
+     *
+     * @return body-to-ECEF coordinate transformation.
+     */
+    public CoordinateTransformation getCoordinateTransformation() {
+<span class="fc bfc" id="L1286" title="All 2 branches covered.">        return mFrame != null ? mFrame.getCoordinateTransformation() : null;</span>
+    }
+
+    /**
+     * Gets body-to-ECEF coordinate transformation defining the body attitude.
+     * This can be used to set the initial body attitude before starting the
+     * estimator, or to update body attitude between INS/GNSS measurement updates.
+     *
+     * @param result instance where body-to-ECEF data will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getCoordinateTransformation(final CoordinateTransformation result) {
+<span class="fc bfc" id="L1298" title="All 2 branches covered.">        if (mFrame != null) {</span>
+<span class="fc" id="L1299">            mFrame.getCoordinateTransformation(result);</span>
+<span class="fc" id="L1300">            return true;</span>
+        } else {
+<span class="fc" id="L1302">            return false;</span>
+        }
+    }
+
+    /**
+     * Sets body-to-ECEF coordinate transformation defining the body attitude.
+     * This can be used to set the initial body attitude before starting the
+     * estimator, or to update body attitude between INS/GNSS measurement updates.
+     *
+     * @param c body-to-ECEF coordinate transformation to be set.
+     * @throws InvalidSourceAndDestinationFrameTypeException if provided coordinate
+     *                                                       transformation is not valid (is not a
+     *                                                       body-to-ECEF transformation).
+     * @throws LockedException                               if this estimator is already running.
+     */
+    public void setCoordinateTransformation(final CoordinateTransformation c)
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+<span class="fc bfc" id="L1319" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1320">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1323">        initFrame();</span>
+<span class="fc" id="L1324">        mFrame.setCoordinateTransformation(c);</span>
+<span class="fc" id="L1325">    }</span>
+
+    /**
+     * Gets initial INS tightly coupled Kalman configuration to set a proper
+     * initial covariance matrix during the first Kalman filter propagation.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * GNSS and INS measurements until convergence is reached.
+     *
+     * @param result instance where configuration data will be stored.
+     * @return true if result instance was updated, false otherwise.
+     */
+    public boolean getInitialConfig(
+            final INSTightlyCoupledKalmanInitializerConfig result) {
+<span class="fc bfc" id="L1338" title="All 2 branches covered.">        if (mInitialConfig != null) {</span>
+<span class="fc" id="L1339">            result.copyFrom(mInitialConfig);</span>
+<span class="fc" id="L1340">            return true;</span>
+        } else {
+<span class="fc" id="L1342">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets initial INS tightly coupled Kalman configuration to set a proper
+     * initial covariance matrix during the first Kalman filter propagation.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * GNSS and INS measurements until convergence is reached.
+     *
+     * @return initial INS tightly coupled Kalman configuration.
+     */
+    public INSTightlyCoupledKalmanInitializerConfig getInitialConfig() {
+<span class="fc" id="L1355">        return mInitialConfig;</span>
+    }
+
+    /**
+     * Sets initial INS tightly coupled Kalman configuration to set a proper
+     * initial covariance matrix during the first Kalman filter propagation.
+     * Once this estimator is initialized, covariance will be updated with new provided
+     * GNSS and INS measurements until convergence is reached.
+     *
+     * @param initialConfig initial configuration to be set.
+     * @throws LockedException if this estimator is already running.
+     */
+    public void setInitialConfig(
+            final INSTightlyCoupledKalmanInitializerConfig initialConfig)
+            throws LockedException {
+
+<span class="fc bfc" id="L1371" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1372">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1375">        mInitialConfig = initialConfig;</span>
+<span class="fc" id="L1376">    }</span>
+
+    /**
+     * Gets last updated GNSS measurements of a collection of satellites.
+     *
+     * @return last updated GNSS measurements of a collection of satellites.
+     */
+    public Collection&lt;GNSSMeasurement&gt; getMeasurements() {
+<span class="fc bfc" id="L1384" title="All 2 branches covered.">        if (mMeasurements == null) {</span>
+<span class="fc" id="L1385">            return null;</span>
+        }
+
+<span class="fc" id="L1388">        final List&lt;GNSSMeasurement&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L1389" title="All 2 branches covered.">        for (final GNSSMeasurement measurement : mMeasurements) {</span>
+<span class="fc" id="L1390">            result.add(new GNSSMeasurement(measurement));</span>
+<span class="fc" id="L1391">        }</span>
+<span class="fc" id="L1392">        return result;</span>
+    }
+
+    /**
+     * Gets last provided user kinematics containing applied specific force and
+     * angular rates resolved in body axes.
+     *
+     * @return last provided user kinematics.
+     */
+    public BodyKinematics getKinematics() {
+<span class="fc bfc" id="L1402" title="All 2 branches covered.">        return mKinematics != null ? new BodyKinematics(mKinematics) : null;</span>
+    }
+
+    /**
+     * Gets last provided user kinematics containing applied specific force and
+     * angular rates resolved in body axes.
+     *
+     * @param result instance where last provided body kinematics will be stored.
+     * @return true if provided result instance was updated, false otherwise.
+     */
+    public boolean getKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L1413" title="All 2 branches covered.">        if (mKinematics != null) {</span>
+<span class="fc" id="L1414">            result.copyFrom(mKinematics);</span>
+<span class="fc" id="L1415">            return true;</span>
+        } else {
+<span class="fc" id="L1417">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets corrected kinematics which are the last provided user kinematics after
+     * removal of the biases estimated by the Kalman filter.
+     *
+     * @return corrected kinematics.
+     * @see #getKinematics()
+     */
+    public BodyKinematics getCorrectedKinematics() {
+<span class="fc bfc" id="L1429" title="All 2 branches covered.">        return mCorrectedKinematics != null ?</span>
+<span class="fc" id="L1430">                new BodyKinematics(mCorrectedKinematics) : null;</span>
+    }
+
+    /**
+     * Gets corrected kinematics which are the last provided user kinematics after
+     * removal of the biases estimated by the Kalman filter.
+     *
+     * @param result instance where corrected body kinematics will be stored.
+     * @return true if provided result instance was updated, false otherwise.
+     */
+    public boolean getCorrectedKinematics(final BodyKinematics result) {
+<span class="fc bfc" id="L1441" title="All 2 branches covered.">        if (mCorrectedKinematics != null) {</span>
+<span class="fc" id="L1442">            result.copyFrom(mCorrectedKinematics);</span>
+<span class="fc" id="L1443">            return true;</span>
+        } else {
+<span class="fc" id="L1445">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets current estimation containing user ECEF position, user ECEF velocity,
+     * clock offset and clock drift.
+     *
+     * @return current estimation containing user ECEF position, user ECEF velocity,
+     * clock offset and clock drift.
+     */
+    public GNSSEstimation getEstimation() {
+<span class="fc bfc" id="L1457" title="All 2 branches covered.">        return mEstimation != null ? new GNSSEstimation(mEstimation) : null;</span>
+    }
+
+    /**
+     * Gets current estimation containing user ECEF position, user ECEF velocity,
+     * clock offset and clock drift.
+     * This method does not update result instance if no estimation is available.
+     *
+     * @param result instance where estimation will be stored.
+     * @return true if result estimation was updated, false otherwise.
+     */
+    public boolean getEstimation(final GNSSEstimation result) {
+<span class="fc bfc" id="L1469" title="All 2 branches covered.">        if (mEstimation != null) {</span>
+<span class="fc" id="L1470">            result.copyFrom(mEstimation);</span>
+<span class="fc" id="L1471">            return true;</span>
+        } else {
+<span class="fc" id="L1473">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets current Kalman filter state containing current INS/GNSS estimation along
+     * with Kalman filter covariance error matrix.
+     *
+     * @return current Kalman filter state containing current INS/GNSS estimation
+     * along with Kalman filter covariance error matrix.
+     */
+    public INSTightlyCoupledKalmanState getState() {
+<span class="fc bfc" id="L1485" title="All 2 branches covered.">        return mState != null ? new INSTightlyCoupledKalmanState(mState) : null;</span>
+    }
+
+    /**
+     * Gets current Kalman filter state containing current INS/GNSS estimation along
+     * with Kalman filter covariance error matrix.
+     * This method does not update result instance if no state is available.
+     *
+     * @param result instance where state will be stored.
+     * @return true if result state was updated, false otherwise.
+     */
+    public boolean getState(final INSTightlyCoupledKalmanState result) {
+<span class="fc bfc" id="L1497" title="All 2 branches covered.">        if (mState != null) {</span>
+<span class="fc" id="L1498">            result.copyFrom(mState);</span>
+<span class="fc" id="L1499">            return true;</span>
+        } else {
+<span class="fc" id="L1501">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets timestamp expressed in seconds since epoch time when Kalman filter state
+     * was last propagated.
+     *
+     * @return timestamp expressed in seconds since epoch time when Kalman filter
+     * state was last propagated.
+     */
+    public Double getLastStateTimestamp() {
+<span class="fc" id="L1513">        return mLastStateTimestamp;</span>
+    }
+
+    /**
+     * Gets timestamp since epoch time when Kalman filter state was last propagated.
+     *
+     * @param result instance where timestamp since epoch time when Kalman filter
+     *               state was last propagated will be stored.
+     * @return true if result instance is updated, false otherwise.
+     */
+    public boolean getLastStateTimestampAsTime(final Time result) {
+<span class="fc bfc" id="L1524" title="All 2 branches covered.">        if (mLastStateTimestamp != null) {</span>
+<span class="fc" id="L1525">            result.setValue(mLastStateTimestamp);</span>
+<span class="fc" id="L1526">            result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1527">            return true;</span>
+        } else {
+<span class="fc" id="L1529">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets timestamp since epoch time when Kalman filter state was last propagated.
+     *
+     * @return timestamp since epoch time when Kalman filter state was last
+     * propagated.
+     */
+    public Time getLastStateTimestampAsTime() {
+<span class="fc bfc" id="L1540" title="All 2 branches covered.">        return mLastStateTimestamp != null ?</span>
+<span class="fc" id="L1541">                new Time(mLastStateTimestamp, TimeUnit.SECOND) : null;</span>
+    }
+
+    /**
+     * Indicates whether this estimator is running or not.
+     *
+     * @return true if this estimator is running, false otherwise.
+     */
+    public boolean isRunning() {
+<span class="fc" id="L1550">        return mRunning;</span>
+    }
+
+    /**
+     * Indicates whether provided measurements are ready to
+     * be used for an update.
+     *
+     * @param measurements measurements to be checked.
+     * @return true if estimator is ready, false otherwise.
+     */
+    public static boolean isUpdateMeasurementsReady(
+            final Collection&lt;GNSSMeasurement&gt; measurements) {
+<span class="fc" id="L1562">        return GNSSLeastSquaresPositionAndVelocityEstimator</span>
+<span class="fc" id="L1563">                .isValidMeasurements(measurements);</span>
+    }
+
+    /**
+     * Updates GNSS measurements of this estimator when new satellite measurements
+     * are available.
+     * Calls to this method will be ignored if interval between provided timestamp
+     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     *
+     * @param measurements GNSS measurements to be updated.
+     * @param timestamp    timestamp since epoch time when GNSS measurements were
+     *                     updated.
+     * @return true if measurements were updated, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSGNSSException  if estimation fails due to numerical instabilities.
+     */
+    public boolean updateMeasurements(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final Time timestamp)
+            throws LockedException, NotReadyException, INSGNSSException {
+<span class="fc" id="L1583">        return updateMeasurements(measurements, TimeConverter.convert(</span>
+<span class="fc" id="L1584">                timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+                TimeUnit.SECOND));
+    }
+
+    /**
+     * Updates GNSS measurements of this estimator when new satellite measurements
+     * are available.
+     * Call to this method will be ignored if interval between provided timestamp
+     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     *
+     * @param measurements GNSS measurements to be updated.
+     * @param timestamp    timestamp expressed in seconds since epoch time when
+     *                     GNSS measurements were updated.
+     * @return true if measurements were updated, false otherwise.
+     * @throws LockedException   if this estimator is already running.
+     * @throws NotReadyException if estimator is not ready for measurements updates.
+     * @throws INSGNSSException  if estimation fails due to numerical instabilities.
+     */
+    public boolean updateMeasurements(
+            final Collection&lt;GNSSMeasurement&gt; measurements, final double timestamp)
+            throws LockedException, NotReadyException, INSGNSSException {
+
+<span class="fc bfc" id="L1606" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1607">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1610" title="All 2 branches covered.">        if (!isUpdateMeasurementsReady(measurements)) {</span>
+<span class="fc" id="L1611">            throw new NotReadyException();</span>
+        }
+
+<span class="fc bfc" id="L1614" title="All 2 branches covered.">        if (mLastStateTimestamp != null &amp;&amp;</span>
+<span class="pc bpc" id="L1615" title="1 of 2 branches missed.">                timestamp - mLastStateTimestamp &lt;= mEpochInterval) {</span>
+<span class="fc" id="L1616">            return false;</span>
+        }
+
+        try {
+<span class="fc" id="L1620">            mRunning = true;</span>
+
+<span class="pc bpc" id="L1622" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1623">                mListener.onUpdateGNSSMeasurementsStart(this);</span>
+            }
+
+<span class="fc" id="L1626">            mMeasurements = new ArrayList&lt;&gt;(measurements);</span>
+
+<span class="fc" id="L1628">            mLsEstimator.setMeasurements(mMeasurements);</span>
+<span class="fc" id="L1629">            mLsEstimator.setPriorPositionAndVelocityFromEstimation(mEstimation);</span>
+<span class="pc bpc" id="L1630" title="1 of 2 branches missed.">            if (mEstimation != null) {</span>
+<span class="nc" id="L1631">                mLsEstimator.estimate(mEstimation);</span>
+            } else {
+<span class="fc" id="L1633">                mEstimation = mLsEstimator.estimate();</span>
+            }
+
+<span class="pc bpc" id="L1636" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1637">                mListener.onUpdateGNSSMeasurementsEnd(this);</span>
+            }
+
+<span class="fc" id="L1640">        } catch (final GNSSException e) {</span>
+<span class="fc" id="L1641">            throw new INSGNSSException(e);</span>
+        } finally {
+<span class="fc" id="L1643">            mRunning = false;</span>
+        }
+
+<span class="fc" id="L1646">        updateBodyKinematics(mKinematics, timestamp);</span>
+
+<span class="fc" id="L1648">        return true;</span>
+    }
+
+    /**
+     * Updates specific force and angular rate applied to the user's
+     * body expressed in coordinates resolved along body-frame axes.
+     *
+     * @param kinematics kinematics applied to body (specific force and angular rate)
+     *                   during last period of time. These measures are obtained from
+     *                   an inertial unit (IMU).
+     * @param timestamp  timestamp since epoch time when specific force and
+     *                   angular rate values were updated.
+     * @return true if body kinematics values were updated, false otherwise.
+     * @throws LockedException  if this estimator is already running.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    public boolean updateBodyKinematics(
+            final BodyKinematics kinematics, final Time timestamp)
+            throws LockedException, INSGNSSException {
+<span class="fc" id="L1667">        return updateBodyKinematics(kinematics, TimeConverter.convert(</span>
+<span class="fc" id="L1668">                timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+                TimeUnit.SECOND));
+    }
+
+    /**
+     * Updates specific force and angular rate applied to the user's
+     * body expressed in coordinates resolved along body-frame axes.
+     *
+     * @param kinematics kinematics applied to body (specific force and angular rate)
+     *                   during last period of time. These measures are obtained from
+     *                   an inertial unit (IMU).
+     * @param timestamp  timestamp expressed in seconds since epoch time when specific
+     *                   force and angular rate values were updated.
+     * @return true if body kinematics values were updated, false otherwise.
+     * @throws LockedException  if this estimator is already running.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    public boolean updateBodyKinematics(
+            final BodyKinematics kinematics, final double timestamp)
+            throws LockedException, INSGNSSException {
+
+<span class="fc bfc" id="L1689" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1690">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1693" title="All 2 branches covered.">        final double propagationInterval = mLastStateTimestamp != null ?</span>
+<span class="fc" id="L1694">                timestamp - mLastStateTimestamp : 0.0;</span>
+<span class="fc bfc" id="L1695" title="All 4 branches covered.">        if (mLastStateTimestamp != null &amp;&amp; propagationInterval &lt;= mEpochInterval) {</span>
+<span class="fc" id="L1696">            return false;</span>
+        }
+
+        try {
+<span class="fc" id="L1700">            mRunning = true;</span>
+
+<span class="pc bpc" id="L1702" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1703">                mListener.onUpdateBodyKinematicsStart(this);</span>
+            }
+
+<span class="fc" id="L1706">            initFrame();</span>
+<span class="fc bfc" id="L1707" title="All 2 branches covered.">            if (mEstimation != null) {</span>
+<span class="fc" id="L1708">                mFrame.setCoordinates(</span>
+<span class="fc" id="L1709">                        mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());</span>
+<span class="fc" id="L1710">                mFrame.setVelocityCoordinates(</span>
+<span class="fc" id="L1711">                        mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());</span>
+            }
+
+<span class="fc bfc" id="L1714" title="All 2 branches covered.">            if (kinematics != null) {</span>
+<span class="fc" id="L1715">                correctKinematics(kinematics);</span>
+<span class="fc" id="L1716">                ECEFInertialNavigator.navigateECEF(propagationInterval, mFrame,</span>
+                        mCorrectedKinematics, mFrame);
+            }
+
+<span class="fc" id="L1720">            mKinematics = kinematics;</span>
+
+<span class="pc bpc" id="L1722" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1723">                mListener.onUpdateBodyKinematicsEnd(this);</span>
+            }
+
+<span class="nc" id="L1726">        } catch (final InertialNavigatorException e) {</span>
+<span class="nc" id="L1727">            return false;</span>
+        } finally {
+<span class="fc" id="L1729">            mRunning = false;</span>
+        }
+
+<span class="fc" id="L1732">        propagate(timestamp);</span>
+
+<span class="fc" id="L1734">        return true;</span>
+    }
+
+    /**
+     * Indicates whether this estimator is ready for state propagations.
+     *
+     * @return true if estimator is ready, false otherwise.
+     */
+    public boolean isPropagateReady() {
+<span class="fc bfc" id="L1743" title="All 4 branches covered.">        return mConfig != null &amp;&amp; mEstimation != null;</span>
+    }
+
+    /**
+     * Propagates Kalman filter state held by this estimator at provided
+     * timestamp.
+     * Call to this method will be ignored if interval between provided timestamp
+     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     *
+     * @param timestamp timestamp since epoch to propagate state.
+     * @return true if state was propagated, false otherwise.
+     * @throws LockedException  if this estimator is already running.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    public boolean propagate(final Time timestamp) throws LockedException,
+            INSGNSSException {
+<span class="fc" id="L1759">        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(),</span>
+<span class="fc" id="L1760">                timestamp.getUnit(), TimeUnit.SECOND));</span>
+    }
+
+    /**
+     * Propagates Kalman filter state held by this estimator at provided
+     * timestamp.
+     * Call to this method will be ignored if interval between provided timestamp
+     * and last timestamp when Kalman filter was updated is less than epoch interval.
+     *
+     * @param timestamp timestamp expressed in seconds since epoch to propagate state.
+     * @return true if state was propagated, false otherwise.
+     * @throws LockedException  if this estimator is already running.
+     * @throws INSGNSSException if estimation fails due to numerical instabilities.
+     */
+    public boolean propagate(final double timestamp) throws LockedException,
+            INSGNSSException {
+
+<span class="fc bfc" id="L1777" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1778">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1781" title="All 2 branches covered.">        if (!isPropagateReady()) {</span>
+<span class="fc" id="L1782">            return false;</span>
+        }
+
+<span class="fc bfc" id="L1785" title="All 2 branches covered.">        final double propagationInterval = mLastStateTimestamp != null ?</span>
+<span class="fc" id="L1786">                timestamp - mLastStateTimestamp : 0.0;</span>
+<span class="fc bfc" id="L1787" title="All 4 branches covered.">        if (mLastStateTimestamp != null &amp;&amp; propagationInterval &lt;= mEpochInterval) {</span>
+<span class="fc" id="L1788">            return false;</span>
+        }
+
+        try {
+<span class="fc" id="L1792">            mRunning = true;</span>
+
+<span class="pc bpc" id="L1794" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1795">                mListener.onPropagateStart(this);</span>
+            }
+
+<span class="pc bpc" id="L1798" title="1 of 2 branches missed.">            if (initFrame()) {</span>
+<span class="nc" id="L1799">                mFrame.setCoordinates(</span>
+<span class="nc" id="L1800">                        mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());</span>
+<span class="nc" id="L1801">                mFrame.setVelocityCoordinates(</span>
+<span class="nc" id="L1802">                        mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());</span>
+            }
+
+<span class="fc bfc" id="L1805" title="All 2 branches covered.">            if (mState == null) {</span>
+                // initialize state
+<span class="fc" id="L1807">                initInitialConfig();</span>
+<span class="fc" id="L1808">                final Matrix covariance = INSTightlyCoupledKalmanInitializer</span>
+<span class="fc" id="L1809">                        .initialize(mInitialConfig);</span>
+
+<span class="fc" id="L1811">                mState = new INSTightlyCoupledKalmanState();</span>
+<span class="fc" id="L1812">                mState.setFrame(mFrame);</span>
+<span class="fc" id="L1813">                mState.setCovariance(covariance);</span>
+            }
+
+<span class="fc bfc" id="L1816" title="All 2 branches covered.">            if (mKinematics != null) {</span>
+<span class="fc" id="L1817">                correctKinematics(mKinematics);</span>
+            }
+
+            final double fx;
+            final double fy;
+            final double fz;
+<span class="fc bfc" id="L1823" title="All 2 branches covered.">            if (mCorrectedKinematics != null) {</span>
+<span class="fc" id="L1824">                fx = mCorrectedKinematics.getFx();</span>
+<span class="fc" id="L1825">                fy = mCorrectedKinematics.getFy();</span>
+<span class="fc" id="L1826">                fz = mCorrectedKinematics.getFz();</span>
+            } else {
+<span class="fc" id="L1828">                fx = 0.0;</span>
+<span class="fc" id="L1829">                fy = 0.0;</span>
+<span class="fc" id="L1830">                fz = 0.0;</span>
+            }
+
+<span class="fc" id="L1833">            INSTightlyCoupledKalmanEpochEstimator.estimate(mMeasurements,</span>
+                    propagationInterval, mState, fx, fy, fz, mConfig, mState);
+<span class="fc" id="L1835">            mLastStateTimestamp = timestamp;</span>
+
+<span class="fc" id="L1837">            mState.getGNSSEstimation(mEstimation);</span>
+<span class="fc" id="L1838">            mState.getFrame(mFrame);</span>
+
+<span class="pc bpc" id="L1840" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1841">                mListener.onPropagateEnd(this);</span>
+            }
+
+<span class="nc" id="L1844">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L1845">            throw new INSGNSSException(e);</span>
+        } finally {
+<span class="fc" id="L1847">            mRunning = false;</span>
+        }
+
+<span class="fc" id="L1850">        return true;</span>
+    }
+
+    /**
+     * Resets this estimator.
+     *
+     * @throws LockedException if this estimator is already running.
+     */
+    public void reset() throws LockedException {
+<span class="fc bfc" id="L1859" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1860">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1863">        mRunning = true;</span>
+<span class="fc" id="L1864">        mMeasurements = null;</span>
+<span class="fc" id="L1865">        mEstimation = null;</span>
+<span class="fc" id="L1866">        mState = null;</span>
+<span class="fc" id="L1867">        mLastStateTimestamp = null;</span>
+<span class="fc" id="L1868">        mKinematics = null;</span>
+<span class="fc" id="L1869">        mCorrectedKinematics = null;</span>
+<span class="fc" id="L1870">        mFrame = null;</span>
+
+<span class="pc bpc" id="L1872" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L1873">            mListener.onReset(this);</span>
+        }
+
+<span class="fc" id="L1876">        mRunning = false;</span>
+<span class="fc" id="L1877">    }</span>
+
+    /**
+     * Initializes current ECEF frame containing user position, velocity and
+     * orientation expressed an resolved in ECEF coordinates.
+     * This method makes no action if an initial frame already exists.
+     *
+     * @return true if frame was initialized, false otherwise.
+     */
+    private boolean initFrame() {
+<span class="fc bfc" id="L1887" title="All 2 branches covered.">        if (mFrame == null) {</span>
+<span class="fc" id="L1888">            mFrame = new ECEFFrame();</span>
+<span class="fc" id="L1889">            return true;</span>
+        } else {
+<span class="fc" id="L1891">            return false;</span>
+        }
+    }
+
+    /**
+     * Initializes initial INS tightly coupled Kalman configuration to set
+     * a proper initial covariance matrix.
+     * This method makes no action if an initial configuration already exists.
+     */
+    private void initInitialConfig() {
+<span class="pc bpc" id="L1901" title="1 of 2 branches missed.">        if (mInitialConfig == null) {</span>
+<span class="nc" id="L1902">            mInitialConfig = new INSTightlyCoupledKalmanInitializerConfig();</span>
+        }
+<span class="fc" id="L1904">    }</span>
+
+    /**
+     * Corrects provided kinematics by taking into account currently estimated
+     * specific force and angular rate biases.
+     * This method stores the result into the variable member containing corrected
+     * kinematics values.
+     *
+     * @param kinematics kinematics instance to be corrected.
+     */
+    private void correctKinematics(final BodyKinematics kinematics) {
+<span class="fc bfc" id="L1915" title="All 2 branches covered.">        if (mCorrectedKinematics == null) {</span>
+<span class="fc" id="L1916">            mCorrectedKinematics = new BodyKinematics();</span>
+        }
+
+        final double accelBiasX;
+        final double accelBiasY;
+        final double accelBiasZ;
+        final double gyroBiasX;
+        final double gyroBiasY;
+        final double gyroBiasZ;
+<span class="fc bfc" id="L1925" title="All 2 branches covered.">        if (mState != null) {</span>
+<span class="fc" id="L1926">            accelBiasX = mState.getAccelerationBiasX();</span>
+<span class="fc" id="L1927">            accelBiasY = mState.getAccelerationBiasY();</span>
+<span class="fc" id="L1928">            accelBiasZ = mState.getAccelerationBiasZ();</span>
+<span class="fc" id="L1929">            gyroBiasX = mState.getGyroBiasX();</span>
+<span class="fc" id="L1930">            gyroBiasY = mState.getGyroBiasY();</span>
+<span class="fc" id="L1931">            gyroBiasZ = mState.getGyroBiasZ();</span>
+        } else {
+<span class="fc" id="L1933">            accelBiasX = 0.0;</span>
+<span class="fc" id="L1934">            accelBiasY = 0.0;</span>
+<span class="fc" id="L1935">            accelBiasZ = 0.0;</span>
+<span class="fc" id="L1936">            gyroBiasX = 0.0;</span>
+<span class="fc" id="L1937">            gyroBiasY = 0.0;</span>
+<span class="fc" id="L1938">            gyroBiasZ = 0.0;</span>
+        }
+
+<span class="fc" id="L1941">        final double fx = kinematics.getFx();</span>
+<span class="fc" id="L1942">        final double fy = kinematics.getFy();</span>
+<span class="fc" id="L1943">        final double fz = kinematics.getFz();</span>
+<span class="fc" id="L1944">        final double angularRateX = kinematics.getAngularRateX();</span>
+<span class="fc" id="L1945">        final double angularRateY = kinematics.getAngularRateY();</span>
+<span class="fc" id="L1946">        final double angularRateZ = kinematics.getAngularRateZ();</span>
+
+<span class="fc" id="L1948">        mCorrectedKinematics.setSpecificForceCoordinates(</span>
+                fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
+<span class="fc" id="L1950">        mCorrectedKinematics.setAngularRateCoordinates(</span>
+                angularRateX - gyroBiasX,
+                angularRateY - gyroBiasY,
+                angularRateZ - gyroBiasZ);
+<span class="fc" id="L1954">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
