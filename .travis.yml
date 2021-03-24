@@ -1,0 +1,54 @@
+language: java
+
+jdk:
+  - oraclejdk11
+
+sudo: false
+env:
+    global:
+        #key for github
+        #GITHUB_OAUTH_TOKEN
+        - secure: "UUZMCpr1fzoMdPH3Gs32Bhu0Hl8eHOd1RgqDRAhvmW8gxOHXaz5umb225i3ZkW7+v+z8zBWJ1qkHKA9mX79GgaJjYD9L4JQ3Jxd8+MPpRxE+TUiP6fzQ9oYM7bsmgGayxsTRIJ/DNoLKcMG4QWOx+pJmeVpScQtqWYD2DAsvuyzK045s4/qOlKlfKNbSQt0UmdgZJyUUphjgwgrLxyEglj3qOGPOcqMSKaq53Sjr3dEksZDaGAMNnSvZL4xl3zQ7DEkQNaq4/+l+7gWvp4dB8UHcmDKS2lwyoN4Uu02lhxyIC6ruDKvIqw4m1Kj3NCAWWcxm1bq03Y6Ynzan69wfcNtr7ydfAKXeTtQCLYIgYCGntnjIOACKWAtSpXKC6vLHYdGH7Gc6tACt13UlAffnr1GJ6qbEFgVYd8cet79yblRLk3Av958ZmiB21gQ+GYvVMSGDZDsrOgoDVuGFNgmygW08hBA7tr+9qidaEUFOakFB9gwHesv0WuCDNTAPmPfC052or6B2W7lyRL3vV4V+gOxdIPc2Ycn8plCLDFNVyLOn03Nr2wH5X9hlPJ7/jpWOdPGsj/GFRKoDKv5WMMvUbPvqfiLmZfx13LBqJj9FcArksjxKm0QfNbDiARfaMxkdxSbQqLYQO1iHGQxFen8/PHrAtSKYe5M6SmGkgJOVBtA="
+        - environment=test
+        #sonatype credentials
+        #OSSRH_JIRA_USERNAME
+        - secure: "M3GGFGCYbKE2ju7QApsxdu+CI2rgfBtt3iYyZ2GPRGv0Qa+BxeEQ8D2k7D1U9KZevyFwVRFAhlX+bhovMUKDpt6wFMmc4sZzXe9e/dkkYlzrkvVURutGpEg0lw35++u5FztVwKoD1nQADT3/9RGip12Q6uOXV51JvtOi2pcJyB5qh6PvHnbULdZ6IKwZ+iZsPlsSG68gxq+UjXoJYh9uaqQrH39sTyR0zWC221pW5UfywUlGOR4bsaDI7z2Ng84xXfZ0rG80mjYDx78Mxz13buieTZbr8HnfgQ4jaUJ/Vw48kbFM0l91StsKrTedJFIrGmbHN78Jt/L4MDgltLqVaA6dOg+7Gs4FtDYhSfp2qJNwsD0Y4W2ctdcOnGfINGkFD62xerHN8NcQVb4JfHcvos9HgXpmKICb6dNqIy5f16ZMzewxA+cs+0SLALAMlbUe7BRaXQO17U8Y9H/TN62RR83MJctJ4nitlrGkH+h8jKoGj/HW2xqC1LX/U1L8Ia3G01rqc0WjQkDcsE8KfTTbxlLASICXmT9hmeoO9zylOn90cnXTu44MTqw0ihOL0jUkPNdOsBQmmYJd7a7PS8FY5qybsu0r45lALWamLTArV0IUcIgLJXJvnI/Kmwz1dBvWdZUf4N8fNw5wgK4L4w9twt0JvEFD9NZaIgRuyMfdhho="
+        #OSSRH_JIRA_PASSWORD
+        - secure: "AgSOzyjgYhD3hBnBUAEyRfI341fTZuYsTST3iBv+GKVTnfmSS4/H09TxRwxIsSNsto6/1NLfoDUaTNSH3eKS0iZWrBj9lk4isdmBBbcj+4/YhX7IfeyCfBvhVinw4OzHFQOHZ1I1wKDIw3rXDmWltGg8GBnL9iekUGQeDlUK/05YN9NaXuhJAhD3hHWe/NfzljORTOVgM3StxctvxnVNWAzTRtiuALVJeXNkSWm1G3wWLwrsCNqgfakfZdMhkT2nSuexbn2cPaRfK2JRDQij0oDUtFfbkD9aVAVEKLszG7NSpibFtdInNwSV9rOTe0dyPDieM9KxozFBvrLObbtV55nLfnwNOC4a6C4s+ZtmeIXHK2dv1s7kkXccvxRaniD2m/uN9AxGU7x/zzZgK8eF3cBex5Rww8WQW1mpMrEvkU8vS03qtBEEVU8tdk723DSFlmLZMrWr6/+PSo1TJefJ1T5Vo5jdYDEEcXc8Y8o6mY5z6Oro06SbGdGSwymVaRG0laoxo8O4E1l48WOzTv52WvY113xWLyJmrnzQO1UY4fstg8D13SbVaxO+XXq+DY94C5rl4MUu+Ax+lARnyLwe9/SQ/Tc36a/geeOmuv/44tuq9anFHhO2aMjWQDtYTajR1yQXpZph5/PhL1SMTQ26fr/0qFu5sRyl8CulZKeInWI="
+        #signing key
+        #GPG_KEY_NAME
+        - secure: "FqzQYVVanDEC3+5yeLE3594xCkSBnjUhtp06P+cq6J+GEld96FXeziRFEpZm56kf4yjbh5NfmgSBWbQDLT3gGMepnXmaYcoGxKM7CexM9pG7NpWJInCblfWoW1okWFrdjUFzQ46aEseb7s3iprVr6hDhb3z/68zYRDdo1N+DP2z5SGyOo+A40NkP9PrNWhuwhwFLiOgoOABBFUUplTF3sve9o3lZwnl7ItEZv3CVRLumnf3gBH+Yy8aNctfCwh6H5b+W4Bd08x2I088tmQGcA0C2Mf27qy3ukLWaYKtMQoEG3M75wK++DbBcvMtcZv+63B4+pKtWblobD24YmVz+TbxiCRO7Jf92RL9ry1iFn78s0Kqd0ugXb1nbMEGFHcQletROK5sp2rjyJ6m/6s6OZjm5/ZJtABdklvlGrCKSdo28oPyMpeTrrdTtbE55rNko4b36JkASPyoxeazzi88ArtzjvKTIiuchc/W8TTxfAp78Q71toD8551Pa73w5OQ9HSVTf23F7hcPrwFppxTHf50Ruo9eJs0DeG1iBJz8DbYGRc4/85oBx+nTjCNhkb8MgKnpIOS4NZVmQfwmNueyLfobrFJ70FMMZ5QbjBQVmInJ+eS65xBlU2fZXrPGxqv5xizM6P2G1Nrn+w/FYhkvMqsO2zsyTzlpXy0DNi4ULpxA="
+        #GPG_PASSPHRASE
+        - secure: "m3+pPPF6BjTdup6gPzREW9sKCvuQyoe18Wk4ctFRRG/tsBMf5oIaIv6RfVwFHwPyvurXiU4wSn4sqYYogvt8rIq7QJO3I4T8Ug6RDhREWdwRzTlRO5PrTBmq516CyvjrVCqbO99XcqQvXLQF7c7faEGFMZDels9R8r5F+lFfNI3Pqj4D160fdwrFKBjCQw2ia7bF5KOLH1hIbavNNd0zlyvrz0dixAJ8zjqhieguvEh7FBFeDRcwsNESAzYPmvuODKov2+FB7pwkIGs9A+8nIzIjAJtO1s7NQkfwupXSTXHBylkL7bO2Ggg6KDRtockGijDN9eVzDYkHtwhrqNWV90Xy5eiXF79MWa9rF+nmvo+xQp2TgpQmsYXKFALIKxGdtasiZTMCMCc9aVNopjaUQK7UWlfQ9EzYjwjCYw4Ag6YpgpWY4ZmCGa2jCzJmYhzH3bD8YeQVUB4Kka6QSGCi8D7M+LxdXfrxh1jxaTt8+rV3WIsI+JEj/MjB5pm7bDyyS6tuNQZqLJW0ZqCERyuyT7VMilSn+tTO1JoFU3gfwzyWAiYGz1R2P/whbKAdncQkby1MtTmd7Duf70VGaQpyzJY16dlDoNldNfXDUMvJ9v439UQnhVIbWG0Fme+Fva6ZtytQsLRMKmubUbZ6wbyCTrKL75zfJBY7J3OLNEJcA/w="
+
+addons:
+  sonarcloud:
+    organization: "albertoirurueta-github"
+    token:
+      secure: "F7Lg73K6AmxcAURNJUUNtwphx5/gl7gAueC/UeAkZRp8xYzICJzNWri8Wn3Vr4JLzNxadMmy6I7acdez2QIteX9mNvXDS8pEubnHpDIEgAuamzU1rBBr+isoFcOh4PXF6AuHvOWjpObC8T/CkxvXxjckh3enzRVCnWhLZY7WIzby5vgw3u2JaRh7JycpVTIMEOeX/bNci+qbnNUeZeJjx+HGtdTkCMNQDgkc1Jxgte2y1etqR8CPrpPNg8wqrr7EhtEIOkvP4LW5Cfd1KncZVUxxIlVk/d/Ajb4rgKB1CWbNuqokJnrQPy4wi+MT1wGYyYpLJyOMG4ibOgE4PEM4u/UlDzxVrBKI98tGb8dvoGrD750/gpvhg6i4CKlxVgBD9Tisl2UEaSlgXMn7GtXK/VkDiFogmKKJt5YKtcHusb00Pqb9auCFfgO6xvC4vxtsKUQwKOKv42nsq6Gq9gW2r4rtPVC4NLvKGFBb25QoZU8AbNCUKB7skTGdWMhRHtMOpgBqKxiEm6rXCFtAOiXnS1+y1lQfUyZ5PFLlLXs9PVj24DLJha88WmvSfvBqDZDqdCponEJckhXgXqKRGOkYnZl1iJDcbtYMOV8vCkX9PSY2GniZUHEfib0/iY9HxvjFWu0O+H+E34XUM0f6YkHkhs1egr0js+SxmQZqRJJyaCc="
+
+#if timeout occurs, add travis_wait as in example below:
+#script: travis_wait mvn clean jacoco:prepare-agent install jacoco:report site
+
+#add: -Denvironment=test to activate CI profile to publish into gh-pages
+script:
+  - travis_wait 50 mvn clean jacoco:prepare-agent install jacoco:report --quiet -P !build-extras
+  - mvn site -Djacoco.skip -DskipTests --quiet -P !build-extras
+  - sonar-scanner
+
+cache:
+  directories:
+    - ~/.m2/repository
+
+deploy:
+  provider: pages
+  skip-cleanup: true
+  github-token: $GITHUB_OAUTH_TOKEN
+  keep-history: true
+  local-dir: ./target/site
+  on:
+    branch: master
+
+after_success:
+  - ./cd/before-deploy.sh
+  - ./cd/deploy.sh
