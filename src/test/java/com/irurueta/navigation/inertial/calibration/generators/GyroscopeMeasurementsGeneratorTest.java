@@ -761,6 +761,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
 
         if (mDynamicIntervalDetected != i + 1) {
           failed = true;
+          break;
         }
         assertEquals(mDynamicIntervalDetected, i + 1);
         assertEquals(mSequences.size(), i);
