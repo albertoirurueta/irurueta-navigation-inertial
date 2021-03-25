@@ -15,7 +15,7 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,PROMedSRobustKnownFrameGyroscopeCalibrator.new PROMedSRobustEstimatorListener() {...},12,58,3,1,3,14,3,11,1,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RANSACRobustKnownBiasEasyGyroscopeCalibrator.new RANSACRobustEstimatorListener() {...},0,66,2,2,0,16,2,11,0,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,KnownFrameGyroscopeLinearLeastSquaresCalibrator,10,1262,1,75,3,295,1,89,0,52
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,KnownBiasEasyGyroscopeCalibrator,39,4238,5,219,19,1053,5,271,0,164
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,KnownBiasEasyGyroscopeCalibrator,45,4232,5,219,21,1051,5,271,0,164
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,MSACRobustTurntableGyroscopeCalibrator,22,593,3,9,7,94,3,41,0,38
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,LMedSRobustTurntableGyroscopeCalibrator.new LMedSRobustEstimatorListener() {...},12,50,3,1,3,12,3,9,1,9
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RobustKnownBiasAndFrameGyroscopeCalibrator.PreliminaryResult,0,3,0,0,0,1,0,1,0,1
@@ -96,7 +96,7 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,TurntableGyroscopeCalibrator.new LevenbergMarquardtMultiDimensionFunctionEvaluator() {...},0,138,0,10,0,23,0,9,0,4
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,TurntableGyroscopeCalibrator.new MultiDimensionFunctionEvaluatorListener() {...},0,11,0,0,0,2,0,2,0,2
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,QuaternionIntegrator,5,397,0,6,3,112,1,11,1,8
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RobustEasyGyroscopeCalibrator,86,5105,7,449,26,1020,7,526,0,254
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RobustEasyGyroscopeCalibrator,89,5102,7,449,28,1018,7,526,0,254
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,TurntableGyroscopeCalibrator.new LevenbergMarquardtMultiDimensionFunctionEvaluator() {...},0,86,0,4,0,14,0,6,0,4
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RANSACRobustKnownBiasAndFrameGyroscopeCalibrator,22,745,5,19,7,122,5,56,0,49
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,EasyGyroscopeCalibrator.new MultiDimensionFunctionEvaluatorListener() {...},0,14,0,0,0,2,0,2,0,2
@@ -113,7 +113,7 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,EasyGyroscopeCalibrator.new LevenbergMarquardtMultiDimensionFunctionEvaluator() {...},0,85,0,8,0,16,0,8,0,4
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,LMedSRobustKnownBiasEasyGyroscopeCalibrator,22,303,3,9,7,64,3,25,0,22
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,PROMedSRobustTurntableGyroscopeCalibrator.new PROMedSRobustEstimatorListener() {...},12,58,3,1,3,14,3,11,1,11
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RobustKnownBiasEasyGyroscopeCalibrator,54,4641,6,384,25,903,6,459,0,219
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RobustKnownBiasEasyGyroscopeCalibrator,75,4620,6,384,31,897,6,459,0,219
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,RobustTurntableGyroscopeCalibrator,751,8019,48,590,85,1279,53,698,13,320
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,KnownBiasAndFrameGyroscopeLinearLeastSquaresCalibrator,15,1511,1,79,7,381,1,119,0,80
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.gyroscope,PROMedSRobustKnownBiasTurntableGyroscopeCalibrator,22,1242,4,20,7,205,4,83,0,75
@@ -129,7 +129,7 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,BodyK
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,ECEFGravity,0,49,0,6,0,19,0,9,0,6
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,BodyMagneticFluxDensity,8,431,5,15,3,111,4,47,0,41
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,INSGNSSLooselyCoupledKalmanFilteredEstimator.new INSLooselyCoupledKalmanFilteredEstimatorListener() {...},0,51,4,4,0,14,4,6,0,6
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,INSGNSSTightlyCoupledKalmanFilteredEstimator,80,1264,11,101,44,399,11,134,0,89
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,INSGNSSTightlyCoupledKalmanFilteredEstimator,86,1258,11,101,46,397,11,134,0,89
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,RadiiOfCurvature,0,202,1,11,0,60,1,28,0,23
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,ECIGravitation,0,49,0,6,0,19,0,9,0,6
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial,INSTightlyCoupledKalmanInitializerConfig,0,532,6,16,0,143,6,53,0,48
@@ -320,7 +320,7 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator,26,1436,7,29,8,234,7,98,0,87
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RANSACRobustKnownPositionAccelerometerCalibrator.new RANSACRobustEstimatorListener() {...},0,66,2,2,0,16,2,11,0,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,LMedSRobustKnownBiasAndFrameAccelerometerCalibrator.new LMedSRobustEstimatorListener() {...},0,62,2,2,0,15,2,10,0,10
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownGravityNormAccelerometerCalibrator,111,5895,9,587,31,1085,10,691,1,291
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownGravityNormAccelerometerCalibrator,108,5898,9,587,29,1087,10,691,1,291
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RANSACRobustKnownBiasAndFrameAccelerometerCalibrator.new RANSACRobustEstimatorListener() {...},0,66,2,2,0,16,2,11,0,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,MSACRobustKnownBiasAndGravityNormAccelerometerCalibrator,22,474,3,9,7,110,3,49,0,46
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROMedSRobustKnownGravityNormAccelerometerCalibrator,26,945,5,19,8,221,5,90,0,83
@@ -335,7 +335,7 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,BaseGravityNormAccelerometerCalibrator.new LevenbergMarquardtMultiDimensionFunctionEvaluator() {...},0,95,0,8,0,17,0,8,0,4
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator,15,1391,1,77,7,354,1,116,0,78
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownBiasAndFrameAccelerometerCalibrator,28,5416,2,518,14,995,2,631,0,259
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownBiasAndPositionAccelerometerCalibrator,49,5458,6,515,19,975,6,621,0,257
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownBiasAndPositionAccelerometerCalibrator,52,5455,6,515,21,973,6,621,0,257
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROMedSRobustKnownFrameAccelerometerCalibrator.new PROMedSRobustEstimatorListener() {...},12,58,3,1,3,14,3,11,1,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,LMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.new LMedSRobustEstimatorListener() {...},12,50,3,1,3,12,3,9,1,9
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator,22,839,6,18,7,228,6,91,0,85
@@ -366,12 +366,12 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,MSACRobustKnownGravityNormAccelerometerCalibrator,22,474,3,9,7,110,3,49,0,46
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROMedSRobustKnownBiasAndGravityNormAccelerometerCalibrator.new PROMedSRobustEstimatorListener() {...},12,58,3,1,3,14,3,11,1,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROSACRobustKnownFrameAccelerometerCalibrator,22,426,8,28,7,93,8,39,0,29
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,BaseBiasGravityNormAccelerometerCalibrator,25,3515,2,134,16,893,2,311,0,245
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownPositionAccelerometerCalibrator,137,5882,10,577,34,1082,11,684,1,291
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,BaseBiasGravityNormAccelerometerCalibrator,31,3509,2,134,18,891,2,311,0,245
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownPositionAccelerometerCalibrator,116,5903,10,577,28,1088,11,684,1,291
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,KnownBiasAndGravityNormAccelerometerCalibrator,0,2439,0,4,0,475,0,238,0,236
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,MSACRobustKnownGravityNormAccelerometerCalibrator.new MSACRobustEstimatorListener() {...},0,66,2,2,0,16,2,11,0,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROSACRobustKnownGravityNormAccelerometerCalibrator,26,1436,7,29,8,234,7,98,0,87
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,BaseGravityNormAccelerometerCalibrator,31,4337,2,202,18,1079,2,380,0,280
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,BaseGravityNormAccelerometerCalibrator,25,4343,2,202,16,1081,2,380,0,280
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RANSACRobustKnownBiasAndPositionAccelerometerCalibrator.new RANSACRobustEstimatorListener() {...},0,66,2,2,0,16,2,11,0,11
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROSACRobustKnownPositionAccelerometerCalibrator,22,1428,6,30,7,233,6,98,0,86
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROMedSRobustKnownFrameAccelerometerCalibrator,22,283,6,18,7,80,6,31,0,25
@@ -386,4 +386,4 @@ com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calib
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.new PROMedSRobustEstimatorListener() {...},0,70,2,2,0,17,2,12,0,12
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,RobustKnownBiasAndGravityNormAccelerometerCalibrator,48,5446,7,523,20,974,7,626,0,257
 com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,MSACRobustKnownFrameAccelerometerCalibrator.new MSACRobustEstimatorListener() {...},0,66,2,2,0,16,2,11,0,11
-com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,LMedSRobustKnownBiasAndPositionAccelerometerCalibrator.new LMedSRobustEstimatorListener() {...},12,50,3,1,3,12,3,9,1,9
+com.irurueta:irurueta-navigation-inertial,com.irurueta.navigation.inertial.calibration.accelerometer,LMedSRobustKnownBiasAndPositionAccelerometerCalibrator.new LMedSRobustEstimatorListener() {...},0,62,2,2,0,15,2,10,0,10

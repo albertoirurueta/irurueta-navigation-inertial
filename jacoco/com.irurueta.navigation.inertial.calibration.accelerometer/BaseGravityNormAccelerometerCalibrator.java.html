@@ -5319,9 +5319,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
 <span class="fc" id="L5319">                mListener.onCalibrateEnd((C) this);</span>
             }
 
-<span class="nc" id="L5322">        } catch (final AlgebraException | FittingException</span>
+<span class="fc" id="L5322">        } catch (final AlgebraException | FittingException</span>
                 | com.irurueta.numerical.NotReadyException e) {
-<span class="nc" id="L5324">            throw new CalibrationException(e);</span>
+<span class="fc" id="L5324">            throw new CalibrationException(e);</span>
         } finally {
 <span class="fc" id="L5326">            mRunning = false;</span>
         }

@@ -6257,12 +6257,12 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
 <span class="fc" id="L6257">                mEstimatedMse = mInnerCalibrator.getEstimatedMse();</span>
 <span class="fc" id="L6258">                mEstimatedChiSq = mInnerCalibrator.getEstimatedChiSq();</span>
 
-<span class="fc" id="L6260">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
-<span class="fc" id="L6261">                mEstimatedCovariance = preliminaryResult.mCovariance;</span>
-<span class="fc" id="L6262">                mEstimatedMg = preliminaryResult.mEstimatedMg;</span>
-<span class="fc" id="L6263">                mEstimatedGg = preliminaryResult.mEstimatedGg;</span>
-<span class="fc" id="L6264">                mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
-<span class="fc" id="L6265">                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
+<span class="nc" id="L6260">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
+<span class="nc" id="L6261">                mEstimatedCovariance = preliminaryResult.mCovariance;</span>
+<span class="nc" id="L6262">                mEstimatedMg = preliminaryResult.mEstimatedMg;</span>
+<span class="nc" id="L6263">                mEstimatedGg = preliminaryResult.mEstimatedGg;</span>
+<span class="nc" id="L6264">                mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
+<span class="nc" id="L6265">                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
 <span class="fc" id="L6266">            }</span>
 <span class="fc" id="L6267">        } else {</span>
 <span class="nc" id="L6268">            mEstimatedCovariance = preliminaryResult.mCovariance;</span>
