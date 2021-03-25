@@ -7072,12 +7072,12 @@ public abstract class RobustKnownPositionAccelerometerCalibrator implements
                 } else {
 <span class="nc" id="L7073">                    mEstimatedCovariance = null;</span>
                 }
-<span class="fc" id="L7075">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
-<span class="fc" id="L7076">                mEstimatedCovariance = preliminaryResult.mCovariance;</span>
-<span class="fc" id="L7077">                mEstimatedBiases = preliminaryResult.mEstimatedBiases;</span>
-<span class="fc" id="L7078">                mEstimatedMa = preliminaryResult.mEstimatedMa;</span>
-<span class="fc" id="L7079">                mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
-<span class="fc" id="L7080">                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
+<span class="nc" id="L7075">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
+<span class="nc" id="L7076">                mEstimatedCovariance = preliminaryResult.mCovariance;</span>
+<span class="nc" id="L7077">                mEstimatedBiases = preliminaryResult.mEstimatedBiases;</span>
+<span class="nc" id="L7078">                mEstimatedMa = preliminaryResult.mEstimatedMa;</span>
+<span class="nc" id="L7079">                mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
+<span class="nc" id="L7080">                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
 <span class="fc" id="L7081">            }</span>
 <span class="fc" id="L7082">        } else {</span>
 <span class="fc" id="L7083">            mEstimatedCovariance = preliminaryResult.mCovariance;</span>
