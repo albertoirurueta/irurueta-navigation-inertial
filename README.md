@@ -20,3 +20,4 @@ An indoor GNSS/INS navigation library
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-navigation-inertial&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial)
 
 [Maven Site Report](http://albertoirurueta.github.io/irurueta-navigation-inertial)
+
