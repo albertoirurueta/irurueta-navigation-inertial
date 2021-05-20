@@ -7837,7 +7837,7 @@
 <a class="jxr_linenumber" name="L7829" href="#L7829">7829</a>             omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / rePlusHeight);
 <a class="jxr_linenumber" name="L7830" href="#L7830">7830</a> 
 <a class="jxr_linenumber" name="L7831" href="#L7831">7831</a>             <em class="jxr_comment">// Obtain coordinate transformation matrix from the new attitude with respect</em>
-<a class="jxr_linenumber" name="L7832" href="#L7832">7832</a>             <em class="jxr_comment">// an intertial frame to the old using Rodrigues' formula, (5.73)</em>
+<a class="jxr_linenumber" name="L7832" href="#L7832">7832</a>             <em class="jxr_comment">// an inertial frame to the old using Rodrigues' formula, (5.73)</em>
 <a class="jxr_linenumber" name="L7833" href="#L7833">7833</a>             <strong class="jxr_keyword">final</strong> Matrix cNewOld = Matrix.identity(ROWS, ROWS);
 <a class="jxr_linenumber" name="L7834" href="#L7834">7834</a>             <strong class="jxr_keyword">if</strong> (magAlpha &gt; ALPHA_THRESHOLD) {
 <a class="jxr_linenumber" name="L7835" href="#L7835">7835</a>                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> magAlpha2 = magAlpha * magAlpha;

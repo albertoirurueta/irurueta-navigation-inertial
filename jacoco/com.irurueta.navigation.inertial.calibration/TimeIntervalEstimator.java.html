@@ -392,29 +392,30 @@ public class TimeIntervalEstimator {
      * @return true if estimator was successfully reset, false if no reset was needed.
      * @throws LockedException if estimator is currently running.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public boolean reset() throws LockedException {
-<span class="fc bfc" id="L396" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L397">            throw new LockedException();</span>
+<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L398">            throw new LockedException();</span>
         }
 
-<span class="pc bpc" id="L400" title="1 of 2 branches missed.">        if (mNumberOfProcessedSamples == 0) {</span>
-<span class="nc" id="L401">            return false;</span>
+<span class="pc bpc" id="L401" title="1 of 2 branches missed.">        if (mNumberOfProcessedSamples == 0) {</span>
+<span class="nc" id="L402">            return false;</span>
         }
 
-<span class="fc" id="L404">        mRunning = true;</span>
-<span class="fc" id="L405">        mLastTimestamp = null;</span>
-<span class="fc" id="L406">        mAverageTimeInterval = 0.0;</span>
-<span class="fc" id="L407">        mTimeIntervalVariance = 0.0;</span>
-<span class="fc" id="L408">        mNumberOfProcessedSamples = 0;</span>
-<span class="fc" id="L409">        mNumberOfProcessedSamplesPlusOne = 1;</span>
+<span class="fc" id="L405">        mRunning = true;</span>
+<span class="fc" id="L406">        mLastTimestamp = null;</span>
+<span class="fc" id="L407">        mAverageTimeInterval = 0.0;</span>
+<span class="fc" id="L408">        mTimeIntervalVariance = 0.0;</span>
+<span class="fc" id="L409">        mNumberOfProcessedSamples = 0;</span>
+<span class="fc" id="L410">        mNumberOfProcessedSamplesPlusOne = 1;</span>
 
-<span class="pc bpc" id="L411" title="1 of 2 branches missed.">        if (mListener != null) {</span>
-<span class="fc" id="L412">            mListener.onReset(this);</span>
+<span class="pc bpc" id="L412" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L413">            mListener.onReset(this);</span>
         }
 
-<span class="fc" id="L415">        mRunning = false;</span>
+<span class="fc" id="L416">        mRunning = false;</span>
 
-<span class="fc" id="L417">        return true;</span>
+<span class="fc" id="L418">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -268,46 +268,47 @@
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> 
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>         assertTrue(radii1.equals((Object) radii1));
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>         assertTrue(radii1.equals(radii1));
-<a class="jxr_linenumber" name="L264" href="#L264">264</a>         assertTrue(radii1.equals(radii2));
-<a class="jxr_linenumber" name="L265" href="#L265">265</a>         assertFalse(radii1.equals(radii3));
-<a class="jxr_linenumber" name="L266" href="#L266">266</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L267" href="#L267">267</a>         assertFalse(radii1.equals((Object) <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L268" href="#L268">268</a>         assertFalse(radii1.equals(<strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L269" href="#L269">269</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L270" href="#L270">270</a>         assertFalse(radii1.equals(<strong class="jxr_keyword">new</strong> Object()));
-<a class="jxr_linenumber" name="L271" href="#L271">271</a>     }
-<a class="jxr_linenumber" name="L272" href="#L272">272</a> 
-<a class="jxr_linenumber" name="L273" href="#L273">273</a>     @Test
-<a class="jxr_linenumber" name="L274" href="#L274">274</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L276" href="#L276">276</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> rn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> re = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L278" href="#L278">278</a> 
-<a class="jxr_linenumber" name="L279" href="#L279">279</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii1 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature(rn, re);
-<a class="jxr_linenumber" name="L280" href="#L280">280</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii2 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature(rn, re);
-<a class="jxr_linenumber" name="L281" href="#L281">281</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii3 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature();
-<a class="jxr_linenumber" name="L282" href="#L282">282</a> 
-<a class="jxr_linenumber" name="L283" href="#L283">283</a>         assertTrue(radii1.equals(radii1, THRESHOLD));
-<a class="jxr_linenumber" name="L284" href="#L284">284</a>         assertTrue(radii1.equals(radii2, THRESHOLD));
-<a class="jxr_linenumber" name="L285" href="#L285">285</a>         assertFalse(radii1.equals(radii3, THRESHOLD));
-<a class="jxr_linenumber" name="L286" href="#L286">286</a>         assertFalse(radii1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
-<a class="jxr_linenumber" name="L287" href="#L287">287</a>     }
-<a class="jxr_linenumber" name="L288" href="#L288">288</a> 
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>     @Test
-<a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
-<a class="jxr_linenumber" name="L291" href="#L291">291</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L292" href="#L292">292</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> rn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> re = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L294" href="#L294">294</a> 
-<a class="jxr_linenumber" name="L295" href="#L295">295</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii1 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature(rn, re);
-<a class="jxr_linenumber" name="L296" href="#L296">296</a> 
-<a class="jxr_linenumber" name="L297" href="#L297">297</a>         <strong class="jxr_keyword">final</strong> Object radii2 = radii1.clone();
-<a class="jxr_linenumber" name="L298" href="#L298">298</a> 
-<a class="jxr_linenumber" name="L299" href="#L299">299</a>         <em class="jxr_comment">// check</em>
-<a class="jxr_linenumber" name="L300" href="#L300">300</a>         assertEquals(radii1, radii2);
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>     }
-<a class="jxr_linenumber" name="L302" href="#L302">302</a> }
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>         <em class="jxr_comment">//noinspection EqualsWithItself</em>
+<a class="jxr_linenumber" name="L264" href="#L264">264</a>         assertTrue(radii1.equals(radii1));
+<a class="jxr_linenumber" name="L265" href="#L265">265</a>         assertTrue(radii1.equals(radii2));
+<a class="jxr_linenumber" name="L266" href="#L266">266</a>         assertFalse(radii1.equals(radii3));
+<a class="jxr_linenumber" name="L267" href="#L267">267</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L268" href="#L268">268</a>         assertFalse(radii1.equals((Object) <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L269" href="#L269">269</a>         assertFalse(radii1.equals(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L270" href="#L270">270</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L271" href="#L271">271</a>         assertFalse(radii1.equals(<strong class="jxr_keyword">new</strong> Object()));
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>     }
+<a class="jxr_linenumber" name="L273" href="#L273">273</a> 
+<a class="jxr_linenumber" name="L274" href="#L274">274</a>     @Test
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
+<a class="jxr_linenumber" name="L276" href="#L276">276</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L277" href="#L277">277</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> rn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L278" href="#L278">278</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> re = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L279" href="#L279">279</a> 
+<a class="jxr_linenumber" name="L280" href="#L280">280</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii1 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature(rn, re);
+<a class="jxr_linenumber" name="L281" href="#L281">281</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii2 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature(rn, re);
+<a class="jxr_linenumber" name="L282" href="#L282">282</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii3 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature();
+<a class="jxr_linenumber" name="L283" href="#L283">283</a> 
+<a class="jxr_linenumber" name="L284" href="#L284">284</a>         assertTrue(radii1.equals(radii1, THRESHOLD));
+<a class="jxr_linenumber" name="L285" href="#L285">285</a>         assertTrue(radii1.equals(radii2, THRESHOLD));
+<a class="jxr_linenumber" name="L286" href="#L286">286</a>         assertFalse(radii1.equals(radii3, THRESHOLD));
+<a class="jxr_linenumber" name="L287" href="#L287">287</a>         assertFalse(radii1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
+<a class="jxr_linenumber" name="L288" href="#L288">288</a>     }
+<a class="jxr_linenumber" name="L289" href="#L289">289</a> 
+<a class="jxr_linenumber" name="L290" href="#L290">290</a>     @Test
+<a class="jxr_linenumber" name="L291" href="#L291">291</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
+<a class="jxr_linenumber" name="L292" href="#L292">292</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L293" href="#L293">293</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> rn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L294" href="#L294">294</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> re = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L295" href="#L295">295</a> 
+<a class="jxr_linenumber" name="L296" href="#L296">296</a>         <strong class="jxr_keyword">final</strong> RadiiOfCurvature radii1 = <strong class="jxr_keyword">new</strong> RadiiOfCurvature(rn, re);
+<a class="jxr_linenumber" name="L297" href="#L297">297</a> 
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         <strong class="jxr_keyword">final</strong> Object radii2 = radii1.clone();
+<a class="jxr_linenumber" name="L299" href="#L299">299</a> 
+<a class="jxr_linenumber" name="L300" href="#L300">300</a>         <em class="jxr_comment">// check</em>
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         assertEquals(radii1, radii2);
+<a class="jxr_linenumber" name="L302" href="#L302">302</a>     }
+<a class="jxr_linenumber" name="L303" href="#L303">303</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

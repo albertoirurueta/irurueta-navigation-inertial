@@ -400,31 +400,32 @@
 <a class="jxr_linenumber" name="L392" href="#L392">392</a> <em class="jxr_javadoccomment">     * @return true if estimator was successfully reset, false if no reset was needed.</em>
 <a class="jxr_linenumber" name="L393" href="#L393">393</a> <em class="jxr_javadoccomment">     * @throws LockedException if estimator is currently running.</em>
 <a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L395" href="#L395">395</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> reset() <strong class="jxr_keyword">throws</strong> LockedException {
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>         <strong class="jxr_keyword">if</strong> (mRunning) {
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LockedException();
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>         }
-<a class="jxr_linenumber" name="L399" href="#L399">399</a> 
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>         <strong class="jxr_keyword">if</strong> (mNumberOfProcessedSamples == 0) {
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>             <strong class="jxr_keyword">return</strong> false;
-<a class="jxr_linenumber" name="L402" href="#L402">402</a>         }
-<a class="jxr_linenumber" name="L403" href="#L403">403</a> 
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>         mRunning = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>         mLastTimestamp = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         mAverageTimeInterval = 0.0;
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         mTimeIntervalVariance = 0.0;
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>         mNumberOfProcessedSamples = 0;
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>         mNumberOfProcessedSamplesPlusOne = 1;
-<a class="jxr_linenumber" name="L410" href="#L410">410</a> 
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>         <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>             mListener.onReset(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>         }
-<a class="jxr_linenumber" name="L414" href="#L414">414</a> 
-<a class="jxr_linenumber" name="L415" href="#L415">415</a>         mRunning = false;
-<a class="jxr_linenumber" name="L416" href="#L416">416</a> 
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>     }
-<a class="jxr_linenumber" name="L419" href="#L419">419</a> }
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     @SuppressWarnings(<span class="jxr_string">"DuplicatedCode"</span>)
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> reset() <strong class="jxr_keyword">throws</strong> LockedException {
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>         <strong class="jxr_keyword">if</strong> (mRunning) {
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LockedException();
+<a class="jxr_linenumber" name="L399" href="#L399">399</a>         }
+<a class="jxr_linenumber" name="L400" href="#L400">400</a> 
+<a class="jxr_linenumber" name="L401" href="#L401">401</a>         <strong class="jxr_keyword">if</strong> (mNumberOfProcessedSamples == 0) {
+<a class="jxr_linenumber" name="L402" href="#L402">402</a>             <strong class="jxr_keyword">return</strong> false;
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>         }
+<a class="jxr_linenumber" name="L404" href="#L404">404</a> 
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         mRunning = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         mLastTimestamp = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         mAverageTimeInterval = 0.0;
+<a class="jxr_linenumber" name="L408" href="#L408">408</a>         mTimeIntervalVariance = 0.0;
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         mNumberOfProcessedSamples = 0;
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>         mNumberOfProcessedSamplesPlusOne = 1;
+<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>         <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L413" href="#L413">413</a>             mListener.onReset(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L414" href="#L414">414</a>         }
+<a class="jxr_linenumber" name="L415" href="#L415">415</a> 
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>         mRunning = false;
+<a class="jxr_linenumber" name="L417" href="#L417">417</a> 
+<a class="jxr_linenumber" name="L418" href="#L418">418</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>     }
+<a class="jxr_linenumber" name="L420" href="#L420">420</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

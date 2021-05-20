@@ -345,19 +345,20 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * @param result matrix instance where gravity coordinates will be stored in
      *               x,y,z order.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public void asMatrix(final Matrix result) {
-<span class="pc bpc" id="L349" title="1 of 4 branches missed.">        if (result.getRows() != COMPONENTS || result.getColumns() != 1) {</span>
+<span class="pc bpc" id="L350" title="1 of 4 branches missed.">        if (result.getRows() != COMPONENTS || result.getColumns() != 1) {</span>
             try {
-<span class="fc" id="L351">                result.resize(COMPONENTS, 1);</span>
-<span class="nc" id="L352">            } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L352">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L353">            } catch (final WrongSizeException ignore) {</span>
                 // never happens
-<span class="fc" id="L354">            }</span>
+<span class="fc" id="L355">            }</span>
         }
 
-<span class="fc" id="L357">        result.setElementAtIndex(0, mGx);</span>
-<span class="fc" id="L358">        result.setElementAtIndex(1, mGy);</span>
-<span class="fc" id="L359">        result.setElementAtIndex(2, mGz);</span>
-<span class="fc" id="L360">    }</span>
+<span class="fc" id="L358">        result.setElementAtIndex(0, mGx);</span>
+<span class="fc" id="L359">        result.setElementAtIndex(1, mGy);</span>
+<span class="fc" id="L360">        result.setElementAtIndex(2, mGz);</span>
+<span class="fc" id="L361">    }</span>
 
     /**
      * Gets gravity coordinates as a column matrix.
@@ -367,13 +368,13 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
     public Matrix asMatrix() {
         Matrix result;
         try {
-<span class="fc" id="L370">            result = new Matrix(COMPONENTS, 1);</span>
-<span class="fc" id="L371">            asMatrix(result);</span>
-<span class="nc" id="L372">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L371">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L372">            asMatrix(result);</span>
+<span class="nc" id="L373">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="nc" id="L374">            result = null;</span>
-<span class="fc" id="L375">        }</span>
-<span class="fc" id="L376">        return result;</span>
+<span class="nc" id="L375">            result = null;</span>
+<span class="fc" id="L376">        }</span>
+<span class="fc" id="L377">        return result;</span>
     }
 
     /**
@@ -384,7 +385,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L387">        return Objects.hash(mGx, mGy, mGz);</span>
+<span class="fc" id="L388">        return Objects.hash(mGx, mGy, mGz);</span>
     }
 
     /**
@@ -394,7 +395,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final T other) {
-<span class="fc" id="L397">        return equals(other, 0.0);</span>
+<span class="fc" id="L398">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -407,13 +408,13 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * threshold), false otherwise.
      */
     public boolean equals(final T other, final double threshold) {
-<span class="fc bfc" id="L410" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L411">            return false;</span>
+<span class="fc bfc" id="L411" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L412">            return false;</span>
         }
 
-<span class="fc bfc" id="L414" title="All 2 branches covered.">        return Math.abs(mGx - other.mGx) &lt;= threshold</span>
-<span class="pc bpc" id="L415" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGy - other.mGy) &lt;= threshold</span>
-<span class="pc bpc" id="L416" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGz - other.mGz) &lt;= threshold;</span>
+<span class="fc bfc" id="L415" title="All 2 branches covered.">        return Math.abs(mGx - other.mGx) &lt;= threshold</span>
+<span class="pc bpc" id="L416" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGy - other.mGy) &lt;= threshold</span>
+<span class="pc bpc" id="L417" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGz - other.mGz) &lt;= threshold;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

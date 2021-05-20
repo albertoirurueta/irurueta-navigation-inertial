@@ -108,7 +108,7 @@
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L101" href="#L101">101</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L102" href="#L102">102</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L103" href="#L103">103</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> <em class="jxr_javadoccomment">     * By default it is the 3x3 zero matrix.</em>
 <a class="jxr_linenumber" name="L105" href="#L105">105</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L106" href="#L106">106</a>     <strong class="jxr_keyword">private</strong> Matrix mAccelerometerScaleFactorAndCrossCouplingErrors;
@@ -150,7 +150,7 @@
 <a class="jxr_linenumber" name="L142" href="#L142">142</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L143" href="#L143">143</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L144" href="#L144">144</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L145" href="#L145">145</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L146" href="#L146">146</a> <em class="jxr_javadoccomment">     * By default it is the 3x3 zero matrix.</em>
 <a class="jxr_linenumber" name="L147" href="#L147">147</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L148" href="#L148">148</a>     <strong class="jxr_keyword">private</strong> Matrix mGyroScaleFactorAndCrossCouplingErrors;
@@ -667,7 +667,7 @@
 <a class="jxr_linenumber" name="L659" href="#L659">659</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L660" href="#L660">660</a>     <strong class="jxr_keyword">public</strong> AngularSpeed[] getGyroBiasesAsAngularSpeed() {
 <a class="jxr_linenumber" name="L661" href="#L661">661</a>         <strong class="jxr_keyword">final</strong> AngularSpeed[] result = <strong class="jxr_keyword">new</strong> AngularSpeed[GYRO_COMPONENTS];
-<a class="jxr_linenumber" name="L662" href="#L662">662</a>         getGyroBiasesAsAngularspeed(result);
+<a class="jxr_linenumber" name="L662" href="#L662">662</a>         getGyroBiasesAsAngularSpeed(result);
 <a class="jxr_linenumber" name="L663" href="#L663">663</a>         <strong class="jxr_keyword">return</strong> result;
 <a class="jxr_linenumber" name="L664" href="#L664">664</a>     }
 <a class="jxr_linenumber" name="L665" href="#L665">665</a> 
@@ -678,7 +678,7 @@
 <a class="jxr_linenumber" name="L670" href="#L670">670</a> <em class="jxr_javadoccomment">     * @param result instance where data will be copied to.</em>
 <a class="jxr_linenumber" name="L671" href="#L671">671</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided array does not have length 3.</em>
 <a class="jxr_linenumber" name="L672" href="#L672">672</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> getGyroBiasesAsAngularspeed(<strong class="jxr_keyword">final</strong> AngularSpeed[] result) {
+<a class="jxr_linenumber" name="L673" href="#L673">673</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> getGyroBiasesAsAngularSpeed(<strong class="jxr_keyword">final</strong> AngularSpeed[] result) {
 <a class="jxr_linenumber" name="L674" href="#L674">674</a>         <strong class="jxr_keyword">if</strong> (result.length != GYRO_COMPONENTS) {
 <a class="jxr_linenumber" name="L675" href="#L675">675</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException();
 <a class="jxr_linenumber" name="L676" href="#L676">676</a>         }
@@ -748,7 +748,7 @@
 <a class="jxr_linenumber" name="L740" href="#L740">740</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L741" href="#L741">741</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L742" href="#L742">742</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L743" href="#L743">743</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L743" href="#L743">743</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L744" href="#L744">744</a> <em class="jxr_javadoccomment">     * By default it is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L745" href="#L745">745</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L746" href="#L746">746</a> <em class="jxr_javadoccomment">     * @return accelerometer scale factors and cross coupling errors.</em>
@@ -794,7 +794,7 @@
 <a class="jxr_linenumber" name="L786" href="#L786">786</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L787" href="#L787">787</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L788" href="#L788">788</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L789" href="#L789">789</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L789" href="#L789">789</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L790" href="#L790">790</a> <em class="jxr_javadoccomment">     * By default it is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L791" href="#L791">791</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L792" href="#L792">792</a> <em class="jxr_javadoccomment">     * @param result instance where data of scale factor and cross coupling matrix will</em>
@@ -841,7 +841,7 @@
 <a class="jxr_linenumber" name="L833" href="#L833">833</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L834" href="#L834">834</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L835" href="#L835">835</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L836" href="#L836">836</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L836" href="#L836">836</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L837" href="#L837">837</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L838" href="#L838">838</a> <em class="jxr_javadoccomment">     * @param accelerometerScaleFactorAndCrossCouplingErrors scale factors and cross coupling</em>
 <a class="jxr_linenumber" name="L839" href="#L839">839</a> <em class="jxr_javadoccomment">     *                                                       matrix to be set.</em>
@@ -895,7 +895,7 @@
 <a class="jxr_linenumber" name="L887" href="#L887">887</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L888" href="#L888">888</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L889" href="#L889">889</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L890" href="#L890">890</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L890" href="#L890">890</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L891" href="#L891">891</a> <em class="jxr_javadoccomment">     * By default it is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L892" href="#L892">892</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L893" href="#L893">893</a> <em class="jxr_javadoccomment">     * @return gyro scale factors and cross coupling errors.</em>
@@ -941,7 +941,7 @@
 <a class="jxr_linenumber" name="L933" href="#L933">933</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L934" href="#L934">934</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L935" href="#L935">935</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L936" href="#L936">936</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L936" href="#L936">936</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L937" href="#L937">937</a> <em class="jxr_javadoccomment">     * By default it is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L938" href="#L938">938</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L939" href="#L939">939</a> <em class="jxr_javadoccomment">     * @param result instance where data of scale factor and cross coupling matrix will</em>
@@ -988,7 +988,7 @@
 <a class="jxr_linenumber" name="L980" href="#L980">980</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L981" href="#L981">981</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L982" href="#L982">982</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L983" href="#L983">983</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L983" href="#L983">983</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L984" href="#L984">984</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L985" href="#L985">985</a> <em class="jxr_javadoccomment">     * @param gyroScaleFactorAndCrossCouplingErrors scale factors and cross coupling</em>
 <a class="jxr_linenumber" name="L986" href="#L986">986</a> <em class="jxr_javadoccomment">     *                                              matrix to be set.</em>
@@ -1195,7 +1195,7 @@
 <a class="jxr_linenumber" name="L1187" href="#L1187">1187</a> <em class="jxr_javadoccomment">     * Gets gyro quantization level expressed in radians per second (rad/s).</em>
 <a class="jxr_linenumber" name="L1188" href="#L1188">1188</a> <em class="jxr_javadoccomment">     * By default it is zero when no quantization is assumed.</em>
 <a class="jxr_linenumber" name="L1189" href="#L1189">1189</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1190" href="#L1190">1190</a> <em class="jxr_javadoccomment">     * @return gyro quantization level expressed in radians per seocnd.</em>
+<a class="jxr_linenumber" name="L1190" href="#L1190">1190</a> <em class="jxr_javadoccomment">     * @return gyro quantization level expressed in radians per second.</em>
 <a class="jxr_linenumber" name="L1191" href="#L1191">1191</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L1192" href="#L1192">1192</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> getGyroQuantizationLevel() {
 <a class="jxr_linenumber" name="L1193" href="#L1193">1193</a>         <strong class="jxr_keyword">return</strong> mGyroQuantizationLevel;

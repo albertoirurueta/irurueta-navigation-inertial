@@ -474,64 +474,65 @@
 <a class="jxr_linenumber" name="L466" href="#L466">466</a> 
 <a class="jxr_linenumber" name="L467" href="#L467">467</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
 <a class="jxr_linenumber" name="L468" href="#L468">468</a>         assertTrue(config1.equals((Object) config1));
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>         assertTrue(config1.equals(config1));
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>         assertTrue(config1.equals(config2));
-<a class="jxr_linenumber" name="L471" href="#L471">471</a>         assertFalse(config1.equals(config3));
-<a class="jxr_linenumber" name="L472" href="#L472">472</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>         assertFalse(config1.equals((Object) <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L475" href="#L475">475</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L476" href="#L476">476</a>         assertFalse(config1.equals(<strong class="jxr_keyword">new</strong> Object()));
-<a class="jxr_linenumber" name="L477" href="#L477">477</a>     }
-<a class="jxr_linenumber" name="L478" href="#L478">478</a> 
-<a class="jxr_linenumber" name="L479" href="#L479">479</a>     @Test
-<a class="jxr_linenumber" name="L480" href="#L480">480</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
-<a class="jxr_linenumber" name="L481" href="#L481">481</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L482" href="#L482">482</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L483" href="#L483">483</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerNoisePSD =
-<a class="jxr_linenumber" name="L484" href="#L484">484</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L485" href="#L485">485</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerBiasPSD =
-<a class="jxr_linenumber" name="L486" href="#L486">486</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L487" href="#L487">487</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L489" href="#L489">489</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L490" href="#L490">490</a> 
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config1 =
-<a class="jxr_linenumber" name="L492" href="#L492">492</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-<a class="jxr_linenumber" name="L493" href="#L493">493</a>                         accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
-<a class="jxr_linenumber" name="L494" href="#L494">494</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config2 =
-<a class="jxr_linenumber" name="L495" href="#L495">495</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-<a class="jxr_linenumber" name="L496" href="#L496">496</a>                         accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
-<a class="jxr_linenumber" name="L497" href="#L497">497</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config3 =
-<a class="jxr_linenumber" name="L498" href="#L498">498</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig();
-<a class="jxr_linenumber" name="L499" href="#L499">499</a> 
-<a class="jxr_linenumber" name="L500" href="#L500">500</a>         assertTrue(config1.equals(config1, THRESHOLD));
-<a class="jxr_linenumber" name="L501" href="#L501">501</a>         assertTrue(config1.equals(config2, THRESHOLD));
-<a class="jxr_linenumber" name="L502" href="#L502">502</a>         assertFalse(config1.equals(config3, THRESHOLD));
-<a class="jxr_linenumber" name="L503" href="#L503">503</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
-<a class="jxr_linenumber" name="L504" href="#L504">504</a>     }
-<a class="jxr_linenumber" name="L505" href="#L505">505</a> 
-<a class="jxr_linenumber" name="L506" href="#L506">506</a>     @Test
-<a class="jxr_linenumber" name="L507" href="#L507">507</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
-<a class="jxr_linenumber" name="L508" href="#L508">508</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L509" href="#L509">509</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerNoisePSD =
-<a class="jxr_linenumber" name="L511" href="#L511">511</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L512" href="#L512">512</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerBiasPSD =
-<a class="jxr_linenumber" name="L513" href="#L513">513</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L514" href="#L514">514</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L515" href="#L515">515</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L516" href="#L516">516</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L517" href="#L517">517</a> 
-<a class="jxr_linenumber" name="L518" href="#L518">518</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config1 =
-<a class="jxr_linenumber" name="L519" href="#L519">519</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
-<a class="jxr_linenumber" name="L520" href="#L520">520</a>                         accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
-<a class="jxr_linenumber" name="L521" href="#L521">521</a> 
-<a class="jxr_linenumber" name="L522" href="#L522">522</a>         <strong class="jxr_keyword">final</strong> Object config2 = config1.clone();
-<a class="jxr_linenumber" name="L523" href="#L523">523</a> 
-<a class="jxr_linenumber" name="L524" href="#L524">524</a>         assertEquals(config1, config2);
-<a class="jxr_linenumber" name="L525" href="#L525">525</a>     }
-<a class="jxr_linenumber" name="L526" href="#L526">526</a> }
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         <em class="jxr_comment">//noinspection EqualsWithItself</em>
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         assertTrue(config1.equals(config1));
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>         assertTrue(config1.equals(config2));
+<a class="jxr_linenumber" name="L472" href="#L472">472</a>         assertFalse(config1.equals(config3));
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>         assertFalse(config1.equals((Object) <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L475" href="#L475">475</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L476" href="#L476">476</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L477" href="#L477">477</a>         assertFalse(config1.equals(<strong class="jxr_keyword">new</strong> Object()));
+<a class="jxr_linenumber" name="L478" href="#L478">478</a>     }
+<a class="jxr_linenumber" name="L479" href="#L479">479</a> 
+<a class="jxr_linenumber" name="L480" href="#L480">480</a>     @Test
+<a class="jxr_linenumber" name="L481" href="#L481">481</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
+<a class="jxr_linenumber" name="L482" href="#L482">482</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L483" href="#L483">483</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L484" href="#L484">484</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerNoisePSD =
+<a class="jxr_linenumber" name="L485" href="#L485">485</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L486" href="#L486">486</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerBiasPSD =
+<a class="jxr_linenumber" name="L487" href="#L487">487</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L488" href="#L488">488</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L489" href="#L489">489</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L490" href="#L490">490</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L491" href="#L491">491</a> 
+<a class="jxr_linenumber" name="L492" href="#L492">492</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config1 =
+<a class="jxr_linenumber" name="L493" href="#L493">493</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
+<a class="jxr_linenumber" name="L494" href="#L494">494</a>                         accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+<a class="jxr_linenumber" name="L495" href="#L495">495</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config2 =
+<a class="jxr_linenumber" name="L496" href="#L496">496</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
+<a class="jxr_linenumber" name="L497" href="#L497">497</a>                         accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+<a class="jxr_linenumber" name="L498" href="#L498">498</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config3 =
+<a class="jxr_linenumber" name="L499" href="#L499">499</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig();
+<a class="jxr_linenumber" name="L500" href="#L500">500</a> 
+<a class="jxr_linenumber" name="L501" href="#L501">501</a>         assertTrue(config1.equals(config1, THRESHOLD));
+<a class="jxr_linenumber" name="L502" href="#L502">502</a>         assertTrue(config1.equals(config2, THRESHOLD));
+<a class="jxr_linenumber" name="L503" href="#L503">503</a>         assertFalse(config1.equals(config3, THRESHOLD));
+<a class="jxr_linenumber" name="L504" href="#L504">504</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
+<a class="jxr_linenumber" name="L505" href="#L505">505</a>     }
+<a class="jxr_linenumber" name="L506" href="#L506">506</a> 
+<a class="jxr_linenumber" name="L507" href="#L507">507</a>     @Test
+<a class="jxr_linenumber" name="L508" href="#L508">508</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
+<a class="jxr_linenumber" name="L509" href="#L509">509</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L510" href="#L510">510</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L511" href="#L511">511</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerNoisePSD =
+<a class="jxr_linenumber" name="L512" href="#L512">512</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L513" href="#L513">513</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accelerometerBiasPSD =
+<a class="jxr_linenumber" name="L514" href="#L514">514</a>                 randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L515" href="#L515">515</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L516" href="#L516">516</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L517" href="#L517">517</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L518" href="#L518">518</a> 
+<a class="jxr_linenumber" name="L519" href="#L519">519</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanConfig config1 =
+<a class="jxr_linenumber" name="L520" href="#L520">520</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
+<a class="jxr_linenumber" name="L521" href="#L521">521</a>                         accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+<a class="jxr_linenumber" name="L522" href="#L522">522</a> 
+<a class="jxr_linenumber" name="L523" href="#L523">523</a>         <strong class="jxr_keyword">final</strong> Object config2 = config1.clone();
+<a class="jxr_linenumber" name="L524" href="#L524">524</a> 
+<a class="jxr_linenumber" name="L525" href="#L525">525</a>         assertEquals(config1, config2);
+<a class="jxr_linenumber" name="L526" href="#L526">526</a>     }
+<a class="jxr_linenumber" name="L527" href="#L527">527</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

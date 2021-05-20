@@ -166,7 +166,7 @@
 <a class="jxr_linenumber" name="L158" href="#L158">158</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L159" href="#L159">159</a> <em class="jxr_javadoccomment">     * Constant defining default confidence of the estimated result, which is</em>
 <a class="jxr_linenumber" name="L160" href="#L160">160</a> <em class="jxr_javadoccomment">     * 99%. This means that with a probability of 99% estimation will be</em>
-<a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     * accurate because chosen subsamples will be inliers.</em>
+<a class="jxr_linenumber" name="L161" href="#L161">161</a> <em class="jxr_javadoccomment">     * accurate because chosen sub-samples will be inliers.</em>
 <a class="jxr_linenumber" name="L162" href="#L162">162</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L163" href="#L163">163</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> DEFAULT_CONFIDENCE = 0.99;
 <a class="jxr_linenumber" name="L164" href="#L164">164</a> 
@@ -416,7 +416,7 @@
 <a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L409" href="#L409">409</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L410" href="#L410">410</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L411" href="#L411">411</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L411" href="#L411">411</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L412" href="#L412">412</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>     <strong class="jxr_keyword">private</strong> Matrix mEstimatedMg;
 <a class="jxr_linenumber" name="L414" href="#L414">414</a> 
@@ -4091,7 +4091,7 @@
 <a class="jxr_linenumber" name="L4083" href="#L4083">4083</a> <em class="jxr_javadoccomment">     * the standard deviations of accelerometer and gyroscope measurements.</em>
 <a class="jxr_linenumber" name="L4084" href="#L4084">4084</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L4085" href="#L4085">4085</a> <em class="jxr_javadoccomment">     * @param measurements collection of body kinematics measurements at a</em>
-<a class="jxr_linenumber" name="L4086" href="#L4086">4086</a> <em class="jxr_javadoccomment">     *                     known position witn unknown orientations.</em>
+<a class="jxr_linenumber" name="L4086" href="#L4086">4086</a> <em class="jxr_javadoccomment">     *                     known position with unknown orientations.</em>
 <a class="jxr_linenumber" name="L4087" href="#L4087">4087</a> <em class="jxr_javadoccomment">     * @throws LockedException if calibrator is currently running.</em>
 <a class="jxr_linenumber" name="L4088" href="#L4088">4088</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L4089" href="#L4089">4089</a>     @Override
@@ -4568,7 +4568,7 @@
 <a class="jxr_linenumber" name="L4560" href="#L4560">4560</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L4561" href="#L4561">4561</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L4562" href="#L4562">4562</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L4563" href="#L4563">4563</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L4563" href="#L4563">4563</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L4564" href="#L4564">4564</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L4565" href="#L4565">4565</a> <em class="jxr_javadoccomment">     * @return estimated gyroscope scale factors and cross coupling errors, or null</em>
 <a class="jxr_linenumber" name="L4566" href="#L4566">4566</a> <em class="jxr_javadoccomment">     * if not available.</em>
@@ -12424,7 +12424,7 @@
 <a class="jxr_linenumber" name="L12416" href="#L12416">12416</a> <em class="jxr_javadoccomment">         *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L12417" href="#L12417">12417</a> <em class="jxr_javadoccomment">         *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L12418" href="#L12418">12418</a> <em class="jxr_javadoccomment">         * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L12419" href="#L12419">12419</a> <em class="jxr_javadoccomment">         * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L12419" href="#L12419">12419</a> <em class="jxr_javadoccomment">         * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L12420" href="#L12420">12420</a> <em class="jxr_javadoccomment">         */</em>
 <a class="jxr_linenumber" name="L12421" href="#L12421">12421</a>         <strong class="jxr_keyword">private</strong> Matrix mEstimatedMg;
 <a class="jxr_linenumber" name="L12422" href="#L12422">12422</a> 

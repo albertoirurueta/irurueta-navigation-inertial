@@ -13203,7 +13203,7 @@
 <a class="jxr_linenumber" name="L13195" href="#L13195">13195</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron = generateHardIron(randomizer);
 <a class="jxr_linenumber" name="L13196" href="#L13196">13196</a>         <strong class="jxr_keyword">final</strong> Matrix mm = generateSoftIronGeneral();
 <a class="jxr_linenumber" name="L13197" href="#L13197">13197</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements2 =
-<a class="jxr_linenumber" name="L13198" href="#L13198">13198</a>                 generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13198" href="#L13198">13198</a>                 generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13199" href="#L13199">13199</a>                         hardIron, mm,
 <a class="jxr_linenumber" name="L13200" href="#L13200">13200</a>                         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
 <a class="jxr_linenumber" name="L13201" href="#L13201">13201</a>                         wmmEstimator, randomizer, <strong class="jxr_keyword">null</strong>);
@@ -13242,7 +13242,7 @@
 <a class="jxr_linenumber" name="L13234" href="#L13234">13234</a>         assertNotNull(mm);
 <a class="jxr_linenumber" name="L13235" href="#L13235">13235</a> 
 <a class="jxr_linenumber" name="L13236" href="#L13236">13236</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13237" href="#L13237">13237</a>                 generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13237" href="#L13237">13237</a>                 generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13238" href="#L13238">13238</a>                         hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13239" href="#L13239">13239</a>                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
 <a class="jxr_linenumber" name="L13240" href="#L13240">13240</a>                         wmmEstimator, randomizer, <strong class="jxr_keyword">null</strong>);
@@ -13292,7 +13292,7 @@
 <a class="jxr_linenumber" name="L13284" href="#L13284">13284</a>         assertNotNull(mm);
 <a class="jxr_linenumber" name="L13285" href="#L13285">13285</a> 
 <a class="jxr_linenumber" name="L13286" href="#L13286">13286</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13287" href="#L13287">13287</a>                 generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13287" href="#L13287">13287</a>                 generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13288" href="#L13288">13288</a>                         hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13289" href="#L13289">13289</a>                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
 <a class="jxr_linenumber" name="L13290" href="#L13290">13290</a>                         wmmEstimator, randomizer, <strong class="jxr_keyword">null</strong>);
@@ -13347,7 +13347,7 @@
 <a class="jxr_linenumber" name="L13339" href="#L13339">13339</a>                     <strong class="jxr_keyword">new</strong> Random(), 0.0, MAGNETOMETER_NOISE_STD);
 <a class="jxr_linenumber" name="L13340" href="#L13340">13340</a> 
 <a class="jxr_linenumber" name="L13341" href="#L13341">13341</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13342" href="#L13342">13342</a>                     generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13342" href="#L13342">13342</a>                     generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13343" href="#L13343">13343</a>                             hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13344" href="#L13344">13344</a>                             LARGE_MEASUREMENT_NUMBER,
 <a class="jxr_linenumber" name="L13345" href="#L13345">13345</a>                             wmmEstimator, randomizer, noiseRandomizer);
@@ -13412,7 +13412,7 @@
 <a class="jxr_linenumber" name="L13404" href="#L13404">13404</a>                     <strong class="jxr_keyword">new</strong> Random(), 0.0, MAGNETOMETER_NOISE_STD);
 <a class="jxr_linenumber" name="L13405" href="#L13405">13405</a> 
 <a class="jxr_linenumber" name="L13406" href="#L13406">13406</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13407" href="#L13407">13407</a>                     generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13407" href="#L13407">13407</a>                     generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13408" href="#L13408">13408</a>                             hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13409" href="#L13409">13409</a>                             SMALL_MEASUREMENT_NUMBER,
 <a class="jxr_linenumber" name="L13410" href="#L13410">13410</a>                             wmmEstimator, randomizer, noiseRandomizer);
@@ -13529,7 +13529,7 @@
 <a class="jxr_linenumber" name="L13521" href="#L13521">13521</a>         assertNotNull(mm);
 <a class="jxr_linenumber" name="L13522" href="#L13522">13522</a> 
 <a class="jxr_linenumber" name="L13523" href="#L13523">13523</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13524" href="#L13524">13524</a>                 generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13524" href="#L13524">13524</a>                 generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13525" href="#L13525">13525</a>                         hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13526" href="#L13526">13526</a>                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
 <a class="jxr_linenumber" name="L13527" href="#L13527">13527</a>                         wmmEstimator, randomizer, <strong class="jxr_keyword">null</strong>);
@@ -13579,7 +13579,7 @@
 <a class="jxr_linenumber" name="L13571" href="#L13571">13571</a>         assertNotNull(mm);
 <a class="jxr_linenumber" name="L13572" href="#L13572">13572</a> 
 <a class="jxr_linenumber" name="L13573" href="#L13573">13573</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13574" href="#L13574">13574</a>                 generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13574" href="#L13574">13574</a>                 generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13575" href="#L13575">13575</a>                         hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13576" href="#L13576">13576</a>                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
 <a class="jxr_linenumber" name="L13577" href="#L13577">13577</a>                         wmmEstimator, randomizer, <strong class="jxr_keyword">null</strong>);
@@ -13634,7 +13634,7 @@
 <a class="jxr_linenumber" name="L13626" href="#L13626">13626</a>                     <strong class="jxr_keyword">new</strong> Random(), 0.0, MAGNETOMETER_NOISE_STD);
 <a class="jxr_linenumber" name="L13627" href="#L13627">13627</a> 
 <a class="jxr_linenumber" name="L13628" href="#L13628">13628</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13629" href="#L13629">13629</a>                     generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13629" href="#L13629">13629</a>                     generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13630" href="#L13630">13630</a>                             hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13631" href="#L13631">13631</a>                             LARGE_MEASUREMENT_NUMBER,
 <a class="jxr_linenumber" name="L13632" href="#L13632">13632</a>                             wmmEstimator, randomizer, noiseRandomizer);
@@ -13699,7 +13699,7 @@
 <a class="jxr_linenumber" name="L13691" href="#L13691">13691</a>                     <strong class="jxr_keyword">new</strong> Random(), 0.0, MAGNETOMETER_NOISE_STD);
 <a class="jxr_linenumber" name="L13692" href="#L13692">13692</a> 
 <a class="jxr_linenumber" name="L13693" href="#L13693">13693</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements =
-<a class="jxr_linenumber" name="L13694" href="#L13694">13694</a>                     generateMeasurementsMultipleOrientationswithSamePosition(
+<a class="jxr_linenumber" name="L13694" href="#L13694">13694</a>                     generateMeasurementsMultipleOrientationsWithSamePosition(
 <a class="jxr_linenumber" name="L13695" href="#L13695">13695</a>                             hardIron.getBuffer(), mm,
 <a class="jxr_linenumber" name="L13696" href="#L13696">13696</a>                             SMALL_MEASUREMENT_NUMBER,
 <a class="jxr_linenumber" name="L13697" href="#L13697">13697</a>                             wmmEstimator, randomizer, noiseRandomizer);
@@ -14029,177 +14029,176 @@
 <a class="jxr_linenumber" name="L14021" href="#L14021">14021</a>         }
 <a class="jxr_linenumber" name="L14022" href="#L14022">14022</a>     }
 <a class="jxr_linenumber" name="L14023" href="#L14023">14023</a> 
-<a class="jxr_linenumber" name="L14024" href="#L14024">14024</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;
-<a class="jxr_linenumber" name="L14025" href="#L14025">14025</a>     generateMeasurementsMultipleOrientationswithSamePosition(
-<a class="jxr_linenumber" name="L14026" href="#L14026">14026</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L14027" href="#L14027">14027</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numberOfMeasurements,
-<a class="jxr_linenumber" name="L14028" href="#L14028">14028</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L14029" href="#L14029">14029</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L14030" href="#L14030">14030</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer)
-<a class="jxr_linenumber" name="L14031" href="#L14031">14031</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L14032" href="#L14032">14032</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
-<a class="jxr_linenumber" name="L14033" href="#L14033">14033</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
-<a class="jxr_linenumber" name="L14034" href="#L14034">14034</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L14035" href="#L14035">14035</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; numberOfMeasurements; i++) {
-<a class="jxr_linenumber" name="L14036" href="#L14036">14036</a>             result.add(generateMeasureAtPosition(hardIron, softIron,
-<a class="jxr_linenumber" name="L14037" href="#L14037">14037</a>                     wmmEstimator, randomizer, noiseRandomizer, position));
-<a class="jxr_linenumber" name="L14038" href="#L14038">14038</a>         }
-<a class="jxr_linenumber" name="L14039" href="#L14039">14039</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L14040" href="#L14040">14040</a>     }
-<a class="jxr_linenumber" name="L14041" href="#L14041">14041</a> 
-<a class="jxr_linenumber" name="L14042" href="#L14042">14042</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;
-<a class="jxr_linenumber" name="L14043" href="#L14043">14043</a>     generateMeasurementsMultiplePositionsWithSameOrientation(
-<a class="jxr_linenumber" name="L14044" href="#L14044">14044</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L14045" href="#L14045">14045</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L14046" href="#L14046">14046</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer)
-<a class="jxr_linenumber" name="L14047" href="#L14047">14047</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L14048" href="#L14048">14048</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = <strong class="jxr_keyword">new</strong> CoordinateTransformation(
-<a class="jxr_linenumber" name="L14049" href="#L14049">14049</a>                 FrameType.LOCAL_NAVIGATION_FRAME,
-<a class="jxr_linenumber" name="L14050" href="#L14050">14050</a>                 FrameType.BODY_FRAME);
-<a class="jxr_linenumber" name="L14051" href="#L14051">14051</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
-<a class="jxr_linenumber" name="L14052" href="#L14052">14052</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L14053" href="#L14053">14053</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
-<a class="jxr_linenumber" name="L14054" href="#L14054">14054</a>             result.add(generateMeasureAtOrientation(hardIron, softIron,
-<a class="jxr_linenumber" name="L14055" href="#L14055">14055</a>                     wmmEstimator, randomizer, cnb));
-<a class="jxr_linenumber" name="L14056" href="#L14056">14056</a>         }
-<a class="jxr_linenumber" name="L14057" href="#L14057">14057</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L14058" href="#L14058">14058</a>     }
-<a class="jxr_linenumber" name="L14059" href="#L14059">14059</a> 
-<a class="jxr_linenumber" name="L14060" href="#L14060">14060</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtOrientation(
-<a class="jxr_linenumber" name="L14061" href="#L14061">14061</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L14062" href="#L14062">14062</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L14063" href="#L14063">14063</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L14064" href="#L14064">14064</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
-<a class="jxr_linenumber" name="L14065" href="#L14065">14065</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L14066" href="#L14066">14066</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
-<a class="jxr_linenumber" name="L14067" href="#L14067">14067</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
-<a class="jxr_linenumber" name="L14068" href="#L14068">14068</a>                 randomizer, <strong class="jxr_keyword">null</strong>, position, cnb);
-<a class="jxr_linenumber" name="L14069" href="#L14069">14069</a>     }
-<a class="jxr_linenumber" name="L14070" href="#L14070">14070</a> 
-<a class="jxr_linenumber" name="L14071" href="#L14071">14071</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtPosition(
-<a class="jxr_linenumber" name="L14072" href="#L14072">14072</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L14073" href="#L14073">14073</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L14074" href="#L14074">14074</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L14075" href="#L14075">14075</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
-<a class="jxr_linenumber" name="L14076" href="#L14076">14076</a>             <strong class="jxr_keyword">final</strong> NEDPosition position)
-<a class="jxr_linenumber" name="L14077" href="#L14077">14077</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L14078" href="#L14078">14078</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = generateBodyC(randomizer);
-<a class="jxr_linenumber" name="L14079" href="#L14079">14079</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
-<a class="jxr_linenumber" name="L14080" href="#L14080">14080</a>                 randomizer, noiseRandomizer, position, cnb);
-<a class="jxr_linenumber" name="L14081" href="#L14081">14081</a>     }
-<a class="jxr_linenumber" name="L14082" href="#L14082">14082</a> 
-<a class="jxr_linenumber" name="L14083" href="#L14083">14083</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasure(
-<a class="jxr_linenumber" name="L14084" href="#L14084">14084</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L14085" href="#L14085">14085</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L14086" href="#L14086">14086</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L14087" href="#L14087">14087</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
-<a class="jxr_linenumber" name="L14088" href="#L14088">14088</a>             <strong class="jxr_keyword">final</strong> NEDPosition position,
-<a class="jxr_linenumber" name="L14089" href="#L14089">14089</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
-<a class="jxr_linenumber" name="L14090" href="#L14090">14090</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L14091" href="#L14091">14091</a> 
-<a class="jxr_linenumber" name="L14092" href="#L14092">14092</a>         <strong class="jxr_keyword">final</strong> Date timestamp = <strong class="jxr_keyword">new</strong> Date(createTimestamp(randomizer));
-<a class="jxr_linenumber" name="L14093" href="#L14093">14093</a>         <strong class="jxr_keyword">final</strong> NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-<a class="jxr_linenumber" name="L14094" href="#L14094">14094</a>                 position, timestamp);
-<a class="jxr_linenumber" name="L14095" href="#L14095">14095</a> 
-<a class="jxr_linenumber" name="L14096" href="#L14096">14096</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity truthMagnetic =
-<a class="jxr_linenumber" name="L14097" href="#L14097">14097</a>                 BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-<a class="jxr_linenumber" name="L14098" href="#L14098">14098</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity measuredMagnetic =
-<a class="jxr_linenumber" name="L14099" href="#L14099">14099</a>                 generateMeasuredMagneticFluxDensity(truthMagnetic,
-<a class="jxr_linenumber" name="L14100" href="#L14100">14100</a>                         hardIron, softIron);
-<a class="jxr_linenumber" name="L14101" href="#L14101">14101</a> 
-<a class="jxr_linenumber" name="L14102" href="#L14102">14102</a>         <strong class="jxr_keyword">if</strong> (noiseRandomizer != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L14103" href="#L14103">14103</a>             measuredMagnetic.setBx(measuredMagnetic.getBx()
-<a class="jxr_linenumber" name="L14104" href="#L14104">14104</a>                     + noiseRandomizer.nextDouble());
-<a class="jxr_linenumber" name="L14105" href="#L14105">14105</a>             measuredMagnetic.setBy(measuredMagnetic.getBy()
-<a class="jxr_linenumber" name="L14106" href="#L14106">14106</a>                     + noiseRandomizer.nextDouble());
-<a class="jxr_linenumber" name="L14107" href="#L14107">14107</a>             measuredMagnetic.setBz(measuredMagnetic.getBz()
-<a class="jxr_linenumber" name="L14108" href="#L14108">14108</a>                     + noiseRandomizer.nextDouble());
-<a class="jxr_linenumber" name="L14109" href="#L14109">14109</a>         }
-<a class="jxr_linenumber" name="L14110" href="#L14110">14110</a> 
-<a class="jxr_linenumber" name="L14111" href="#L14111">14111</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
-<a class="jxr_linenumber" name="L14112" href="#L14112">14112</a>         <strong class="jxr_keyword">final</strong> NEDFrame frame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
-<a class="jxr_linenumber" name="L14113" href="#L14113">14113</a> 
-<a class="jxr_linenumber" name="L14114" href="#L14114">14114</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> std = noiseRandomizer != <strong class="jxr_keyword">null</strong> ?
-<a class="jxr_linenumber" name="L14115" href="#L14115">14115</a>                 noiseRandomizer.getStandardDeviation() :
-<a class="jxr_linenumber" name="L14116" href="#L14116">14116</a>                 MAGNETOMETER_NOISE_STD;
-<a class="jxr_linenumber" name="L14117" href="#L14117">14117</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyMagneticFluxDensity(
-<a class="jxr_linenumber" name="L14118" href="#L14118">14118</a>                 measuredMagnetic, frame, timestamp, std);
-<a class="jxr_linenumber" name="L14119" href="#L14119">14119</a>     }
-<a class="jxr_linenumber" name="L14120" href="#L14120">14120</a> 
-<a class="jxr_linenumber" name="L14121" href="#L14121">14121</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> CoordinateTransformation generateBodyC(
-<a class="jxr_linenumber" name="L14122" href="#L14122">14122</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L14123" href="#L14123">14123</a> 
-<a class="jxr_linenumber" name="L14124" href="#L14124">14124</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toRadians(
-<a class="jxr_linenumber" name="L14125" href="#L14125">14125</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
-<a class="jxr_linenumber" name="L14126" href="#L14126">14126</a>                         MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L14127" href="#L14127">14127</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toRadians(
-<a class="jxr_linenumber" name="L14128" href="#L14128">14128</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
-<a class="jxr_linenumber" name="L14129" href="#L14129">14129</a>                         MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L14130" href="#L14130">14130</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw1 = Math.toRadians(
-<a class="jxr_linenumber" name="L14131" href="#L14131">14131</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
-<a class="jxr_linenumber" name="L14132" href="#L14132">14132</a>                         MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L14133" href="#L14133">14133</a> 
-<a class="jxr_linenumber" name="L14134" href="#L14134">14134</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> CoordinateTransformation(
-<a class="jxr_linenumber" name="L14135" href="#L14135">14135</a>                 roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-<a class="jxr_linenumber" name="L14136" href="#L14136">14136</a>                 FrameType.BODY_FRAME);
-<a class="jxr_linenumber" name="L14137" href="#L14137">14137</a>     }
-<a class="jxr_linenumber" name="L14138" href="#L14138">14138</a> 
-<a class="jxr_linenumber" name="L14139" href="#L14139">14139</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
-<a class="jxr_linenumber" name="L14140" href="#L14140">14140</a>             <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity input, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron,
-<a class="jxr_linenumber" name="L14141" href="#L14141">14141</a>             <strong class="jxr_keyword">final</strong> Matrix softIron) {
-<a class="jxr_linenumber" name="L14142" href="#L14142">14142</a>         <strong class="jxr_keyword">return</strong> BodyMagneticFluxDensityGenerator.generate(input, hardIron,
-<a class="jxr_linenumber" name="L14143" href="#L14143">14143</a>                 softIron);
-<a class="jxr_linenumber" name="L14144" href="#L14144">14144</a>     }
-<a class="jxr_linenumber" name="L14145" href="#L14145">14145</a> 
-<a class="jxr_linenumber" name="L14146" href="#L14146">14146</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong>[] generateHardIron(
-<a class="jxr_linenumber" name="L14147" href="#L14147">14147</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L14148" href="#L14148">14148</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] result = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[BodyMagneticFluxDensity.COMPONENTS];
-<a class="jxr_linenumber" name="L14149" href="#L14149">14149</a>         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
-<a class="jxr_linenumber" name="L14150" href="#L14150">14150</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L14151" href="#L14151">14151</a>     }
-<a class="jxr_linenumber" name="L14152" href="#L14152">14152</a> 
-<a class="jxr_linenumber" name="L14153" href="#L14153">14153</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronGeneral() {
-<a class="jxr_linenumber" name="L14154" href="#L14154">14154</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L14155" href="#L14155">14155</a>             <strong class="jxr_keyword">return</strong> Matrix.createWithUniformRandomValues(
-<a class="jxr_linenumber" name="L14156" href="#L14156">14156</a>                     BodyMagneticFluxDensity.COMPONENTS,
-<a class="jxr_linenumber" name="L14157" href="#L14157">14157</a>                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
-<a class="jxr_linenumber" name="L14158" href="#L14158">14158</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> WrongSizeException ignore) {
-<a class="jxr_linenumber" name="L14159" href="#L14159">14159</a>             <em class="jxr_comment">// never happens</em>
-<a class="jxr_linenumber" name="L14160" href="#L14160">14160</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L14161" href="#L14161">14161</a>         }
-<a class="jxr_linenumber" name="L14162" href="#L14162">14162</a>     }
-<a class="jxr_linenumber" name="L14163" href="#L14163">14163</a> 
-<a class="jxr_linenumber" name="L14164" href="#L14164">14164</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronCommonAxis() {
-<a class="jxr_linenumber" name="L14165" href="#L14165">14165</a>         <strong class="jxr_keyword">final</strong> Matrix mm = generateSoftIronGeneral();
-<a class="jxr_linenumber" name="L14166" href="#L14166">14166</a>         assertNotNull(mm);
-<a class="jxr_linenumber" name="L14167" href="#L14167">14167</a> 
-<a class="jxr_linenumber" name="L14168" href="#L14168">14168</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> col = 0; col &lt; mm.getColumns(); col++) {
-<a class="jxr_linenumber" name="L14169" href="#L14169">14169</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> row = 0; row &lt; mm.getRows(); row++) {
-<a class="jxr_linenumber" name="L14170" href="#L14170">14170</a>                 <strong class="jxr_keyword">if</strong> (row &gt; col) {
-<a class="jxr_linenumber" name="L14171" href="#L14171">14171</a>                     mm.setElementAt(row, col, 0.0);
-<a class="jxr_linenumber" name="L14172" href="#L14172">14172</a>                 }
-<a class="jxr_linenumber" name="L14173" href="#L14173">14173</a>             }
-<a class="jxr_linenumber" name="L14174" href="#L14174">14174</a>         }
-<a class="jxr_linenumber" name="L14175" href="#L14175">14175</a>         <strong class="jxr_keyword">return</strong> mm;
-<a class="jxr_linenumber" name="L14176" href="#L14176">14176</a>     }
-<a class="jxr_linenumber" name="L14177" href="#L14177">14177</a> 
-<a class="jxr_linenumber" name="L14178" href="#L14178">14178</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> NEDPosition createPosition(
-<a class="jxr_linenumber" name="L14179" href="#L14179">14179</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L14180" href="#L14180">14180</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L14181" href="#L14181">14181</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-<a class="jxr_linenumber" name="L14182" href="#L14182">14182</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L14183" href="#L14183">14183</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-<a class="jxr_linenumber" name="L14184" href="#L14184">14184</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L14185" href="#L14185">14185</a>                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
-<a class="jxr_linenumber" name="L14186" href="#L14186">14186</a> 
-<a class="jxr_linenumber" name="L14187" href="#L14187">14187</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDPosition(latitude, longitude, height);
-<a class="jxr_linenumber" name="L14188" href="#L14188">14188</a>     }
-<a class="jxr_linenumber" name="L14189" href="#L14189">14189</a> 
-<a class="jxr_linenumber" name="L14190" href="#L14190">14190</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> createTimestamp(<strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L14191" href="#L14191">14191</a>         <strong class="jxr_keyword">return</strong> randomizer.nextLong(
-<a class="jxr_linenumber" name="L14192" href="#L14192">14192</a>                 START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
-<a class="jxr_linenumber" name="L14193" href="#L14193">14193</a>     }
-<a class="jxr_linenumber" name="L14194" href="#L14194">14194</a> }
+<a class="jxr_linenumber" name="L14024" href="#L14024">14024</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; generateMeasurementsMultipleOrientationsWithSamePosition(
+<a class="jxr_linenumber" name="L14025" href="#L14025">14025</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L14026" href="#L14026">14026</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numberOfMeasurements,
+<a class="jxr_linenumber" name="L14027" href="#L14027">14027</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L14028" href="#L14028">14028</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L14029" href="#L14029">14029</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer)
+<a class="jxr_linenumber" name="L14030" href="#L14030">14030</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L14031" href="#L14031">14031</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
+<a class="jxr_linenumber" name="L14032" href="#L14032">14032</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
+<a class="jxr_linenumber" name="L14033" href="#L14033">14033</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L14034" href="#L14034">14034</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; numberOfMeasurements; i++) {
+<a class="jxr_linenumber" name="L14035" href="#L14035">14035</a>             result.add(generateMeasureAtPosition(hardIron, softIron,
+<a class="jxr_linenumber" name="L14036" href="#L14036">14036</a>                     wmmEstimator, randomizer, noiseRandomizer, position));
+<a class="jxr_linenumber" name="L14037" href="#L14037">14037</a>         }
+<a class="jxr_linenumber" name="L14038" href="#L14038">14038</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L14039" href="#L14039">14039</a>     }
+<a class="jxr_linenumber" name="L14040" href="#L14040">14040</a> 
+<a class="jxr_linenumber" name="L14041" href="#L14041">14041</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;
+<a class="jxr_linenumber" name="L14042" href="#L14042">14042</a>     generateMeasurementsMultiplePositionsWithSameOrientation(
+<a class="jxr_linenumber" name="L14043" href="#L14043">14043</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L14044" href="#L14044">14044</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L14045" href="#L14045">14045</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer)
+<a class="jxr_linenumber" name="L14046" href="#L14046">14046</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L14047" href="#L14047">14047</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = <strong class="jxr_keyword">new</strong> CoordinateTransformation(
+<a class="jxr_linenumber" name="L14048" href="#L14048">14048</a>                 FrameType.LOCAL_NAVIGATION_FRAME,
+<a class="jxr_linenumber" name="L14049" href="#L14049">14049</a>                 FrameType.BODY_FRAME);
+<a class="jxr_linenumber" name="L14050" href="#L14050">14050</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
+<a class="jxr_linenumber" name="L14051" href="#L14051">14051</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L14052" href="#L14052">14052</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
+<a class="jxr_linenumber" name="L14053" href="#L14053">14053</a>             result.add(generateMeasureAtOrientation(hardIron, softIron,
+<a class="jxr_linenumber" name="L14054" href="#L14054">14054</a>                     wmmEstimator, randomizer, cnb));
+<a class="jxr_linenumber" name="L14055" href="#L14055">14055</a>         }
+<a class="jxr_linenumber" name="L14056" href="#L14056">14056</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L14057" href="#L14057">14057</a>     }
+<a class="jxr_linenumber" name="L14058" href="#L14058">14058</a> 
+<a class="jxr_linenumber" name="L14059" href="#L14059">14059</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtOrientation(
+<a class="jxr_linenumber" name="L14060" href="#L14060">14060</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L14061" href="#L14061">14061</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L14062" href="#L14062">14062</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L14063" href="#L14063">14063</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
+<a class="jxr_linenumber" name="L14064" href="#L14064">14064</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L14065" href="#L14065">14065</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
+<a class="jxr_linenumber" name="L14066" href="#L14066">14066</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
+<a class="jxr_linenumber" name="L14067" href="#L14067">14067</a>                 randomizer, <strong class="jxr_keyword">null</strong>, position, cnb);
+<a class="jxr_linenumber" name="L14068" href="#L14068">14068</a>     }
+<a class="jxr_linenumber" name="L14069" href="#L14069">14069</a> 
+<a class="jxr_linenumber" name="L14070" href="#L14070">14070</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtPosition(
+<a class="jxr_linenumber" name="L14071" href="#L14071">14071</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L14072" href="#L14072">14072</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L14073" href="#L14073">14073</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L14074" href="#L14074">14074</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
+<a class="jxr_linenumber" name="L14075" href="#L14075">14075</a>             <strong class="jxr_keyword">final</strong> NEDPosition position)
+<a class="jxr_linenumber" name="L14076" href="#L14076">14076</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L14077" href="#L14077">14077</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = generateBodyC(randomizer);
+<a class="jxr_linenumber" name="L14078" href="#L14078">14078</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
+<a class="jxr_linenumber" name="L14079" href="#L14079">14079</a>                 randomizer, noiseRandomizer, position, cnb);
+<a class="jxr_linenumber" name="L14080" href="#L14080">14080</a>     }
+<a class="jxr_linenumber" name="L14081" href="#L14081">14081</a> 
+<a class="jxr_linenumber" name="L14082" href="#L14082">14082</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasure(
+<a class="jxr_linenumber" name="L14083" href="#L14083">14083</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L14084" href="#L14084">14084</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L14085" href="#L14085">14085</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L14086" href="#L14086">14086</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
+<a class="jxr_linenumber" name="L14087" href="#L14087">14087</a>             <strong class="jxr_keyword">final</strong> NEDPosition position,
+<a class="jxr_linenumber" name="L14088" href="#L14088">14088</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
+<a class="jxr_linenumber" name="L14089" href="#L14089">14089</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L14090" href="#L14090">14090</a> 
+<a class="jxr_linenumber" name="L14091" href="#L14091">14091</a>         <strong class="jxr_keyword">final</strong> Date timestamp = <strong class="jxr_keyword">new</strong> Date(createTimestamp(randomizer));
+<a class="jxr_linenumber" name="L14092" href="#L14092">14092</a>         <strong class="jxr_keyword">final</strong> NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
+<a class="jxr_linenumber" name="L14093" href="#L14093">14093</a>                 position, timestamp);
+<a class="jxr_linenumber" name="L14094" href="#L14094">14094</a> 
+<a class="jxr_linenumber" name="L14095" href="#L14095">14095</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity truthMagnetic =
+<a class="jxr_linenumber" name="L14096" href="#L14096">14096</a>                 BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+<a class="jxr_linenumber" name="L14097" href="#L14097">14097</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity measuredMagnetic =
+<a class="jxr_linenumber" name="L14098" href="#L14098">14098</a>                 generateMeasuredMagneticFluxDensity(truthMagnetic,
+<a class="jxr_linenumber" name="L14099" href="#L14099">14099</a>                         hardIron, softIron);
+<a class="jxr_linenumber" name="L14100" href="#L14100">14100</a> 
+<a class="jxr_linenumber" name="L14101" href="#L14101">14101</a>         <strong class="jxr_keyword">if</strong> (noiseRandomizer != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L14102" href="#L14102">14102</a>             measuredMagnetic.setBx(measuredMagnetic.getBx()
+<a class="jxr_linenumber" name="L14103" href="#L14103">14103</a>                     + noiseRandomizer.nextDouble());
+<a class="jxr_linenumber" name="L14104" href="#L14104">14104</a>             measuredMagnetic.setBy(measuredMagnetic.getBy()
+<a class="jxr_linenumber" name="L14105" href="#L14105">14105</a>                     + noiseRandomizer.nextDouble());
+<a class="jxr_linenumber" name="L14106" href="#L14106">14106</a>             measuredMagnetic.setBz(measuredMagnetic.getBz()
+<a class="jxr_linenumber" name="L14107" href="#L14107">14107</a>                     + noiseRandomizer.nextDouble());
+<a class="jxr_linenumber" name="L14108" href="#L14108">14108</a>         }
+<a class="jxr_linenumber" name="L14109" href="#L14109">14109</a> 
+<a class="jxr_linenumber" name="L14110" href="#L14110">14110</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+<a class="jxr_linenumber" name="L14111" href="#L14111">14111</a>         <strong class="jxr_keyword">final</strong> NEDFrame frame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
+<a class="jxr_linenumber" name="L14112" href="#L14112">14112</a> 
+<a class="jxr_linenumber" name="L14113" href="#L14113">14113</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> std = noiseRandomizer != <strong class="jxr_keyword">null</strong> ?
+<a class="jxr_linenumber" name="L14114" href="#L14114">14114</a>                 noiseRandomizer.getStandardDeviation() :
+<a class="jxr_linenumber" name="L14115" href="#L14115">14115</a>                 MAGNETOMETER_NOISE_STD;
+<a class="jxr_linenumber" name="L14116" href="#L14116">14116</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyMagneticFluxDensity(
+<a class="jxr_linenumber" name="L14117" href="#L14117">14117</a>                 measuredMagnetic, frame, timestamp, std);
+<a class="jxr_linenumber" name="L14118" href="#L14118">14118</a>     }
+<a class="jxr_linenumber" name="L14119" href="#L14119">14119</a> 
+<a class="jxr_linenumber" name="L14120" href="#L14120">14120</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> CoordinateTransformation generateBodyC(
+<a class="jxr_linenumber" name="L14121" href="#L14121">14121</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L14122" href="#L14122">14122</a> 
+<a class="jxr_linenumber" name="L14123" href="#L14123">14123</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toRadians(
+<a class="jxr_linenumber" name="L14124" href="#L14124">14124</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
+<a class="jxr_linenumber" name="L14125" href="#L14125">14125</a>                         MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L14126" href="#L14126">14126</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toRadians(
+<a class="jxr_linenumber" name="L14127" href="#L14127">14127</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
+<a class="jxr_linenumber" name="L14128" href="#L14128">14128</a>                         MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L14129" href="#L14129">14129</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw1 = Math.toRadians(
+<a class="jxr_linenumber" name="L14130" href="#L14130">14130</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
+<a class="jxr_linenumber" name="L14131" href="#L14131">14131</a>                         MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L14132" href="#L14132">14132</a> 
+<a class="jxr_linenumber" name="L14133" href="#L14133">14133</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> CoordinateTransformation(
+<a class="jxr_linenumber" name="L14134" href="#L14134">14134</a>                 roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+<a class="jxr_linenumber" name="L14135" href="#L14135">14135</a>                 FrameType.BODY_FRAME);
+<a class="jxr_linenumber" name="L14136" href="#L14136">14136</a>     }
+<a class="jxr_linenumber" name="L14137" href="#L14137">14137</a> 
+<a class="jxr_linenumber" name="L14138" href="#L14138">14138</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
+<a class="jxr_linenumber" name="L14139" href="#L14139">14139</a>             <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity input, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron,
+<a class="jxr_linenumber" name="L14140" href="#L14140">14140</a>             <strong class="jxr_keyword">final</strong> Matrix softIron) {
+<a class="jxr_linenumber" name="L14141" href="#L14141">14141</a>         <strong class="jxr_keyword">return</strong> BodyMagneticFluxDensityGenerator.generate(input, hardIron,
+<a class="jxr_linenumber" name="L14142" href="#L14142">14142</a>                 softIron);
+<a class="jxr_linenumber" name="L14143" href="#L14143">14143</a>     }
+<a class="jxr_linenumber" name="L14144" href="#L14144">14144</a> 
+<a class="jxr_linenumber" name="L14145" href="#L14145">14145</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong>[] generateHardIron(
+<a class="jxr_linenumber" name="L14146" href="#L14146">14146</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L14147" href="#L14147">14147</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] result = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[BodyMagneticFluxDensity.COMPONENTS];
+<a class="jxr_linenumber" name="L14148" href="#L14148">14148</a>         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
+<a class="jxr_linenumber" name="L14149" href="#L14149">14149</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L14150" href="#L14150">14150</a>     }
+<a class="jxr_linenumber" name="L14151" href="#L14151">14151</a> 
+<a class="jxr_linenumber" name="L14152" href="#L14152">14152</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronGeneral() {
+<a class="jxr_linenumber" name="L14153" href="#L14153">14153</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L14154" href="#L14154">14154</a>             <strong class="jxr_keyword">return</strong> Matrix.createWithUniformRandomValues(
+<a class="jxr_linenumber" name="L14155" href="#L14155">14155</a>                     BodyMagneticFluxDensity.COMPONENTS,
+<a class="jxr_linenumber" name="L14156" href="#L14156">14156</a>                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
+<a class="jxr_linenumber" name="L14157" href="#L14157">14157</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> WrongSizeException ignore) {
+<a class="jxr_linenumber" name="L14158" href="#L14158">14158</a>             <em class="jxr_comment">// never happens</em>
+<a class="jxr_linenumber" name="L14159" href="#L14159">14159</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L14160" href="#L14160">14160</a>         }
+<a class="jxr_linenumber" name="L14161" href="#L14161">14161</a>     }
+<a class="jxr_linenumber" name="L14162" href="#L14162">14162</a> 
+<a class="jxr_linenumber" name="L14163" href="#L14163">14163</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronCommonAxis() {
+<a class="jxr_linenumber" name="L14164" href="#L14164">14164</a>         <strong class="jxr_keyword">final</strong> Matrix mm = generateSoftIronGeneral();
+<a class="jxr_linenumber" name="L14165" href="#L14165">14165</a>         assertNotNull(mm);
+<a class="jxr_linenumber" name="L14166" href="#L14166">14166</a> 
+<a class="jxr_linenumber" name="L14167" href="#L14167">14167</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> col = 0; col &lt; mm.getColumns(); col++) {
+<a class="jxr_linenumber" name="L14168" href="#L14168">14168</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> row = 0; row &lt; mm.getRows(); row++) {
+<a class="jxr_linenumber" name="L14169" href="#L14169">14169</a>                 <strong class="jxr_keyword">if</strong> (row &gt; col) {
+<a class="jxr_linenumber" name="L14170" href="#L14170">14170</a>                     mm.setElementAt(row, col, 0.0);
+<a class="jxr_linenumber" name="L14171" href="#L14171">14171</a>                 }
+<a class="jxr_linenumber" name="L14172" href="#L14172">14172</a>             }
+<a class="jxr_linenumber" name="L14173" href="#L14173">14173</a>         }
+<a class="jxr_linenumber" name="L14174" href="#L14174">14174</a>         <strong class="jxr_keyword">return</strong> mm;
+<a class="jxr_linenumber" name="L14175" href="#L14175">14175</a>     }
+<a class="jxr_linenumber" name="L14176" href="#L14176">14176</a> 
+<a class="jxr_linenumber" name="L14177" href="#L14177">14177</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> NEDPosition createPosition(
+<a class="jxr_linenumber" name="L14178" href="#L14178">14178</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L14179" href="#L14179">14179</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L14180" href="#L14180">14180</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+<a class="jxr_linenumber" name="L14181" href="#L14181">14181</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L14182" href="#L14182">14182</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+<a class="jxr_linenumber" name="L14183" href="#L14183">14183</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L14184" href="#L14184">14184</a>                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+<a class="jxr_linenumber" name="L14185" href="#L14185">14185</a> 
+<a class="jxr_linenumber" name="L14186" href="#L14186">14186</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDPosition(latitude, longitude, height);
+<a class="jxr_linenumber" name="L14187" href="#L14187">14187</a>     }
+<a class="jxr_linenumber" name="L14188" href="#L14188">14188</a> 
+<a class="jxr_linenumber" name="L14189" href="#L14189">14189</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> createTimestamp(<strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L14190" href="#L14190">14190</a>         <strong class="jxr_keyword">return</strong> randomizer.nextLong(
+<a class="jxr_linenumber" name="L14191" href="#L14191">14191</a>                 START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+<a class="jxr_linenumber" name="L14192" href="#L14192">14192</a>     }
+<a class="jxr_linenumber" name="L14193" href="#L14193">14193</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

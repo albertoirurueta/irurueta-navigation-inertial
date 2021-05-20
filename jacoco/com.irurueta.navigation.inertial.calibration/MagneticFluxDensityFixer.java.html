@@ -29,6 +29,7 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * Fixes magnetic flux density values taking into account provided bias and
  * cross coupling errors.
  */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public class MagneticFluxDensityFixer {
     /**
      * Identity matrix to be reused.
@@ -58,13 +59,13 @@ public class MagneticFluxDensityFixer {
     /**
      * Measured specific force array to be reused.
      */
-<span class="fc" id="L61">    private final double[] mMeasuredB =</span>
+<span class="fc" id="L62">    private final double[] mMeasuredB =</span>
             new double[MagneticFluxDensityTriad.COMPONENTS];
 
     /**
      * Array containing result values to be reused.
      */
-<span class="fc" id="L67">    private final double[] mResult =</span>
+<span class="fc" id="L68">    private final double[] mResult =</span>
             new double[MagneticFluxDensityTriad.COMPONENTS];
 
     /**
@@ -80,24 +81,24 @@ public class MagneticFluxDensityFixer {
     /**
      * Constructor.
      */
-<span class="fc" id="L83">    public MagneticFluxDensityFixer() {</span>
+<span class="fc" id="L84">    public MagneticFluxDensityFixer() {</span>
         try {
-<span class="fc" id="L85">            mIdentity = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,</span>
+<span class="fc" id="L86">            mIdentity = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,</span>
                     MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L87">            mTmp1 = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,</span>
+<span class="fc" id="L88">            mTmp1 = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,</span>
                     MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L89">            mTmp2 = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,</span>
+<span class="fc" id="L90">            mTmp2 = Matrix.identity(MagneticFluxDensityTriad.COMPONENTS,</span>
                     MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L91">            mDiff = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);</span>
-<span class="fc" id="L92">            mTmp3 = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);</span>
+<span class="fc" id="L92">            mDiff = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);</span>
+<span class="fc" id="L93">            mTmp3 = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);</span>
 
-<span class="fc" id="L94">            mBias = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);</span>
-<span class="fc" id="L95">            mCrossCouplingErrors = new Matrix(MagneticFluxDensityTriad.COMPONENTS,</span>
+<span class="fc" id="L95">            mBias = new Matrix(MagneticFluxDensityTriad.COMPONENTS, 1);</span>
+<span class="fc" id="L96">            mCrossCouplingErrors = new Matrix(MagneticFluxDensityTriad.COMPONENTS,</span>
                     MagneticFluxDensityTriad.COMPONENTS);
-<span class="nc" id="L97">        } catch (final WrongSizeException ignore) {</span>
+<span class="nc" id="L98">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L99">        }</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L100">        }</span>
+<span class="fc" id="L101">    }</span>
 
     /**
      * Gets bias values expressed in Teslas (T).
@@ -105,7 +106,7 @@ public class MagneticFluxDensityFixer {
      * @return bias values expressed in Teslas.
      */
     public Matrix getBias() {
-<span class="fc" id="L108">        return new Matrix(mBias);</span>
+<span class="fc" id="L109">        return new Matrix(mBias);</span>
     }
 
     /**
@@ -114,8 +115,8 @@ public class MagneticFluxDensityFixer {
      * @param result instance where result will be stored.
      */
     public void getBias(final Matrix result) {
-<span class="fc" id="L117">        mBias.copyTo(result);</span>
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L118">        mBias.copyTo(result);</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Sets bias values expressed in Teslas (T).
@@ -123,12 +124,12 @@ public class MagneticFluxDensityFixer {
      * @param bias bias values expressed in Teslas. Must be 3x1.
      */
     public void setBias(final Matrix bias) {
-<span class="fc bfc" id="L126" title="All 2 branches covered.">        if (bias.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L127" title="All 2 branches covered.">                || bias.getColumns() != 1) {</span>
-<span class="fc" id="L128">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L127" title="All 2 branches covered.">        if (bias.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L128" title="All 2 branches covered.">                || bias.getColumns() != 1) {</span>
+<span class="fc" id="L129">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L130">        mBias = bias;</span>
-<span class="fc" id="L131">    }</span>
+<span class="fc" id="L131">        mBias = bias;</span>
+<span class="fc" id="L132">    }</span>
 
     /**
      * Gets bias values expressed in Teslas (T).
@@ -136,9 +137,9 @@ public class MagneticFluxDensityFixer {
      * @return bias values expressed in Teslas.
      */
     public double[] getBiasArray() {
-<span class="fc" id="L139">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L140">        getBiasArray(result);</span>
-<span class="fc" id="L141">        return result;</span>
+<span class="fc" id="L140">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L141">        getBiasArray(result);</span>
+<span class="fc" id="L142">        return result;</span>
     }
 
     /**
@@ -149,16 +150,16 @@ public class MagneticFluxDensityFixer {
      *                                  length 3.
      */
     public void getBiasArray(final double[] result) {
-<span class="fc bfc" id="L152" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L153">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L154">            throw new IllegalArgumentException();</span>
         }
 
         try {
-<span class="fc" id="L157">            mBias.toArray(result);</span>
-<span class="nc" id="L158">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L158">            mBias.toArray(result);</span>
+<span class="nc" id="L159">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L160">        }</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L161">        }</span>
+<span class="fc" id="L162">    }</span>
 
     /**
      * Sets bias values expressed in Teslas (T).
@@ -168,16 +169,16 @@ public class MagneticFluxDensityFixer {
      *                                  length 3.
      */
     public void setBias(final double[] bias) {
-<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (bias.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L172">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">        if (bias.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L173">            throw new IllegalArgumentException();</span>
         }
 
         try {
-<span class="fc" id="L176">            mBias.fromArray(bias);</span>
-<span class="nc" id="L177">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L177">            mBias.fromArray(bias);</span>
+<span class="nc" id="L178">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L179">        }</span>
-<span class="fc" id="L180">    }</span>
+<span class="fc" id="L180">        }</span>
+<span class="fc" id="L181">    }</span>
 
     /**
      * Gets bias.
@@ -185,8 +186,8 @@ public class MagneticFluxDensityFixer {
      * @return bias.
      */
     public BodyMagneticFluxDensity getBiasAsBodyMagneticFluxDensity() {
-<span class="fc" id="L188">        return new BodyMagneticFluxDensity(mBias.getElementAtIndex(0),</span>
-<span class="fc" id="L189">                mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));</span>
+<span class="fc" id="L189">        return new BodyMagneticFluxDensity(mBias.getElementAtIndex(0),</span>
+<span class="fc" id="L190">                mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));</span>
     }
 
     /**
@@ -196,9 +197,9 @@ public class MagneticFluxDensityFixer {
      */
     public void getBiasAsBodyMagneticFluxDensity(
             final BodyMagneticFluxDensity result) {
-<span class="fc" id="L199">        result.setCoordinates(mBias.getElementAtIndex(0),</span>
-<span class="fc" id="L200">                mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));</span>
-<span class="fc" id="L201">    }</span>
+<span class="fc" id="L200">        result.setCoordinates(mBias.getElementAtIndex(0),</span>
+<span class="fc" id="L201">                mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));</span>
+<span class="fc" id="L202">    }</span>
 
     /**
      * Sets bias.
@@ -206,10 +207,10 @@ public class MagneticFluxDensityFixer {
      * @param bias bias to be set.
      */
     public void setBias(final BodyMagneticFluxDensity bias) {
-<span class="fc" id="L209">        mBias.setElementAtIndex(0, bias.getBx());</span>
-<span class="fc" id="L210">        mBias.setElementAtIndex(1, bias.getBy());</span>
-<span class="fc" id="L211">        mBias.setElementAtIndex(2, bias.getBz());</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L210">        mBias.setElementAtIndex(0, bias.getBx());</span>
+<span class="fc" id="L211">        mBias.setElementAtIndex(1, bias.getBy());</span>
+<span class="fc" id="L212">        mBias.setElementAtIndex(2, bias.getBz());</span>
+<span class="fc" id="L213">    }</span>
 
     /**
      * Gets bias.
@@ -217,9 +218,9 @@ public class MagneticFluxDensityFixer {
      * @return bias.
      */
     public MagneticFluxDensityTriad getBiasAsTriad() {
-<span class="fc" id="L220">        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
-<span class="fc" id="L221">                mBias.getElementAtIndex(0), mBias.getElementAtIndex(1),</span>
-<span class="fc" id="L222">                mBias.getElementAtIndex(2));</span>
+<span class="fc" id="L221">        return new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
+<span class="fc" id="L222">                mBias.getElementAtIndex(0), mBias.getElementAtIndex(1),</span>
+<span class="fc" id="L223">                mBias.getElementAtIndex(2));</span>
     }
 
     /**
@@ -228,9 +229,9 @@ public class MagneticFluxDensityFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasAsTriad(final MagneticFluxDensityTriad result) {
-<span class="fc" id="L231">        result.setValueCoordinates(mBias);</span>
-<span class="fc" id="L232">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L233">    }</span>
+<span class="fc" id="L232">        result.setValueCoordinates(mBias);</span>
+<span class="fc" id="L233">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L234">    }</span>
 
     /**
      * Sets bias.
@@ -238,13 +239,13 @@ public class MagneticFluxDensityFixer {
      * @param bias bias to be set.
      */
     public void setBias(final MagneticFluxDensityTriad bias) {
-<span class="fc" id="L241">        final double biasX = convertMagneticFluxDensity(bias.getValueX(), bias.getUnit());</span>
-<span class="fc" id="L242">        final double biasY = convertMagneticFluxDensity(bias.getValueY(), bias.getUnit());</span>
-<span class="fc" id="L243">        final double biasZ = convertMagneticFluxDensity(bias.getValueZ(), bias.getUnit());</span>
-<span class="fc" id="L244">        mBias.setElementAtIndex(0, biasX);</span>
-<span class="fc" id="L245">        mBias.setElementAtIndex(1, biasY);</span>
-<span class="fc" id="L246">        mBias.setElementAtIndex(2, biasZ);</span>
-<span class="fc" id="L247">    }</span>
+<span class="fc" id="L242">        final double biasX = convertMagneticFluxDensity(bias.getValueX(), bias.getUnit());</span>
+<span class="fc" id="L243">        final double biasY = convertMagneticFluxDensity(bias.getValueY(), bias.getUnit());</span>
+<span class="fc" id="L244">        final double biasZ = convertMagneticFluxDensity(bias.getValueZ(), bias.getUnit());</span>
+<span class="fc" id="L245">        mBias.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L246">        mBias.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L247">        mBias.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L248">    }</span>
 
     /**
      * Gets x-coordinate of bias expressed in Teslas (T).
@@ -252,7 +253,7 @@ public class MagneticFluxDensityFixer {
      * @return x-coordinate of bias expressed in Teslas (T).
      */
     public double getBiasX() {
-<span class="fc" id="L255">        return mBias.getElementAtIndex(0);</span>
+<span class="fc" id="L256">        return mBias.getElementAtIndex(0);</span>
     }
 
     /**
@@ -261,8 +262,8 @@ public class MagneticFluxDensityFixer {
      * @param biasX x-coordinate of bias expressed in Teslas (T).
      */
     public void setBiasX(final double biasX) {
-<span class="fc" id="L264">        mBias.setElementAtIndex(0, biasX);</span>
-<span class="fc" id="L265">    }</span>
+<span class="fc" id="L265">        mBias.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L266">    }</span>
 
     /**
      * Gets y-coordinate of bias expressed in Teslas (T).
@@ -270,7 +271,7 @@ public class MagneticFluxDensityFixer {
      * @return y-coordinate of bias expressed in Teslas (T).
      */
     public double getBiasY() {
-<span class="fc" id="L273">        return mBias.getElementAtIndex(1);</span>
+<span class="fc" id="L274">        return mBias.getElementAtIndex(1);</span>
     }
 
     /**
@@ -279,8 +280,8 @@ public class MagneticFluxDensityFixer {
      * @param biasY y-coordinate of bias expressed in Teslas (T).
      */
     public void setBiasY(final double biasY) {
-<span class="fc" id="L282">        mBias.setElementAtIndex(1, biasY);</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L283">        mBias.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L284">    }</span>
 
     /**
      * Gets z-coordinate of bias expressed in Teslas (T).
@@ -288,7 +289,7 @@ public class MagneticFluxDensityFixer {
      * @return z-coordinate of bias expressed in Teslas (T).
      */
     public double getBiasZ() {
-<span class="fc" id="L291">        return mBias.getElementAtIndex(2);</span>
+<span class="fc" id="L292">        return mBias.getElementAtIndex(2);</span>
     }
 
     /**
@@ -297,8 +298,8 @@ public class MagneticFluxDensityFixer {
      * @param biasZ z-coordinate of bias expressed in Teslas (T).
      */
     public void setBiasZ(final double biasZ) {
-<span class="fc" id="L300">        mBias.setElementAtIndex(2, biasZ);</span>
-<span class="fc" id="L301">    }</span>
+<span class="fc" id="L301">        mBias.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L302">    }</span>
 
     /**
      * Sets coordinates of bias expressed in Teslas (T).
@@ -309,10 +310,10 @@ public class MagneticFluxDensityFixer {
      */
     public void setBias(
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L312">        setBiasX(biasX);</span>
-<span class="fc" id="L313">        setBiasY(biasY);</span>
-<span class="fc" id="L314">        setBiasZ(biasZ);</span>
-<span class="fc" id="L315">    }</span>
+<span class="fc" id="L313">        setBiasX(biasX);</span>
+<span class="fc" id="L314">        setBiasY(biasY);</span>
+<span class="fc" id="L315">        setBiasZ(biasZ);</span>
+<span class="fc" id="L316">    }</span>
 
     /**
      * Gets x-coordinate of bias.
@@ -320,7 +321,7 @@ public class MagneticFluxDensityFixer {
      * @return x-coordinate of bias.
      */
     public MagneticFluxDensity getBiasXAsMagneticFluxDensity() {
-<span class="fc" id="L323">        return new MagneticFluxDensity(getBiasX(),</span>
+<span class="fc" id="L324">        return new MagneticFluxDensity(getBiasX(),</span>
                 MagneticFluxDensityUnit.TESLA);
     }
 
@@ -330,9 +331,9 @@ public class MagneticFluxDensityFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-<span class="fc" id="L333">        result.setValue(getBiasX());</span>
-<span class="fc" id="L334">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L335">    }</span>
+<span class="fc" id="L334">        result.setValue(getBiasX());</span>
+<span class="fc" id="L335">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L336">    }</span>
 
     /**
      * Sets x-coordinate of bias.
@@ -340,8 +341,8 @@ public class MagneticFluxDensityFixer {
      * @param biasX x-coordinate of bias.
      */
     public void setBiasX(final MagneticFluxDensity biasX) {
-<span class="fc" id="L343">        setBiasX(convertMagneticFluxDensity(biasX));</span>
-<span class="fc" id="L344">    }</span>
+<span class="fc" id="L344">        setBiasX(convertMagneticFluxDensity(biasX));</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Gets y-coordinate of bias.
@@ -349,7 +350,7 @@ public class MagneticFluxDensityFixer {
      * @return y-coordinate of bias.
      */
     public MagneticFluxDensity getBiasYAsMagneticFluxDensity() {
-<span class="fc" id="L352">        return new MagneticFluxDensity(getBiasY(),</span>
+<span class="fc" id="L353">        return new MagneticFluxDensity(getBiasY(),</span>
                 MagneticFluxDensityUnit.TESLA);
     }
 
@@ -359,9 +360,9 @@ public class MagneticFluxDensityFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-<span class="fc" id="L362">        result.setValue(getBiasY());</span>
-<span class="fc" id="L363">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L364">    }</span>
+<span class="fc" id="L363">        result.setValue(getBiasY());</span>
+<span class="fc" id="L364">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L365">    }</span>
 
     /**
      * Sets y-coordinate of bias.
@@ -369,8 +370,8 @@ public class MagneticFluxDensityFixer {
      * @param biasY y-coordinate of bias.
      */
     public void setBiasY(final MagneticFluxDensity biasY) {
-<span class="fc" id="L372">        setBiasY(convertMagneticFluxDensity(biasY));</span>
-<span class="fc" id="L373">    }</span>
+<span class="fc" id="L373">        setBiasY(convertMagneticFluxDensity(biasY));</span>
+<span class="fc" id="L374">    }</span>
 
     /**
      * Gets z-coordinate of bias.
@@ -378,7 +379,7 @@ public class MagneticFluxDensityFixer {
      * @return z-coordinate of bias.
      */
     public MagneticFluxDensity getBiasZAsMagneticFluxDensity() {
-<span class="fc" id="L381">        return new MagneticFluxDensity(getBiasZ(),</span>
+<span class="fc" id="L382">        return new MagneticFluxDensity(getBiasZ(),</span>
                 MagneticFluxDensityUnit.TESLA);
     }
 
@@ -388,9 +389,9 @@ public class MagneticFluxDensityFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-<span class="fc" id="L391">        result.setValue(getBiasZ());</span>
-<span class="fc" id="L392">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L393">    }</span>
+<span class="fc" id="L392">        result.setValue(getBiasZ());</span>
+<span class="fc" id="L393">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L394">    }</span>
 
     /**
      * Sets z-coordinate of bias.
@@ -398,8 +399,8 @@ public class MagneticFluxDensityFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setBiasZ(final MagneticFluxDensity biasZ) {
-<span class="fc" id="L401">        setBiasZ(convertMagneticFluxDensity(biasZ));</span>
-<span class="fc" id="L402">    }</span>
+<span class="fc" id="L402">        setBiasZ(convertMagneticFluxDensity(biasZ));</span>
+<span class="fc" id="L403">    }</span>
 
     /**
      * Sets coordinates of bias.
@@ -412,10 +413,10 @@ public class MagneticFluxDensityFixer {
             final MagneticFluxDensity biasX,
             final MagneticFluxDensity biasY,
             final MagneticFluxDensity biasZ) {
-<span class="fc" id="L415">        setBiasX(biasX);</span>
-<span class="fc" id="L416">        setBiasY(biasY);</span>
-<span class="fc" id="L417">        setBiasZ(biasZ);</span>
-<span class="fc" id="L418">    }</span>
+<span class="fc" id="L416">        setBiasX(biasX);</span>
+<span class="fc" id="L417">        setBiasY(biasY);</span>
+<span class="fc" id="L418">        setBiasZ(biasZ);</span>
+<span class="fc" id="L419">    }</span>
 
     /**
      * Gets cross coupling errors matrix.
@@ -423,7 +424,7 @@ public class MagneticFluxDensityFixer {
      * @return cross coupling errors matrix.
      */
     public Matrix getCrossCouplingErrors() {
-<span class="fc" id="L426">        return new Matrix(mCrossCouplingErrors);</span>
+<span class="fc" id="L427">        return new Matrix(mCrossCouplingErrors);</span>
     }
 
     /**
@@ -432,8 +433,8 @@ public class MagneticFluxDensityFixer {
      * @param result instance where result will be stored.
      */
     public void getCrossCouplingErrors(final Matrix result) {
-<span class="fc" id="L435">        mCrossCouplingErrors.copyTo(result);</span>
-<span class="fc" id="L436">    }</span>
+<span class="fc" id="L436">        mCrossCouplingErrors.copyTo(result);</span>
+<span class="fc" id="L437">    }</span>
 
     /**
      * Sets cross coupling errors matrix.
@@ -444,17 +445,17 @@ public class MagneticFluxDensityFixer {
      */
     public void setCrossCouplingErrors(final Matrix crossCouplingErrors)
             throws AlgebraException {
-<span class="fc bfc" id="L447" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L448" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L449">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L448" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L449" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L450">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L452">        mCrossCouplingErrors = crossCouplingErrors;</span>
+<span class="fc" id="L453">        mCrossCouplingErrors = crossCouplingErrors;</span>
 
-<span class="fc" id="L454">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
+<span class="fc" id="L455">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
 
-<span class="fc" id="L456">        Utils.inverse(mTmp1, mTmp2);</span>
-<span class="fc" id="L457">    }</span>
+<span class="fc" id="L457">        Utils.inverse(mTmp1, mTmp2);</span>
+<span class="fc" id="L458">    }</span>
 
     /**
      * Gets x scaling factor.
@@ -462,7 +463,7 @@ public class MagneticFluxDensityFixer {
      * @return x scaling factor.
      */
     public double getSx() {
-<span class="fc" id="L465">        return mCrossCouplingErrors.getElementAt(0, 0);</span>
+<span class="fc" id="L466">        return mCrossCouplingErrors.getElementAt(0, 0);</span>
     }
 
     /**
@@ -473,13 +474,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setSx(final double sx) throws AlgebraException {
-<span class="fc" id="L476">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L477">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L479">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L480">        m.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L481">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L482">    }</span>
+<span class="fc" id="L480">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L481">        m.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L482">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L483">    }</span>
 
     /**
      * Gets y scaling factor.
@@ -487,7 +488,7 @@ public class MagneticFluxDensityFixer {
      * @return y scaling factor.
      */
     public double getSy() {
-<span class="fc" id="L490">        return mCrossCouplingErrors.getElementAt(1, 1);</span>
+<span class="fc" id="L491">        return mCrossCouplingErrors.getElementAt(1, 1);</span>
     }
 
     /**
@@ -498,13 +499,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setSy(final double sy) throws AlgebraException {
-<span class="fc" id="L501">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L502">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L504">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L505">        m.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L506">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L507">    }</span>
+<span class="fc" id="L505">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L506">        m.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L507">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L508">    }</span>
 
     /**
      * Gets z scaling factor.
@@ -512,7 +513,7 @@ public class MagneticFluxDensityFixer {
      * @return z scaling factor.
      */
     public double getSz() {
-<span class="fc" id="L515">        return mCrossCouplingErrors.getElementAt(2, 2);</span>
+<span class="fc" id="L516">        return mCrossCouplingErrors.getElementAt(2, 2);</span>
     }
 
     /**
@@ -523,13 +524,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setSz(final double sz) throws AlgebraException {
-<span class="fc" id="L526">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L527">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L529">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L530">        m.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L531">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L532">    }</span>
+<span class="fc" id="L530">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L531">        m.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L532">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L533">    }</span>
 
     /**
      * Gets x-y cross coupling error.
@@ -537,7 +538,7 @@ public class MagneticFluxDensityFixer {
      * @return x-y cross coupling error.
      */
     public double getMxy() {
-<span class="fc" id="L540">        return mCrossCouplingErrors.getElementAt(0, 1);</span>
+<span class="fc" id="L541">        return mCrossCouplingErrors.getElementAt(0, 1);</span>
     }
 
     /**
@@ -548,13 +549,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMxy(final double mxy) throws AlgebraException {
-<span class="fc" id="L551">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L552">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L554">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L555">        m.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L556">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L557">    }</span>
+<span class="fc" id="L555">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L556">        m.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L557">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L558">    }</span>
 
     /**
      * Gets x-z cross coupling error.
@@ -562,7 +563,7 @@ public class MagneticFluxDensityFixer {
      * @return x-z cross coupling error.
      */
     public double getMxz() {
-<span class="fc" id="L565">        return mCrossCouplingErrors.getElementAt(0, 2);</span>
+<span class="fc" id="L566">        return mCrossCouplingErrors.getElementAt(0, 2);</span>
     }
 
     /**
@@ -573,13 +574,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMxz(final double mxz) throws AlgebraException {
-<span class="fc" id="L576">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L577">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L579">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L580">        m.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L581">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L582">    }</span>
+<span class="fc" id="L580">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L581">        m.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L582">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L583">    }</span>
 
     /**
      * Gets y-x cross coupling error.
@@ -587,7 +588,7 @@ public class MagneticFluxDensityFixer {
      * @return y-x cross coupling error.
      */
     public double getMyx() {
-<span class="fc" id="L590">        return mCrossCouplingErrors.getElementAt(1, 0);</span>
+<span class="fc" id="L591">        return mCrossCouplingErrors.getElementAt(1, 0);</span>
     }
 
     /**
@@ -598,13 +599,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMyx(final double myx) throws AlgebraException {
-<span class="fc" id="L601">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L602">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L604">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L605">        m.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L606">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L607">    }</span>
+<span class="fc" id="L605">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L606">        m.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L607">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L608">    }</span>
 
     /**
      * Gets y-z cross coupling error.
@@ -612,7 +613,7 @@ public class MagneticFluxDensityFixer {
      * @return y-z cross coupling error.
      */
     public double getMyz() {
-<span class="fc" id="L615">        return mCrossCouplingErrors.getElementAt(1, 2);</span>
+<span class="fc" id="L616">        return mCrossCouplingErrors.getElementAt(1, 2);</span>
     }
 
     /**
@@ -623,13 +624,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMyz(final double myz) throws AlgebraException {
-<span class="fc" id="L626">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L627">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L629">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L630">        m.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L631">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L632">    }</span>
+<span class="fc" id="L630">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L631">        m.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L632">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L633">    }</span>
 
     /**
      * Gets z-x cross coupling error.
@@ -637,7 +638,7 @@ public class MagneticFluxDensityFixer {
      * @return z-x cross coupling error.
      */
     public double getMzx() {
-<span class="fc" id="L640">        return mCrossCouplingErrors.getElementAt(2, 0);</span>
+<span class="fc" id="L641">        return mCrossCouplingErrors.getElementAt(2, 0);</span>
     }
 
     /**
@@ -648,13 +649,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMzx(final double mzx) throws AlgebraException {
-<span class="fc" id="L651">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L652">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L654">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L655">        m.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L656">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L657">    }</span>
+<span class="fc" id="L655">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L656">        m.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L657">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L658">    }</span>
 
     /**
      * Gets z-y cross coupling error.
@@ -662,7 +663,7 @@ public class MagneticFluxDensityFixer {
      * @return z-y cross coupling error.
      */
     public double getMzy() {
-<span class="fc" id="L665">        return mCrossCouplingErrors.getElementAt(2, 1);</span>
+<span class="fc" id="L666">        return mCrossCouplingErrors.getElementAt(2, 1);</span>
     }
 
     /**
@@ -673,13 +674,13 @@ public class MagneticFluxDensityFixer {
      *                          non invertible.
      */
     public void setMzy(final double mzy) throws AlgebraException {
-<span class="fc" id="L676">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L677">        final Matrix m = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS,
                 MagneticFluxDensityTriad.COMPONENTS);
-<span class="fc" id="L679">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L680">        m.setElementAt(2, 1, mzy);</span>
-<span class="fc" id="L681">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L682">    }</span>
+<span class="fc" id="L680">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L681">        m.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L682">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L683">    }</span>
 
     /**
      * Sets scaling factors.
@@ -693,14 +694,14 @@ public class MagneticFluxDensityFixer {
     public void setScalingFactors(
             final double sx, final double sy, final double sz)
             throws AlgebraException {
-<span class="fc" id="L696">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L697">        final Matrix m = new Matrix(</span>
                 AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
-<span class="fc" id="L698">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L699">        m.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L700">        m.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L701">        m.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L702">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L703">    }</span>
+<span class="fc" id="L699">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L700">        m.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L701">        m.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L702">        m.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L703">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L704">    }</span>
 
     /**
      * Sets cross coupling errors.
@@ -718,17 +719,17 @@ public class MagneticFluxDensityFixer {
             final double mxy, final double mxz,
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
-<span class="fc" id="L721">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L722">        final Matrix m = new Matrix(</span>
                 AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
-<span class="fc" id="L723">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L724">        m.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L725">        m.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L726">        m.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L727">        m.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L728">        m.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L729">        m.setElementAt(2, 1, mzy);</span>
-<span class="fc" id="L730">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L731">    }</span>
+<span class="fc" id="L724">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L725">        m.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L726">        m.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L727">        m.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L728">        m.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L729">        m.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L730">        m.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L731">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L732">    }</span>
 
     /**
      * Sets scaling factors and cross coupling errors.
@@ -750,20 +751,20 @@ public class MagneticFluxDensityFixer {
             final double mxy, final double mxz,
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
-<span class="fc" id="L753">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L754">        final Matrix m = new Matrix(</span>
                 AccelerationTriad.COMPONENTS, AccelerationTriad.COMPONENTS);
-<span class="fc" id="L755">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L756">        m.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L757">        m.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L758">        m.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L759">        m.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L760">        m.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L761">        m.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L762">        m.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L763">        m.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L764">        m.setElementAt(2, 1, mzy);</span>
-<span class="fc" id="L765">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L766">    }</span>
+<span class="fc" id="L756">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L757">        m.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L758">        m.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L759">        m.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L760">        m.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L761">        m.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L762">        m.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L763">        m.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L764">        m.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L765">        m.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L766">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L767">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -780,12 +781,12 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(final BodyMagneticFluxDensity measuredB,
                     final double[] result) throws AlgebraException {
-<span class="fc bfc" id="L783" title="All 2 branches covered.">        if (result.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
-<span class="fc" id="L784">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L784" title="All 2 branches covered.">        if (result.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="fc" id="L785">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L787">        fix(measuredB.getBx(), measuredB.getBy(), measuredB.getBz(), result);</span>
-<span class="fc" id="L788">    }</span>
+<span class="fc" id="L788">        fix(measuredB.getBx(), measuredB.getBy(), measuredB.getBz(), result);</span>
+<span class="fc" id="L789">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -802,18 +803,18 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(final MagneticFluxDensityTriad measuredB,
                     final double[] result) throws AlgebraException {
-<span class="fc bfc" id="L805" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L806">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L806" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L807">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L809">        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(),</span>
-<span class="fc" id="L810">                measuredB.getUnit());</span>
-<span class="fc" id="L811">        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(),</span>
-<span class="fc" id="L812">                measuredB.getUnit());</span>
-<span class="fc" id="L813">        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(),</span>
-<span class="fc" id="L814">                measuredB.getUnit());</span>
-<span class="fc" id="L815">        fix(measuredBx, measuredBy, measuredBz, result);</span>
-<span class="fc" id="L816">    }</span>
+<span class="fc" id="L810">        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(),</span>
+<span class="fc" id="L811">                measuredB.getUnit());</span>
+<span class="fc" id="L812">        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(),</span>
+<span class="fc" id="L813">                measuredB.getUnit());</span>
+<span class="fc" id="L814">        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(),</span>
+<span class="fc" id="L815">                measuredB.getUnit());</span>
+<span class="fc" id="L816">        fix(measuredBx, measuredBy, measuredBz, result);</span>
+<span class="fc" id="L817">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -829,13 +830,13 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(final BodyMagneticFluxDensity measuredB,
                     final Matrix result) throws AlgebraException {
-<span class="fc bfc" id="L832" title="All 2 branches covered.">        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS</span>
-<span class="fc bfc" id="L833" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L834">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L833" title="All 2 branches covered.">        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS</span>
+<span class="fc bfc" id="L834" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L835">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L837">        fix(measuredB.getBx(), measuredB.getBy(), measuredB.getBz(), result);</span>
-<span class="fc" id="L838">    }</span>
+<span class="fc" id="L838">        fix(measuredB.getBx(), measuredB.getBy(), measuredB.getBz(), result);</span>
+<span class="fc" id="L839">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -851,19 +852,19 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(final MagneticFluxDensityTriad measuredB,
                     final Matrix result) throws AlgebraException {
-<span class="fc bfc" id="L854" title="All 2 branches covered.">        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS</span>
-<span class="fc bfc" id="L855" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L856">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L855" title="All 2 branches covered.">        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS</span>
+<span class="fc bfc" id="L856" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L857">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L859">        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(),</span>
-<span class="fc" id="L860">                measuredB.getUnit());</span>
-<span class="fc" id="L861">        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(),</span>
-<span class="fc" id="L862">                measuredB.getUnit());</span>
-<span class="fc" id="L863">        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(),</span>
-<span class="fc" id="L864">                measuredB.getUnit());</span>
-<span class="fc" id="L865">        fix(measuredBx, measuredBy, measuredBz, result);</span>
-<span class="fc" id="L866">    }</span>
+<span class="fc" id="L860">        final double measuredBx = convertMagneticFluxDensity(measuredB.getValueX(),</span>
+<span class="fc" id="L861">                measuredB.getUnit());</span>
+<span class="fc" id="L862">        final double measuredBy = convertMagneticFluxDensity(measuredB.getValueY(),</span>
+<span class="fc" id="L863">                measuredB.getUnit());</span>
+<span class="fc" id="L864">        final double measuredBz = convertMagneticFluxDensity(measuredB.getValueZ(),</span>
+<span class="fc" id="L865">                measuredB.getUnit());</span>
+<span class="fc" id="L866">        fix(measuredBx, measuredBy, measuredBz, result);</span>
+<span class="fc" id="L867">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -879,9 +880,9 @@ public class MagneticFluxDensityFixer {
     public void fix(final BodyMagneticFluxDensity measuredB,
                     final BodyMagneticFluxDensity result)
             throws AlgebraException {
-<span class="fc" id="L882">        fix(measuredB, mResult);</span>
-<span class="fc" id="L883">        result.setCoordinates(mResult[0], mResult[1], mResult[2]);</span>
-<span class="fc" id="L884">    }</span>
+<span class="fc" id="L883">        fix(measuredB, mResult);</span>
+<span class="fc" id="L884">        result.setCoordinates(mResult[0], mResult[1], mResult[2]);</span>
+<span class="fc" id="L885">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -897,10 +898,10 @@ public class MagneticFluxDensityFixer {
     public void fix(final MagneticFluxDensityTriad measuredB,
                     final MagneticFluxDensityTriad result)
             throws AlgebraException {
-<span class="fc" id="L900">        fix(measuredB, mResult);</span>
-<span class="fc" id="L901">        result.setValueCoordinates(mResult);</span>
-<span class="fc" id="L902">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L903">    }</span>
+<span class="fc" id="L901">        fix(measuredB, mResult);</span>
+<span class="fc" id="L902">        result.setValueCoordinates(mResult);</span>
+<span class="fc" id="L903">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L904">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -921,12 +922,12 @@ public class MagneticFluxDensityFixer {
                     final BodyMagneticFluxDensity result)
             throws AlgebraException {
 
-<span class="fc" id="L924">        final double bx = convertMagneticFluxDensity(measuredBx);</span>
-<span class="fc" id="L925">        final double by = convertMagneticFluxDensity(measuredBy);</span>
-<span class="fc" id="L926">        final double bz = convertMagneticFluxDensity(measuredBz);</span>
-<span class="fc" id="L927">        fix(bx, by, bz, mResult);</span>
-<span class="fc" id="L928">        result.setCoordinates(mResult[0], mResult[1], mResult[2]);</span>
-<span class="fc" id="L929">    }</span>
+<span class="fc" id="L925">        final double bx = convertMagneticFluxDensity(measuredBx);</span>
+<span class="fc" id="L926">        final double by = convertMagneticFluxDensity(measuredBy);</span>
+<span class="fc" id="L927">        final double bz = convertMagneticFluxDensity(measuredBz);</span>
+<span class="fc" id="L928">        fix(bx, by, bz, mResult);</span>
+<span class="fc" id="L929">        result.setCoordinates(mResult[0], mResult[1], mResult[2]);</span>
+<span class="fc" id="L930">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -947,13 +948,13 @@ public class MagneticFluxDensityFixer {
                     final MagneticFluxDensityTriad result)
             throws AlgebraException {
 
-<span class="fc" id="L950">        final double bx = convertMagneticFluxDensity(measuredBx);</span>
-<span class="fc" id="L951">        final double by = convertMagneticFluxDensity(measuredBy);</span>
-<span class="fc" id="L952">        final double bz = convertMagneticFluxDensity(measuredBz);</span>
-<span class="fc" id="L953">        fix(bx, by, bz, mResult);</span>
-<span class="fc" id="L954">        result.setValueCoordinates(mResult);</span>
-<span class="fc" id="L955">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L956">    }</span>
+<span class="fc" id="L951">        final double bx = convertMagneticFluxDensity(measuredBx);</span>
+<span class="fc" id="L952">        final double by = convertMagneticFluxDensity(measuredBy);</span>
+<span class="fc" id="L953">        final double bz = convertMagneticFluxDensity(measuredBz);</span>
+<span class="fc" id="L954">        fix(bx, by, bz, mResult);</span>
+<span class="fc" id="L955">        result.setValueCoordinates(mResult);</span>
+<span class="fc" id="L956">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L957">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -971,11 +972,11 @@ public class MagneticFluxDensityFixer {
      */
     public void fix(final double[] measuredB, final double[] result)
             throws AlgebraException {
-<span class="fc bfc" id="L974" title="All 2 branches covered.">        if (measuredB.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L975">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L975" title="All 2 branches covered.">        if (measuredB.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L976">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L977" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L978">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L978" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L979">            throw new IllegalArgumentException();</span>
         }
 
         // The magnetometer model is
@@ -987,17 +988,17 @@ public class MagneticFluxDensityFixer {
         // I is the 3x3 identity
         // Mm is the 3x3 cross couplings matrix
 
-        // Hecen:
+        // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
-<span class="fc bfc" id="L992" title="All 2 branches covered.">        for (int i = 0; i &lt; MagneticFluxDensityTriad.COMPONENTS; i++) {</span>
-<span class="fc" id="L993">            mDiff.setElementAtIndex(i,</span>
-<span class="fc" id="L994">                    measuredB[i] - mBias.getElementAtIndex(i));</span>
+<span class="fc bfc" id="L993" title="All 2 branches covered.">        for (int i = 0; i &lt; MagneticFluxDensityTriad.COMPONENTS; i++) {</span>
+<span class="fc" id="L994">            mDiff.setElementAtIndex(i,</span>
+<span class="fc" id="L995">                    measuredB[i] - mBias.getElementAtIndex(i));</span>
         }
 
-<span class="fc" id="L997">        mTmp2.multiply(mDiff, mTmp3);</span>
+<span class="fc" id="L998">        mTmp2.multiply(mDiff, mTmp3);</span>
 
-<span class="fc" id="L999">        mTmp3.toArray(result);</span>
-<span class="fc" id="L1000">    }</span>
+<span class="fc" id="L1000">        mTmp3.toArray(result);</span>
+<span class="fc" id="L1001">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1016,13 +1017,13 @@ public class MagneticFluxDensityFixer {
     public void fix(final Matrix measuredB, final double[] result)
             throws AlgebraException {
 
-<span class="fc bfc" id="L1019" title="All 2 branches covered.">        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1020" title="All 2 branches covered.">                || measuredB.getColumns() != 1) {</span>
-<span class="fc" id="L1021">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1020" title="All 2 branches covered.">        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1021" title="All 2 branches covered.">                || measuredB.getColumns() != 1) {</span>
+<span class="fc" id="L1022">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1024">        fix(measuredB.getBuffer(), result);</span>
-<span class="fc" id="L1025">    }</span>
+<span class="fc" id="L1025">        fix(measuredB.getBuffer(), result);</span>
+<span class="fc" id="L1026">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1041,13 +1042,13 @@ public class MagneticFluxDensityFixer {
     public void fix(final Matrix measuredB, final Matrix result)
             throws AlgebraException {
 
-<span class="fc bfc" id="L1044" title="All 2 branches covered.">        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1045" title="All 2 branches covered.">                || measuredB.getColumns() != 1) {</span>
-<span class="fc" id="L1046">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1045" title="All 2 branches covered.">        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1046" title="All 2 branches covered.">                || measuredB.getColumns() != 1) {</span>
+<span class="fc" id="L1047">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1049">        fix(measuredB, result.getBuffer());</span>
-<span class="fc" id="L1050">    }</span>
+<span class="fc" id="L1050">        fix(measuredB, result.getBuffer());</span>
+<span class="fc" id="L1051">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1071,12 +1072,12 @@ public class MagneticFluxDensityFixer {
             final double measuredBx, final double measuredBy, final double measuredBz,
             final double[] result) throws AlgebraException {
 
-<span class="fc" id="L1074">        mMeasuredB[0] = measuredBx;</span>
-<span class="fc" id="L1075">        mMeasuredB[1] = measuredBy;</span>
-<span class="fc" id="L1076">        mMeasuredB[2] = measuredBz;</span>
+<span class="fc" id="L1075">        mMeasuredB[0] = measuredBx;</span>
+<span class="fc" id="L1076">        mMeasuredB[1] = measuredBy;</span>
+<span class="fc" id="L1077">        mMeasuredB[2] = measuredBz;</span>
 
-<span class="fc" id="L1078">        fix(mMeasuredB, result);</span>
-<span class="fc" id="L1079">    }</span>
+<span class="fc" id="L1079">        fix(mMeasuredB, result);</span>
+<span class="fc" id="L1080">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1099,13 +1100,13 @@ public class MagneticFluxDensityFixer {
             final double measuredBx, final double measuredBy, final double measuredBz,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1102" title="All 2 branches covered.">        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1103" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1104">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1103" title="All 2 branches covered.">        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1104" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1105">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1107">        fix(measuredBx, measuredBy, measuredBz, result.getBuffer());</span>
-<span class="fc" id="L1108">    }</span>
+<span class="fc" id="L1108">        fix(measuredBx, measuredBy, measuredBz, result.getBuffer());</span>
+<span class="fc" id="L1109">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1128,19 +1129,19 @@ public class MagneticFluxDensityFixer {
             final double[] measuredB, final Matrix bias,
             final Matrix crossCouplingErrors, final double[] result)
             throws AlgebraException {
-<span class="fc bfc" id="L1131" title="All 2 branches covered.">        if (measuredB.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L1132">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1132" title="All 2 branches covered.">        if (measuredB.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L1133">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1134" title="All 2 branches covered.">        if (bias.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1135" title="All 2 branches covered.">                || bias.getColumns() != 1) {</span>
-<span class="fc" id="L1136">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1135" title="All 2 branches covered.">        if (bias.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1136" title="All 2 branches covered.">                || bias.getColumns() != 1) {</span>
+<span class="fc" id="L1137">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1138" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1139" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L1140">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1139" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1140" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L1141">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1142" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
-<span class="fc" id="L1143">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1143" title="All 2 branches covered.">        if (result.length != MagneticFluxDensityTriad.COMPONENTS) {</span>
+<span class="fc" id="L1144">            throw new IllegalArgumentException();</span>
         }
 
         // The magnetometer model is
@@ -1152,21 +1153,21 @@ public class MagneticFluxDensityFixer {
         // I is the 3x3 identity
         // Mm is the 3x3 cross couplings matrix
 
-        // Hecen:
+        // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
-<span class="fc" id="L1157">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
+<span class="fc" id="L1158">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
 
-<span class="fc" id="L1159">        Utils.inverse(mTmp1, mTmp2);</span>
+<span class="fc" id="L1160">        Utils.inverse(mTmp1, mTmp2);</span>
 
-<span class="fc bfc" id="L1161" title="All 2 branches covered.">        for (int i = 0; i &lt; MagneticFluxDensityTriad.COMPONENTS; i++) {</span>
-<span class="fc" id="L1162">            mDiff.setElementAtIndex(i,</span>
-<span class="fc" id="L1163">                    measuredB[i] - bias.getElementAtIndex(i));</span>
+<span class="fc bfc" id="L1162" title="All 2 branches covered.">        for (int i = 0; i &lt; MagneticFluxDensityTriad.COMPONENTS; i++) {</span>
+<span class="fc" id="L1163">            mDiff.setElementAtIndex(i,</span>
+<span class="fc" id="L1164">                    measuredB[i] - bias.getElementAtIndex(i));</span>
         }
 
-<span class="fc" id="L1166">        mTmp2.multiply(mDiff, mTmp3);</span>
+<span class="fc" id="L1167">        mTmp2.multiply(mDiff, mTmp3);</span>
 
-<span class="fc" id="L1168">        mTmp3.toArray(result);</span>
-<span class="fc" id="L1169">    }</span>
+<span class="fc" id="L1169">        mTmp3.toArray(result);</span>
+<span class="fc" id="L1170">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1190,13 +1191,13 @@ public class MagneticFluxDensityFixer {
             final Matrix crossCouplingErrors, final double[] result)
             throws AlgebraException {
 
-<span class="fc bfc" id="L1193" title="All 2 branches covered.">        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1194" title="All 2 branches covered.">                || measuredB.getColumns() != 1) {</span>
-<span class="fc" id="L1195">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1194" title="All 2 branches covered.">        if (measuredB.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1195" title="All 2 branches covered.">                || measuredB.getColumns() != 1) {</span>
+<span class="fc" id="L1196">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1198">        fix(measuredB.getBuffer(), bias, crossCouplingErrors, result);</span>
-<span class="fc" id="L1199">    }</span>
+<span class="fc" id="L1199">        fix(measuredB.getBuffer(), bias, crossCouplingErrors, result);</span>
+<span class="fc" id="L1200">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1220,13 +1221,13 @@ public class MagneticFluxDensityFixer {
             final Matrix crossCouplingErrors, final Matrix result)
             throws AlgebraException {
 
-<span class="fc bfc" id="L1223" title="All 2 branches covered.">        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="fc bfc" id="L1224" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1225">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1224" title="All 2 branches covered.">        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="fc bfc" id="L1225" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1226">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1228">        fix(measuredB, bias, crossCouplingErrors, result.getBuffer());</span>
-<span class="fc" id="L1229">    }</span>
+<span class="fc" id="L1229">        fix(measuredB, bias, crossCouplingErrors, result.getBuffer());</span>
+<span class="fc" id="L1230">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1256,16 +1257,16 @@ public class MagneticFluxDensityFixer {
             final Matrix crossCouplingErrors,
             final double[] result) throws AlgebraException {
 
-<span class="fc" id="L1259">        mMeasuredB[0] = measuredBx;</span>
-<span class="fc" id="L1260">        mMeasuredB[1] = measuredBy;</span>
-<span class="fc" id="L1261">        mMeasuredB[2] = measuredBz;</span>
+<span class="fc" id="L1260">        mMeasuredB[0] = measuredBx;</span>
+<span class="fc" id="L1261">        mMeasuredB[1] = measuredBy;</span>
+<span class="fc" id="L1262">        mMeasuredB[2] = measuredBz;</span>
 
-<span class="fc" id="L1263">        mBias.setElementAtIndex(0, biasX);</span>
-<span class="fc" id="L1264">        mBias.setElementAtIndex(1, biasY);</span>
-<span class="fc" id="L1265">        mBias.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L1264">        mBias.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L1265">        mBias.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L1266">        mBias.setElementAtIndex(2, biasZ);</span>
 
-<span class="fc" id="L1267">        fix(mMeasuredB, mBias, crossCouplingErrors, result);</span>
-<span class="fc" id="L1268">    }</span>
+<span class="fc" id="L1268">        fix(mMeasuredB, mBias, crossCouplingErrors, result);</span>
+<span class="fc" id="L1269">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1295,14 +1296,14 @@ public class MagneticFluxDensityFixer {
             final Matrix crossCouplingErrors, final Matrix result)
             throws AlgebraException {
 
-<span class="fc bfc" id="L1298" title="All 2 branches covered.">        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
-<span class="pc bpc" id="L1299" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1300">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1299" title="All 2 branches covered.">        if (result.getRows() != MagneticFluxDensityTriad.COMPONENTS</span>
+<span class="pc bpc" id="L1300" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1301">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1303">        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors,</span>
-<span class="fc" id="L1304">                result.getBuffer());</span>
-<span class="fc" id="L1305">    }</span>
+<span class="fc" id="L1304">        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ, crossCouplingErrors,</span>
+<span class="fc" id="L1305">                result.getBuffer());</span>
+<span class="fc" id="L1306">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1342,19 +1343,19 @@ public class MagneticFluxDensityFixer {
             final double mzx, final double mzy,
             final double[] result) throws AlgebraException {
 
-<span class="fc" id="L1345">        mCrossCouplingErrors.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L1346">        mCrossCouplingErrors.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L1347">        mCrossCouplingErrors.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L1348">        mCrossCouplingErrors.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L1349">        mCrossCouplingErrors.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L1350">        mCrossCouplingErrors.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L1351">        mCrossCouplingErrors.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L1352">        mCrossCouplingErrors.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L1353">        mCrossCouplingErrors.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L1346">        mCrossCouplingErrors.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L1347">        mCrossCouplingErrors.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L1348">        mCrossCouplingErrors.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L1349">        mCrossCouplingErrors.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L1350">        mCrossCouplingErrors.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L1351">        mCrossCouplingErrors.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L1352">        mCrossCouplingErrors.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L1353">        mCrossCouplingErrors.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L1354">        mCrossCouplingErrors.setElementAt(2, 1, mzy);</span>
 
-<span class="fc" id="L1355">        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,</span>
+<span class="fc" id="L1356">        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,</span>
                 mCrossCouplingErrors, result);
-<span class="fc" id="L1357">    }</span>
+<span class="fc" id="L1358">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1394,14 +1395,14 @@ public class MagneticFluxDensityFixer {
             final double mzx, final double mzy,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1397" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1398" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1399">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1398" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1399" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1400">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1402">        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,</span>
-<span class="fc" id="L1403">                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result.getBuffer());</span>
-<span class="fc" id="L1404">    }</span>
+<span class="fc" id="L1403">        fix(measuredBx, measuredBy, measuredBz, biasX, biasY, biasZ,</span>
+<span class="fc" id="L1404">                sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy, result.getBuffer());</span>
+<span class="fc" id="L1405">    }</span>
 
     /**
      * Fixes provided measured body magnetic flux density values by undoing the
@@ -1415,9 +1416,9 @@ public class MagneticFluxDensityFixer {
      */
     public MagneticFluxDensityTriad fixAndReturnNew(
             final MagneticFluxDensityTriad measuredB) throws AlgebraException {
-<span class="fc" id="L1418">        final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();</span>
-<span class="fc" id="L1419">        fix(measuredB, result);</span>
-<span class="fc" id="L1420">        return result;</span>
+<span class="fc" id="L1419">        final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();</span>
+<span class="fc" id="L1420">        fix(measuredB, result);</span>
+<span class="fc" id="L1421">        return result;</span>
     }
 
     /**
@@ -1436,9 +1437,9 @@ public class MagneticFluxDensityFixer {
             final MagneticFluxDensity measuredBx,
             final MagneticFluxDensity measuredBy,
             final MagneticFluxDensity measuredBz) throws AlgebraException {
-<span class="fc" id="L1439">        final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();</span>
-<span class="fc" id="L1440">        fix(measuredBx, measuredBy, measuredBz, result);</span>
-<span class="fc" id="L1441">        return result;</span>
+<span class="fc" id="L1440">        final MagneticFluxDensityTriad result = new MagneticFluxDensityTriad();</span>
+<span class="fc" id="L1441">        fix(measuredBx, measuredBy, measuredBz, result);</span>
+<span class="fc" id="L1442">        return result;</span>
     }
 
     /**
@@ -1456,9 +1457,9 @@ public class MagneticFluxDensityFixer {
     public double[] fixAndReturnNew(
             final double[] measuredB) throws AlgebraException {
 
-<span class="fc" id="L1459">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1460">        fix(measuredB, result);</span>
-<span class="fc" id="L1461">        return result;</span>
+<span class="fc" id="L1460">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1461">        fix(measuredB, result);</span>
+<span class="fc" id="L1462">        return result;</span>
     }
 
     /**
@@ -1476,9 +1477,9 @@ public class MagneticFluxDensityFixer {
     public double[] fixAndReturnNew(final Matrix measuredB)
             throws AlgebraException {
 
-<span class="fc" id="L1479">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1480">        fix(measuredB, result);</span>
-<span class="fc" id="L1481">        return result;</span>
+<span class="fc" id="L1480">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1481">        fix(measuredB, result);</span>
+<span class="fc" id="L1482">        return result;</span>
     }
 
     /**
@@ -1496,10 +1497,10 @@ public class MagneticFluxDensityFixer {
     public Matrix fixAndReturnNewMatrix(final Matrix measuredB)
             throws AlgebraException {
 
-<span class="fc" id="L1499">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1500">        final Matrix result = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS, 1);
-<span class="fc" id="L1501">        fix(measuredB, result);</span>
-<span class="fc" id="L1502">        return result;</span>
+<span class="fc" id="L1502">        fix(measuredB, result);</span>
+<span class="fc" id="L1503">        return result;</span>
     }
 
     /**
@@ -1520,9 +1521,9 @@ public class MagneticFluxDensityFixer {
     public double[] fixAndReturnNew(
             final double measuredBx, final double measuredBy, final double measuredBz)
             throws AlgebraException {
-<span class="fc" id="L1523">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1524">        fix(measuredBx, measuredBy, measuredBz, result);</span>
-<span class="fc" id="L1525">        return result;</span>
+<span class="fc" id="L1524">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1525">        fix(measuredBx, measuredBy, measuredBz, result);</span>
+<span class="fc" id="L1526">        return result;</span>
     }
 
     /**
@@ -1543,10 +1544,10 @@ public class MagneticFluxDensityFixer {
     public Matrix fixAndReturnNewMatrix(
             final double measuredBx, final double measuredBy, final double measuredBz)
             throws AlgebraException {
-<span class="fc" id="L1546">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1547">        final Matrix result = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS, 1);
-<span class="fc" id="L1548">        fix(measuredBx, measuredBy, measuredBz, result);</span>
-<span class="fc" id="L1549">        return result;</span>
+<span class="fc" id="L1549">        fix(measuredBx, measuredBy, measuredBz, result);</span>
+<span class="fc" id="L1550">        return result;</span>
     }
 
     /**
@@ -1568,9 +1569,9 @@ public class MagneticFluxDensityFixer {
             final double[] measuredB, final Matrix bias,
             final Matrix crossCouplingErrors) throws AlgebraException {
 
-<span class="fc" id="L1571">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1572">        fix(measuredB, bias, crossCouplingErrors, result);</span>
-<span class="fc" id="L1573">        return result;</span>
+<span class="fc" id="L1572">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1573">        fix(measuredB, bias, crossCouplingErrors, result);</span>
+<span class="fc" id="L1574">        return result;</span>
     }
 
     /**
@@ -1592,9 +1593,9 @@ public class MagneticFluxDensityFixer {
             final Matrix measuredB, final Matrix bias,
             final Matrix crossCouplingErrors) throws AlgebraException {
 
-<span class="fc" id="L1595">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1596">        fix(measuredB, bias, crossCouplingErrors, result);</span>
-<span class="fc" id="L1597">        return result;</span>
+<span class="fc" id="L1596">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1597">        fix(measuredB, bias, crossCouplingErrors, result);</span>
+<span class="fc" id="L1598">        return result;</span>
     }
 
     /**
@@ -1616,10 +1617,10 @@ public class MagneticFluxDensityFixer {
             final Matrix measuredB, final Matrix bias,
             final Matrix crossCouplingErrors) throws AlgebraException {
 
-<span class="fc" id="L1619">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1620">        final Matrix result = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS, 1);
-<span class="fc" id="L1621">        fix(measuredB, bias, crossCouplingErrors, result);</span>
-<span class="fc" id="L1622">        return result;</span>
+<span class="fc" id="L1622">        fix(measuredB, bias, crossCouplingErrors, result);</span>
+<span class="fc" id="L1623">        return result;</span>
     }
 
     /**
@@ -1648,10 +1649,10 @@ public class MagneticFluxDensityFixer {
             final double biasX, final double biasY, final double biasZ,
             final Matrix crossCouplingErrors) throws AlgebraException {
 
-<span class="fc" id="L1651">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1652">        fix(measuredBx, measuredBy, measuredBz,</span>
+<span class="fc" id="L1652">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1653">        fix(measuredBx, measuredBy, measuredBz,</span>
                 biasX, biasY, biasZ, crossCouplingErrors, result);
-<span class="fc" id="L1654">        return result;</span>
+<span class="fc" id="L1655">        return result;</span>
     }
 
     /**
@@ -1680,12 +1681,12 @@ public class MagneticFluxDensityFixer {
             final double biasX, final double biasY, final double biasZ,
             final Matrix crossCouplingErrors) throws AlgebraException {
 
-<span class="fc" id="L1683">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1684">        final Matrix result = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS, 1);
-<span class="fc" id="L1685">        fix(measuredBx, measuredBy, measuredBz,</span>
+<span class="fc" id="L1686">        fix(measuredBx, measuredBy, measuredBz,</span>
                 biasX, biasY, biasZ,
                 crossCouplingErrors, result);
-<span class="fc" id="L1688">        return result;</span>
+<span class="fc" id="L1689">        return result;</span>
     }
 
     /**
@@ -1723,14 +1724,14 @@ public class MagneticFluxDensityFixer {
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
 
-<span class="fc" id="L1726">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
-<span class="fc" id="L1727">        fix(measuredBx, measuredBy, measuredBz,</span>
+<span class="fc" id="L1727">        final double[] result = new double[MagneticFluxDensityTriad.COMPONENTS];</span>
+<span class="fc" id="L1728">        fix(measuredBx, measuredBy, measuredBz,</span>
                 biasX, biasY, biasZ,
                 sx, sy, sz,
                 mxy, mxz,
                 myx, myz,
                 mzx, mzy, result);
-<span class="fc" id="L1733">        return result;</span>
+<span class="fc" id="L1734">        return result;</span>
     }
 
     /**
@@ -1768,15 +1769,15 @@ public class MagneticFluxDensityFixer {
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
 
-<span class="fc" id="L1771">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1772">        final Matrix result = new Matrix(</span>
                 MagneticFluxDensityTriad.COMPONENTS, 1);
-<span class="fc" id="L1773">        fix(measuredBx, measuredBy, measuredBz,</span>
+<span class="fc" id="L1774">        fix(measuredBx, measuredBy, measuredBz,</span>
                 biasX, biasY, biasZ,
                 sx, sy, sz,
                 mxy, mxz,
                 myx, myz,
                 mzx, mzy, result);
-<span class="fc" id="L1779">        return result;</span>
+<span class="fc" id="L1780">        return result;</span>
     }
 
     /**
@@ -1788,7 +1789,7 @@ public class MagneticFluxDensityFixer {
      */
     private static double convertMagneticFluxDensity(
             final double value, final MagneticFluxDensityUnit unit) {
-<span class="fc" id="L1791">        return MagneticFluxDensityConverter.convert(value, unit,</span>
+<span class="fc" id="L1792">        return MagneticFluxDensityConverter.convert(value, unit,</span>
                 MagneticFluxDensityUnit.TESLA);
     }
 
@@ -1799,8 +1800,8 @@ public class MagneticFluxDensityFixer {
      * @return converted value.
      */
     public static double convertMagneticFluxDensity(final MagneticFluxDensity b) {
-<span class="fc" id="L1802">        return convertMagneticFluxDensity(b.getValue().doubleValue(),</span>
-<span class="fc" id="L1803">                b.getUnit());</span>
+<span class="fc" id="L1803">        return convertMagneticFluxDensity(b.getValue().doubleValue(),</span>
+<span class="fc" id="L1804">                b.getUnit());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

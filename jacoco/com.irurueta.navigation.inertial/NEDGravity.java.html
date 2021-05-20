@@ -30,9 +30,9 @@ import java.util.Objects;
 public class NEDGravity implements Serializable, Cloneable {
 
     /**
-     * Acceleration due to gravity through east-naxis of NED frame expressed in meters per squared second (m/s^2).
+     * Acceleration due to gravity through east-axis of NED frame expressed in meters per squared second (m/s^2).
      */
-<span class="fc" id="L35">    public static double GRAVITY_EAST = 0.0;</span>
+    public static final double GRAVITY_EAST = 0.0;
 
     /**
      * Number of components.
@@ -320,19 +320,20 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param result matrix instance where gravity coordinates will be stored in
      *               n,e,d order.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public void asMatrix(final Matrix result) {
-<span class="pc bpc" id="L324" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
+<span class="pc bpc" id="L325" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
             try {
-<span class="fc" id="L326">                result.resize(COMPONENTS, 1);</span>
-<span class="nc" id="L327">            } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L327">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L328">            } catch (final WrongSizeException ignore) {</span>
                 // never happens
-<span class="fc" id="L329">            }</span>
+<span class="fc" id="L330">            }</span>
         }
 
-<span class="fc" id="L332">        result.setElementAtIndex(0, mGn);</span>
-<span class="fc" id="L333">        result.setElementAtIndex(1, GRAVITY_EAST);</span>
-<span class="fc" id="L334">        result.setElementAtIndex(2, mGd);</span>
-<span class="fc" id="L335">    }</span>
+<span class="fc" id="L333">        result.setElementAtIndex(0, mGn);</span>
+<span class="fc" id="L334">        result.setElementAtIndex(1, GRAVITY_EAST);</span>
+<span class="fc" id="L335">        result.setElementAtIndex(2, mGd);</span>
+<span class="fc" id="L336">    }</span>
 
     /**
      * Gets gravity coordinates as a column matrix.
@@ -342,13 +343,13 @@ public class NEDGravity implements Serializable, Cloneable {
     public Matrix asMatrix() {
         Matrix result;
         try {
-<span class="fc" id="L345">            result = new Matrix(COMPONENTS, 1);</span>
-<span class="fc" id="L346">            asMatrix(result);</span>
-<span class="nc" id="L347">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L346">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L347">            asMatrix(result);</span>
+<span class="nc" id="L348">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="nc" id="L349">            result = null;</span>
-<span class="fc" id="L350">        }</span>
-<span class="fc" id="L351">        return result;</span>
+<span class="nc" id="L350">            result = null;</span>
+<span class="fc" id="L351">        }</span>
+<span class="fc" id="L352">        return result;</span>
     }
 
     /**
@@ -359,7 +360,7 @@ public class NEDGravity implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L362">        return Objects.hash(mGn, mGd);</span>
+<span class="fc" id="L363">        return Objects.hash(mGn, mGd);</span>
     }
 
     /**
@@ -371,18 +372,18 @@ public class NEDGravity implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-<span class="fc bfc" id="L374" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc" id="L375">            return false;</span>
+<span class="fc bfc" id="L375" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc" id="L376">            return false;</span>
         }
-<span class="fc bfc" id="L377" title="All 2 branches covered.">        if (obj == this) {</span>
-<span class="fc" id="L378">            return true;</span>
+<span class="fc bfc" id="L378" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L379">            return true;</span>
         }
-<span class="fc bfc" id="L380" title="All 2 branches covered.">        if (!(obj instanceof NEDGravity)) {</span>
-<span class="fc" id="L381">            return false;</span>
+<span class="fc bfc" id="L381" title="All 2 branches covered.">        if (!(obj instanceof NEDGravity)) {</span>
+<span class="fc" id="L382">            return false;</span>
         }
 
-<span class="fc" id="L384">        final NEDGravity other = (NEDGravity) obj;</span>
-<span class="fc" id="L385">        return equals(other);</span>
+<span class="fc" id="L385">        final NEDGravity other = (NEDGravity) obj;</span>
+<span class="fc" id="L386">        return equals(other);</span>
     }
 
     /**
@@ -392,7 +393,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final NEDGravity other) {
-<span class="fc" id="L395">        return equals(other, 0.0);</span>
+<span class="fc" id="L396">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -405,12 +406,12 @@ public class NEDGravity implements Serializable, Cloneable {
      * threshold), false otherwise.
      */
     public boolean equals(final NEDGravity other, final double threshold) {
-<span class="fc bfc" id="L408" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L409">            return false;</span>
+<span class="fc bfc" id="L409" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L410">            return false;</span>
         }
 
-<span class="fc bfc" id="L412" title="All 2 branches covered.">        return Math.abs(mGn - other.mGn) &lt;= threshold</span>
-<span class="pc bpc" id="L413" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGd - other.mGd) &lt;= threshold;</span>
+<span class="fc bfc" id="L413" title="All 2 branches covered.">        return Math.abs(mGn - other.mGn) &lt;= threshold</span>
+<span class="pc bpc" id="L414" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGd - other.mGd) &lt;= threshold;</span>
     }
 
     /**
@@ -421,9 +422,9 @@ public class NEDGravity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L424">        final NEDGravity result = (NEDGravity) super.clone();</span>
-<span class="fc" id="L425">        copyTo(result);</span>
-<span class="fc" id="L426">        return result;</span>
+<span class="fc" id="L425">        final NEDGravity result = (NEDGravity) super.clone();</span>
+<span class="fc" id="L426">        copyTo(result);</span>
+<span class="fc" id="L427">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

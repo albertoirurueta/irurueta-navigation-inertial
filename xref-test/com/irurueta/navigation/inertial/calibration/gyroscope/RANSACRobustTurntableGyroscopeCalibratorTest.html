@@ -80,7 +80,7 @@
 <a class="jxr_linenumber" name="L72" href="#L72">72</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MAX_ANGLE_DEGREES = 180.0;
 <a class="jxr_linenumber" name="L73" href="#L73">73</a>  
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MIN_LATITUDE_DEGREES = -90.0;
-<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MAX_LATITUDE_DEGREEs = 90.0;
+<a class="jxr_linenumber" name="L75" href="#L75">75</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MAX_LATITUDE_DEGREES = 90.0;
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MIN_LONGITUDE_DEGREES = -180.0;
 <a class="jxr_linenumber" name="L77" href="#L77">77</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MAX_LONGITUDE_DEGREES = 180.0;
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>      <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> MIN_HEIGHT = -50.0;
@@ -335,7 +335,7 @@
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor2() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L328" href="#L328">328</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L329" href="#L329">329</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L331" href="#L331">331</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L332" href="#L332">332</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -650,7 +650,7 @@
 <a class="jxr_linenumber" name="L642" href="#L642">642</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor3() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L643" href="#L643">643</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L644" href="#L644">644</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L645" href="#L645">645</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L646" href="#L646">646</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L647" href="#L647">647</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L648" href="#L648">648</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -971,7 +971,7 @@
 <a class="jxr_linenumber" name="L963" href="#L963">963</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor4() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L964" href="#L964">964</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L965" href="#L965">965</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L966" href="#L966">966</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L966" href="#L966">966</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L967" href="#L967">967</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L968" href="#L968">968</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L969" href="#L969">969</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -1280,7 +1280,7 @@
 <a class="jxr_linenumber" name="L1272" href="#L1272">1272</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor5() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L1273" href="#L1273">1273</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L1274" href="#L1274">1274</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L1275" href="#L1275">1275</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L1275" href="#L1275">1275</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L1276" href="#L1276">1276</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L1277" href="#L1277">1277</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L1278" href="#L1278">1278</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -1590,7 +1590,7 @@
 <a class="jxr_linenumber" name="L1582" href="#L1582">1582</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor6() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L1583" href="#L1583">1583</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L1584" href="#L1584">1584</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L1585" href="#L1585">1585</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L1585" href="#L1585">1585</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L1586" href="#L1586">1586</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L1587" href="#L1587">1587</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L1588" href="#L1588">1588</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -1943,7 +1943,7 @@
 <a class="jxr_linenumber" name="L1935" href="#L1935">1935</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor7() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L1936" href="#L1936">1936</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L1937" href="#L1937">1937</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L1938" href="#L1938">1938</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L1938" href="#L1938">1938</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L1939" href="#L1939">1939</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L1940" href="#L1940">1940</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L1941" href="#L1941">1941</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -2296,7 +2296,7 @@
 <a class="jxr_linenumber" name="L2288" href="#L2288">2288</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor8() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L2289" href="#L2289">2289</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L2290" href="#L2290">2290</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L2291" href="#L2291">2291</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L2291" href="#L2291">2291</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L2292" href="#L2292">2292</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L2293" href="#L2293">2293</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L2294" href="#L2294">2294</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -2659,7 +2659,7 @@
 <a class="jxr_linenumber" name="L2651" href="#L2651">2651</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor9() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L2652" href="#L2652">2652</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L2653" href="#L2653">2653</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L2654" href="#L2654">2654</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L2654" href="#L2654">2654</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L2655" href="#L2655">2655</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L2656" href="#L2656">2656</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L2657" href="#L2657">2657</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -3022,7 +3022,7 @@
 <a class="jxr_linenumber" name="L3014" href="#L3014">3014</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor10() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L3015" href="#L3015">3015</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L3016" href="#L3016">3016</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L3017" href="#L3017">3017</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L3017" href="#L3017">3017</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3018" href="#L3018">3018</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L3019" href="#L3019">3019</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3020" href="#L3020">3020</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -3351,7 +3351,7 @@
 <a class="jxr_linenumber" name="L3343" href="#L3343">3343</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor11() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L3344" href="#L3344">3344</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L3345" href="#L3345">3345</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L3346" href="#L3346">3346</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L3346" href="#L3346">3346</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3347" href="#L3347">3347</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L3348" href="#L3348">3348</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3349" href="#L3349">3349</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -3682,7 +3682,7 @@
 <a class="jxr_linenumber" name="L3674" href="#L3674">3674</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor12() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L3675" href="#L3675">3675</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L3676" href="#L3676">3676</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L3677" href="#L3677">3677</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L3677" href="#L3677">3677</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3678" href="#L3678">3678</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L3679" href="#L3679">3679</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3680" href="#L3680">3680</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -4003,7 +4003,7 @@
 <a class="jxr_linenumber" name="L3995" href="#L3995">3995</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor13() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L3996" href="#L3996">3996</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L3997" href="#L3997">3997</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L3998" href="#L3998">3998</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L3998" href="#L3998">3998</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L3999" href="#L3999">3999</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L4000" href="#L4000">4000</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L4001" href="#L4001">4001</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -4325,7 +4325,7 @@
 <a class="jxr_linenumber" name="L4317" href="#L4317">4317</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor14() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L4318" href="#L4318">4318</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L4319" href="#L4319">4319</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L4320" href="#L4320">4320</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L4320" href="#L4320">4320</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L4321" href="#L4321">4321</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L4322" href="#L4322">4322</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L4323" href="#L4323">4323</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -4696,7 +4696,7 @@
 <a class="jxr_linenumber" name="L4688" href="#L4688">4688</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor15() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L4689" href="#L4689">4689</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L4690" href="#L4690">4690</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L4691" href="#L4691">4691</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L4691" href="#L4691">4691</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L4692" href="#L4692">4692</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L4693" href="#L4693">4693</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L4694" href="#L4694">4694</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -5072,7 +5072,7 @@
 <a class="jxr_linenumber" name="L5064" href="#L5064">5064</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor16() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L5065" href="#L5065">5065</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L5066" href="#L5066">5066</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L5067" href="#L5067">5067</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L5067" href="#L5067">5067</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L5068" href="#L5068">5068</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L5069" href="#L5069">5069</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L5070" href="#L5070">5070</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -5461,7 +5461,7 @@
 <a class="jxr_linenumber" name="L5453" href="#L5453">5453</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor17() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L5454" href="#L5454">5454</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L5455" href="#L5455">5455</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L5456" href="#L5456">5456</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L5456" href="#L5456">5456</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L5457" href="#L5457">5457</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L5458" href="#L5458">5458</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L5459" href="#L5459">5459</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -5850,7 +5850,7 @@
 <a class="jxr_linenumber" name="L5842" href="#L5842">5842</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor18() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L5843" href="#L5843">5843</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L5844" href="#L5844">5844</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L5845" href="#L5845">5845</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L5845" href="#L5845">5845</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L5846" href="#L5846">5846</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L5847" href="#L5847">5847</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L5848" href="#L5848">5848</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -6165,7 +6165,7 @@
 <a class="jxr_linenumber" name="L6157" href="#L6157">6157</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor19() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L6158" href="#L6158">6158</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L6159" href="#L6159">6159</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L6160" href="#L6160">6160</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L6160" href="#L6160">6160</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L6161" href="#L6161">6161</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L6162" href="#L6162">6162</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L6163" href="#L6163">6163</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -6486,7 +6486,7 @@
 <a class="jxr_linenumber" name="L6478" href="#L6478">6478</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor20() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L6479" href="#L6479">6479</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L6480" href="#L6480">6480</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L6481" href="#L6481">6481</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L6481" href="#L6481">6481</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L6482" href="#L6482">6482</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L6483" href="#L6483">6483</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L6484" href="#L6484">6484</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -6795,7 +6795,7 @@
 <a class="jxr_linenumber" name="L6787" href="#L6787">6787</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor21() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L6788" href="#L6788">6788</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L6789" href="#L6789">6789</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L6790" href="#L6790">6790</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L6790" href="#L6790">6790</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L6791" href="#L6791">6791</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L6792" href="#L6792">6792</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L6793" href="#L6793">6793</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -7105,7 +7105,7 @@
 <a class="jxr_linenumber" name="L7097" href="#L7097">7097</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor22() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L7098" href="#L7098">7098</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L7099" href="#L7099">7099</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L7100" href="#L7100">7100</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L7100" href="#L7100">7100</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L7101" href="#L7101">7101</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L7102" href="#L7102">7102</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L7103" href="#L7103">7103</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -7458,7 +7458,7 @@
 <a class="jxr_linenumber" name="L7450" href="#L7450">7450</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor23() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L7451" href="#L7451">7451</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L7452" href="#L7452">7452</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L7453" href="#L7453">7453</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L7453" href="#L7453">7453</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L7454" href="#L7454">7454</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L7455" href="#L7455">7455</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L7456" href="#L7456">7456</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -7811,7 +7811,7 @@
 <a class="jxr_linenumber" name="L7803" href="#L7803">7803</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor24() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L7804" href="#L7804">7804</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L7805" href="#L7805">7805</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L7806" href="#L7806">7806</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L7806" href="#L7806">7806</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L7807" href="#L7807">7807</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L7808" href="#L7808">7808</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L7809" href="#L7809">7809</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -8174,7 +8174,7 @@
 <a class="jxr_linenumber" name="L8166" href="#L8166">8166</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor25() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L8167" href="#L8167">8167</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L8168" href="#L8168">8168</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L8169" href="#L8169">8169</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L8169" href="#L8169">8169</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L8170" href="#L8170">8170</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L8171" href="#L8171">8171</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L8172" href="#L8172">8172</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -8537,7 +8537,7 @@
 <a class="jxr_linenumber" name="L8529" href="#L8529">8529</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor26() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L8530" href="#L8530">8530</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L8531" href="#L8531">8531</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L8532" href="#L8532">8532</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L8532" href="#L8532">8532</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L8533" href="#L8533">8533</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L8534" href="#L8534">8534</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L8535" href="#L8535">8535</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -8867,7 +8867,7 @@
 <a class="jxr_linenumber" name="L8859" href="#L8859">8859</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor27() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L8860" href="#L8860">8860</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L8861" href="#L8861">8861</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L8862" href="#L8862">8862</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L8862" href="#L8862">8862</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L8863" href="#L8863">8863</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L8864" href="#L8864">8864</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L8865" href="#L8865">8865</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9198,7 +9198,7 @@
 <a class="jxr_linenumber" name="L9190" href="#L9190">9190</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor28() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L9191" href="#L9191">9191</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L9192" href="#L9192">9192</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L9193" href="#L9193">9193</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L9193" href="#L9193">9193</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L9194" href="#L9194">9194</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L9195" href="#L9195">9195</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L9196" href="#L9196">9196</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9519,7 +9519,7 @@
 <a class="jxr_linenumber" name="L9511" href="#L9511">9511</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor29() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L9512" href="#L9512">9512</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L9513" href="#L9513">9513</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L9514" href="#L9514">9514</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L9514" href="#L9514">9514</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L9515" href="#L9515">9515</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L9516" href="#L9516">9516</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L9517" href="#L9517">9517</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9841,7 +9841,7 @@
 <a class="jxr_linenumber" name="L9833" href="#L9833">9833</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor30() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L9834" href="#L9834">9834</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L9835" href="#L9835">9835</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L9836" href="#L9836">9836</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L9836" href="#L9836">9836</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L9837" href="#L9837">9837</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L9838" href="#L9838">9838</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L9839" href="#L9839">9839</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10212,7 +10212,7 @@
 <a class="jxr_linenumber" name="L10204" href="#L10204">10204</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor31() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L10205" href="#L10205">10205</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L10206" href="#L10206">10206</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L10207" href="#L10207">10207</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L10207" href="#L10207">10207</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L10208" href="#L10208">10208</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L10209" href="#L10209">10209</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L10210" href="#L10210">10210</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10588,7 +10588,7 @@
 <a class="jxr_linenumber" name="L10580" href="#L10580">10580</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor32() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L10581" href="#L10581">10581</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L10582" href="#L10582">10582</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L10583" href="#L10583">10583</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L10583" href="#L10583">10583</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L10584" href="#L10584">10584</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L10585" href="#L10585">10585</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L10586" href="#L10586">10586</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10977,7 +10977,7 @@
 <a class="jxr_linenumber" name="L10969" href="#L10969">10969</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor33() <strong class="jxr_keyword">throws</strong> WrongSizeException {
 <a class="jxr_linenumber" name="L10970" href="#L10970">10970</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L10971" href="#L10971">10971</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L10972" href="#L10972">10972</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L10972" href="#L10972">10972</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L10973" href="#L10973">10973</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L10974" href="#L10974">10974</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L10975" href="#L10975">10975</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12997,7 +12997,7 @@
 <a class="jxr_linenumber" name="L12989" href="#L12989">12989</a>         <em class="jxr_comment">// set new value</em>
 <a class="jxr_linenumber" name="L12990" href="#L12990">12990</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L12991" href="#L12991">12991</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L12992" href="#L12992">12992</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L12992" href="#L12992">12992</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L12993" href="#L12993">12993</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L12994" href="#L12994">12994</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L12995" href="#L12995">12995</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13026,7 +13026,7 @@
 <a class="jxr_linenumber" name="L13018" href="#L13018">13018</a>         <em class="jxr_comment">// set new value</em>
 <a class="jxr_linenumber" name="L13019" href="#L13019">13019</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
 <a class="jxr_linenumber" name="L13020" href="#L13020">13020</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L13021" href="#L13021">13021</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L13021" href="#L13021">13021</a>                 randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13022" href="#L13022">13022</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L13023" href="#L13023">13023</a>                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13024" href="#L13024">13024</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13183,7 +13183,7 @@
 <a class="jxr_linenumber" name="L13175" href="#L13175">13175</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L13176" href="#L13176">13176</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L13177" href="#L13177">13177</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L13178" href="#L13178">13178</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L13178" href="#L13178">13178</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13179" href="#L13179">13179</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L13180" href="#L13180">13180</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13181" href="#L13181">13181</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13344,7 +13344,7 @@
 <a class="jxr_linenumber" name="L13336" href="#L13336">13336</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L13337" href="#L13337">13337</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L13338" href="#L13338">13338</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L13339" href="#L13339">13339</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L13339" href="#L13339">13339</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13340" href="#L13340">13340</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L13341" href="#L13341">13341</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13342" href="#L13342">13342</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13505,7 +13505,7 @@
 <a class="jxr_linenumber" name="L13497" href="#L13497">13497</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L13498" href="#L13498">13498</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L13499" href="#L13499">13499</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L13500" href="#L13500">13500</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L13500" href="#L13500">13500</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13501" href="#L13501">13501</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L13502" href="#L13502">13502</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13503" href="#L13503">13503</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13677,7 +13677,7 @@
 <a class="jxr_linenumber" name="L13669" href="#L13669">13669</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L13670" href="#L13670">13670</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L13671" href="#L13671">13671</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L13672" href="#L13672">13672</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L13672" href="#L13672">13672</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13673" href="#L13673">13673</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L13674" href="#L13674">13674</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13675" href="#L13675">13675</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13840,7 +13840,7 @@
 <a class="jxr_linenumber" name="L13832" href="#L13832">13832</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L13833" href="#L13833">13833</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L13834" href="#L13834">13834</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L13835" href="#L13835">13835</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L13835" href="#L13835">13835</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13836" href="#L13836">13836</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L13837" href="#L13837">13837</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L13838" href="#L13838">13838</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14011,7 +14011,7 @@
 <a class="jxr_linenumber" name="L14003" href="#L14003">14003</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L14004" href="#L14004">14004</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L14005" href="#L14005">14005</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L14006" href="#L14006">14006</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L14006" href="#L14006">14006</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L14007" href="#L14007">14007</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L14008" href="#L14008">14008</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L14009" href="#L14009">14009</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14179,7 +14179,7 @@
 <a class="jxr_linenumber" name="L14171" href="#L14171">14171</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L14172" href="#L14172">14172</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L14173" href="#L14173">14173</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L14174" href="#L14174">14174</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L14174" href="#L14174">14174</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L14175" href="#L14175">14175</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L14176" href="#L14176">14176</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L14177" href="#L14177">14177</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14348,7 +14348,7 @@
 <a class="jxr_linenumber" name="L14340" href="#L14340">14340</a>             <strong class="jxr_keyword">final</strong> Random random = <strong class="jxr_keyword">new</strong> Random();
 <a class="jxr_linenumber" name="L14341" href="#L14341">14341</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(random);
 <a class="jxr_linenumber" name="L14342" href="#L14342">14342</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(
-<a class="jxr_linenumber" name="L14343" href="#L14343">14343</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+<a class="jxr_linenumber" name="L14343" href="#L14343">14343</a>                     randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
 <a class="jxr_linenumber" name="L14344" href="#L14344">14344</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(
 <a class="jxr_linenumber" name="L14345" href="#L14345">14345</a>                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 <a class="jxr_linenumber" name="L14346" href="#L14346">14346</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);

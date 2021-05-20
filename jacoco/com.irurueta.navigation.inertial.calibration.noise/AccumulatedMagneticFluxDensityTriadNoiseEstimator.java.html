@@ -81,28 +81,13 @@ public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
     }
 
     /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    @Override
-    protected MagneticFluxDensityTriad createTriad(
-            final MagneticFluxDensity valueX, final MagneticFluxDensity valueY,
-            final MagneticFluxDensity valueZ) {
-<span class="nc" id="L95">        return new MagneticFluxDensityTriad(valueX, valueY, valueZ);</span>
-    }
-
-    /**
      * Gets default unit for a measurement.
      *
      * @return default unit for a measurement.
      */
     @Override
     protected MagneticFluxDensityUnit getDefaultUnit() {
-<span class="fc" id="L105">        return MagneticFluxDensityUnit.TESLA;</span>
+<span class="fc" id="L90">        return MagneticFluxDensityUnit.TESLA;</span>
     }
 
     /**
@@ -115,7 +100,7 @@ public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
     @Override
     protected MagneticFluxDensity createMeasurement(
             final double value, final MagneticFluxDensityUnit unit) {
-<span class="fc" id="L118">        return new MagneticFluxDensity(value, unit);</span>
+<span class="fc" id="L103">        return new MagneticFluxDensity(value, unit);</span>
     }
 
     /**
@@ -127,7 +112,7 @@ public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(double value, MagneticFluxDensityUnit unit) {
-<span class="fc" id="L130">        return MagneticFluxDensityConverter.convert(value, unit, getDefaultUnit());</span>
+<span class="fc" id="L115">        return MagneticFluxDensityConverter.convert(value, unit, getDefaultUnit());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -28,7 +28,7 @@ import com.irurueta.units.TimeUnit;
  * along with their average values.
  * Implementations of this estimator must be used when the body where the measurement device
  * is attached to remains static on the same position with zero velocity, or
- * with constant anguular speed and orientation while capturing data.
+ * with constant angular speed and orientation while capturing data.
  * To compute PSD's, this estimator assumes that measurement samples are obtained
  * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
  * If not available, accelerometer sampling rate average can be estimated using
@@ -753,55 +753,56 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
      * @param valueZ z coordinate of measurement to be added and processed.
      * @throws LockedException if estimator is currently running.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public void addTriad(
             final double valueX, final double valueY, final double valueZ)
             throws LockedException {
 
-<span class="fc bfc" id="L760" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L761">            throw new LockedException();</span>
+<span class="fc bfc" id="L761" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L762">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L764">        mRunning = true;</span>
+<span class="fc" id="L765">        mRunning = true;</span>
 
-<span class="fc bfc" id="L766" title="All 4 branches covered.">        if (mLastTriad == null &amp;&amp; mListener != null) {</span>
+<span class="fc bfc" id="L767" title="All 4 branches covered.">        if (mLastTriad == null &amp;&amp; mListener != null) {</span>
             //noinspection unchecked
-<span class="fc" id="L768">            mListener.onStart((E)this);</span>
+<span class="fc" id="L769">            mListener.onStart((E)this);</span>
         }
 
         // compute averages
-<span class="fc" id="L772">        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L773">        mAvgX = mAvgX * tmp + valueX / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L774">        mAvgY = mAvgY * tmp + valueY / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L775">        mAvgZ = mAvgZ * tmp + valueZ / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L773">        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L774">        mAvgX = mAvgX * tmp + valueX / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L775">        mAvgY = mAvgY * tmp + valueY / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L776">        mAvgZ = mAvgZ * tmp + valueZ / (double) mNumberOfProcessedSamplesPlusOne;</span>
 
         // compute variances
-<span class="fc" id="L778">        final double diffX = valueX - mAvgX;</span>
-<span class="fc" id="L779">        final double diffY = valueY - mAvgY;</span>
-<span class="fc" id="L780">        final double diffZ = valueZ - mAvgZ;</span>
-<span class="fc" id="L781">        final double diffX2 = diffX * diffX;</span>
-<span class="fc" id="L782">        final double diffY2 = diffY * diffY;</span>
-<span class="fc" id="L783">        final double diffZ2 = diffZ * diffZ;</span>
+<span class="fc" id="L779">        final double diffX = valueX - mAvgX;</span>
+<span class="fc" id="L780">        final double diffY = valueY - mAvgY;</span>
+<span class="fc" id="L781">        final double diffZ = valueZ - mAvgZ;</span>
+<span class="fc" id="L782">        final double diffX2 = diffX * diffX;</span>
+<span class="fc" id="L783">        final double diffY2 = diffY * diffY;</span>
+<span class="fc" id="L784">        final double diffZ2 = diffZ * diffZ;</span>
 
-<span class="fc" id="L785">        mVarianceX = mVarianceX * tmp + diffX2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L786">        mVarianceY = mVarianceY * tmp + diffY2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L787">        mVarianceZ = mVarianceZ * tmp + diffZ2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L786">        mVarianceX = mVarianceX * tmp + diffX2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L787">        mVarianceY = mVarianceY * tmp + diffY2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L788">        mVarianceZ = mVarianceZ * tmp + diffZ2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
 
-<span class="fc bfc" id="L789" title="All 2 branches covered.">        if (mLastTriad == null) {</span>
-<span class="fc" id="L790">            mLastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());</span>
+<span class="fc bfc" id="L790" title="All 2 branches covered.">        if (mLastTriad == null) {</span>
+<span class="fc" id="L791">            mLastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());</span>
         } else {
-<span class="fc" id="L792">            mLastTriad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, getDefaultUnit());</span>
+<span class="fc" id="L793">            mLastTriad.setValueCoordinatesAndUnit(valueX, valueY, valueZ, getDefaultUnit());</span>
         }
 
-<span class="fc" id="L795">        mNumberOfProcessedSamples++;</span>
-<span class="fc" id="L796">        mNumberOfProcessedSamplesPlusOne++;</span>
+<span class="fc" id="L796">        mNumberOfProcessedSamples++;</span>
+<span class="fc" id="L797">        mNumberOfProcessedSamplesPlusOne++;</span>
 
-<span class="fc bfc" id="L798" title="All 2 branches covered.">        if (mListener != null) {</span>
+<span class="fc bfc" id="L799" title="All 2 branches covered.">        if (mListener != null) {</span>
             //noinspection unchecked
-<span class="fc" id="L800">            mListener.onTriadAdded((E) this);</span>
+<span class="fc" id="L801">            mListener.onTriadAdded((E) this);</span>
         }
 
-<span class="fc" id="L803">        mRunning = false;</span>
-<span class="fc" id="L804">    }</span>
+<span class="fc" id="L804">        mRunning = false;</span>
+<span class="fc" id="L805">    }</span>
 
     /**
      * Adds a triad of measurement samples.
@@ -810,10 +811,10 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
      * @throws LockedException if estimator is currently running.
      */
     public void addTriad(final T triad) throws LockedException {
-<span class="fc" id="L813">        addTriad(convertToDefaultUnit(triad.getValueX(), triad.getUnit()),</span>
-<span class="fc" id="L814">                convertToDefaultUnit(triad.getValueY(), triad.getUnit()),</span>
-<span class="fc" id="L815">                convertToDefaultUnit(triad.getValueZ(), triad.getUnit()));</span>
-<span class="fc" id="L816">    }</span>
+<span class="fc" id="L814">        addTriad(convertToDefaultUnit(triad.getValueX(), triad.getUnit()),</span>
+<span class="fc" id="L815">                convertToDefaultUnit(triad.getValueY(), triad.getUnit()),</span>
+<span class="fc" id="L816">                convertToDefaultUnit(triad.getValueZ(), triad.getUnit()));</span>
+<span class="fc" id="L817">    }</span>
 
     /**
      * Adds a triad of measurement samples.
@@ -825,10 +826,10 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
      */
     public void addTriad(final M valueX, final M valueY, final M valueZ)
             throws LockedException {
-<span class="fc" id="L828">        addTriad(convertToDefaultUnit(valueX.getValue().doubleValue(), valueX.getUnit()),</span>
-<span class="fc" id="L829">                convertToDefaultUnit(valueY.getValue().doubleValue(), valueY.getUnit()),</span>
-<span class="fc" id="L830">                convertToDefaultUnit(valueZ.getValue().doubleValue(), valueZ.getUnit()));</span>
-<span class="fc" id="L831">    }</span>
+<span class="fc" id="L829">        addTriad(convertToDefaultUnit(valueX.getValue().doubleValue(), valueX.getUnit()),</span>
+<span class="fc" id="L830">                convertToDefaultUnit(valueY.getValue().doubleValue(), valueY.getUnit()),</span>
+<span class="fc" id="L831">                convertToDefaultUnit(valueZ.getValue().doubleValue(), valueZ.getUnit()));</span>
+<span class="fc" id="L832">    }</span>
 
     /**
      * Resets current estimator.
@@ -837,33 +838,33 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-<span class="fc bfc" id="L840" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L841">            throw new LockedException();</span>
+<span class="fc bfc" id="L841" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L842">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L844" title="All 2 branches covered.">        if (mNumberOfProcessedSamples == 0) {</span>
-<span class="fc" id="L845">            return false;</span>
+<span class="fc bfc" id="L845" title="All 2 branches covered.">        if (mNumberOfProcessedSamples == 0) {</span>
+<span class="fc" id="L846">            return false;</span>
         }
 
-<span class="fc" id="L848">        mRunning = true;</span>
-<span class="fc" id="L849">        mLastTriad = null;</span>
-<span class="fc" id="L850">        mAvgX = 0.0;</span>
-<span class="fc" id="L851">        mAvgY = 0.0;</span>
-<span class="fc" id="L852">        mAvgZ = 0.0;</span>
-<span class="fc" id="L853">        mVarianceX = 0.0;</span>
-<span class="fc" id="L854">        mVarianceY = 0.0;</span>
-<span class="fc" id="L855">        mVarianceZ = 0.0;</span>
-<span class="fc" id="L856">        mNumberOfProcessedSamples = 0;</span>
-<span class="fc" id="L857">        mNumberOfProcessedSamplesPlusOne = 1;</span>
+<span class="fc" id="L849">        mRunning = true;</span>
+<span class="fc" id="L850">        mLastTriad = null;</span>
+<span class="fc" id="L851">        mAvgX = 0.0;</span>
+<span class="fc" id="L852">        mAvgY = 0.0;</span>
+<span class="fc" id="L853">        mAvgZ = 0.0;</span>
+<span class="fc" id="L854">        mVarianceX = 0.0;</span>
+<span class="fc" id="L855">        mVarianceY = 0.0;</span>
+<span class="fc" id="L856">        mVarianceZ = 0.0;</span>
+<span class="fc" id="L857">        mNumberOfProcessedSamples = 0;</span>
+<span class="fc" id="L858">        mNumberOfProcessedSamplesPlusOne = 1;</span>
 
-<span class="fc bfc" id="L859" title="All 2 branches covered.">        if (mListener != null) {</span>
+<span class="fc bfc" id="L860" title="All 2 branches covered.">        if (mListener != null) {</span>
             //noinspection unchecked
-<span class="fc" id="L861">            mListener.onReset((E) this);</span>
+<span class="fc" id="L862">            mListener.onReset((E) this);</span>
         }
 
-<span class="fc" id="L864">        mRunning = false;</span>
+<span class="fc" id="L865">        mRunning = false;</span>
 
-<span class="fc" id="L866">        return true;</span>
+<span class="fc" id="L867">        return true;</span>
     }
 
     /**
@@ -877,16 +878,6 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
      */
     protected abstract T createTriad(
             final double valueX, final double valueY, final double valueZ, final U unit);
-
-    /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    protected abstract T createTriad(final M valueX, final M valueY, final M valueZ);
 
     /**
      * Gets default unit for a measurement.

@@ -138,7 +138,7 @@
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     * Constant defining default confidence of the estimated result, which is</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     * 99%. This means that with a probability of 99% estimation will be</em>
-<a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     * accurate because chosen subsamples will be inliers.</em>
+<a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     * accurate because chosen sub-samples will be inliers.</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> DEFAULT_CONFIDENCE = 0.99;
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> 
@@ -354,7 +354,7 @@
 <a class="jxr_linenumber" name="L346" href="#L346">346</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L347" href="#L347">347</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L351" href="#L351">351</a>     <strong class="jxr_keyword">private</strong> Matrix mEstimatedMm;
 <a class="jxr_linenumber" name="L352" href="#L352">352</a> 
@@ -1990,7 +1990,7 @@
 <a class="jxr_linenumber" name="L1982" href="#L1982">1982</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L1983" href="#L1983">1983</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L1984" href="#L1984">1984</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L1985" href="#L1985">1985</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L1985" href="#L1985">1985</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L1986" href="#L1986">1986</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L1987" href="#L1987">1987</a> <em class="jxr_javadoccomment">     * @return estimated magnetometer soft-iron scale factors and cross coupling errors,</em>
 <a class="jxr_linenumber" name="L1988" href="#L1988">1988</a> <em class="jxr_javadoccomment">     * or null if not available.</em>
@@ -2242,7 +2242,7 @@
 <a class="jxr_linenumber" name="L2234" href="#L2234">2234</a> <em class="jxr_javadoccomment">     * Gets variance of estimated z coordinate of magnetometer bias expressed in</em>
 <a class="jxr_linenumber" name="L2235" href="#L2235">2235</a> <em class="jxr_javadoccomment">     * squared Teslas (T^2).</em>
 <a class="jxr_linenumber" name="L2236" href="#L2236">2236</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L2237" href="#L2237">2237</a> <em class="jxr_javadoccomment">     * @return variance of estimated yzcoordinate of magnetometer bias or null if</em>
+<a class="jxr_linenumber" name="L2237" href="#L2237">2237</a> <em class="jxr_javadoccomment">     * @return variance of estimated z coordinate of magnetometer bias or null if</em>
 <a class="jxr_linenumber" name="L2238" href="#L2238">2238</a> <em class="jxr_javadoccomment">     * not available.</em>
 <a class="jxr_linenumber" name="L2239" href="#L2239">2239</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L2240" href="#L2240">2240</a>     <strong class="jxr_keyword">public</strong> Double getEstimatedHardIronZVariance() {
@@ -3422,7 +3422,7 @@
 <a class="jxr_linenumber" name="L3414" href="#L3414">3414</a> <em class="jxr_javadoccomment">         *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L3415" href="#L3415">3415</a> <em class="jxr_javadoccomment">         *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L3416" href="#L3416">3416</a> <em class="jxr_javadoccomment">         * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L3417" href="#L3417">3417</a> <em class="jxr_javadoccomment">         * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L3417" href="#L3417">3417</a> <em class="jxr_javadoccomment">         * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L3418" href="#L3418">3418</a> <em class="jxr_javadoccomment">         */</em>
 <a class="jxr_linenumber" name="L3419" href="#L3419">3419</a>         <strong class="jxr_keyword">private</strong> Matrix mEstimatedMm;
 <a class="jxr_linenumber" name="L3420" href="#L3420">3420</a> 

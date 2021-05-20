@@ -73,7 +73,7 @@
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> * - I is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> * a perfect accelerometer, this should be a 3x3 zero matrix.</em>
-<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-trush specific force.</em>
+<a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-truth specific force.</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * - w is measurement noise.</em>
 <a class="jxr_linenumber" name="L70" href="#L70">70</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L71" href="#L71">71</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownPositionAccelerometerCalibrator.html">RobustKnownPositionAccelerometerCalibrator</a> <strong class="jxr_keyword">implements</strong>
@@ -90,7 +90,7 @@
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment">     * Required minimum number of measurements when common z-axis is assumed.</em>
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> MINIMUM_MEASUREMENTS_COMMON_Z_AXIS =
-<a class="jxr_linenumber" name="L85" href="#L85">85</a>              KnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS;
+<a class="jxr_linenumber" name="L85" href="#L85">85</a>              KnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  
 <a class="jxr_linenumber" name="L87" href="#L87">87</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment">     * Required minimum number of measurements for the general case.</em>
@@ -133,7 +133,7 @@
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> <em class="jxr_javadoccomment">     * Constant defining default confidence of the estimated result, which is</em>
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> <em class="jxr_javadoccomment">     * 99%. This means that with a probability of 99% estimation will be</em>
-<a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     * accurate because chosen subsamples will be inliers.</em>
+<a class="jxr_linenumber" name="L128" href="#L128">128</a> <em class="jxr_javadoccomment">     * accurate because chosen sub-samples will be inliers.</em>
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> DEFAULT_CONFIDENCE = 0.99;
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> 
@@ -330,7 +330,7 @@
 <a class="jxr_linenumber" name="L322" href="#L322">322</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L324" href="#L324">324</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L325" href="#L325">325</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L325" href="#L325">325</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L326" href="#L326">326</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>     <strong class="jxr_keyword">private</strong> Matrix mEstimatedMa;
 <a class="jxr_linenumber" name="L328" href="#L328">328</a> 
@@ -2590,7 +2590,7 @@
 <a class="jxr_linenumber" name="L2582" href="#L2582">2582</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L2583" href="#L2583">2583</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L2584" href="#L2584">2584</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L2585" href="#L2585">2585</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L2585" href="#L2585">2585</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L2586" href="#L2586">2586</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L2587" href="#L2587">2587</a> <em class="jxr_javadoccomment">     * @return estimated accelerometer scale factors and cross coupling errors, or null</em>
 <a class="jxr_linenumber" name="L2588" href="#L2588">2588</a> <em class="jxr_javadoccomment">     * if not available.</em>

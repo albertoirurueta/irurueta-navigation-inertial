@@ -1357,7 +1357,7 @@ public class PROMedSRobustEasyGyroscopeCalibrator extends
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -1455,124 +1455,125 @@ public class PROMedSRobustEasyGyroscopeCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1461" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1462">            throw new LockedException();</span>
+<span class="fc bfc" id="L1462" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1463">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1464" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1465">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1465" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1466">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1468">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1469">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new PROMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L1470">                        new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L1471">                        new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L1473">                        return mQualityScores;</span>
+<span class="fc" id="L1474">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1478">                        return mStopThreshold;</span>
+<span class="fc" id="L1479">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1483">                        return mSequences.size();</span>
+<span class="fc" id="L1484">                        return mSequences.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1488">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1489">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1495">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1496">                    }</span>
+<span class="fc" id="L1496">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1497">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation,
                             final int i) {
-<span class="fc" id="L1502">                        return computeError(mSequences.get(i), currentEstimation);</span>
+<span class="fc" id="L1503">                        return computeError(mSequences.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1507">                        return PROMedSRobustEasyGyroscopeCalibrator.this.isReady();</span>
+<span class="fc" id="L1508">                        return PROMedSRobustEasyGyroscopeCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1513">                    }</span>
+<span class="fc" id="L1514">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1518">                    }</span>
+<span class="fc" id="L1519">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1524" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1525">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1525" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1526">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustEasyGyroscopeCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1529">                    }</span>
+<span class="fc" id="L1530">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L1535" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1536">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L1536" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L1537">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustEasyGyroscopeCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L1540">                    }</span>
+<span class="nc" id="L1541">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1544">            mRunning = true;</span>
+<span class="fc" id="L1545">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1546" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1547">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1547" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1548">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1550">            setupAccelerationFixer();</span>
+<span class="fc" id="L1551">            setupAccelerationFixer();</span>
 
-<span class="fc" id="L1552">            mInliersData = null;</span>
-<span class="fc" id="L1553">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L1554">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1555">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1556">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1557">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1558">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1553">            mInliersData = null;</span>
+<span class="fc" id="L1554">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1555">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1556">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1557">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1558">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1559">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1560">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1561">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1562" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1563">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1563" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1564">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1566">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1567">            throw new LockedException(e);</span>
-<span class="nc" id="L1568">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1569">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1570">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
-<span class="nc" id="L1571">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1567">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1568">            throw new LockedException(e);</span>
+<span class="nc" id="L1569">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1570">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1571">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
+<span class="nc" id="L1572">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1573">            mRunning = false;</span>
+<span class="fc" id="L1574">            mRunning = false;</span>
         }
-<span class="fc" id="L1575">    }</span>
+<span class="fc" id="L1576">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1581,7 +1582,7 @@ public class PROMedSRobustEasyGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1584">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L1585">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -1592,7 +1593,7 @@ public class PROMedSRobustEasyGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1595">        return true;</span>
+<span class="fc" id="L1596">        return true;</span>
     }
 
     /**
@@ -1605,12 +1606,12 @@ public class PROMedSRobustEasyGyroscopeCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1608" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L1609" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {
-<span class="fc" id="L1610">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L1611">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1613">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1614">    }</span>
+<span class="fc" id="L1614">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1615">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

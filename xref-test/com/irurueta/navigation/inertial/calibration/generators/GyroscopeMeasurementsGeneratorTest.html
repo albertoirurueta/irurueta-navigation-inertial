@@ -294,7 +294,7 @@
 <a class="jxr_linenumber" name="L286" href="#L286">286</a>   }
 <a class="jxr_linenumber" name="L287" href="#L287">287</a> 
 <a class="jxr_linenumber" name="L288" href="#L288">288</a>   @Test
-<a class="jxr_linenumber" name="L289" href="#L289">289</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor2() <strong class="jxr_keyword">throws</strong> LockedException {
+<a class="jxr_linenumber" name="L289" href="#L289">289</a>   <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testConstructor2() {
 <a class="jxr_linenumber" name="L290" href="#L290">290</a>     <strong class="jxr_keyword">final</strong> GyroscopeMeasurementsGenerator generator =
 <a class="jxr_linenumber" name="L291" href="#L291">291</a>         <strong class="jxr_keyword">new</strong> GyroscopeMeasurementsGenerator(<strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L292" href="#L292">292</a> 
@@ -1166,7 +1166,7 @@
 <a class="jxr_linenumber" name="L1158" href="#L1158">1158</a>       assertEquals(mInitializationCompleted, 1);
 <a class="jxr_linenumber" name="L1159" href="#L1159">1159</a> 
 <a class="jxr_linenumber" name="L1160" href="#L1160">1160</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-<a class="jxr_linenumber" name="L1161" href="#L1161">1161</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS;
+<a class="jxr_linenumber" name="L1161" href="#L1161">1161</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
 <a class="jxr_linenumber" name="L1162" href="#L1162">1162</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> n = Math.max(numSequences + 1, numMeasurements);
 <a class="jxr_linenumber" name="L1163" href="#L1163">1163</a> 
 <a class="jxr_linenumber" name="L1164" href="#L1164">1164</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
@@ -2083,7 +2083,7 @@
 <a class="jxr_linenumber" name="L2075" href="#L2075">2075</a>       assertEquals(mInitializationCompleted, 1);
 <a class="jxr_linenumber" name="L2076" href="#L2076">2076</a> 
 <a class="jxr_linenumber" name="L2077" href="#L2077">2077</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-<a class="jxr_linenumber" name="L2078" href="#L2078">2078</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS;
+<a class="jxr_linenumber" name="L2078" href="#L2078">2078</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
 <a class="jxr_linenumber" name="L2079" href="#L2079">2079</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> n = Math.max(numSequences + 1, numMeasurements);
 <a class="jxr_linenumber" name="L2080" href="#L2080">2080</a> 
 <a class="jxr_linenumber" name="L2081" href="#L2081">2081</a>       <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;

@@ -958,14 +958,14 @@
 <a class="jxr_linenumber" name="L950" href="#L950">950</a>         <strong class="jxr_keyword">final</strong> AngularSpeed[] array3 = errors.getGyroBiasesAsAngularSpeed();
 <a class="jxr_linenumber" name="L951" href="#L951">951</a>         <strong class="jxr_keyword">final</strong> AngularSpeed[] array4 = <strong class="jxr_keyword">new</strong> AngularSpeed[COMPONENTS];
 <a class="jxr_linenumber" name="L952" href="#L952">952</a>         array4[0] = <strong class="jxr_keyword">new</strong> AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
-<a class="jxr_linenumber" name="L953" href="#L953">953</a>         errors.getGyroBiasesAsAngularspeed(array4);
+<a class="jxr_linenumber" name="L953" href="#L953">953</a>         errors.getGyroBiasesAsAngularSpeed(array4);
 <a class="jxr_linenumber" name="L954" href="#L954">954</a> 
 <a class="jxr_linenumber" name="L955" href="#L955">955</a>         assertArrayEquals(array2, array3);
 <a class="jxr_linenumber" name="L956" href="#L956">956</a>         assertArrayEquals(array2, array4);
 <a class="jxr_linenumber" name="L957" href="#L957">957</a> 
 <a class="jxr_linenumber" name="L958" href="#L958">958</a>         <em class="jxr_comment">// Force IllegalArgumentException</em>
 <a class="jxr_linenumber" name="L959" href="#L959">959</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L960" href="#L960">960</a>             errors.getGyroBiasesAsAngularspeed(<strong class="jxr_keyword">new</strong> AngularSpeed[1]);
+<a class="jxr_linenumber" name="L960" href="#L960">960</a>             errors.getGyroBiasesAsAngularSpeed(<strong class="jxr_keyword">new</strong> AngularSpeed[1]);
 <a class="jxr_linenumber" name="L961" href="#L961">961</a>             fail(<span class="jxr_string">"IllegalArgumentException expected but not thrown"</span>);
 <a class="jxr_linenumber" name="L962" href="#L962">962</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> IllegalArgumentException ignore) {
 <a class="jxr_linenumber" name="L963" href="#L963">963</a>         }

@@ -4266,125 +4266,126 @@
 <a class="jxr_linenumber" name="L4258" href="#L4258">4258</a> 
 <a class="jxr_linenumber" name="L4259" href="#L4259">4259</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
 <a class="jxr_linenumber" name="L4260" href="#L4260">4260</a>         assertTrue(frameBodyKinematics1.equals((Object) frameBodyKinematics1));
-<a class="jxr_linenumber" name="L4261" href="#L4261">4261</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1));
-<a class="jxr_linenumber" name="L4262" href="#L4262">4262</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2));
-<a class="jxr_linenumber" name="L4263" href="#L4263">4263</a>         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3));
-<a class="jxr_linenumber" name="L4264" href="#L4264">4264</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
-<a class="jxr_linenumber" name="L4265" href="#L4265">4265</a>         assertFalse(frameBodyKinematics1.equals((Object) <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L4266" href="#L4266">4266</a>         assertFalse(frameBodyKinematics1.equals(<strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L4267" href="#L4267">4267</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L4268" href="#L4268">4268</a>         assertFalse(frameBodyKinematics1.equals(<strong class="jxr_keyword">new</strong> Object()));
-<a class="jxr_linenumber" name="L4269" href="#L4269">4269</a>     }
-<a class="jxr_linenumber" name="L4270" href="#L4270">4270</a> 
-<a class="jxr_linenumber" name="L4271" href="#L4271">4271</a>     @Test
-<a class="jxr_linenumber" name="L4272" href="#L4272">4272</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold()
-<a class="jxr_linenumber" name="L4273" href="#L4273">4273</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L4274" href="#L4274">4274</a>         <strong class="jxr_keyword">final</strong> BodyKinematics kinematics = createBodyKinematics();
-<a class="jxr_linenumber" name="L4275" href="#L4275">4275</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = createNedFrame();
-<a class="jxr_linenumber" name="L4276" href="#L4276">4276</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-<a class="jxr_linenumber" name="L4277" href="#L4277">4277</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
-<a class="jxr_linenumber" name="L4278" href="#L4278">4278</a>         <strong class="jxr_keyword">final</strong> NEDFrame previousNedFrame = createNedFrame();
-<a class="jxr_linenumber" name="L4279" href="#L4279">4279</a>         <strong class="jxr_keyword">final</strong> ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-<a class="jxr_linenumber" name="L4280" href="#L4280">4280</a>                 .convertNEDtoECEFAndReturnNew(previousNedFrame);
-<a class="jxr_linenumber" name="L4281" href="#L4281">4281</a> 
-<a class="jxr_linenumber" name="L4282" href="#L4282">4282</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L4283" href="#L4283">4283</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L4284" href="#L4284">4284</a>                 MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-<a class="jxr_linenumber" name="L4285" href="#L4285">4285</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> specificForceStandardDeviation =
-<a class="jxr_linenumber" name="L4286" href="#L4286">4286</a>                 randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-<a class="jxr_linenumber" name="L4287" href="#L4287">4287</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateStandardDeviation =
-<a class="jxr_linenumber" name="L4288" href="#L4288">4288</a>                 randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-<a class="jxr_linenumber" name="L4289" href="#L4289">4289</a> 
-<a class="jxr_linenumber" name="L4290" href="#L4290">4290</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics1 =
-<a class="jxr_linenumber" name="L4291" href="#L4291">4291</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics(
-<a class="jxr_linenumber" name="L4292" href="#L4292">4292</a>                         kinematics, ecefFrame, previousEcefFrame, timeInterval,
-<a class="jxr_linenumber" name="L4293" href="#L4293">4293</a>                         specificForceStandardDeviation, angularRateStandardDeviation);
-<a class="jxr_linenumber" name="L4294" href="#L4294">4294</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics2 =
-<a class="jxr_linenumber" name="L4295" href="#L4295">4295</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics(
-<a class="jxr_linenumber" name="L4296" href="#L4296">4296</a>                         kinematics, ecefFrame, previousEcefFrame, timeInterval,
-<a class="jxr_linenumber" name="L4297" href="#L4297">4297</a>                         specificForceStandardDeviation, angularRateStandardDeviation);
-<a class="jxr_linenumber" name="L4298" href="#L4298">4298</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics3 =
-<a class="jxr_linenumber" name="L4299" href="#L4299">4299</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics();
-<a class="jxr_linenumber" name="L4300" href="#L4300">4300</a> 
-<a class="jxr_linenumber" name="L4301" href="#L4301">4301</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1, THRESHOLD));
-<a class="jxr_linenumber" name="L4302" href="#L4302">4302</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2, THRESHOLD));
-<a class="jxr_linenumber" name="L4303" href="#L4303">4303</a>         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3, THRESHOLD));
-<a class="jxr_linenumber" name="L4304" href="#L4304">4304</a>         assertFalse(frameBodyKinematics1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
-<a class="jxr_linenumber" name="L4305" href="#L4305">4305</a>     }
-<a class="jxr_linenumber" name="L4306" href="#L4306">4306</a> 
-<a class="jxr_linenumber" name="L4307" href="#L4307">4307</a>     @Test
-<a class="jxr_linenumber" name="L4308" href="#L4308">4308</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException,
-<a class="jxr_linenumber" name="L4309" href="#L4309">4309</a>             CloneNotSupportedException {
-<a class="jxr_linenumber" name="L4310" href="#L4310">4310</a>         <strong class="jxr_keyword">final</strong> BodyKinematics kinematics = createBodyKinematics();
-<a class="jxr_linenumber" name="L4311" href="#L4311">4311</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = createNedFrame();
-<a class="jxr_linenumber" name="L4312" href="#L4312">4312</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-<a class="jxr_linenumber" name="L4313" href="#L4313">4313</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
-<a class="jxr_linenumber" name="L4314" href="#L4314">4314</a>         <strong class="jxr_keyword">final</strong> NEDFrame previousNedFrame = createNedFrame();
-<a class="jxr_linenumber" name="L4315" href="#L4315">4315</a>         <strong class="jxr_keyword">final</strong> ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
-<a class="jxr_linenumber" name="L4316" href="#L4316">4316</a>                 .convertNEDtoECEFAndReturnNew(previousNedFrame);
-<a class="jxr_linenumber" name="L4317" href="#L4317">4317</a> 
-<a class="jxr_linenumber" name="L4318" href="#L4318">4318</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L4319" href="#L4319">4319</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L4320" href="#L4320">4320</a>                 MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
-<a class="jxr_linenumber" name="L4321" href="#L4321">4321</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> specificForceStandardDeviation =
-<a class="jxr_linenumber" name="L4322" href="#L4322">4322</a>                 randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
-<a class="jxr_linenumber" name="L4323" href="#L4323">4323</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateStandardDeviation =
-<a class="jxr_linenumber" name="L4324" href="#L4324">4324</a>                 randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
-<a class="jxr_linenumber" name="L4325" href="#L4325">4325</a> 
-<a class="jxr_linenumber" name="L4326" href="#L4326">4326</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics1 =
-<a class="jxr_linenumber" name="L4327" href="#L4327">4327</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics(
-<a class="jxr_linenumber" name="L4328" href="#L4328">4328</a>                         kinematics, ecefFrame, previousEcefFrame, timeInterval,
-<a class="jxr_linenumber" name="L4329" href="#L4329">4329</a>                         specificForceStandardDeviation, angularRateStandardDeviation);
-<a class="jxr_linenumber" name="L4330" href="#L4330">4330</a> 
-<a class="jxr_linenumber" name="L4331" href="#L4331">4331</a>         <strong class="jxr_keyword">final</strong> Object frameBodyKinematics2 = frameBodyKinematics1.clone();
-<a class="jxr_linenumber" name="L4332" href="#L4332">4332</a> 
-<a class="jxr_linenumber" name="L4333" href="#L4333">4333</a>         <em class="jxr_comment">// check</em>
-<a class="jxr_linenumber" name="L4334" href="#L4334">4334</a>         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
-<a class="jxr_linenumber" name="L4335" href="#L4335">4335</a>     }
-<a class="jxr_linenumber" name="L4336" href="#L4336">4336</a> 
-<a class="jxr_linenumber" name="L4337" href="#L4337">4337</a>     <strong class="jxr_keyword">private</strong> BodyKinematics createBodyKinematics() {
-<a class="jxr_linenumber" name="L4338" href="#L4338">4338</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L4339" href="#L4339">4339</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-<a class="jxr_linenumber" name="L4340" href="#L4340">4340</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-<a class="jxr_linenumber" name="L4341" href="#L4341">4341</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
-<a class="jxr_linenumber" name="L4342" href="#L4342">4342</a> 
-<a class="jxr_linenumber" name="L4343" href="#L4343">4343</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-<a class="jxr_linenumber" name="L4344" href="#L4344">4344</a>                 MAX_ANGULAR_RATE_VALUE);
-<a class="jxr_linenumber" name="L4345" href="#L4345">4345</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-<a class="jxr_linenumber" name="L4346" href="#L4346">4346</a>                 MAX_ANGULAR_RATE_VALUE);
-<a class="jxr_linenumber" name="L4347" href="#L4347">4347</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
-<a class="jxr_linenumber" name="L4348" href="#L4348">4348</a>                 MAX_ANGULAR_RATE_VALUE);
-<a class="jxr_linenumber" name="L4349" href="#L4349">4349</a> 
-<a class="jxr_linenumber" name="L4350" href="#L4350">4350</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BodyKinematics(fx, fy, fz,
-<a class="jxr_linenumber" name="L4351" href="#L4351">4351</a>                 angularRateX, angularRateY, angularRateZ);
-<a class="jxr_linenumber" name="L4352" href="#L4352">4352</a>     }
-<a class="jxr_linenumber" name="L4353" href="#L4353">4353</a> 
-<a class="jxr_linenumber" name="L4354" href="#L4354">4354</a>     <strong class="jxr_keyword">private</strong> NEDFrame createNedFrame() <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L4355" href="#L4355">4355</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L4356" href="#L4356">4356</a> 
-<a class="jxr_linenumber" name="L4357" href="#L4357">4357</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L4358" href="#L4358">4358</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-<a class="jxr_linenumber" name="L4359" href="#L4359">4359</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L4360" href="#L4360">4360</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-<a class="jxr_linenumber" name="L4361" href="#L4361">4361</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
-<a class="jxr_linenumber" name="L4362" href="#L4362">4362</a> 
-<a class="jxr_linenumber" name="L4363" href="#L4363">4363</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-<a class="jxr_linenumber" name="L4364" href="#L4364">4364</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-<a class="jxr_linenumber" name="L4365" href="#L4365">4365</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
-<a class="jxr_linenumber" name="L4366" href="#L4366">4366</a> 
-<a class="jxr_linenumber" name="L4367" href="#L4367">4367</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toDegrees(
-<a class="jxr_linenumber" name="L4368" href="#L4368">4368</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L4369" href="#L4369">4369</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toDegrees(
-<a class="jxr_linenumber" name="L4370" href="#L4370">4370</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L4371" href="#L4371">4371</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw = Math.toDegrees(
-<a class="jxr_linenumber" name="L4372" href="#L4372">4372</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L4373" href="#L4373">4373</a> 
-<a class="jxr_linenumber" name="L4374" href="#L4374">4374</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation c = <strong class="jxr_keyword">new</strong> CoordinateTransformation(roll, pitch, yaw,
-<a class="jxr_linenumber" name="L4375" href="#L4375">4375</a>                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-<a class="jxr_linenumber" name="L4376" href="#L4376">4376</a> 
-<a class="jxr_linenumber" name="L4377" href="#L4377">4377</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDFrame(latitude, longitude, height, vn, ve, vd, c);
-<a class="jxr_linenumber" name="L4378" href="#L4378">4378</a>     }
-<a class="jxr_linenumber" name="L4379" href="#L4379">4379</a> }
+<a class="jxr_linenumber" name="L4261" href="#L4261">4261</a>         <em class="jxr_comment">//noinspection EqualsWithItself</em>
+<a class="jxr_linenumber" name="L4262" href="#L4262">4262</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1));
+<a class="jxr_linenumber" name="L4263" href="#L4263">4263</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2));
+<a class="jxr_linenumber" name="L4264" href="#L4264">4264</a>         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3));
+<a class="jxr_linenumber" name="L4265" href="#L4265">4265</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
+<a class="jxr_linenumber" name="L4266" href="#L4266">4266</a>         assertFalse(frameBodyKinematics1.equals((Object) <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L4267" href="#L4267">4267</a>         assertFalse(frameBodyKinematics1.equals(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L4268" href="#L4268">4268</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L4269" href="#L4269">4269</a>         assertFalse(frameBodyKinematics1.equals(<strong class="jxr_keyword">new</strong> Object()));
+<a class="jxr_linenumber" name="L4270" href="#L4270">4270</a>     }
+<a class="jxr_linenumber" name="L4271" href="#L4271">4271</a> 
+<a class="jxr_linenumber" name="L4272" href="#L4272">4272</a>     @Test
+<a class="jxr_linenumber" name="L4273" href="#L4273">4273</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold()
+<a class="jxr_linenumber" name="L4274" href="#L4274">4274</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L4275" href="#L4275">4275</a>         <strong class="jxr_keyword">final</strong> BodyKinematics kinematics = createBodyKinematics();
+<a class="jxr_linenumber" name="L4276" href="#L4276">4276</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = createNedFrame();
+<a class="jxr_linenumber" name="L4277" href="#L4277">4277</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
+<a class="jxr_linenumber" name="L4278" href="#L4278">4278</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
+<a class="jxr_linenumber" name="L4279" href="#L4279">4279</a>         <strong class="jxr_keyword">final</strong> NEDFrame previousNedFrame = createNedFrame();
+<a class="jxr_linenumber" name="L4280" href="#L4280">4280</a>         <strong class="jxr_keyword">final</strong> ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
+<a class="jxr_linenumber" name="L4281" href="#L4281">4281</a>                 .convertNEDtoECEFAndReturnNew(previousNedFrame);
+<a class="jxr_linenumber" name="L4282" href="#L4282">4282</a> 
+<a class="jxr_linenumber" name="L4283" href="#L4283">4283</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L4284" href="#L4284">4284</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L4285" href="#L4285">4285</a>                 MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+<a class="jxr_linenumber" name="L4286" href="#L4286">4286</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> specificForceStandardDeviation =
+<a class="jxr_linenumber" name="L4287" href="#L4287">4287</a>                 randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+<a class="jxr_linenumber" name="L4288" href="#L4288">4288</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateStandardDeviation =
+<a class="jxr_linenumber" name="L4289" href="#L4289">4289</a>                 randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+<a class="jxr_linenumber" name="L4290" href="#L4290">4290</a> 
+<a class="jxr_linenumber" name="L4291" href="#L4291">4291</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics1 =
+<a class="jxr_linenumber" name="L4292" href="#L4292">4292</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics(
+<a class="jxr_linenumber" name="L4293" href="#L4293">4293</a>                         kinematics, ecefFrame, previousEcefFrame, timeInterval,
+<a class="jxr_linenumber" name="L4294" href="#L4294">4294</a>                         specificForceStandardDeviation, angularRateStandardDeviation);
+<a class="jxr_linenumber" name="L4295" href="#L4295">4295</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics2 =
+<a class="jxr_linenumber" name="L4296" href="#L4296">4296</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics(
+<a class="jxr_linenumber" name="L4297" href="#L4297">4297</a>                         kinematics, ecefFrame, previousEcefFrame, timeInterval,
+<a class="jxr_linenumber" name="L4298" href="#L4298">4298</a>                         specificForceStandardDeviation, angularRateStandardDeviation);
+<a class="jxr_linenumber" name="L4299" href="#L4299">4299</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics3 =
+<a class="jxr_linenumber" name="L4300" href="#L4300">4300</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics();
+<a class="jxr_linenumber" name="L4301" href="#L4301">4301</a> 
+<a class="jxr_linenumber" name="L4302" href="#L4302">4302</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1, THRESHOLD));
+<a class="jxr_linenumber" name="L4303" href="#L4303">4303</a>         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2, THRESHOLD));
+<a class="jxr_linenumber" name="L4304" href="#L4304">4304</a>         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3, THRESHOLD));
+<a class="jxr_linenumber" name="L4305" href="#L4305">4305</a>         assertFalse(frameBodyKinematics1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
+<a class="jxr_linenumber" name="L4306" href="#L4306">4306</a>     }
+<a class="jxr_linenumber" name="L4307" href="#L4307">4307</a> 
+<a class="jxr_linenumber" name="L4308" href="#L4308">4308</a>     @Test
+<a class="jxr_linenumber" name="L4309" href="#L4309">4309</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException,
+<a class="jxr_linenumber" name="L4310" href="#L4310">4310</a>             CloneNotSupportedException {
+<a class="jxr_linenumber" name="L4311" href="#L4311">4311</a>         <strong class="jxr_keyword">final</strong> BodyKinematics kinematics = createBodyKinematics();
+<a class="jxr_linenumber" name="L4312" href="#L4312">4312</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = createNedFrame();
+<a class="jxr_linenumber" name="L4313" href="#L4313">4313</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
+<a class="jxr_linenumber" name="L4314" href="#L4314">4314</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
+<a class="jxr_linenumber" name="L4315" href="#L4315">4315</a>         <strong class="jxr_keyword">final</strong> NEDFrame previousNedFrame = createNedFrame();
+<a class="jxr_linenumber" name="L4316" href="#L4316">4316</a>         <strong class="jxr_keyword">final</strong> ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
+<a class="jxr_linenumber" name="L4317" href="#L4317">4317</a>                 .convertNEDtoECEFAndReturnNew(previousNedFrame);
+<a class="jxr_linenumber" name="L4318" href="#L4318">4318</a> 
+<a class="jxr_linenumber" name="L4319" href="#L4319">4319</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L4320" href="#L4320">4320</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L4321" href="#L4321">4321</a>                 MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+<a class="jxr_linenumber" name="L4322" href="#L4322">4322</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> specificForceStandardDeviation =
+<a class="jxr_linenumber" name="L4323" href="#L4323">4323</a>                 randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+<a class="jxr_linenumber" name="L4324" href="#L4324">4324</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateStandardDeviation =
+<a class="jxr_linenumber" name="L4325" href="#L4325">4325</a>                 randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+<a class="jxr_linenumber" name="L4326" href="#L4326">4326</a> 
+<a class="jxr_linenumber" name="L4327" href="#L4327">4327</a>         <strong class="jxr_keyword">final</strong> StandardDeviationFrameBodyKinematics frameBodyKinematics1 =
+<a class="jxr_linenumber" name="L4328" href="#L4328">4328</a>                 <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyKinematics(
+<a class="jxr_linenumber" name="L4329" href="#L4329">4329</a>                         kinematics, ecefFrame, previousEcefFrame, timeInterval,
+<a class="jxr_linenumber" name="L4330" href="#L4330">4330</a>                         specificForceStandardDeviation, angularRateStandardDeviation);
+<a class="jxr_linenumber" name="L4331" href="#L4331">4331</a> 
+<a class="jxr_linenumber" name="L4332" href="#L4332">4332</a>         <strong class="jxr_keyword">final</strong> Object frameBodyKinematics2 = frameBodyKinematics1.clone();
+<a class="jxr_linenumber" name="L4333" href="#L4333">4333</a> 
+<a class="jxr_linenumber" name="L4334" href="#L4334">4334</a>         <em class="jxr_comment">// check</em>
+<a class="jxr_linenumber" name="L4335" href="#L4335">4335</a>         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
+<a class="jxr_linenumber" name="L4336" href="#L4336">4336</a>     }
+<a class="jxr_linenumber" name="L4337" href="#L4337">4337</a> 
+<a class="jxr_linenumber" name="L4338" href="#L4338">4338</a>     <strong class="jxr_keyword">private</strong> BodyKinematics createBodyKinematics() {
+<a class="jxr_linenumber" name="L4339" href="#L4339">4339</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L4340" href="#L4340">4340</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+<a class="jxr_linenumber" name="L4341" href="#L4341">4341</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+<a class="jxr_linenumber" name="L4342" href="#L4342">4342</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+<a class="jxr_linenumber" name="L4343" href="#L4343">4343</a> 
+<a class="jxr_linenumber" name="L4344" href="#L4344">4344</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
+<a class="jxr_linenumber" name="L4345" href="#L4345">4345</a>                 MAX_ANGULAR_RATE_VALUE);
+<a class="jxr_linenumber" name="L4346" href="#L4346">4346</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
+<a class="jxr_linenumber" name="L4347" href="#L4347">4347</a>                 MAX_ANGULAR_RATE_VALUE);
+<a class="jxr_linenumber" name="L4348" href="#L4348">4348</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
+<a class="jxr_linenumber" name="L4349" href="#L4349">4349</a>                 MAX_ANGULAR_RATE_VALUE);
+<a class="jxr_linenumber" name="L4350" href="#L4350">4350</a> 
+<a class="jxr_linenumber" name="L4351" href="#L4351">4351</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BodyKinematics(fx, fy, fz,
+<a class="jxr_linenumber" name="L4352" href="#L4352">4352</a>                 angularRateX, angularRateY, angularRateZ);
+<a class="jxr_linenumber" name="L4353" href="#L4353">4353</a>     }
+<a class="jxr_linenumber" name="L4354" href="#L4354">4354</a> 
+<a class="jxr_linenumber" name="L4355" href="#L4355">4355</a>     <strong class="jxr_keyword">private</strong> NEDFrame createNedFrame() <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L4356" href="#L4356">4356</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L4357" href="#L4357">4357</a> 
+<a class="jxr_linenumber" name="L4358" href="#L4358">4358</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L4359" href="#L4359">4359</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+<a class="jxr_linenumber" name="L4360" href="#L4360">4360</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L4361" href="#L4361">4361</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+<a class="jxr_linenumber" name="L4362" href="#L4362">4362</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+<a class="jxr_linenumber" name="L4363" href="#L4363">4363</a> 
+<a class="jxr_linenumber" name="L4364" href="#L4364">4364</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> vn = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+<a class="jxr_linenumber" name="L4365" href="#L4365">4365</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> ve = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+<a class="jxr_linenumber" name="L4366" href="#L4366">4366</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> vd = randomizer.nextDouble(MIN_VELOCITY_VALUE, MAX_VELOCITY_VALUE);
+<a class="jxr_linenumber" name="L4367" href="#L4367">4367</a> 
+<a class="jxr_linenumber" name="L4368" href="#L4368">4368</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toDegrees(
+<a class="jxr_linenumber" name="L4369" href="#L4369">4369</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L4370" href="#L4370">4370</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toDegrees(
+<a class="jxr_linenumber" name="L4371" href="#L4371">4371</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L4372" href="#L4372">4372</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw = Math.toDegrees(
+<a class="jxr_linenumber" name="L4373" href="#L4373">4373</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L4374" href="#L4374">4374</a> 
+<a class="jxr_linenumber" name="L4375" href="#L4375">4375</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation c = <strong class="jxr_keyword">new</strong> CoordinateTransformation(roll, pitch, yaw,
+<a class="jxr_linenumber" name="L4376" href="#L4376">4376</a>                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
+<a class="jxr_linenumber" name="L4377" href="#L4377">4377</a> 
+<a class="jxr_linenumber" name="L4378" href="#L4378">4378</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+<a class="jxr_linenumber" name="L4379" href="#L4379">4379</a>     }
+<a class="jxr_linenumber" name="L4380" href="#L4380">4380</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

@@ -63,7 +63,7 @@
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment"> * - I is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment"> * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on</em>
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> * a perfect accelerometer, this should be a 3x3 zero matrix.</em>
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-trush specific force.</em>
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-truth specific force.</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> * - w is measurement noise.</em>
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownBiasAndFrameAccelerometerCalibrator.html">RobustKnownBiasAndFrameAccelerometerCalibrator</a> <strong class="jxr_keyword">implements</strong>
@@ -129,7 +129,7 @@
 <a class="jxr_linenumber" name="L121" href="#L121">121</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L122" href="#L122">122</a> <em class="jxr_javadoccomment">     * Constant defining default confidence of the estimated result, which is</em>
 <a class="jxr_linenumber" name="L123" href="#L123">123</a> <em class="jxr_javadoccomment">     * 99%. This means that with a probability of 99% estimation will be</em>
-<a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">     * accurate because chosen subsamples will be inliers.</em>
+<a class="jxr_linenumber" name="L124" href="#L124">124</a> <em class="jxr_javadoccomment">     * accurate because chosen sub-samples will be inliers.</em>
 <a class="jxr_linenumber" name="L125" href="#L125">125</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> DEFAULT_CONFIDENCE = 0.99;
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 
@@ -336,7 +336,7 @@
 <a class="jxr_linenumber" name="L328" href="#L328">328</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L329" href="#L329">329</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L330" href="#L330">330</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L331" href="#L331">331</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L331" href="#L331">331</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L332" href="#L332">332</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L333" href="#L333">333</a>     <strong class="jxr_keyword">private</strong> Matrix mEstimatedMa;
 <a class="jxr_linenumber" name="L334" href="#L334">334</a> 
@@ -1961,7 +1961,7 @@
 <a class="jxr_linenumber" name="L1953" href="#L1953">1953</a>     }
 <a class="jxr_linenumber" name="L1954" href="#L1954">1954</a> 
 <a class="jxr_linenumber" name="L1955" href="#L1955">1955</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L1956" href="#L1956">1956</a> <em class="jxr_javadoccomment">     * Sepecifies whether a linear calibrator is used or not for preliminary</em>
+<a class="jxr_linenumber" name="L1956" href="#L1956">1956</a> <em class="jxr_javadoccomment">     * Specifies whether a linear calibrator is used or not for preliminary</em>
 <a class="jxr_linenumber" name="L1957" href="#L1957">1957</a> <em class="jxr_javadoccomment">     * solutions.</em>
 <a class="jxr_linenumber" name="L1958" href="#L1958">1958</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L1959" href="#L1959">1959</a> <em class="jxr_javadoccomment">     * @param linearCalibratorUsed indicates whether a linear calibrator is used</em>
@@ -2231,7 +2231,7 @@
 <a class="jxr_linenumber" name="L2223" href="#L2223">2223</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L2224" href="#L2224">2224</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L2225" href="#L2225">2225</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L2226" href="#L2226">2226</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L2226" href="#L2226">2226</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L2227" href="#L2227">2227</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L2228" href="#L2228">2228</a> <em class="jxr_javadoccomment">     * @return estimated accelerometer scale factors and cross coupling errors, or null</em>
 <a class="jxr_linenumber" name="L2229" href="#L2229">2229</a> <em class="jxr_javadoccomment">     * if not available.</em>
@@ -5438,7 +5438,7 @@
 <a class="jxr_linenumber" name="L5430" href="#L5430">5430</a>     }
 <a class="jxr_linenumber" name="L5431" href="#L5431">5431</a> 
 <a class="jxr_linenumber" name="L5432" href="#L5432">5432</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L5433" href="#L5433">5433</a> <em class="jxr_javadoccomment">     * Createss a robust accelerometer calibrator using default robust method.</em>
+<a class="jxr_linenumber" name="L5433" href="#L5433">5433</a> <em class="jxr_javadoccomment">     * Creates a robust accelerometer calibrator using default robust method.</em>
 <a class="jxr_linenumber" name="L5434" href="#L5434">5434</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L5435" href="#L5435">5435</a> <em class="jxr_javadoccomment">     * @param measurements   list of body kinematics measurements with standard</em>
 <a class="jxr_linenumber" name="L5436" href="#L5436">5436</a> <em class="jxr_javadoccomment">     *                       deviations taken at different frames (positions, orientations</em>

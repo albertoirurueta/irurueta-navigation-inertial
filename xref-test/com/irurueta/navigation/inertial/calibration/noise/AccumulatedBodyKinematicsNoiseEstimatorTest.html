@@ -1103,7 +1103,7 @@
 <a class="jxr_linenumber" name="L1095" href="#L1095">1095</a>                 gyroNoisePsd, ABSOLUTE_ERROR);
 <a class="jxr_linenumber" name="L1096" href="#L1096">1096</a> 
 <a class="jxr_linenumber" name="L1097" href="#L1097">1097</a>         <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L1098" href="#L1098">1098</a>         estimator.reset();
+<a class="jxr_linenumber" name="L1098" href="#L1098">1098</a>         assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L1099" href="#L1099">1099</a> 
 <a class="jxr_linenumber" name="L1100" href="#L1100">1100</a>         assertEquals(0, estimator.getNumberOfProcessedSamples());
 <a class="jxr_linenumber" name="L1101" href="#L1101">1101</a>         assertNull(estimator.getLastBodyKinematics());
@@ -1601,7 +1601,7 @@
 <a class="jxr_linenumber" name="L1593" href="#L1593">1593</a>                 gyroNoisePsd, ABSOLUTE_ERROR);
 <a class="jxr_linenumber" name="L1594" href="#L1594">1594</a> 
 <a class="jxr_linenumber" name="L1595" href="#L1595">1595</a>         <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L1596" href="#L1596">1596</a>         estimator.reset();
+<a class="jxr_linenumber" name="L1596" href="#L1596">1596</a>         assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L1597" href="#L1597">1597</a> 
 <a class="jxr_linenumber" name="L1598" href="#L1598">1598</a>         assertEquals(0, estimator.getNumberOfProcessedSamples());
 <a class="jxr_linenumber" name="L1599" href="#L1599">1599</a>         assertNull(estimator.getLastBodyKinematics());
@@ -2115,7 +2115,7 @@
 <a class="jxr_linenumber" name="L2107" href="#L2107">2107</a>                     gyroNoisePsd, ABSOLUTE_ERROR);
 <a class="jxr_linenumber" name="L2108" href="#L2108">2108</a> 
 <a class="jxr_linenumber" name="L2109" href="#L2109">2109</a>             <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L2110" href="#L2110">2110</a>             estimator.reset();
+<a class="jxr_linenumber" name="L2110" href="#L2110">2110</a>             assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L2111" href="#L2111">2111</a> 
 <a class="jxr_linenumber" name="L2112" href="#L2112">2112</a>             assertEquals(0, estimator.getNumberOfProcessedSamples());
 <a class="jxr_linenumber" name="L2113" href="#L2113">2113</a>             assertNull(estimator.getLastBodyKinematics());
@@ -2613,7 +2613,7 @@
 <a class="jxr_linenumber" name="L2605" href="#L2605">2605</a>                 gyroNoisePsd, ABSOLUTE_ERROR);
 <a class="jxr_linenumber" name="L2606" href="#L2606">2606</a> 
 <a class="jxr_linenumber" name="L2607" href="#L2607">2607</a>         <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L2608" href="#L2608">2608</a>         estimator.reset();
+<a class="jxr_linenumber" name="L2608" href="#L2608">2608</a>         assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L2609" href="#L2609">2609</a> 
 <a class="jxr_linenumber" name="L2610" href="#L2610">2610</a>         assertEquals(0, estimator.getNumberOfProcessedSamples());
 <a class="jxr_linenumber" name="L2611" href="#L2611">2611</a>         assertNull(estimator.getLastBodyKinematics());
@@ -2690,7 +2690,7 @@
 <a class="jxr_linenumber" name="L2682" href="#L2682">2682</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
 <a class="jxr_linenumber" name="L2683" href="#L2683">2683</a>         }
 <a class="jxr_linenumber" name="L2684" href="#L2684">2684</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L2685" href="#L2685">2685</a>             estimator.reset();
+<a class="jxr_linenumber" name="L2685" href="#L2685">2685</a>             assertFalse(estimator.reset());
 <a class="jxr_linenumber" name="L2686" href="#L2686">2686</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
 <a class="jxr_linenumber" name="L2687" href="#L2687">2687</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
 <a class="jxr_linenumber" name="L2688" href="#L2688">2688</a>         }

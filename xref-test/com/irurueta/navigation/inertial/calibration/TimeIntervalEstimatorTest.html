@@ -259,7 +259,7 @@
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>         assertFalse(estimator.addTimestamp(0.0));
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>         <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L254" href="#L254">254</a>         estimator.reset();
+<a class="jxr_linenumber" name="L254" href="#L254">254</a>         assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L255" href="#L255">255</a> 
 <a class="jxr_linenumber" name="L256" href="#L256">256</a>         assertFalse(estimator.isFinished());
 <a class="jxr_linenumber" name="L257" href="#L257">257</a>         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
@@ -358,7 +358,7 @@
 <a class="jxr_linenumber" name="L350" href="#L350">350</a>         assertFalse(estimator.addTimestamp(timestamp));
 <a class="jxr_linenumber" name="L351" href="#L351">351</a> 
 <a class="jxr_linenumber" name="L352" href="#L352">352</a>         <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L353" href="#L353">353</a>         estimator.reset();
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>         assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L354" href="#L354">354</a> 
 <a class="jxr_linenumber" name="L355" href="#L355">355</a>         assertFalse(estimator.isFinished());
 <a class="jxr_linenumber" name="L356" href="#L356">356</a>         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
@@ -417,7 +417,7 @@
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
 <a class="jxr_linenumber" name="L410" href="#L410">410</a>         }
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L412" href="#L412">412</a>             estimator.reset();
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>             assertFalse(estimator.reset());
 <a class="jxr_linenumber" name="L413" href="#L413">413</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
 <a class="jxr_linenumber" name="L414" href="#L414">414</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
 <a class="jxr_linenumber" name="L415" href="#L415">415</a>         }

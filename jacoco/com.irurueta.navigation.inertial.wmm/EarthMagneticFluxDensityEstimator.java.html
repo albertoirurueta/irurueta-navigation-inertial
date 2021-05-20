@@ -55,24 +55,25 @@ public class EarthMagneticFluxDensityEstimator {
      * @param result      instance where magnetic flux will be stored resolved
      *                    around NED frame.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public static void estimate(
             final double magnitude,
             final double declination,
             final double dip,
             final NEDMagneticFluxDensity result) {
 
-<span class="fc" id="L64">        final double cosDeclination = Math.cos(declination);</span>
-<span class="fc" id="L65">        final double sinDeclination = Math.sin(declination);</span>
+<span class="fc" id="L65">        final double cosDeclination = Math.cos(declination);</span>
+<span class="fc" id="L66">        final double sinDeclination = Math.sin(declination);</span>
 
-<span class="fc" id="L67">        final double cosDip = Math.cos(dip);</span>
-<span class="fc" id="L68">        final double sinDip = Math.sin(dip);</span>
+<span class="fc" id="L68">        final double cosDip = Math.cos(dip);</span>
+<span class="fc" id="L69">        final double sinDip = Math.sin(dip);</span>
 
-<span class="fc" id="L70">        final double bn = cosDeclination * cosDip * magnitude;</span>
-<span class="fc" id="L71">        final double be = sinDeclination * cosDip * magnitude;</span>
-<span class="fc" id="L72">        final double bd = sinDip * magnitude;</span>
+<span class="fc" id="L71">        final double bn = cosDeclination * cosDip * magnitude;</span>
+<span class="fc" id="L72">        final double be = sinDeclination * cosDip * magnitude;</span>
+<span class="fc" id="L73">        final double bd = sinDip * magnitude;</span>
 
-<span class="fc" id="L74">        result.setCoordinates(bn, be, bd);</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L75">        result.setCoordinates(bn, be, bd);</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -88,9 +89,9 @@ public class EarthMagneticFluxDensityEstimator {
             final Angle declination,
             final Angle dip,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L91">        estimate(magnitude, convertAngle(declination), convertAngle(dip),</span>
+<span class="fc" id="L92">        estimate(magnitude, convertAngle(declination), convertAngle(dip),</span>
                 result);
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L94">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -104,10 +105,10 @@ public class EarthMagneticFluxDensityEstimator {
             final double magnitude,
             final double declination,
             final double dip) {
-<span class="fc" id="L107">        final NEDMagneticFluxDensity result =</span>
+<span class="fc" id="L108">        final NEDMagneticFluxDensity result =</span>
                 new NEDMagneticFluxDensity();
-<span class="fc" id="L109">        estimate(magnitude, declination, dip, result);</span>
-<span class="fc" id="L110">        return result;</span>
+<span class="fc" id="L110">        estimate(magnitude, declination, dip, result);</span>
+<span class="fc" id="L111">        return result;</span>
     }
 
     /**
@@ -122,8 +123,8 @@ public class EarthMagneticFluxDensityEstimator {
             final double magnitude,
             final Angle declination,
             final Angle dip) {
-<span class="fc" id="L125">        return estimate(magnitude, convertAngle(declination),</span>
-<span class="fc" id="L126">                convertAngle(dip));</span>
+<span class="fc" id="L126">        return estimate(magnitude, convertAngle(declination),</span>
+<span class="fc" id="L127">                convertAngle(dip));</span>
     }
 
     /**
@@ -133,10 +134,10 @@ public class EarthMagneticFluxDensityEstimator {
      * @return declination angle.
      */
     public static double getDeclination(final NEDMagneticFluxDensity b) {
-<span class="fc" id="L136">        final double bn = b.getBn();</span>
-<span class="fc" id="L137">        final double be = b.getBe();</span>
+<span class="fc" id="L137">        final double bn = b.getBn();</span>
+<span class="fc" id="L138">        final double be = b.getBe();</span>
 
-<span class="fc" id="L139">        return Math.atan2(be, bn);</span>
+<span class="fc" id="L140">        return Math.atan2(be, bn);</span>
     }
 
     /**
@@ -147,9 +148,9 @@ public class EarthMagneticFluxDensityEstimator {
      */
     public static void getDeclinationAsAngle(
             final NEDMagneticFluxDensity b, final Angle result) {
-<span class="fc" id="L150">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L151">        result.setValue(getDeclination(b));</span>
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L151">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L152">        result.setValue(getDeclination(b));</span>
+<span class="fc" id="L153">    }</span>
 
     /**
      * Gets declination angle.
@@ -159,7 +160,7 @@ public class EarthMagneticFluxDensityEstimator {
      */
     public static Angle getDeclinationAsAngle(
             final NEDMagneticFluxDensity b) {
-<span class="fc" id="L162">        return new Angle(getDeclination(b), AngleUnit.RADIANS);</span>
+<span class="fc" id="L163">        return new Angle(getDeclination(b), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -169,13 +170,13 @@ public class EarthMagneticFluxDensityEstimator {
      * @return dip angle.
      */
     public static double getDip(final NEDMagneticFluxDensity b) {
-<span class="fc" id="L172">        final double bn = b.getBn();</span>
-<span class="fc" id="L173">        final double be = b.getBe();</span>
-<span class="fc" id="L174">        final double bd = b.getBd();</span>
+<span class="fc" id="L173">        final double bn = b.getBn();</span>
+<span class="fc" id="L174">        final double be = b.getBe();</span>
+<span class="fc" id="L175">        final double bd = b.getBd();</span>
 
-<span class="fc" id="L176">        final double bn2 = bn * bn;</span>
-<span class="fc" id="L177">        final double be2 = be * be;</span>
-<span class="fc" id="L178">        return Math.atan(bd / Math.sqrt(bn2 + be2));</span>
+<span class="fc" id="L177">        final double bn2 = bn * bn;</span>
+<span class="fc" id="L178">        final double be2 = be * be;</span>
+<span class="fc" id="L179">        return Math.atan(bd / Math.sqrt(bn2 + be2));</span>
     }
 
     /**
@@ -186,9 +187,9 @@ public class EarthMagneticFluxDensityEstimator {
      */
     public static void getDipAsAngle(
             final NEDMagneticFluxDensity b, final Angle result) {
-<span class="fc" id="L189">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L190">        result.setValue(getDip(b));</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L190">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L191">        result.setValue(getDip(b));</span>
+<span class="fc" id="L192">    }</span>
 
     /**
      * Gets dip (a.k.a. inclination) angle expressed in radians.
@@ -197,18 +198,18 @@ public class EarthMagneticFluxDensityEstimator {
      * @return dip angle.
      */
     public static Angle getDipAsAngle(final NEDMagneticFluxDensity b) {
-<span class="fc" id="L200">        return new Angle(getDip(b), AngleUnit.RADIANS);</span>
+<span class="fc" id="L201">        return new Angle(getDip(b), AngleUnit.RADIANS);</span>
     }
 
     /**
-     * Converts an angle instanto into radians.
+     * Converts an angle instance into radians.
      *
      * @param angle angle to be converted.
-     * @return converted value  into radians.
+     * @return converted value into radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L210">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
-<span class="fc" id="L211">                angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L211">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
+<span class="fc" id="L212">                angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

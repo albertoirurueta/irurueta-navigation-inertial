@@ -48,7 +48,7 @@ import java.util.List;
  * - I is the 3x3 identity matrix.
  * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
  * a perfect accelerometer, this should be a 3x3 zero matrix.
- * - ftrue is ground-trush specific force.
+ * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
 public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
@@ -1688,7 +1688,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -1787,121 +1787,122 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L1792" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1793">            throw new LockedException();</span>
+<span class="fc bfc" id="L1793" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1794">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1795" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1796">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1796" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1797">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1799">        mGravityNorm = computeGravityNorm();</span>
+<span class="fc" id="L1800">        mGravityNorm = computeGravityNorm();</span>
 
-<span class="fc" id="L1801">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
-<span class="fc" id="L1802">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L1802">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1803">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L1805">                        return mQualityScores;</span>
+<span class="fc" id="L1806">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1810">                        return mStopThreshold;</span>
+<span class="fc" id="L1811">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1815">                        return mMeasurements.size();</span>
+<span class="fc" id="L1816">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1820">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1821">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1827">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1828">                    }</span>
+<span class="fc" id="L1828">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1829">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L1833">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L1834">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1838">                        return PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();</span>
+<span class="fc" id="L1839">                        return PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1844">                    }</span>
+<span class="fc" id="L1845">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1849">                    }</span>
+<span class="fc" id="L1850">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1855" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1856">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1856" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1857">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1860">                    }</span>
+<span class="fc" id="L1861">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="pc bpc" id="L1866" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1867">                            mListener.onCalibrateProgressChange(</span>
+<span class="pc bpc" id="L1867" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1868">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator.this,
                                     progress);
                         }
-<span class="fc" id="L1871">                    }</span>
+<span class="fc" id="L1872">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1875">            mRunning = true;</span>
+<span class="fc" id="L1876">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1877" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1878">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1878" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1879">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1881">            mInliersData = null;</span>
-<span class="fc" id="L1882">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L1883">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1884">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1885">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1886">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1887">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1882">            mInliersData = null;</span>
+<span class="fc" id="L1883">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1884">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1885">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1886">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1887">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1888">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1889">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1890">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1891" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1892">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1892" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1893">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1895">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1896">            throw new LockedException(e);</span>
-<span class="nc" id="L1897">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1898">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1899">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L1900">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1896">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1897">            throw new LockedException(e);</span>
+<span class="nc" id="L1898">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1899">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1900">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1901">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1902">            mRunning = false;</span>
+<span class="fc" id="L1903">            mRunning = false;</span>
         }
-<span class="fc" id="L1904">    }</span>
+<span class="fc" id="L1905">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1910,7 +1911,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1913">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L1914">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -1921,7 +1922,7 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1924">        return true;</span>
+<span class="fc" id="L1925">        return true;</span>
     }
 
     /**
@@ -1935,12 +1936,12 @@ public class PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator extends
      *                                  number of samples (10 or 13).
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1938" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L1939" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
-<span class="fc" id="L1940">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L1939" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L1940" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
+<span class="fc" id="L1941">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1943">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1944">    }</span>
+<span class="fc" id="L1944">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1945">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

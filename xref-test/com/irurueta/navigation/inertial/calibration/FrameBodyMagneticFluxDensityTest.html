@@ -631,7 +631,7 @@
 <a class="jxr_linenumber" name="L623" href="#L623">623</a>     }
 <a class="jxr_linenumber" name="L624" href="#L624">624</a> 
 <a class="jxr_linenumber" name="L625" href="#L625">625</a>     @Test
-<a class="jxr_linenumber" name="L626" href="#L626">626</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCopyFromWhenOnlyBodyMagneticFluxAreavailableAtSourceAndDestinationIsEmpty()
+<a class="jxr_linenumber" name="L626" href="#L626">626</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testCopyFromWhenOnlyBodyMagneticFluxAreaAvailableAtSourceAndDestinationIsEmpty()
 <a class="jxr_linenumber" name="L627" href="#L627">627</a>             <strong class="jxr_keyword">throws</strong> IOException {
 <a class="jxr_linenumber" name="L628" href="#L628">628</a> 
 <a class="jxr_linenumber" name="L629" href="#L629">629</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
@@ -847,130 +847,131 @@
 <a class="jxr_linenumber" name="L839" href="#L839">839</a> 
 <a class="jxr_linenumber" name="L840" href="#L840">840</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
 <a class="jxr_linenumber" name="L841" href="#L841">841</a>         assertTrue(frameBodyMagneticFluxDensity1.equals((Object) frameBodyMagneticFluxDensity1));
-<a class="jxr_linenumber" name="L842" href="#L842">842</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1));
-<a class="jxr_linenumber" name="L843" href="#L843">843</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2));
-<a class="jxr_linenumber" name="L844" href="#L844">844</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3));
-<a class="jxr_linenumber" name="L845" href="#L845">845</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
-<a class="jxr_linenumber" name="L846" href="#L846">846</a>         assertFalse(frameBodyMagneticFluxDensity1.equals((Object) <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L847" href="#L847">847</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(<strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L848" href="#L848">848</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L849" href="#L849">849</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(<strong class="jxr_keyword">new</strong> Object()));
-<a class="jxr_linenumber" name="L850" href="#L850">850</a>     }
-<a class="jxr_linenumber" name="L851" href="#L851">851</a> 
-<a class="jxr_linenumber" name="L852" href="#L852">852</a>     @Test
-<a class="jxr_linenumber" name="L853" href="#L853">853</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() <strong class="jxr_keyword">throws</strong> IOException,
-<a class="jxr_linenumber" name="L854" href="#L854">854</a>             InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L855" href="#L855">855</a> 
-<a class="jxr_linenumber" name="L856" href="#L856">856</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
-<a class="jxr_linenumber" name="L857" href="#L857">857</a>         <strong class="jxr_keyword">final</strong> Date timestamp = createTimestamp();
-<a class="jxr_linenumber" name="L858" href="#L858">858</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = createAttitude();
-<a class="jxr_linenumber" name="L859" href="#L859">859</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
-<a class="jxr_linenumber" name="L860" href="#L860">860</a> 
-<a class="jxr_linenumber" name="L861" href="#L861">861</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity bodyMagneticFluxDensity =
-<a class="jxr_linenumber" name="L862" href="#L862">862</a>                 createMagneticFluxDensity(position, timestamp, cnb);
-<a class="jxr_linenumber" name="L863" href="#L863">863</a> 
-<a class="jxr_linenumber" name="L864" href="#L864">864</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
-<a class="jxr_linenumber" name="L865" href="#L865">865</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-<a class="jxr_linenumber" name="L866" href="#L866">866</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
-<a class="jxr_linenumber" name="L867" href="#L867">867</a> 
-<a class="jxr_linenumber" name="L868" href="#L868">868</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-<a class="jxr_linenumber" name="L869" href="#L869">869</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-<a class="jxr_linenumber" name="L870" href="#L870">870</a>                         ecefFrame, timestamp);
-<a class="jxr_linenumber" name="L871" href="#L871">871</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
-<a class="jxr_linenumber" name="L872" href="#L872">872</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-<a class="jxr_linenumber" name="L873" href="#L873">873</a>                         ecefFrame, timestamp);
-<a class="jxr_linenumber" name="L874" href="#L874">874</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
-<a class="jxr_linenumber" name="L875" href="#L875">875</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity();
-<a class="jxr_linenumber" name="L876" href="#L876">876</a> 
-<a class="jxr_linenumber" name="L877" href="#L877">877</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1, THRESHOLD));
-<a class="jxr_linenumber" name="L878" href="#L878">878</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2, THRESHOLD));
-<a class="jxr_linenumber" name="L879" href="#L879">879</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3, THRESHOLD));
-<a class="jxr_linenumber" name="L880" href="#L880">880</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
-<a class="jxr_linenumber" name="L881" href="#L881">881</a>     }
-<a class="jxr_linenumber" name="L882" href="#L882">882</a> 
-<a class="jxr_linenumber" name="L883" href="#L883">883</a>     @Test
-<a class="jxr_linenumber" name="L884" href="#L884">884</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> IOException,
-<a class="jxr_linenumber" name="L885" href="#L885">885</a>             InvalidSourceAndDestinationFrameTypeException,
-<a class="jxr_linenumber" name="L886" href="#L886">886</a>             CloneNotSupportedException {
-<a class="jxr_linenumber" name="L887" href="#L887">887</a> 
-<a class="jxr_linenumber" name="L888" href="#L888">888</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
-<a class="jxr_linenumber" name="L889" href="#L889">889</a>         <strong class="jxr_keyword">final</strong> Date timestamp = createTimestamp();
-<a class="jxr_linenumber" name="L890" href="#L890">890</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = createAttitude();
-<a class="jxr_linenumber" name="L891" href="#L891">891</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
-<a class="jxr_linenumber" name="L892" href="#L892">892</a> 
-<a class="jxr_linenumber" name="L893" href="#L893">893</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity bodyMagneticFluxDensity =
-<a class="jxr_linenumber" name="L894" href="#L894">894</a>                 createMagneticFluxDensity(position, timestamp, cnb);
-<a class="jxr_linenumber" name="L895" href="#L895">895</a> 
-<a class="jxr_linenumber" name="L896" href="#L896">896</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
-<a class="jxr_linenumber" name="L897" href="#L897">897</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
-<a class="jxr_linenumber" name="L898" href="#L898">898</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
-<a class="jxr_linenumber" name="L899" href="#L899">899</a> 
-<a class="jxr_linenumber" name="L900" href="#L900">900</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
-<a class="jxr_linenumber" name="L901" href="#L901">901</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
-<a class="jxr_linenumber" name="L902" href="#L902">902</a>                         ecefFrame, timestamp);
-<a class="jxr_linenumber" name="L903" href="#L903">903</a> 
-<a class="jxr_linenumber" name="L904" href="#L904">904</a>         <strong class="jxr_keyword">final</strong> Object frameBodyMagneticFluxDensity2 =
-<a class="jxr_linenumber" name="L905" href="#L905">905</a>                 frameBodyMagneticFluxDensity1.clone();
-<a class="jxr_linenumber" name="L906" href="#L906">906</a> 
-<a class="jxr_linenumber" name="L907" href="#L907">907</a>         <em class="jxr_comment">// check</em>
-<a class="jxr_linenumber" name="L908" href="#L908">908</a>         assertEquals(frameBodyMagneticFluxDensity1,
-<a class="jxr_linenumber" name="L909" href="#L909">909</a>                 frameBodyMagneticFluxDensity2);
-<a class="jxr_linenumber" name="L910" href="#L910">910</a>     }
-<a class="jxr_linenumber" name="L911" href="#L911">911</a> 
-<a class="jxr_linenumber" name="L912" href="#L912">912</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity createMagneticFluxDensity()
-<a class="jxr_linenumber" name="L913" href="#L913">913</a>             <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L914" href="#L914">914</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
-<a class="jxr_linenumber" name="L915" href="#L915">915</a>         <strong class="jxr_keyword">final</strong> Date timestamp = createTimestamp();
-<a class="jxr_linenumber" name="L916" href="#L916">916</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = createAttitude();
-<a class="jxr_linenumber" name="L917" href="#L917">917</a>         <strong class="jxr_keyword">return</strong> createMagneticFluxDensity(position, timestamp, cnb);
-<a class="jxr_linenumber" name="L918" href="#L918">918</a>     }
-<a class="jxr_linenumber" name="L919" href="#L919">919</a> 
-<a class="jxr_linenumber" name="L920" href="#L920">920</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity createMagneticFluxDensity(
-<a class="jxr_linenumber" name="L921" href="#L921">921</a>             <strong class="jxr_keyword">final</strong> NEDPosition position, <strong class="jxr_keyword">final</strong> Date timestamp,
-<a class="jxr_linenumber" name="L922" href="#L922">922</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
-<a class="jxr_linenumber" name="L923" href="#L923">923</a>             <strong class="jxr_keyword">throws</strong> IOException {
-<a class="jxr_linenumber" name="L924" href="#L924">924</a>         <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wMMEstimator =
-<a class="jxr_linenumber" name="L925" href="#L925">925</a>                 <strong class="jxr_keyword">new</strong> WMMEarthMagneticFluxDensityEstimator();
-<a class="jxr_linenumber" name="L926" href="#L926">926</a>         <strong class="jxr_keyword">final</strong> NEDMagneticFluxDensity earthB = wMMEstimator.estimate(
-<a class="jxr_linenumber" name="L927" href="#L927">927</a>                 position, timestamp);
-<a class="jxr_linenumber" name="L928" href="#L928">928</a>         <strong class="jxr_keyword">return</strong> BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-<a class="jxr_linenumber" name="L929" href="#L929">929</a>     }
-<a class="jxr_linenumber" name="L930" href="#L930">930</a> 
-<a class="jxr_linenumber" name="L931" href="#L931">931</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> CoordinateTransformation createAttitude() {
-<a class="jxr_linenumber" name="L932" href="#L932">932</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(
-<a class="jxr_linenumber" name="L933" href="#L933">933</a>                 <strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L934" href="#L934">934</a> 
-<a class="jxr_linenumber" name="L935" href="#L935">935</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L936" href="#L936">936</a>                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L937" href="#L937">937</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L938" href="#L938">938</a>                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L939" href="#L939">939</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L940" href="#L940">940</a>                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L941" href="#L941">941</a> 
-<a class="jxr_linenumber" name="L942" href="#L942">942</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> CoordinateTransformation(roll, pitch, yaw,
-<a class="jxr_linenumber" name="L943" href="#L943">943</a>                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-<a class="jxr_linenumber" name="L944" href="#L944">944</a>     }
-<a class="jxr_linenumber" name="L945" href="#L945">945</a> 
-<a class="jxr_linenumber" name="L946" href="#L946">946</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> NEDPosition createPosition() {
-<a class="jxr_linenumber" name="L947" href="#L947">947</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer =
-<a class="jxr_linenumber" name="L948" href="#L948">948</a>                 <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L949" href="#L949">949</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L950" href="#L950">950</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-<a class="jxr_linenumber" name="L951" href="#L951">951</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L952" href="#L952">952</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-<a class="jxr_linenumber" name="L953" href="#L953">953</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L954" href="#L954">954</a>                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
-<a class="jxr_linenumber" name="L955" href="#L955">955</a> 
-<a class="jxr_linenumber" name="L956" href="#L956">956</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDPosition(latitude, longitude, height);
-<a class="jxr_linenumber" name="L957" href="#L957">957</a>     }
-<a class="jxr_linenumber" name="L958" href="#L958">958</a> 
-<a class="jxr_linenumber" name="L959" href="#L959">959</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Date createTimestamp() {
-<a class="jxr_linenumber" name="L960" href="#L960">960</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer =
-<a class="jxr_linenumber" name="L961" href="#L961">961</a>                 <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L962" href="#L962">962</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Date(randomizer.nextLong(
-<a class="jxr_linenumber" name="L963" href="#L963">963</a>                 START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS));
-<a class="jxr_linenumber" name="L964" href="#L964">964</a>     }
-<a class="jxr_linenumber" name="L965" href="#L965">965</a> }
+<a class="jxr_linenumber" name="L842" href="#L842">842</a>         <em class="jxr_comment">//noinspection EqualsWithItself</em>
+<a class="jxr_linenumber" name="L843" href="#L843">843</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1));
+<a class="jxr_linenumber" name="L844" href="#L844">844</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2));
+<a class="jxr_linenumber" name="L845" href="#L845">845</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3));
+<a class="jxr_linenumber" name="L846" href="#L846">846</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
+<a class="jxr_linenumber" name="L847" href="#L847">847</a>         assertFalse(frameBodyMagneticFluxDensity1.equals((Object) <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L848" href="#L848">848</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L849" href="#L849">849</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L850" href="#L850">850</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(<strong class="jxr_keyword">new</strong> Object()));
+<a class="jxr_linenumber" name="L851" href="#L851">851</a>     }
+<a class="jxr_linenumber" name="L852" href="#L852">852</a> 
+<a class="jxr_linenumber" name="L853" href="#L853">853</a>     @Test
+<a class="jxr_linenumber" name="L854" href="#L854">854</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() <strong class="jxr_keyword">throws</strong> IOException,
+<a class="jxr_linenumber" name="L855" href="#L855">855</a>             InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L856" href="#L856">856</a> 
+<a class="jxr_linenumber" name="L857" href="#L857">857</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
+<a class="jxr_linenumber" name="L858" href="#L858">858</a>         <strong class="jxr_keyword">final</strong> Date timestamp = createTimestamp();
+<a class="jxr_linenumber" name="L859" href="#L859">859</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = createAttitude();
+<a class="jxr_linenumber" name="L860" href="#L860">860</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+<a class="jxr_linenumber" name="L861" href="#L861">861</a> 
+<a class="jxr_linenumber" name="L862" href="#L862">862</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity bodyMagneticFluxDensity =
+<a class="jxr_linenumber" name="L863" href="#L863">863</a>                 createMagneticFluxDensity(position, timestamp, cnb);
+<a class="jxr_linenumber" name="L864" href="#L864">864</a> 
+<a class="jxr_linenumber" name="L865" href="#L865">865</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
+<a class="jxr_linenumber" name="L866" href="#L866">866</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
+<a class="jxr_linenumber" name="L867" href="#L867">867</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
+<a class="jxr_linenumber" name="L868" href="#L868">868</a> 
+<a class="jxr_linenumber" name="L869" href="#L869">869</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
+<a class="jxr_linenumber" name="L870" href="#L870">870</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
+<a class="jxr_linenumber" name="L871" href="#L871">871</a>                         ecefFrame, timestamp);
+<a class="jxr_linenumber" name="L872" href="#L872">872</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
+<a class="jxr_linenumber" name="L873" href="#L873">873</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
+<a class="jxr_linenumber" name="L874" href="#L874">874</a>                         ecefFrame, timestamp);
+<a class="jxr_linenumber" name="L875" href="#L875">875</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity3 =
+<a class="jxr_linenumber" name="L876" href="#L876">876</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity();
+<a class="jxr_linenumber" name="L877" href="#L877">877</a> 
+<a class="jxr_linenumber" name="L878" href="#L878">878</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1, THRESHOLD));
+<a class="jxr_linenumber" name="L879" href="#L879">879</a>         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2, THRESHOLD));
+<a class="jxr_linenumber" name="L880" href="#L880">880</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3, THRESHOLD));
+<a class="jxr_linenumber" name="L881" href="#L881">881</a>         assertFalse(frameBodyMagneticFluxDensity1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
+<a class="jxr_linenumber" name="L882" href="#L882">882</a>     }
+<a class="jxr_linenumber" name="L883" href="#L883">883</a> 
+<a class="jxr_linenumber" name="L884" href="#L884">884</a>     @Test
+<a class="jxr_linenumber" name="L885" href="#L885">885</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> IOException,
+<a class="jxr_linenumber" name="L886" href="#L886">886</a>             InvalidSourceAndDestinationFrameTypeException,
+<a class="jxr_linenumber" name="L887" href="#L887">887</a>             CloneNotSupportedException {
+<a class="jxr_linenumber" name="L888" href="#L888">888</a> 
+<a class="jxr_linenumber" name="L889" href="#L889">889</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
+<a class="jxr_linenumber" name="L890" href="#L890">890</a>         <strong class="jxr_keyword">final</strong> Date timestamp = createTimestamp();
+<a class="jxr_linenumber" name="L891" href="#L891">891</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = createAttitude();
+<a class="jxr_linenumber" name="L892" href="#L892">892</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+<a class="jxr_linenumber" name="L893" href="#L893">893</a> 
+<a class="jxr_linenumber" name="L894" href="#L894">894</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity bodyMagneticFluxDensity =
+<a class="jxr_linenumber" name="L895" href="#L895">895</a>                 createMagneticFluxDensity(position, timestamp, cnb);
+<a class="jxr_linenumber" name="L896" href="#L896">896</a> 
+<a class="jxr_linenumber" name="L897" href="#L897">897</a>         <strong class="jxr_keyword">final</strong> NEDFrame nedFrame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
+<a class="jxr_linenumber" name="L898" href="#L898">898</a>         <strong class="jxr_keyword">final</strong> ECEFFrame ecefFrame = NEDtoECEFFrameConverter
+<a class="jxr_linenumber" name="L899" href="#L899">899</a>                 .convertNEDtoECEFAndReturnNew(nedFrame);
+<a class="jxr_linenumber" name="L900" href="#L900">900</a> 
+<a class="jxr_linenumber" name="L901" href="#L901">901</a>         <strong class="jxr_keyword">final</strong> FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
+<a class="jxr_linenumber" name="L902" href="#L902">902</a>                 <strong class="jxr_keyword">new</strong> FrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
+<a class="jxr_linenumber" name="L903" href="#L903">903</a>                         ecefFrame, timestamp);
+<a class="jxr_linenumber" name="L904" href="#L904">904</a> 
+<a class="jxr_linenumber" name="L905" href="#L905">905</a>         <strong class="jxr_keyword">final</strong> Object frameBodyMagneticFluxDensity2 =
+<a class="jxr_linenumber" name="L906" href="#L906">906</a>                 frameBodyMagneticFluxDensity1.clone();
+<a class="jxr_linenumber" name="L907" href="#L907">907</a> 
+<a class="jxr_linenumber" name="L908" href="#L908">908</a>         <em class="jxr_comment">// check</em>
+<a class="jxr_linenumber" name="L909" href="#L909">909</a>         assertEquals(frameBodyMagneticFluxDensity1,
+<a class="jxr_linenumber" name="L910" href="#L910">910</a>                 frameBodyMagneticFluxDensity2);
+<a class="jxr_linenumber" name="L911" href="#L911">911</a>     }
+<a class="jxr_linenumber" name="L912" href="#L912">912</a> 
+<a class="jxr_linenumber" name="L913" href="#L913">913</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity createMagneticFluxDensity()
+<a class="jxr_linenumber" name="L914" href="#L914">914</a>             <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L915" href="#L915">915</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition();
+<a class="jxr_linenumber" name="L916" href="#L916">916</a>         <strong class="jxr_keyword">final</strong> Date timestamp = createTimestamp();
+<a class="jxr_linenumber" name="L917" href="#L917">917</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = createAttitude();
+<a class="jxr_linenumber" name="L918" href="#L918">918</a>         <strong class="jxr_keyword">return</strong> createMagneticFluxDensity(position, timestamp, cnb);
+<a class="jxr_linenumber" name="L919" href="#L919">919</a>     }
+<a class="jxr_linenumber" name="L920" href="#L920">920</a> 
+<a class="jxr_linenumber" name="L921" href="#L921">921</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity createMagneticFluxDensity(
+<a class="jxr_linenumber" name="L922" href="#L922">922</a>             <strong class="jxr_keyword">final</strong> NEDPosition position, <strong class="jxr_keyword">final</strong> Date timestamp,
+<a class="jxr_linenumber" name="L923" href="#L923">923</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
+<a class="jxr_linenumber" name="L924" href="#L924">924</a>             <strong class="jxr_keyword">throws</strong> IOException {
+<a class="jxr_linenumber" name="L925" href="#L925">925</a>         <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wMMEstimator =
+<a class="jxr_linenumber" name="L926" href="#L926">926</a>                 <strong class="jxr_keyword">new</strong> WMMEarthMagneticFluxDensityEstimator();
+<a class="jxr_linenumber" name="L927" href="#L927">927</a>         <strong class="jxr_keyword">final</strong> NEDMagneticFluxDensity earthB = wMMEstimator.estimate(
+<a class="jxr_linenumber" name="L928" href="#L928">928</a>                 position, timestamp);
+<a class="jxr_linenumber" name="L929" href="#L929">929</a>         <strong class="jxr_keyword">return</strong> BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+<a class="jxr_linenumber" name="L930" href="#L930">930</a>     }
+<a class="jxr_linenumber" name="L931" href="#L931">931</a> 
+<a class="jxr_linenumber" name="L932" href="#L932">932</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> CoordinateTransformation createAttitude() {
+<a class="jxr_linenumber" name="L933" href="#L933">933</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(
+<a class="jxr_linenumber" name="L934" href="#L934">934</a>                 <strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L935" href="#L935">935</a> 
+<a class="jxr_linenumber" name="L936" href="#L936">936</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L937" href="#L937">937</a>                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L938" href="#L938">938</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L939" href="#L939">939</a>                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L940" href="#L940">940</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L941" href="#L941">941</a>                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L942" href="#L942">942</a> 
+<a class="jxr_linenumber" name="L943" href="#L943">943</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> CoordinateTransformation(roll, pitch, yaw,
+<a class="jxr_linenumber" name="L944" href="#L944">944</a>                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
+<a class="jxr_linenumber" name="L945" href="#L945">945</a>     }
+<a class="jxr_linenumber" name="L946" href="#L946">946</a> 
+<a class="jxr_linenumber" name="L947" href="#L947">947</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> NEDPosition createPosition() {
+<a class="jxr_linenumber" name="L948" href="#L948">948</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer =
+<a class="jxr_linenumber" name="L949" href="#L949">949</a>                 <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L950" href="#L950">950</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L951" href="#L951">951</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+<a class="jxr_linenumber" name="L952" href="#L952">952</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L953" href="#L953">953</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+<a class="jxr_linenumber" name="L954" href="#L954">954</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L955" href="#L955">955</a>                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
+<a class="jxr_linenumber" name="L956" href="#L956">956</a> 
+<a class="jxr_linenumber" name="L957" href="#L957">957</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDPosition(latitude, longitude, height);
+<a class="jxr_linenumber" name="L958" href="#L958">958</a>     }
+<a class="jxr_linenumber" name="L959" href="#L959">959</a> 
+<a class="jxr_linenumber" name="L960" href="#L960">960</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Date createTimestamp() {
+<a class="jxr_linenumber" name="L961" href="#L961">961</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer =
+<a class="jxr_linenumber" name="L962" href="#L962">962</a>                 <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L963" href="#L963">963</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> Date(randomizer.nextLong(
+<a class="jxr_linenumber" name="L964" href="#L964">964</a>                 START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS));
+<a class="jxr_linenumber" name="L965" href="#L965">965</a>     }
+<a class="jxr_linenumber" name="L966" href="#L966">966</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

@@ -158,7 +158,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
     }
 
     /**
-     * Sets y component of magnetic flux density expresssed in Teslas (T).
+     * Sets y component of magnetic flux density expressed in Teslas (T).
      *
      * @param by y component of magnetic flux density.
      */
@@ -213,9 +213,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
 <span class="fc" id="L213">    }</span>
 
     /**
-     * Gets z component of magnetic fluz density.
+     * Gets z component of magnetic flux density.
      *
-     * @return z component of magnetic fluz density.
+     * @return z component of magnetic flux density.
      */
     public MagneticFluxDensity getBzAsMagneticFluxDensity() {
 <span class="fc" id="L221">        return new MagneticFluxDensity(mBz, MagneticFluxDensityUnit.TESLA);</span>
@@ -387,19 +387,20 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param result matrix instance where magnetic flux density coordinates
      *               will be stored in x,y,z order.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public void asMatrix(final Matrix result) {
-<span class="pc bpc" id="L391" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
+<span class="pc bpc" id="L392" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
             try {
-<span class="fc" id="L393">                result.resize(COMPONENTS, 1);</span>
-<span class="nc" id="L394">            } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L394">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L395">            } catch (final WrongSizeException ignore) {</span>
                 // never happens
-<span class="fc" id="L396">            }</span>
+<span class="fc" id="L397">            }</span>
         }
 
-<span class="fc" id="L399">        result.setElementAtIndex(0, mBx);</span>
-<span class="fc" id="L400">        result.setElementAtIndex(1, mBy);</span>
-<span class="fc" id="L401">        result.setElementAtIndex(2, mBz);</span>
-<span class="fc" id="L402">    }</span>
+<span class="fc" id="L400">        result.setElementAtIndex(0, mBx);</span>
+<span class="fc" id="L401">        result.setElementAtIndex(1, mBy);</span>
+<span class="fc" id="L402">        result.setElementAtIndex(2, mBz);</span>
+<span class="fc" id="L403">    }</span>
 
     /**
      * Gets magnetic flux density as a column matrix.
@@ -410,13 +411,13 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
     public Matrix asMatrix() {
         Matrix result;
         try {
-<span class="fc" id="L413">            result = new Matrix(COMPONENTS, 1);</span>
-<span class="fc" id="L414">            asMatrix(result);</span>
-<span class="nc" id="L415">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L414">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L415">            asMatrix(result);</span>
+<span class="nc" id="L416">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="nc" id="L417">            result = null;</span>
-<span class="fc" id="L418">        }</span>
-<span class="fc" id="L419">        return result;</span>
+<span class="nc" id="L418">            result = null;</span>
+<span class="fc" id="L419">        }</span>
+<span class="fc" id="L420">        return result;</span>
     }
 
     /**
@@ -427,7 +428,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L430">        return Objects.hash(mBx, mBy, mBz);</span>
+<span class="fc" id="L431">        return Objects.hash(mBx, mBy, mBz);</span>
     }
 
     /**
@@ -440,18 +441,18 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(Object obj) {
-<span class="fc bfc" id="L443" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc" id="L444">            return false;</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc" id="L445">            return false;</span>
         }
-<span class="fc bfc" id="L446" title="All 2 branches covered.">        if (obj == this) {</span>
-<span class="fc" id="L447">            return true;</span>
+<span class="fc bfc" id="L447" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L448">            return true;</span>
         }
-<span class="fc bfc" id="L449" title="All 2 branches covered.">        if (!(obj instanceof BodyMagneticFluxDensity)) {</span>
-<span class="fc" id="L450">            return false;</span>
+<span class="fc bfc" id="L450" title="All 2 branches covered.">        if (!(obj instanceof BodyMagneticFluxDensity)) {</span>
+<span class="fc" id="L451">            return false;</span>
         }
 
-<span class="fc" id="L453">        final BodyMagneticFluxDensity other = (BodyMagneticFluxDensity) obj;</span>
-<span class="fc" id="L454">        return equals(other);</span>
+<span class="fc" id="L454">        final BodyMagneticFluxDensity other = (BodyMagneticFluxDensity) obj;</span>
+<span class="fc" id="L455">        return equals(other);</span>
     }
 
     /**
@@ -463,7 +464,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * otherwise.
      */
     public boolean equals(final BodyMagneticFluxDensity other) {
-<span class="fc" id="L466">        return equals(other, 0.0);</span>
+<span class="fc" id="L467">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -477,13 +478,13 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     public boolean equals(
             final BodyMagneticFluxDensity other, final double threshold) {
-<span class="fc bfc" id="L480" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L481">            return false;</span>
+<span class="fc bfc" id="L481" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L482">            return false;</span>
         }
 
-<span class="fc bfc" id="L484" title="All 2 branches covered.">        return Math.abs(mBx - other.mBx) &lt;= threshold</span>
-<span class="pc bpc" id="L485" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBy - other.mBy) &lt;= threshold</span>
-<span class="pc bpc" id="L486" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBz - other.mBz) &lt;= threshold;</span>
+<span class="fc bfc" id="L485" title="All 2 branches covered.">        return Math.abs(mBx - other.mBx) &lt;= threshold</span>
+<span class="pc bpc" id="L486" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBy - other.mBy) &lt;= threshold</span>
+<span class="pc bpc" id="L487" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBz - other.mBz) &lt;= threshold;</span>
     }
 
     /**
@@ -494,9 +495,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L497">        final BodyMagneticFluxDensity result = (BodyMagneticFluxDensity) super.clone();</span>
-<span class="fc" id="L498">        copyTo(result);</span>
-<span class="fc" id="L499">        return result;</span>
+<span class="fc" id="L498">        final BodyMagneticFluxDensity result = (BodyMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L499">        copyTo(result);</span>
+<span class="fc" id="L500">        return result;</span>
     }
 
     /**
@@ -506,8 +507,8 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertMagneticFluxDensity(final MagneticFluxDensity b) {
-<span class="fc" id="L509">        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(),</span>
-<span class="fc" id="L510">                b.getUnit(), MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L510">        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(),</span>
+<span class="fc" id="L511">                b.getUnit(), MagneticFluxDensityUnit.TESLA);</span>
     }
 
     /**
@@ -519,7 +520,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      */
     private double convertMagneticFluxDensity(
             final double value, final MagneticFluxDensityUnit unit) {
-<span class="fc" id="L522">        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L523">        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

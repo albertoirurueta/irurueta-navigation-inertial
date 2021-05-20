@@ -86,7 +86,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -127,7 +127,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -167,7 +167,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -208,7 +208,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -248,7 +248,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -289,7 +289,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -329,7 +329,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -358,7 +358,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -386,7 +386,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -415,7 +415,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -443,7 +443,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -472,7 +472,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -1106,21 +1106,22 @@ public class AttitudeEstimator {
      * @param pitch known body pitch angle expressed in radians (rad).
      * @return magnetic heading expressed in radians (rad).
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public static double getMagneticHeading(
             final double bx, final double by, final double bz,
             final double roll, final double pitch) {
 
-<span class="fc" id="L1113">        final double sinRoll = Math.sin(roll);</span>
-<span class="fc" id="L1114">        final double cosRoll = Math.cos(roll);</span>
+<span class="fc" id="L1114">        final double sinRoll = Math.sin(roll);</span>
+<span class="fc" id="L1115">        final double cosRoll = Math.cos(roll);</span>
 
-<span class="fc" id="L1116">        final double sinPitch = Math.sin(pitch);</span>
-<span class="fc" id="L1117">        final double cosPitch = Math.cos(pitch);</span>
+<span class="fc" id="L1117">        final double sinPitch = Math.sin(pitch);</span>
+<span class="fc" id="L1118">        final double cosPitch = Math.cos(pitch);</span>
 
-<span class="fc" id="L1119">        final double tmp1 = -by * cosRoll + bz * sinRoll;</span>
-<span class="fc" id="L1120">        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch</span>
+<span class="fc" id="L1120">        final double tmp1 = -by * cosRoll + bz * sinRoll;</span>
+<span class="fc" id="L1121">        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch</span>
                 + bz * cosRoll * sinPitch;
 
-<span class="fc" id="L1123">        return Math.atan2(tmp1, tmp2);</span>
+<span class="fc" id="L1124">        return Math.atan2(tmp1, tmp2);</span>
     }
 
     /**
@@ -1134,7 +1135,7 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final BodyMagneticFluxDensity b,
             final double roll, final double pitch) {
-<span class="fc" id="L1137">        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(),</span>
+<span class="fc" id="L1138">        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(),</span>
                 roll, pitch);
     }
 
@@ -1154,8 +1155,8 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final double bx, final double by, final double bz,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1157">        return getMagneticHeading(bx, by, bz, convertAngle(roll),</span>
-<span class="fc" id="L1158">                convertAngle(pitch));</span>
+<span class="fc" id="L1158">        return getMagneticHeading(bx, by, bz, convertAngle(roll),</span>
+<span class="fc" id="L1159">                convertAngle(pitch));</span>
     }
 
     /**
@@ -1169,8 +1170,8 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final BodyMagneticFluxDensity b,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1172">        return getMagneticHeading(b, convertAngle(roll),</span>
-<span class="fc" id="L1173">                convertAngle(pitch));</span>
+<span class="fc" id="L1173">        return getMagneticHeading(b, convertAngle(roll),</span>
+<span class="fc" id="L1174">                convertAngle(pitch));</span>
     }
 
     /**
@@ -1189,9 +1190,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final double roll, final double pitch, final Angle result) {
-<span class="fc" id="L1192">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1193">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
-<span class="fc" id="L1194">    }</span>
+<span class="fc" id="L1193">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1194">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
+<span class="fc" id="L1195">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1209,7 +1210,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final double roll, final double pitch) {
-<span class="fc" id="L1212">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
+<span class="fc" id="L1213">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1224,9 +1225,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final double roll, final double pitch, final Angle result) {
-<span class="fc" id="L1227">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1228">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
-<span class="fc" id="L1229">    }</span>
+<span class="fc" id="L1228">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1229">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
+<span class="fc" id="L1230">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1239,7 +1240,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final double roll, final double pitch) {
-<span class="fc" id="L1242">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
+<span class="fc" id="L1243">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1259,9 +1260,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final Angle roll, final Angle pitch, final Angle result) {
-<span class="fc" id="L1262">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1263">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
-<span class="fc" id="L1264">    }</span>
+<span class="fc" id="L1263">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1264">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
+<span class="fc" id="L1265">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1279,7 +1280,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1282">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
+<span class="fc" id="L1283">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1294,9 +1295,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final Angle roll, final Angle pitch, final Angle result) {
-<span class="fc" id="L1297">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1298">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
-<span class="fc" id="L1299">    }</span>
+<span class="fc" id="L1298">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1299">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
+<span class="fc" id="L1300">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1309,7 +1310,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1312">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
+<span class="fc" id="L1313">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1340,7 +1341,7 @@ public class AttitudeEstimator {
     public static double getYaw(
             final double bx, final double by, final double bz,
             final double declination, final double roll, final double pitch) {
-<span class="fc" id="L1343">        return getMagneticHeading(bx, by, bz, roll, pitch) + declination;</span>
+<span class="fc" id="L1344">        return getMagneticHeading(bx, by, bz, roll, pitch) + declination;</span>
     }
 
     /**
@@ -1365,7 +1366,7 @@ public class AttitudeEstimator {
     public static double getYaw(
             final BodyMagneticFluxDensity b, final double declination,
             final double roll, final double pitch) {
-<span class="fc" id="L1368">        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination,</span>
+<span class="fc" id="L1369">        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination,</span>
                 roll, pitch);
     }
 
@@ -1395,8 +1396,8 @@ public class AttitudeEstimator {
     public static double getYaw(
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch) {
-<span class="fc" id="L1398">        return getYaw(bx, by, bz, convertAngle(declination),</span>
-<span class="fc" id="L1399">                convertAngle(roll), convertAngle(pitch));</span>
+<span class="fc" id="L1399">        return getYaw(bx, by, bz, convertAngle(declination),</span>
+<span class="fc" id="L1400">                convertAngle(roll), convertAngle(pitch));</span>
     }
 
     /**
@@ -1420,8 +1421,8 @@ public class AttitudeEstimator {
     public static double getYaw(
             final BodyMagneticFluxDensity b, final Angle declination,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1423">        return getYaw(b, convertAngle(declination), convertAngle(roll),</span>
-<span class="fc" id="L1424">                convertAngle(pitch));</span>
+<span class="fc" id="L1424">        return getYaw(b, convertAngle(declination), convertAngle(roll),</span>
+<span class="fc" id="L1425">                convertAngle(pitch));</span>
     }
 
     /**
@@ -1453,9 +1454,9 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final double declination, final double roll, final double pitch,
             final Angle result) {
-<span class="fc" id="L1456">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1457">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
-<span class="fc" id="L1458">    }</span>
+<span class="fc" id="L1457">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1458">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
+<span class="fc" id="L1459">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1484,7 +1485,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final double bx, final double by, final double bz,
             final double declination, final double roll, final double pitch) {
-<span class="fc" id="L1487">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
+<span class="fc" id="L1488">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1511,9 +1512,9 @@ public class AttitudeEstimator {
     public static void getYawAsAngle(
             final BodyMagneticFluxDensity b, final double declination,
             final double roll, final double pitch, final Angle result) {
-<span class="fc" id="L1514">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1515">        result.setValue(getYaw(b, declination, roll, pitch));</span>
-<span class="fc" id="L1516">    }</span>
+<span class="fc" id="L1515">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1516">        result.setValue(getYaw(b, declination, roll, pitch));</span>
+<span class="fc" id="L1517">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1537,7 +1538,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final BodyMagneticFluxDensity b, final double declination,
             final double roll, final double pitch) {
-<span class="fc" id="L1540">        return new Angle(getYaw(b, declination, roll, pitch),</span>
+<span class="fc" id="L1541">        return new Angle(getYaw(b, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1569,9 +1570,9 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch,
             final Angle result) {
-<span class="fc" id="L1572">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1573">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
-<span class="fc" id="L1574">    }</span>
+<span class="fc" id="L1573">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1574">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
+<span class="fc" id="L1575">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1599,7 +1600,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch) {
-<span class="fc" id="L1602">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
+<span class="fc" id="L1603">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1625,9 +1626,9 @@ public class AttitudeEstimator {
     public static void getYawAsAngle(
             final BodyMagneticFluxDensity b, final Angle declination,
             final Angle roll, final Angle pitch, final Angle result) {
-<span class="fc" id="L1628">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1629">        result.setValue(getYaw(b, declination, roll, pitch));</span>
-<span class="fc" id="L1630">    }</span>
+<span class="fc" id="L1629">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1630">        result.setValue(getYaw(b, declination, roll, pitch));</span>
+<span class="fc" id="L1631">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1650,7 +1651,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final BodyMagneticFluxDensity b, final Angle declination,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1653">        return new Angle(getYaw(b, declination, roll, pitch),</span>
+<span class="fc" id="L1654">        return new Angle(getYaw(b, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1661,8 +1662,8 @@ public class AttitudeEstimator {
      * @return converted value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-<span class="fc" id="L1664">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
-<span class="fc" id="L1665">                distance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1665">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
+<span class="fc" id="L1666">                distance.getUnit(), DistanceUnit.METER);</span>
     }
 
     /**
@@ -1672,8 +1673,8 @@ public class AttitudeEstimator {
      * @return converted value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L1675">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
-<span class="fc" id="L1676">                angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L1676">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
+<span class="fc" id="L1677">                angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -1683,9 +1684,9 @@ public class AttitudeEstimator {
      * @return converted acceleration value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L1686">        return AccelerationConverter.convert(</span>
-<span class="fc" id="L1687">                acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L1688">                acceleration.getUnit(),</span>
+<span class="fc" id="L1687">        return AccelerationConverter.convert(</span>
+<span class="fc" id="L1688">                acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L1689">                acceleration.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 }

@@ -1461,7 +1461,7 @@
 <a class="jxr_linenumber" name="L1453" href="#L1453">1453</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L1454" href="#L1454">1454</a> <em class="jxr_javadoccomment">     * Sets current body orientation as a transformation from body to ECEF coordinates.</em>
 <a class="jxr_linenumber" name="L1455" href="#L1455">1455</a> <em class="jxr_javadoccomment">     * Notice that ECEF orientation refers to ECEF Earth axes, which means that</em>
-<a class="jxr_linenumber" name="L1456" href="#L1456">1456</a> <em class="jxr_javadoccomment">     * orientation is not relative to the ground or horizont at current body position.</em>
+<a class="jxr_linenumber" name="L1456" href="#L1456">1456</a> <em class="jxr_javadoccomment">     * orientation is not relative to the ground or horizon at current body position.</em>
 <a class="jxr_linenumber" name="L1457" href="#L1457">1457</a> <em class="jxr_javadoccomment">     * Typically it is more convenient to use</em>
 <a class="jxr_linenumber" name="L1458" href="#L1458">1458</a> <em class="jxr_javadoccomment">     * {@link #setNedC(CoordinateTransformation)} to specify orientation relative to</em>
 <a class="jxr_linenumber" name="L1459" href="#L1459">1459</a> <em class="jxr_javadoccomment">     * the ground or horizon at current body position.</em>
@@ -2563,7 +2563,7 @@
 <a class="jxr_linenumber" name="L2555" href="#L2555">2555</a> <em class="jxr_javadoccomment">     * Gets estimated standard deviation of x coordinate of gyroscope sensed angular</em>
 <a class="jxr_linenumber" name="L2556" href="#L2556">2556</a> <em class="jxr_javadoccomment">     * rate expressed in (rad/s).</em>
 <a class="jxr_linenumber" name="L2557" href="#L2557">2557</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L2558" href="#L2558">2558</a> <em class="jxr_javadoccomment">     * @return estimated standard deviaton of x coordinate of sensed angular rate.</em>
+<a class="jxr_linenumber" name="L2558" href="#L2558">2558</a> <em class="jxr_javadoccomment">     * @return estimated standard deviation of x coordinate of sensed angular rate.</em>
 <a class="jxr_linenumber" name="L2559" href="#L2559">2559</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L2560" href="#L2560">2560</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> getStandardDeviationAngularRateX() {
 <a class="jxr_linenumber" name="L2561" href="#L2561">2561</a>         <strong class="jxr_keyword">return</strong> Math.sqrt(mVarianceAngularRateX);

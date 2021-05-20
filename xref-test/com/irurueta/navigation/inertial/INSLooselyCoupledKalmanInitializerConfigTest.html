@@ -244,8 +244,8 @@
 <a class="jxr_linenumber" name="L236" href="#L236">236</a>         assertEquals(config.getInitialPositionUncertainty(), 0.0, 0.0);
 <a class="jxr_linenumber" name="L237" href="#L237">237</a> 
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>         <em class="jxr_comment">// set new value</em>
-<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizser = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPositionUncertainty = randomizser.nextDouble(
+<a class="jxr_linenumber" name="L239" href="#L239">239</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPositionUncertainty = randomizer.nextDouble(
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>                 MIN_VALUE, MAX_VALUE);
 <a class="jxr_linenumber" name="L242" href="#L242">242</a>         config.setInitialPositionUncertainty(initialPositionUncertainty);
 <a class="jxr_linenumber" name="L243" href="#L243">243</a> 
@@ -633,68 +633,69 @@
 <a class="jxr_linenumber" name="L625" href="#L625">625</a> 
 <a class="jxr_linenumber" name="L626" href="#L626">626</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
 <a class="jxr_linenumber" name="L627" href="#L627">627</a>         assertTrue(config1.equals((Object) config1));
-<a class="jxr_linenumber" name="L628" href="#L628">628</a>         assertTrue(config1.equals(config1));
-<a class="jxr_linenumber" name="L629" href="#L629">629</a>         assertTrue(config1.equals(config2));
-<a class="jxr_linenumber" name="L630" href="#L630">630</a>         assertFalse(config1.equals(config3));
-<a class="jxr_linenumber" name="L631" href="#L631">631</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
-<a class="jxr_linenumber" name="L632" href="#L632">632</a>         assertFalse(config1.equals((Object) <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L633" href="#L633">633</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L634" href="#L634">634</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L635" href="#L635">635</a>         assertFalse(config1.equals(<strong class="jxr_keyword">new</strong> Object()));
-<a class="jxr_linenumber" name="L636" href="#L636">636</a>     }
-<a class="jxr_linenumber" name="L637" href="#L637">637</a> 
-<a class="jxr_linenumber" name="L638" href="#L638">638</a>     @Test
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
-<a class="jxr_linenumber" name="L640" href="#L640">640</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L641" href="#L641">641</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAttitudeUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L642" href="#L642">642</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L643" href="#L643">643</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialVelocityUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L644" href="#L644">644</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L645" href="#L645">645</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPositionUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L646" href="#L646">646</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L647" href="#L647">647</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAccelerationBiasUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L648" href="#L648">648</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L649" href="#L649">649</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialGyroscopeBiasUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L650" href="#L650">650</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L651" href="#L651">651</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config1 = <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig(
-<a class="jxr_linenumber" name="L652" href="#L652">652</a>                 initialAttitudeUncertainty, initialVelocityUncertainty,
-<a class="jxr_linenumber" name="L653" href="#L653">653</a>                 initialPositionUncertainty, initialAccelerationBiasUncertainty,
-<a class="jxr_linenumber" name="L654" href="#L654">654</a>                 initialGyroscopeBiasUncertainty);
-<a class="jxr_linenumber" name="L655" href="#L655">655</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config2 = <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig(
-<a class="jxr_linenumber" name="L656" href="#L656">656</a>                 initialAttitudeUncertainty, initialVelocityUncertainty,
-<a class="jxr_linenumber" name="L657" href="#L657">657</a>                 initialPositionUncertainty, initialAccelerationBiasUncertainty,
-<a class="jxr_linenumber" name="L658" href="#L658">658</a>                 initialGyroscopeBiasUncertainty);
-<a class="jxr_linenumber" name="L659" href="#L659">659</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config3 =
-<a class="jxr_linenumber" name="L660" href="#L660">660</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig();
-<a class="jxr_linenumber" name="L661" href="#L661">661</a> 
-<a class="jxr_linenumber" name="L662" href="#L662">662</a>         assertTrue(config1.equals(config1, THRESHOLD));
-<a class="jxr_linenumber" name="L663" href="#L663">663</a>         assertTrue(config1.equals(config2, THRESHOLD));
-<a class="jxr_linenumber" name="L664" href="#L664">664</a>         assertFalse(config1.equals(config3, THRESHOLD));
-<a class="jxr_linenumber" name="L665" href="#L665">665</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
-<a class="jxr_linenumber" name="L666" href="#L666">666</a>     }
-<a class="jxr_linenumber" name="L667" href="#L667">667</a> 
-<a class="jxr_linenumber" name="L668" href="#L668">668</a>     @Test
-<a class="jxr_linenumber" name="L669" href="#L669">669</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
-<a class="jxr_linenumber" name="L670" href="#L670">670</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L671" href="#L671">671</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAttitudeUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L672" href="#L672">672</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L673" href="#L673">673</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialVelocityUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L674" href="#L674">674</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L675" href="#L675">675</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPositionUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L676" href="#L676">676</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L677" href="#L677">677</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAccelerationBiasUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L678" href="#L678">678</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L679" href="#L679">679</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialGyroscopeBiasUncertainty = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L680" href="#L680">680</a>                 MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L681" href="#L681">681</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config1 = <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig(
-<a class="jxr_linenumber" name="L682" href="#L682">682</a>                 initialAttitudeUncertainty, initialVelocityUncertainty,
-<a class="jxr_linenumber" name="L683" href="#L683">683</a>                 initialPositionUncertainty, initialAccelerationBiasUncertainty,
-<a class="jxr_linenumber" name="L684" href="#L684">684</a>                 initialGyroscopeBiasUncertainty);
-<a class="jxr_linenumber" name="L685" href="#L685">685</a>         <strong class="jxr_keyword">final</strong> Object config2 = config1.clone();
-<a class="jxr_linenumber" name="L686" href="#L686">686</a> 
-<a class="jxr_linenumber" name="L687" href="#L687">687</a>         assertEquals(config1, config2);
-<a class="jxr_linenumber" name="L688" href="#L688">688</a>     }
-<a class="jxr_linenumber" name="L689" href="#L689">689</a> }
+<a class="jxr_linenumber" name="L628" href="#L628">628</a>         <em class="jxr_comment">//noinspection EqualsWithItself</em>
+<a class="jxr_linenumber" name="L629" href="#L629">629</a>         assertTrue(config1.equals(config1));
+<a class="jxr_linenumber" name="L630" href="#L630">630</a>         assertTrue(config1.equals(config2));
+<a class="jxr_linenumber" name="L631" href="#L631">631</a>         assertFalse(config1.equals(config3));
+<a class="jxr_linenumber" name="L632" href="#L632">632</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
+<a class="jxr_linenumber" name="L633" href="#L633">633</a>         assertFalse(config1.equals((Object) <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L634" href="#L634">634</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L635" href="#L635">635</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L636" href="#L636">636</a>         assertFalse(config1.equals(<strong class="jxr_keyword">new</strong> Object()));
+<a class="jxr_linenumber" name="L637" href="#L637">637</a>     }
+<a class="jxr_linenumber" name="L638" href="#L638">638</a> 
+<a class="jxr_linenumber" name="L639" href="#L639">639</a>     @Test
+<a class="jxr_linenumber" name="L640" href="#L640">640</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
+<a class="jxr_linenumber" name="L641" href="#L641">641</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L642" href="#L642">642</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAttitudeUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L643" href="#L643">643</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L644" href="#L644">644</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialVelocityUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L645" href="#L645">645</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L646" href="#L646">646</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPositionUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L647" href="#L647">647</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L648" href="#L648">648</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAccelerationBiasUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L649" href="#L649">649</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L650" href="#L650">650</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialGyroscopeBiasUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L651" href="#L651">651</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L652" href="#L652">652</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config1 = <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig(
+<a class="jxr_linenumber" name="L653" href="#L653">653</a>                 initialAttitudeUncertainty, initialVelocityUncertainty,
+<a class="jxr_linenumber" name="L654" href="#L654">654</a>                 initialPositionUncertainty, initialAccelerationBiasUncertainty,
+<a class="jxr_linenumber" name="L655" href="#L655">655</a>                 initialGyroscopeBiasUncertainty);
+<a class="jxr_linenumber" name="L656" href="#L656">656</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config2 = <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig(
+<a class="jxr_linenumber" name="L657" href="#L657">657</a>                 initialAttitudeUncertainty, initialVelocityUncertainty,
+<a class="jxr_linenumber" name="L658" href="#L658">658</a>                 initialPositionUncertainty, initialAccelerationBiasUncertainty,
+<a class="jxr_linenumber" name="L659" href="#L659">659</a>                 initialGyroscopeBiasUncertainty);
+<a class="jxr_linenumber" name="L660" href="#L660">660</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config3 =
+<a class="jxr_linenumber" name="L661" href="#L661">661</a>                 <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig();
+<a class="jxr_linenumber" name="L662" href="#L662">662</a> 
+<a class="jxr_linenumber" name="L663" href="#L663">663</a>         assertTrue(config1.equals(config1, THRESHOLD));
+<a class="jxr_linenumber" name="L664" href="#L664">664</a>         assertTrue(config1.equals(config2, THRESHOLD));
+<a class="jxr_linenumber" name="L665" href="#L665">665</a>         assertFalse(config1.equals(config3, THRESHOLD));
+<a class="jxr_linenumber" name="L666" href="#L666">666</a>         assertFalse(config1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
+<a class="jxr_linenumber" name="L667" href="#L667">667</a>     }
+<a class="jxr_linenumber" name="L668" href="#L668">668</a> 
+<a class="jxr_linenumber" name="L669" href="#L669">669</a>     @Test
+<a class="jxr_linenumber" name="L670" href="#L670">670</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
+<a class="jxr_linenumber" name="L671" href="#L671">671</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L672" href="#L672">672</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAttitudeUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L673" href="#L673">673</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L674" href="#L674">674</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialVelocityUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L675" href="#L675">675</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L676" href="#L676">676</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialPositionUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L677" href="#L677">677</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L678" href="#L678">678</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialAccelerationBiasUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L679" href="#L679">679</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L680" href="#L680">680</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> initialGyroscopeBiasUncertainty = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L681" href="#L681">681</a>                 MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L682" href="#L682">682</a>         <strong class="jxr_keyword">final</strong> INSLooselyCoupledKalmanInitializerConfig config1 = <strong class="jxr_keyword">new</strong> INSLooselyCoupledKalmanInitializerConfig(
+<a class="jxr_linenumber" name="L683" href="#L683">683</a>                 initialAttitudeUncertainty, initialVelocityUncertainty,
+<a class="jxr_linenumber" name="L684" href="#L684">684</a>                 initialPositionUncertainty, initialAccelerationBiasUncertainty,
+<a class="jxr_linenumber" name="L685" href="#L685">685</a>                 initialGyroscopeBiasUncertainty);
+<a class="jxr_linenumber" name="L686" href="#L686">686</a>         <strong class="jxr_keyword">final</strong> Object config2 = config1.clone();
+<a class="jxr_linenumber" name="L687" href="#L687">687</a> 
+<a class="jxr_linenumber" name="L688" href="#L688">688</a>         assertEquals(config1, config2);
+<a class="jxr_linenumber" name="L689" href="#L689">689</a>     }
+<a class="jxr_linenumber" name="L690" href="#L690">690</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

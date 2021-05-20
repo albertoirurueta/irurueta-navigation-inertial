@@ -1446,125 +1446,126 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1452" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1453">            throw new LockedException();</span>
+<span class="fc bfc" id="L1453" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1454">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1455" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1456">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1456" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1457">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1459">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1460">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new PROSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L1461">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L1462">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L1464">                        return mQualityScores;</span>
+<span class="fc" id="L1465">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1469">                        return mThreshold;</span>
+<span class="fc" id="L1470">                        return mThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1474">                        return mSequences.size();</span>
+<span class="fc" id="L1475">                        return mSequences.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1479">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1480">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1486">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1487">                    }</span>
+<span class="fc" id="L1487">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1488">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L1492">                        return computeError(mSequences.get(i), currentEstimation);</span>
+<span class="fc" id="L1493">                        return computeError(mSequences.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1497">                        return PROSACRobustKnownBiasEasyGyroscopeCalibrator.this.isReady();</span>
+<span class="fc" id="L1498">                        return PROSACRobustKnownBiasEasyGyroscopeCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1503">                    }</span>
+<span class="fc" id="L1504">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1508">                    }</span>
+<span class="fc" id="L1509">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1514" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1515">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1515" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1516">                            mListener.onCalibrateNextIteration(</span>
                                     PROSACRobustKnownBiasEasyGyroscopeCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1519">                    }</span>
+<span class="fc" id="L1520">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L1525" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1526">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L1526" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L1527">                            mListener.onCalibrateProgressChange(</span>
                                     PROSACRobustKnownBiasEasyGyroscopeCalibrator.this, progress);
                         }
-<span class="nc" id="L1529">                    }</span>
+<span class="nc" id="L1530">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1533">            mRunning = true;</span>
+<span class="fc" id="L1534">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1535" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1536">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1536" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1537">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1539">            setupAccelerationFixer();</span>
+<span class="fc" id="L1540">            setupAccelerationFixer();</span>
 
-<span class="fc" id="L1541">            mInliersData = null;</span>
-<span class="pc bpc" id="L1542" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L1542">            mInliersData = null;</span>
+<span class="pc bpc" id="L1543" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="pc bpc" id="L1544" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="pc bpc" id="L1545" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L1546">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1547">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1548">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1549">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1550">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1547">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1548">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1549">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1550">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1551">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1552">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1553">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1554" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1555">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1555" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1556">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1558">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1559">            throw new LockedException(e);</span>
-<span class="nc" id="L1560">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1561">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1562">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
-<span class="nc" id="L1563">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1559">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1560">            throw new LockedException(e);</span>
+<span class="nc" id="L1561">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1562">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1563">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
+<span class="nc" id="L1564">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1565">            mRunning = false;</span>
+<span class="fc" id="L1566">            mRunning = false;</span>
         }
-<span class="fc" id="L1567">    }</span>
+<span class="fc" id="L1568">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1573,7 +1574,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1576">        return RobustEstimatorMethod.PROSAC;</span>
+<span class="fc" id="L1577">        return RobustEstimatorMethod.PROSAC;</span>
     }
 
     /**
@@ -1584,7 +1585,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1587">        return true;</span>
+<span class="fc" id="L1588">        return true;</span>
     }
 
     /**
@@ -1597,12 +1598,12 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1600" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L1601" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS) {
-<span class="fc" id="L1602">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L1603">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1605">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1606">    }</span>
+<span class="fc" id="L1606">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1607">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

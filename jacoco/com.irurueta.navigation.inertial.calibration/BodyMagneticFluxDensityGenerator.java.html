@@ -27,6 +27,7 @@ import java.util.List;
  * flux density values taking into account provided magnetometer errors
  * for a calibrated magnetometer.
  */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public class BodyMagneticFluxDensityGenerator {
 
     /**
@@ -53,10 +54,10 @@ public class BodyMagneticFluxDensityGenerator {
     public static Collection&lt;BodyMagneticFluxDensity&gt; generate(
             final Collection&lt;BodyMagneticFluxDensity&gt; trueMagneticFluxDensities,
             final double[] magnetometerHardIron, final Matrix magnetometerSoftIron) {
-<span class="fc" id="L56">        final List&lt;BodyMagneticFluxDensity&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc" id="L57">        generate(trueMagneticFluxDensities, magnetometerHardIron,</span>
+<span class="fc" id="L57">        final List&lt;BodyMagneticFluxDensity&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L58">        generate(trueMagneticFluxDensities, magnetometerHardIron,</span>
                 magnetometerSoftIron, result);
-<span class="fc" id="L59">        return result;</span>
+<span class="fc" id="L60">        return result;</span>
     }
 
     /**
@@ -79,28 +80,28 @@ public class BodyMagneticFluxDensityGenerator {
             final double[] magnetometerHardIron, final Matrix magnetometerSoftIron,
             final Collection&lt;BodyMagneticFluxDensity&gt; result) {
         try {
-<span class="fc" id="L82">            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc" id="L83">            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     1);
-<span class="fc" id="L84">            final Matrix identity = Matrix.identity(</span>
+<span class="fc" id="L85">            final Matrix identity = Matrix.identity(</span>
                     BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS);
-<span class="fc" id="L87">            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc" id="L88">            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     BodyMagneticFluxDensity.COMPONENTS);
-<span class="fc" id="L89">            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc" id="L90">            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     1);
 
-<span class="fc bfc" id="L92" title="All 2 branches covered.">            for (final BodyMagneticFluxDensity b : trueMagneticFluxDensities) {</span>
-<span class="fc" id="L93">                final BodyMagneticFluxDensity r = new BodyMagneticFluxDensity();</span>
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            for (final BodyMagneticFluxDensity b : trueMagneticFluxDensities) {</span>
+<span class="fc" id="L94">                final BodyMagneticFluxDensity r = new BodyMagneticFluxDensity();</span>
 
-<span class="fc" id="L95">                internalGenerate(b, magnetometerHardIron,</span>
+<span class="fc" id="L96">                internalGenerate(b, magnetometerHardIron,</span>
                         magnetometerSoftIron, r, mBtrue, identity, tmp33, tmp31);
 
-<span class="fc" id="L98">                result.add(r);</span>
-<span class="fc" id="L99">            }</span>
-<span class="nc" id="L100">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L99">                result.add(r);</span>
+<span class="fc" id="L100">            }</span>
+<span class="nc" id="L101">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L102">        }</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">        }</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Generates an uncalibrated body magnetic flux density instance for provided
@@ -119,10 +120,10 @@ public class BodyMagneticFluxDensityGenerator {
             final BodyMagneticFluxDensity trueMagneticFluxDensity,
             final double[] magnetometerHardIron,
             final Matrix magnetometerSoftIron) {
-<span class="fc" id="L122">        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();</span>
-<span class="fc" id="L123">        generate(trueMagneticFluxDensity, magnetometerHardIron,</span>
+<span class="fc" id="L123">        final BodyMagneticFluxDensity result = new BodyMagneticFluxDensity();</span>
+<span class="fc" id="L124">        generate(trueMagneticFluxDensity, magnetometerHardIron,</span>
                 magnetometerSoftIron, result);
-<span class="fc" id="L125">        return result;</span>
+<span class="fc" id="L126">        return result;</span>
     }
 
     /**
@@ -145,21 +146,21 @@ public class BodyMagneticFluxDensityGenerator {
             final Matrix magnetometerSoftIron,
             final BodyMagneticFluxDensity result) {
         try {
-<span class="fc" id="L148">            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc" id="L149">            final Matrix mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     1);
-<span class="fc" id="L150">            final Matrix identity = Matrix.identity(</span>
+<span class="fc" id="L151">            final Matrix identity = Matrix.identity(</span>
                     BodyMagneticFluxDensity.COMPONENTS,
                     BodyMagneticFluxDensity.COMPONENTS);
-<span class="fc" id="L153">            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc" id="L154">            final Matrix tmp33 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     BodyMagneticFluxDensity.COMPONENTS);
-<span class="fc" id="L155">            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc" id="L156">            final Matrix tmp31 = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     1);
-<span class="fc" id="L157">            internalGenerate(trueMagneticFluxDensity, magnetometerHardIron,</span>
+<span class="fc" id="L158">            internalGenerate(trueMagneticFluxDensity, magnetometerHardIron,</span>
                     magnetometerSoftIron, result, mBtrue, identity, tmp33, tmp31);
-<span class="nc" id="L159">        } catch (final WrongSizeException ignore) {</span>
+<span class="nc" id="L160">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L161">        }</span>
-<span class="fc" id="L162">    }</span>
+<span class="fc" id="L162">        }</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Generates an uncalibrated body magnetic flux density instance for provided
@@ -189,31 +190,31 @@ public class BodyMagneticFluxDensityGenerator {
             final Matrix identity,
             final Matrix tmp33,
             final Matrix tmp31) throws WrongSizeException {
-<span class="pc bpc" id="L192" title="1 of 2 branches missed.">        if (magnetometerHardIron.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
-<span class="nc" id="L193">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L193" title="1 of 2 branches missed.">        if (magnetometerHardIron.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="nc" id="L194">            throw new IllegalArgumentException();</span>
         }
-<span class="pc bpc" id="L195" title="1 of 2 branches missed.">        if (magnetometerSoftIron.getRows() != BodyMagneticFluxDensity.COMPONENTS ||</span>
-<span class="pc bpc" id="L196" title="1 of 2 branches missed.">                magnetometerSoftIron.getColumns() != BodyMagneticFluxDensity.COMPONENTS) {</span>
-<span class="nc" id="L197">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L196" title="1 of 2 branches missed.">        if (magnetometerSoftIron.getRows() != BodyMagneticFluxDensity.COMPONENTS ||</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">                magnetometerSoftIron.getColumns() != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="nc" id="L198">            throw new IllegalArgumentException();</span>
         }
 
         // The magnetometer model is:
         // mBmeas = bm + (I + Mm) * mBtrue + w
 
-<span class="fc" id="L203">        trueMagneticFluxDensity.asMatrix(mBtrue);</span>
-<span class="fc" id="L204">        tmp33.copyFrom(identity);</span>
-<span class="fc" id="L205">        tmp33.add(magnetometerSoftIron);</span>
+<span class="fc" id="L204">        trueMagneticFluxDensity.asMatrix(mBtrue);</span>
+<span class="fc" id="L205">        tmp33.copyFrom(identity);</span>
+<span class="fc" id="L206">        tmp33.add(magnetometerSoftIron);</span>
 
-<span class="fc" id="L207">        tmp33.multiply(mBtrue, tmp31);</span>
-<span class="fc bfc" id="L208" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyMagneticFluxDensity.COMPONENTS; i++) {</span>
-<span class="fc" id="L209">            tmp31.setElementAtIndex(i,</span>
-<span class="fc" id="L210">                    tmp31.getElementAtIndex(i) + magnetometerHardIron[i]);</span>
+<span class="fc" id="L208">        tmp33.multiply(mBtrue, tmp31);</span>
+<span class="fc bfc" id="L209" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyMagneticFluxDensity.COMPONENTS; i++) {</span>
+<span class="fc" id="L210">            tmp31.setElementAtIndex(i,</span>
+<span class="fc" id="L211">                    tmp31.getElementAtIndex(i) + magnetometerHardIron[i]);</span>
         }
 
-<span class="fc" id="L213">        result.setCoordinates(</span>
-<span class="fc" id="L214">                tmp31.getElementAtIndex(0),</span>
-<span class="fc" id="L215">                tmp31.getElementAtIndex(1),</span>
-<span class="fc" id="L216">                tmp31.getElementAtIndex(2));</span>
-<span class="fc" id="L217">    }</span>
+<span class="fc" id="L214">        result.setCoordinates(</span>
+<span class="fc" id="L215">                tmp31.getElementAtIndex(0),</span>
+<span class="fc" id="L216">                tmp31.getElementAtIndex(1),</span>
+<span class="fc" id="L217">                tmp31.getElementAtIndex(2));</span>
+<span class="fc" id="L218">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

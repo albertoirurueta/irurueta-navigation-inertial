@@ -127,7 +127,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -337,7 +337,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * &lt;/pre&gt;
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -1072,7 +1072,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Sets known x coordinate of gyroscope bias expressed in radians persecond
+     * Sets known x coordinate of gyroscope bias expressed in radians per second
      * (rad/s).
      *
      * @param biasX x coordinate of gyroscope bias.
@@ -2294,7 +2294,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * &lt;/pre&gt;
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -2857,7 +2857,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Creaates a robust gyroscope calibrator.
+     * Creates a robust gyroscope calibrator.
      *
      * @param measurements list of body kinematics measurements with standard
      *                     deviations taken at different frames (positions, orientations
@@ -4148,7 +4148,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Cretes a robust gyroscope calibrator.
+     * Creates a robust gyroscope calibrator.
      *
      * @param qualityScores quality scores corresponding to each provided
      *                      measurement. The larger the score value the better
@@ -4407,26 +4407,26 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L4410" title="All 5 branches missed.">        switch (method) {</span>
+<span class="fc bfc" id="L4410" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="nc" id="L4412">                return new RANSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4412">                return new RANSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         measurements, biasX, biasY, biasZ, commonAxisUsed,
                         listener);
             case LMedS:
-<span class="nc" id="L4416">                return new LMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4416">                return new LMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         measurements, biasX, biasY, biasZ, commonAxisUsed,
                         listener);
             case MSAC:
-<span class="nc" id="L4420">                return new MSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4420">                return new MSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         measurements, biasX, biasY, biasZ, commonAxisUsed,
                         listener);
             case PROSAC:
-<span class="nc" id="L4424">                return new PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4424">                return new PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         qualityScores, measurements, biasX, biasY, biasZ,
                         commonAxisUsed, listener);
             case PROMedS:
             default:
-<span class="nc" id="L4429">                return new PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4429">                return new PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         qualityScores, measurements, biasX, biasY, biasZ,
                         commonAxisUsed, listener);
         }
@@ -4695,7 +4695,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      * @param method         robust estimator method.
-     * @return a robust gyrocope calibrator.
+     * @return a robust gyroscope calibrator.
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 6 samples.
      */
@@ -4752,23 +4752,23 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
             final AngularSpeed biasZ, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L4755" title="All 5 branches missed.">        switch (method) {</span>
+<span class="fc bfc" id="L4755" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="nc" id="L4757">                return new RANSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4757">                return new RANSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
             case LMedS:
-<span class="nc" id="L4760">                return new LMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4760">                return new LMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
             case MSAC:
-<span class="nc" id="L4763">                return new MSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4763">                return new MSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         measurements, biasX, biasY, biasZ, commonAxisUsed, listener);
             case PROSAC:
-<span class="nc" id="L4766">                return new PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4766">                return new PROSACRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         qualityScores, measurements, biasX, biasY, biasZ,
                         commonAxisUsed, listener);
             case PROMedS:
             default:
-<span class="nc" id="L4771">                return new PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
+<span class="fc" id="L4771">                return new PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(</span>
                         qualityScores, measurements, biasX, biasY, biasZ,
                         commonAxisUsed, listener);
         }
@@ -6351,7 +6351,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
 <span class="fc" id="L6351">    }</span>
 
     /**
-     * Internally sets known gyrocope bias as a column matrix.
+     * Internally sets known gyroscope bias as a column matrix.
      * Matrix values are expressed in radians per second (rad/s).
      *
      * @param bias gyroscope bias to be set.
@@ -6432,7 +6432,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
          *          [0     sy   myz]
          *          [0     0    sz ]
          * &lt;/pre&gt;
-         * Values of this matrix are unitless.
+         * Values of this matrix are unit-less.
          */
         private Matrix mEstimatedMg;
 

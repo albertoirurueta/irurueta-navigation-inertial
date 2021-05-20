@@ -275,8 +275,8 @@ public class LevelingEstimator2 {
 
         try {
             // get normalized vector from measured specific force, which
-            // mainly containg sensed gravity in the local navigation frame
-            // when device is static (Coriollis force is neglected in this
+            // mainly contains sensed gravity in the local navigation frame
+            // when device is static (Coriolis force is neglected in this
             // implementation).
 
             // obtain normalized specific force in local navigation coordinates

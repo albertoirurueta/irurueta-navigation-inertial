@@ -83,27 +83,13 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
     }
 
     /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    @Override
-    protected AngularSpeedTriad createTriad(
-            final AngularSpeed valueX, final AngularSpeed valueY, final AngularSpeed valueZ) {
-<span class="nc" id="L96">        return new AngularSpeedTriad(valueX, valueY, valueZ);</span>
-    }
-
-    /**
      * Gets default unit for a measurement.
      *
      * @return default unit for a measurement.
      */
     @Override
     protected AngularSpeedUnit getDefaultUnit() {
-<span class="fc" id="L106">        return AngularSpeedUnit.RADIANS_PER_SECOND;</span>
+<span class="fc" id="L92">        return AngularSpeedUnit.RADIANS_PER_SECOND;</span>
     }
 
     /**
@@ -115,7 +101,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      */
     @Override
     protected AngularSpeed createMeasurement(double value, AngularSpeedUnit unit) {
-<span class="fc" id="L118">        return new AngularSpeed(value, unit);</span>
+<span class="fc" id="L104">        return new AngularSpeed(value, unit);</span>
     }
 
     /**
@@ -127,7 +113,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      */
     @Override
     protected double convertToDefaultUnit(double value, AngularSpeedUnit unit) {
-<span class="fc" id="L130">        return AngularSpeedConverter.convert(value, unit, getDefaultUnit());</span>
+<span class="fc" id="L116">        return AngularSpeedConverter.convert(value, unit, getDefaultUnit());</span>
     }
 
     /**
@@ -138,7 +124,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      */
     @Override
     public double getGyroscopeBaseNoiseLevelRootPsd() {
-<span class="fc" id="L141">        return getNoiseRootPsdNorm();</span>
+<span class="fc" id="L127">        return getNoiseRootPsdNorm();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

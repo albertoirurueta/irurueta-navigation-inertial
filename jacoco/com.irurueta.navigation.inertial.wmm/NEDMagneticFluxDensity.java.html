@@ -396,19 +396,20 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param result matrix instance where magnetic flux density coordinates
      *               will be stored in n,e,d order.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public void asMatrix(final Matrix result) {
-<span class="pc bpc" id="L400" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
+<span class="pc bpc" id="L401" title="3 of 4 branches missed.">        if (result.getColumns() != COMPONENTS || result.getRows() != 1) {</span>
             try {
-<span class="fc" id="L402">                result.resize(COMPONENTS, 1);</span>
-<span class="nc" id="L403">            } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L403">                result.resize(COMPONENTS, 1);</span>
+<span class="nc" id="L404">            } catch (final WrongSizeException ignore) {</span>
                 // never happens
-<span class="fc" id="L405">            }</span>
+<span class="fc" id="L406">            }</span>
         }
 
-<span class="fc" id="L408">        result.setElementAtIndex(0, mBn);</span>
-<span class="fc" id="L409">        result.setElementAtIndex(1, mBe);</span>
-<span class="fc" id="L410">        result.setElementAtIndex(2, mBd);</span>
-<span class="fc" id="L411">    }</span>
+<span class="fc" id="L409">        result.setElementAtIndex(0, mBn);</span>
+<span class="fc" id="L410">        result.setElementAtIndex(1, mBe);</span>
+<span class="fc" id="L411">        result.setElementAtIndex(2, mBd);</span>
+<span class="fc" id="L412">    }</span>
 
     /**
      * Gets magnetic flux density as a column matrix.
@@ -419,13 +420,13 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
     public Matrix asMatrix() {
         Matrix result;
         try {
-<span class="fc" id="L422">            result = new Matrix(COMPONENTS, 1);</span>
-<span class="fc" id="L423">            asMatrix(result);</span>
-<span class="nc" id="L424">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L423">            result = new Matrix(COMPONENTS, 1);</span>
+<span class="fc" id="L424">            asMatrix(result);</span>
+<span class="nc" id="L425">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="nc" id="L426">            result = null;</span>
-<span class="fc" id="L427">        }</span>
-<span class="fc" id="L428">        return result;</span>
+<span class="nc" id="L427">            result = null;</span>
+<span class="fc" id="L428">        }</span>
+<span class="fc" id="L429">        return result;</span>
     }
 
     /**
@@ -436,7 +437,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L439">        return Objects.hash(mBn, mBe, mBd);</span>
+<span class="fc" id="L440">        return Objects.hash(mBn, mBe, mBd);</span>
     }
 
     /**
@@ -449,18 +450,18 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L452" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc" id="L453">            return false;</span>
+<span class="fc bfc" id="L453" title="All 2 branches covered.">        if (obj == null) {</span>
+<span class="fc" id="L454">            return false;</span>
         }
-<span class="fc bfc" id="L455" title="All 2 branches covered.">        if (obj == this) {</span>
-<span class="fc" id="L456">            return true;</span>
+<span class="fc bfc" id="L456" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L457">            return true;</span>
         }
-<span class="fc bfc" id="L458" title="All 2 branches covered.">        if (!(obj instanceof NEDMagneticFluxDensity)) {</span>
-<span class="fc" id="L459">            return false;</span>
+<span class="fc bfc" id="L459" title="All 2 branches covered.">        if (!(obj instanceof NEDMagneticFluxDensity)) {</span>
+<span class="fc" id="L460">            return false;</span>
         }
 
-<span class="fc" id="L462">        final NEDMagneticFluxDensity other = (NEDMagneticFluxDensity) obj;</span>
-<span class="fc" id="L463">        return equals(other);</span>
+<span class="fc" id="L463">        final NEDMagneticFluxDensity other = (NEDMagneticFluxDensity) obj;</span>
+<span class="fc" id="L464">        return equals(other);</span>
     }
 
     /**
@@ -472,7 +473,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * otherwise.
      */
     public boolean equals(final NEDMagneticFluxDensity other) {
-<span class="fc" id="L475">        return equals(other, 0.0);</span>
+<span class="fc" id="L476">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -486,13 +487,13 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     public boolean equals(
             final NEDMagneticFluxDensity other, final double threshold) {
-<span class="fc bfc" id="L489" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L490">            return false;</span>
+<span class="fc bfc" id="L490" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L491">            return false;</span>
         }
 
-<span class="fc bfc" id="L493" title="All 2 branches covered.">        return Math.abs(mBn - other.mBn) &lt;= threshold</span>
-<span class="pc bpc" id="L494" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBe - other.mBe) &lt;= threshold</span>
-<span class="pc bpc" id="L495" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBd - other.mBd) &lt;= threshold;</span>
+<span class="fc bfc" id="L494" title="All 2 branches covered.">        return Math.abs(mBn - other.mBn) &lt;= threshold</span>
+<span class="pc bpc" id="L495" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBe - other.mBe) &lt;= threshold</span>
+<span class="pc bpc" id="L496" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mBd - other.mBd) &lt;= threshold;</span>
     }
 
     /**
@@ -503,9 +504,9 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L506">        final NEDMagneticFluxDensity result = (NEDMagneticFluxDensity) super.clone();</span>
-<span class="fc" id="L507">        copyTo(result);</span>
-<span class="fc" id="L508">        return result;</span>
+<span class="fc" id="L507">        final NEDMagneticFluxDensity result = (NEDMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L508">        copyTo(result);</span>
+<span class="fc" id="L509">        return result;</span>
     }
 
     /**
@@ -515,8 +516,8 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertMagneticFluxDensity(final MagneticFluxDensity b) {
-<span class="fc" id="L518">        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(),</span>
-<span class="fc" id="L519">                b.getUnit(), MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L519">        return MagneticFluxDensityConverter.convert(b.getValue().doubleValue(),</span>
+<span class="fc" id="L520">                b.getUnit(), MagneticFluxDensityUnit.TESLA);</span>
     }
 
     /**
@@ -528,7 +529,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      */
     private double convertMagneticFluxDensity(
             final double value, final MagneticFluxDensityUnit unit) {
-<span class="fc" id="L531">        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L532">        return MagneticFluxDensityConverter.convert(value, unit, MagneticFluxDensityUnit.TESLA);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

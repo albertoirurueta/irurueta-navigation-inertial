@@ -176,14 +176,14 @@ import com.irurueta.units.DistanceUnit;
 
 <span class="fc" id="L177">            final double gammaX = tmp3 * x;</span>
 <span class="fc" id="L178">            final double gammaY = tmp3 * y;</span>
-<span class="fc" id="L179">            final double gammaz = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;</span>
+<span class="fc" id="L179">            final double gammaZ = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;</span>
 
             // Add centripetal acceleration using (2.133)
 <span class="fc" id="L182">            final double omega2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;</span>
 <span class="fc" id="L183">            final double gx = gammaX + omega2 * x;</span>
 <span class="fc" id="L184">            final double gy = gammaY + omega2 * y;</span>
 
-<span class="fc" id="L186">            result.setCoordinates(gx, gy, gammaz);</span>
+<span class="fc" id="L186">            result.setCoordinates(gx, gy, gammaZ);</span>
         }
 <span class="fc" id="L188">    }</span>
 

@@ -56,7 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * - I is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * a perfect accelerometer, this should be a 3x3 zero matrix.</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-trush specific force.</em>
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-truth specific force.</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * - w is measurement noise.</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/PROMedSRobustKnownGravityNormAccelerometerCalibrator.html">PROMedSRobustKnownGravityNormAccelerometerCalibrator</a> <strong class="jxr_keyword">extends</strong>
@@ -1855,7 +1855,7 @@
 <a class="jxr_linenumber" name="L1847" href="#L1847">1847</a> <em class="jxr_javadoccomment">     * best estimated threshold using median of residuals is not small enough.</em>
 <a class="jxr_linenumber" name="L1848" href="#L1848">1848</a> <em class="jxr_javadoccomment">     * Once a solution is found that generates a threshold below this value, the</em>
 <a class="jxr_linenumber" name="L1849" href="#L1849">1849</a> <em class="jxr_javadoccomment">     * algorithm will stop.</em>
-<a class="jxr_linenumber" name="L1850" href="#L1850">1850</a> <em class="jxr_javadoccomment">     * The stop threshold can be used to prevent the LMedS algrithm to iterate</em>
+<a class="jxr_linenumber" name="L1850" href="#L1850">1850</a> <em class="jxr_javadoccomment">     * The stop threshold can be used to prevent the LMedS algorithm to iterate</em>
 <a class="jxr_linenumber" name="L1851" href="#L1851">1851</a> <em class="jxr_javadoccomment">     * too many times in cases where samples have a very similar accuracy.</em>
 <a class="jxr_linenumber" name="L1852" href="#L1852">1852</a> <em class="jxr_javadoccomment">     * For instance, in cases where proportion of outliers is very small (close</em>
 <a class="jxr_linenumber" name="L1853" href="#L1853">1853</a> <em class="jxr_javadoccomment">     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would</em>

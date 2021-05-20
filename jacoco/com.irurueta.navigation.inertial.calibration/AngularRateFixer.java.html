@@ -31,6 +31,7 @@ import com.irurueta.units.AngularSpeedUnit;
  * Fixes angular rate values taking into
  * account provided bias, cross coupling errors and G-dependant errors.
  */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public class AngularRateFixer {
     /**
      * Identity matrix to be reused.
@@ -70,18 +71,18 @@ public class AngularRateFixer {
     /**
      * Measured angular rate to be reused.
      */
-<span class="fc" id="L73">    private final double[] mMeasuredAngularRate =</span>
+<span class="fc" id="L74">    private final double[] mMeasuredAngularRate =</span>
             new double[BodyKinematics.COMPONENTS];
 
     /**
      * True specific force to be reused.
      */
-<span class="fc" id="L79">    private final double[] mTrueF = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L80">    private final double[] mTrueF = new double[BodyKinematics.COMPONENTS];</span>
 
     /**
      * Array containing result values to be reused.
      */
-<span class="fc" id="L84">    private final double[] mResult = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L85">    private final double[] mResult = new double[BodyKinematics.COMPONENTS];</span>
 
     /**
      * Bias matrix to be reused.
@@ -101,28 +102,28 @@ public class AngularRateFixer {
     /**
      * Constructor.
      */
-<span class="fc" id="L104">    public AngularRateFixer() {</span>
+<span class="fc" id="L105">    public AngularRateFixer() {</span>
         try {
-<span class="fc" id="L106">            mIdentity = Matrix.identity(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L107">            mIdentity = Matrix.identity(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="fc" id="L108">            mTmp1 = Matrix.identity(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L109">            mTmp1 = Matrix.identity(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="fc" id="L110">            mTmp2 = Matrix.identity(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L111">            mTmp2 = Matrix.identity(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="fc" id="L112">            mTmp3 = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L113">            mTmp4 = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L114">            mDiff = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L115">            mTmp5 = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L113">            mTmp3 = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L114">            mTmp4 = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L115">            mDiff = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L116">            mTmp5 = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
 
-<span class="fc" id="L117">            mBias = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L118">            mCrossCouplingErrors = new Matrix(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L118">            mBias = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L119">            mCrossCouplingErrors = new Matrix(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="fc" id="L120">            mGDependantCrossBias = new Matrix(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L121">            mGDependantCrossBias = new Matrix(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="nc" id="L122">        } catch (final WrongSizeException ignore) {</span>
+<span class="nc" id="L123">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L124">        }</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L125">        }</span>
+<span class="fc" id="L126">    }</span>
 
     /**
      * Gets bias values expressed in radians per second (rad/s).
@@ -130,7 +131,7 @@ public class AngularRateFixer {
      * @return bias values expressed in radians per second.
      */
     public Matrix getBias() {
-<span class="fc" id="L133">        return new Matrix(mBias);</span>
+<span class="fc" id="L134">        return new Matrix(mBias);</span>
     }
 
     /**
@@ -139,8 +140,8 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getBias(final Matrix result) {
-<span class="fc" id="L142">        mBias.copyTo(result);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L143">        mBias.copyTo(result);</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Sets bias values expressed in radians per second (rad/s).
@@ -149,11 +150,11 @@ public class AngularRateFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setBias(final Matrix bias) {
-<span class="fc bfc" id="L152" title="All 4 branches covered.">        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {</span>
-<span class="fc" id="L153">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L153" title="All 4 branches covered.">        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {</span>
+<span class="fc" id="L154">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L155">        mBias = bias;</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L156">        mBias = bias;</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Gets bias values expressed in radians per second (rad/s).
@@ -161,9 +162,9 @@ public class AngularRateFixer {
      * @return bias values expressed in radians per second.
      */
     public double[] getBiasArray() {
-<span class="fc" id="L164">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L165">        getBiasArray(result);</span>
-<span class="fc" id="L166">        return result;</span>
+<span class="fc" id="L165">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L166">        getBiasArray(result);</span>
+<span class="fc" id="L167">        return result;</span>
     }
 
     /**
@@ -174,16 +175,16 @@ public class AngularRateFixer {
      *                                  length 3.
      */
     public void getBiasArray(final double[] result) {
-<span class="fc bfc" id="L177" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L178">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L178" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L179">            throw new IllegalArgumentException();</span>
         }
 
         try {
-<span class="fc" id="L182">            mBias.toArray(result);</span>
-<span class="nc" id="L183">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L183">            mBias.toArray(result);</span>
+<span class="nc" id="L184">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L185">        }</span>
-<span class="fc" id="L186">    }</span>
+<span class="fc" id="L186">        }</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Sets bias values expressed in radians per second (rad/s).
@@ -194,16 +195,16 @@ public class AngularRateFixer {
      *                                  length 3.
      */
     public void setBias(final double[] bias) {
-<span class="fc bfc" id="L197" title="All 2 branches covered.">        if (bias.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L198">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L198" title="All 2 branches covered.">        if (bias.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L199">            throw new IllegalArgumentException();</span>
         }
 
         try {
-<span class="fc" id="L202">            mBias.fromArray(bias);</span>
-<span class="nc" id="L203">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L203">            mBias.fromArray(bias);</span>
+<span class="nc" id="L204">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L205">        }</span>
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L206">        }</span>
+<span class="fc" id="L207">    }</span>
 
     /**
      * Gets angular speed bias.
@@ -211,8 +212,8 @@ public class AngularRateFixer {
      * @return angular speed bias.
      */
     public AngularSpeedTriad getBiasAsTriad() {
-<span class="fc" id="L214">        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,</span>
-<span class="fc" id="L215">                mBias.getElementAtIndex(0), mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));</span>
+<span class="fc" id="L215">        return new AngularSpeedTriad(AngularSpeedUnit.RADIANS_PER_SECOND,</span>
+<span class="fc" id="L216">                mBias.getElementAtIndex(0), mBias.getElementAtIndex(1), mBias.getElementAtIndex(2));</span>
     }
 
     /**
@@ -221,9 +222,9 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasAsTriad(final AngularSpeedTriad result) {
-<span class="fc" id="L224">        result.setValueCoordinates(mBias);</span>
-<span class="fc" id="L225">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L226">    }</span>
+<span class="fc" id="L225">        result.setValueCoordinates(mBias);</span>
+<span class="fc" id="L226">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L227">    }</span>
 
     /**
      * Sets angular speed bias.
@@ -231,13 +232,13 @@ public class AngularRateFixer {
      * @param bias angular speed bias to be set.
      */
     public void setBias(final AngularSpeedTriad bias) {
-<span class="fc" id="L234">        final double biasX = convertAngularSpeed(bias.getValueX(), bias.getUnit());</span>
-<span class="fc" id="L235">        final double biasY = convertAngularSpeed(bias.getValueY(), bias.getUnit());</span>
-<span class="fc" id="L236">        final double biasZ = convertAngularSpeed(bias.getValueZ(), bias.getUnit());</span>
-<span class="fc" id="L237">        mBias.setElementAtIndex(0, biasX);</span>
-<span class="fc" id="L238">        mBias.setElementAtIndex(1, biasY);</span>
-<span class="fc" id="L239">        mBias.setElementAtIndex(2, biasZ);</span>
-<span class="fc" id="L240">    }</span>
+<span class="fc" id="L235">        final double biasX = convertAngularSpeed(bias.getValueX(), bias.getUnit());</span>
+<span class="fc" id="L236">        final double biasY = convertAngularSpeed(bias.getValueY(), bias.getUnit());</span>
+<span class="fc" id="L237">        final double biasZ = convertAngularSpeed(bias.getValueZ(), bias.getUnit());</span>
+<span class="fc" id="L238">        mBias.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L239">        mBias.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L240">        mBias.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L241">    }</span>
 
     /**
      * Gets x-coordinate of bias expressed in radians per second (rad/s).
@@ -245,7 +246,7 @@ public class AngularRateFixer {
      * @return x-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getBiasX() {
-<span class="fc" id="L248">        return mBias.getElementAtIndex(0);</span>
+<span class="fc" id="L249">        return mBias.getElementAtIndex(0);</span>
     }
 
     /**
@@ -255,8 +256,8 @@ public class AngularRateFixer {
      *              (rad/s).
      */
     public void setBiasX(final double biasX) {
-<span class="fc" id="L258">        mBias.setElementAtIndex(0, biasX);</span>
-<span class="fc" id="L259">    }</span>
+<span class="fc" id="L259">        mBias.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L260">    }</span>
 
     /**
      * Gets y-coordinate of bias expressed in radians per second (rad/s).
@@ -264,7 +265,7 @@ public class AngularRateFixer {
      * @return y-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getBiasY() {
-<span class="fc" id="L267">        return mBias.getElementAtIndex(1);</span>
+<span class="fc" id="L268">        return mBias.getElementAtIndex(1);</span>
     }
 
     /**
@@ -274,8 +275,8 @@ public class AngularRateFixer {
      *              (rad/s).
      */
     public void setBiasY(final double biasY) {
-<span class="fc" id="L277">        mBias.setElementAtIndex(1, biasY);</span>
-<span class="fc" id="L278">    }</span>
+<span class="fc" id="L278">        mBias.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Gets z-coordinate of bias expressed in radians per second (rad/s).
@@ -283,7 +284,7 @@ public class AngularRateFixer {
      * @return z-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getBiasZ() {
-<span class="fc" id="L286">        return mBias.getElementAtIndex(2);</span>
+<span class="fc" id="L287">        return mBias.getElementAtIndex(2);</span>
     }
 
     /**
@@ -293,8 +294,8 @@ public class AngularRateFixer {
      *              (rad/s).
      */
     public void setBiasZ(final double biasZ) {
-<span class="fc" id="L296">        mBias.setElementAtIndex(2, biasZ);</span>
-<span class="fc" id="L297">    }</span>
+<span class="fc" id="L297">        mBias.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L298">    }</span>
 
     /**
      * Sets coordinates of bias expressed in radians per second (rad/s).
@@ -305,10 +306,10 @@ public class AngularRateFixer {
      */
     public void setBias(
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L308">        setBiasX(biasX);</span>
-<span class="fc" id="L309">        setBiasY(biasY);</span>
-<span class="fc" id="L310">        setBiasZ(biasZ);</span>
-<span class="fc" id="L311">    }</span>
+<span class="fc" id="L309">        setBiasX(biasX);</span>
+<span class="fc" id="L310">        setBiasY(biasY);</span>
+<span class="fc" id="L311">        setBiasZ(biasZ);</span>
+<span class="fc" id="L312">    }</span>
 
     /**
      * Gets x-coordinate of bias.
@@ -316,7 +317,7 @@ public class AngularRateFixer {
      * @return x-coordinate of bias.
      */
     public AngularSpeed getBiasXAsAngularSpeed() {
-<span class="fc" id="L319">        return new AngularSpeed(getBiasX(),</span>
+<span class="fc" id="L320">        return new AngularSpeed(getBiasX(),</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -326,9 +327,9 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasXAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L329">        result.setValue(getBiasX());</span>
-<span class="fc" id="L330">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L331">    }</span>
+<span class="fc" id="L330">        result.setValue(getBiasX());</span>
+<span class="fc" id="L331">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L332">    }</span>
 
     /**
      * Sets x-coordinate of bias.
@@ -336,8 +337,8 @@ public class AngularRateFixer {
      * @param biasX x-coordinate of bias.
      */
     public void setBiasX(final AngularSpeed biasX) {
-<span class="fc" id="L339">        setBiasX(convertAngularSpeed(biasX));</span>
-<span class="fc" id="L340">    }</span>
+<span class="fc" id="L340">        setBiasX(convertAngularSpeed(biasX));</span>
+<span class="fc" id="L341">    }</span>
 
     /**
      * Gets y-coordinate of bias.
@@ -345,7 +346,7 @@ public class AngularRateFixer {
      * @return y-coordinate of bias.
      */
     public AngularSpeed getBiasYAsAngularSpeed() {
-<span class="fc" id="L348">        return new AngularSpeed(getBiasY(),</span>
+<span class="fc" id="L349">        return new AngularSpeed(getBiasY(),</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -355,9 +356,9 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasYAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L358">        result.setValue(getBiasY());</span>
-<span class="fc" id="L359">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L360">    }</span>
+<span class="fc" id="L359">        result.setValue(getBiasY());</span>
+<span class="fc" id="L360">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L361">    }</span>
 
     /**
      * Sets y-coordinate of bias.
@@ -365,8 +366,8 @@ public class AngularRateFixer {
      * @param biasY y-coordinate of bias.
      */
     public void setBiasY(final AngularSpeed biasY) {
-<span class="fc" id="L368">        setBiasY(convertAngularSpeed(biasY));</span>
-<span class="fc" id="L369">    }</span>
+<span class="fc" id="L369">        setBiasY(convertAngularSpeed(biasY));</span>
+<span class="fc" id="L370">    }</span>
 
     /**
      * Gets z-coordinate of bias.
@@ -374,7 +375,7 @@ public class AngularRateFixer {
      * @return z-coordinate of bias.
      */
     public AngularSpeed getBiasZAsAngularSpeed() {
-<span class="fc" id="L377">        return new AngularSpeed(getBiasZ(),</span>
+<span class="fc" id="L378">        return new AngularSpeed(getBiasZ(),</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -384,9 +385,9 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getBiasZAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L387">        result.setValue(getBiasZ());</span>
-<span class="fc" id="L388">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L389">    }</span>
+<span class="fc" id="L388">        result.setValue(getBiasZ());</span>
+<span class="fc" id="L389">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L390">    }</span>
 
     /**
      * Sets z-coordinate of bias.
@@ -394,8 +395,8 @@ public class AngularRateFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setBiasZ(final AngularSpeed biasZ) {
-<span class="fc" id="L397">        setBiasZ(convertAngularSpeed(biasZ));</span>
-<span class="fc" id="L398">    }</span>
+<span class="fc" id="L398">        setBiasZ(convertAngularSpeed(biasZ));</span>
+<span class="fc" id="L399">    }</span>
 
     /**
      * Sets coordinates of bias.
@@ -408,10 +409,10 @@ public class AngularRateFixer {
             final AngularSpeed biasX,
             final AngularSpeed biasY,
             final AngularSpeed biasZ) {
-<span class="fc" id="L411">        setBiasX(biasX);</span>
-<span class="fc" id="L412">        setBiasY(biasY);</span>
-<span class="fc" id="L413">        setBiasZ(biasZ);</span>
-<span class="fc" id="L414">    }</span>
+<span class="fc" id="L412">        setBiasX(biasX);</span>
+<span class="fc" id="L413">        setBiasY(biasY);</span>
+<span class="fc" id="L414">        setBiasZ(biasZ);</span>
+<span class="fc" id="L415">    }</span>
 
     /**
      * Gets cross coupling errors matrix.
@@ -419,7 +420,7 @@ public class AngularRateFixer {
      * @return cross coupling errors matrix.
      */
     public Matrix getCrossCouplingErrors() {
-<span class="fc" id="L422">        return new Matrix(mCrossCouplingErrors);</span>
+<span class="fc" id="L423">        return new Matrix(mCrossCouplingErrors);</span>
     }
 
     /**
@@ -428,8 +429,8 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getCrossCouplingErrors(final Matrix result) {
-<span class="fc" id="L431">        mCrossCouplingErrors.copyTo(result);</span>
-<span class="fc" id="L432">    }</span>
+<span class="fc" id="L432">        mCrossCouplingErrors.copyTo(result);</span>
+<span class="fc" id="L433">    }</span>
 
     /**
      * Sets cross coupling errors matrix.
@@ -440,17 +441,17 @@ public class AngularRateFixer {
      */
     public void setCrossCouplingErrors(final Matrix crossCouplingErrors)
             throws AlgebraException {
-<span class="fc bfc" id="L443" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L444" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L445">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L444" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L445" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L446">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L448">        mCrossCouplingErrors = crossCouplingErrors;</span>
+<span class="fc" id="L449">        mCrossCouplingErrors = crossCouplingErrors;</span>
 
-<span class="fc" id="L450">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
+<span class="fc" id="L451">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
 
-<span class="fc" id="L452">        Utils.inverse(mTmp1, mTmp2);</span>
-<span class="fc" id="L453">    }</span>
+<span class="fc" id="L453">        Utils.inverse(mTmp1, mTmp2);</span>
+<span class="fc" id="L454">    }</span>
 
     /**
      * Gets x scaling factor.
@@ -458,7 +459,7 @@ public class AngularRateFixer {
      * @return x scaling factor.
      */
     public double getSx() {
-<span class="fc" id="L461">        return mCrossCouplingErrors.getElementAt(0, 0);</span>
+<span class="fc" id="L462">        return mCrossCouplingErrors.getElementAt(0, 0);</span>
     }
 
     /**
@@ -469,12 +470,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setSx(final double sx) throws AlgebraException {
-<span class="fc" id="L472">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L473">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L474">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L475">        m.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L476">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L477">    }</span>
+<span class="fc" id="L475">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L476">        m.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L477">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L478">    }</span>
 
     /**
      * Gets y scaling factor.
@@ -482,7 +483,7 @@ public class AngularRateFixer {
      * @return y scaling factor.
      */
     public double getSy() {
-<span class="fc" id="L485">        return mCrossCouplingErrors.getElementAt(1, 1);</span>
+<span class="fc" id="L486">        return mCrossCouplingErrors.getElementAt(1, 1);</span>
     }
 
     /**
@@ -493,12 +494,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setSy(final double sy) throws AlgebraException {
-<span class="fc" id="L496">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L497">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L498">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L499">        m.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L500">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L501">    }</span>
+<span class="fc" id="L499">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L500">        m.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L501">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L502">    }</span>
 
     /**
      * Gets z scaling factor.
@@ -506,7 +507,7 @@ public class AngularRateFixer {
      * @return z scaling factor.
      */
     public double getSz() {
-<span class="fc" id="L509">        return mCrossCouplingErrors.getElementAt(2, 2);</span>
+<span class="fc" id="L510">        return mCrossCouplingErrors.getElementAt(2, 2);</span>
     }
 
     /**
@@ -517,12 +518,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setSz(final double sz) throws AlgebraException {
-<span class="fc" id="L520">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L521">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L522">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L523">        m.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L524">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L525">    }</span>
+<span class="fc" id="L523">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L524">        m.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L525">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L526">    }</span>
 
     /**
      * Gets x-y cross coupling error.
@@ -530,7 +531,7 @@ public class AngularRateFixer {
      * @return x-y cross coupling error.
      */
     public double getMxy() {
-<span class="fc" id="L533">        return mCrossCouplingErrors.getElementAt(0, 1);</span>
+<span class="fc" id="L534">        return mCrossCouplingErrors.getElementAt(0, 1);</span>
     }
 
     /**
@@ -541,12 +542,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMxy(final double mxy) throws AlgebraException {
-<span class="fc" id="L544">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L545">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L546">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L547">        m.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L548">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L549">    }</span>
+<span class="fc" id="L547">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L548">        m.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L549">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L550">    }</span>
 
     /**
      * Gets x-z cross coupling error.
@@ -554,7 +555,7 @@ public class AngularRateFixer {
      * @return x-z cross coupling error.
      */
     public double getMxz() {
-<span class="fc" id="L557">        return mCrossCouplingErrors.getElementAt(0, 2);</span>
+<span class="fc" id="L558">        return mCrossCouplingErrors.getElementAt(0, 2);</span>
     }
 
     /**
@@ -565,12 +566,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMxz(final double mxz) throws AlgebraException {
-<span class="fc" id="L568">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L569">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L570">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L571">        m.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L572">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L573">    }</span>
+<span class="fc" id="L571">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L572">        m.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L573">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L574">    }</span>
 
     /**
      * Gets y-x cross coupling error.
@@ -578,7 +579,7 @@ public class AngularRateFixer {
      * @return y-x cross coupling error.
      */
     public double getMyx() {
-<span class="fc" id="L581">        return mCrossCouplingErrors.getElementAt(1, 0);</span>
+<span class="fc" id="L582">        return mCrossCouplingErrors.getElementAt(1, 0);</span>
     }
 
     /**
@@ -589,12 +590,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMyx(final double myx) throws AlgebraException {
-<span class="fc" id="L592">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L593">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L594">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L595">        m.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L596">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L597">    }</span>
+<span class="fc" id="L595">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L596">        m.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L597">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L598">    }</span>
 
     /**
      * Gets y-z cross coupling error.
@@ -602,7 +603,7 @@ public class AngularRateFixer {
      * @return y-z cross coupling error.
      */
     public double getMyz() {
-<span class="fc" id="L605">        return mCrossCouplingErrors.getElementAt(1, 2);</span>
+<span class="fc" id="L606">        return mCrossCouplingErrors.getElementAt(1, 2);</span>
     }
 
     /**
@@ -613,12 +614,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMyz(final double myz) throws AlgebraException {
-<span class="fc" id="L616">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L617">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L618">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L619">        m.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L620">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L621">    }</span>
+<span class="fc" id="L619">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L620">        m.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L621">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L622">    }</span>
 
     /**
      * Gets z-x cross coupling error.
@@ -626,7 +627,7 @@ public class AngularRateFixer {
      * @return z-x cross coupling error.
      */
     public double getMzx() {
-<span class="fc" id="L629">        return mCrossCouplingErrors.getElementAt(2, 0);</span>
+<span class="fc" id="L630">        return mCrossCouplingErrors.getElementAt(2, 0);</span>
     }
 
     /**
@@ -637,12 +638,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMzx(final double mzx) throws AlgebraException {
-<span class="fc" id="L640">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L641">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L642">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L643">        m.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L644">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L645">    }</span>
+<span class="fc" id="L643">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L644">        m.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L645">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L646">    }</span>
 
     /**
      * Gets z-y cross coupling error.
@@ -650,7 +651,7 @@ public class AngularRateFixer {
      * @return z-y cross coupling error.
      */
     public double getMzy() {
-<span class="fc" id="L653">        return mCrossCouplingErrors.getElementAt(2, 1);</span>
+<span class="fc" id="L654">        return mCrossCouplingErrors.getElementAt(2, 1);</span>
     }
 
     /**
@@ -661,12 +662,12 @@ public class AngularRateFixer {
      *                          non invertible.
      */
     public void setMzy(final double mzy) throws AlgebraException {
-<span class="fc" id="L664">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L665">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L666">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L667">        m.setElementAt(2, 1, mzy);</span>
-<span class="fc" id="L668">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L669">    }</span>
+<span class="fc" id="L667">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L668">        m.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L669">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L670">    }</span>
 
     /**
      * Sets scaling factors.
@@ -680,14 +681,14 @@ public class AngularRateFixer {
     public void setScalingFactors(
             final double sx, final double sy, final double sz)
             throws AlgebraException {
-<span class="fc" id="L683">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L684">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L685">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L686">        m.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L687">        m.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L688">        m.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L689">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L690">    }</span>
+<span class="fc" id="L686">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L687">        m.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L688">        m.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L689">        m.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L690">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L691">    }</span>
 
     /**
      * Sets cross coupling errors.
@@ -706,17 +707,17 @@ public class AngularRateFixer {
             final double myx, final double myz,
             final double mzx, final double mzy)
             throws AlgebraException {
-<span class="fc" id="L709">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L710">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L711">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L712">        m.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L713">        m.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L714">        m.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L715">        m.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L716">        m.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L717">        m.setElementAt(2, 1, mzy);</span>
-<span class="fc" id="L718">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L719">    }</span>
+<span class="fc" id="L712">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L713">        m.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L714">        m.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L715">        m.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L716">        m.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L717">        m.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L718">        m.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L719">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L720">    }</span>
 
     /**
      * Sets scaling factors and cross coupling errors.
@@ -738,20 +739,20 @@ public class AngularRateFixer {
             final double mxy, final double mxz,
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
-<span class="fc" id="L741">        final Matrix m = new Matrix(</span>
+<span class="fc" id="L742">        final Matrix m = new Matrix(</span>
                 AngularSpeedTriad.COMPONENTS, AngularSpeedTriad.COMPONENTS);
-<span class="fc" id="L743">        m.copyFrom(mCrossCouplingErrors);</span>
-<span class="fc" id="L744">        m.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L745">        m.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L746">        m.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L747">        m.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L748">        m.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L749">        m.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L750">        m.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L751">        m.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L752">        m.setElementAt(2, 1, mzy);</span>
-<span class="fc" id="L753">        setCrossCouplingErrors(m);</span>
-<span class="fc" id="L754">    }</span>
+<span class="fc" id="L744">        m.copyFrom(mCrossCouplingErrors);</span>
+<span class="fc" id="L745">        m.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L746">        m.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L747">        m.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L748">        m.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L749">        m.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L750">        m.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L751">        m.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L752">        m.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L753">        m.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L754">        setCrossCouplingErrors(m);</span>
+<span class="fc" id="L755">    }</span>
 
     /**
      * Gets g-dependant cross biases matrix.
@@ -759,7 +760,7 @@ public class AngularRateFixer {
      * @return g-dependant cross biases matrix.
      */
     public Matrix getGDependantCrossBias() {
-<span class="fc" id="L762">        return new Matrix(mGDependantCrossBias);</span>
+<span class="fc" id="L763">        return new Matrix(mGDependantCrossBias);</span>
     }
 
     /**
@@ -768,8 +769,8 @@ public class AngularRateFixer {
      * @param result instance where result will be stored.
      */
     public void getGDependantCrossBias(final Matrix result) {
-<span class="fc" id="L771">        mGDependantCrossBias.copyTo(result);</span>
-<span class="fc" id="L772">    }</span>
+<span class="fc" id="L772">        mGDependantCrossBias.copyTo(result);</span>
+<span class="fc" id="L773">    }</span>
 
     /**
      * Sets g-dependant cross biases matrix.
@@ -778,13 +779,13 @@ public class AngularRateFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     public void setGDependantCrossBias(final Matrix gDependantCrossBias) {
-<span class="fc bfc" id="L781" title="All 2 branches covered.">        if (gDependantCrossBias.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L782" title="All 2 branches covered.">                || gDependantCrossBias.getColumns() != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L783">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L782" title="All 2 branches covered.">        if (gDependantCrossBias.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L783" title="All 2 branches covered.">                || gDependantCrossBias.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L784">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L786">        mGDependantCrossBias = gDependantCrossBias;</span>
-<span class="fc" id="L787">    }</span>
+<span class="fc" id="L787">        mGDependantCrossBias = gDependantCrossBias;</span>
+<span class="fc" id="L788">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -802,24 +803,24 @@ public class AngularRateFixer {
     public void fix(final AngularSpeedTriad measuredAngularRate,
                     final AccelerationTriad trueF,
                     final double[] result) throws AlgebraException {
-<span class="fc bfc" id="L805" title="All 2 branches covered.">        if (result.length != AngularSpeedTriad.COMPONENTS) {</span>
-<span class="fc" id="L806">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L806" title="All 2 branches covered.">        if (result.length != AngularSpeedTriad.COMPONENTS) {</span>
+<span class="fc" id="L807">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L809">        final double wX = convertAngularSpeed(measuredAngularRate.getValueX(),</span>
-<span class="fc" id="L810">                measuredAngularRate.getUnit());</span>
-<span class="fc" id="L811">        final double wY = convertAngularSpeed(measuredAngularRate.getValueY(),</span>
-<span class="fc" id="L812">                measuredAngularRate.getUnit());</span>
-<span class="fc" id="L813">        final double wZ = convertAngularSpeed(measuredAngularRate.getValueZ(),</span>
-<span class="fc" id="L814">                measuredAngularRate.getUnit());</span>
-<span class="fc" id="L815">        final double trueFx = convertAcceleration(trueF.getValueX(),</span>
-<span class="fc" id="L816">                trueF.getUnit());</span>
-<span class="fc" id="L817">        final double trueFy = convertAcceleration(trueF.getValueY(),</span>
-<span class="fc" id="L818">                trueF.getUnit());</span>
-<span class="fc" id="L819">        final double trueFz = convertAcceleration(trueF.getValueZ(),</span>
-<span class="fc" id="L820">                trueF.getUnit());</span>
-<span class="fc" id="L821">        fix(wX, wY, wZ, trueFx, trueFy, trueFz, result);</span>
-<span class="fc" id="L822">    }</span>
+<span class="fc" id="L810">        final double wX = convertAngularSpeed(measuredAngularRate.getValueX(),</span>
+<span class="fc" id="L811">                measuredAngularRate.getUnit());</span>
+<span class="fc" id="L812">        final double wY = convertAngularSpeed(measuredAngularRate.getValueY(),</span>
+<span class="fc" id="L813">                measuredAngularRate.getUnit());</span>
+<span class="fc" id="L814">        final double wZ = convertAngularSpeed(measuredAngularRate.getValueZ(),</span>
+<span class="fc" id="L815">                measuredAngularRate.getUnit());</span>
+<span class="fc" id="L816">        final double trueFx = convertAcceleration(trueF.getValueX(),</span>
+<span class="fc" id="L817">                trueF.getUnit());</span>
+<span class="fc" id="L818">        final double trueFy = convertAcceleration(trueF.getValueY(),</span>
+<span class="fc" id="L819">                trueF.getUnit());</span>
+<span class="fc" id="L820">        final double trueFz = convertAcceleration(trueF.getValueZ(),</span>
+<span class="fc" id="L821">                trueF.getUnit());</span>
+<span class="fc" id="L822">        fix(wX, wY, wZ, trueFx, trueFy, trueFz, result);</span>
+<span class="fc" id="L823">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -836,13 +837,13 @@ public class AngularRateFixer {
     public void fix(final AngularSpeedTriad measuredAngularRate,
                     final AccelerationTriad trueF,
                     final Matrix result) throws AlgebraException {
-<span class="fc bfc" id="L839" title="All 2 branches covered.">        if (result.getRows() != AngularSpeedTriad.COMPONENTS</span>
-<span class="pc bpc" id="L840" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L841">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L840" title="All 2 branches covered.">        if (result.getRows() != AngularSpeedTriad.COMPONENTS</span>
+<span class="pc bpc" id="L841" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L842">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L844">        fix(measuredAngularRate, trueF, result.getBuffer());</span>
-<span class="fc" id="L845">    }</span>
+<span class="fc" id="L845">        fix(measuredAngularRate, trueF, result.getBuffer());</span>
+<span class="fc" id="L846">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -857,10 +858,10 @@ public class AngularRateFixer {
     public void fix(final AngularSpeedTriad measuredAngularRate,
                     final AccelerationTriad trueF,
                     final AngularSpeedTriad result) throws AlgebraException {
-<span class="fc" id="L860">        fix(measuredAngularRate, trueF, mResult);</span>
-<span class="fc" id="L861">        result.setValueCoordinates(mResult);</span>
-<span class="fc" id="L862">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L863">    }</span>
+<span class="fc" id="L861">        fix(measuredAngularRate, trueF, mResult);</span>
+<span class="fc" id="L862">        result.setValueCoordinates(mResult);</span>
+<span class="fc" id="L863">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L864">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -883,16 +884,16 @@ public class AngularRateFixer {
                     final Acceleration trueFy,
                     final Acceleration trueFz,
                     final AngularSpeedTriad result) throws AlgebraException {
-<span class="fc" id="L886">        final double wX = convertAngularSpeed(measuredAngularRateX);</span>
-<span class="fc" id="L887">        final double wY = convertAngularSpeed(measuredAngularRateY);</span>
-<span class="fc" id="L888">        final double wZ = convertAngularSpeed(measuredAngularRateZ);</span>
-<span class="fc" id="L889">        final double fX = convertAcceleration(trueFx);</span>
-<span class="fc" id="L890">        final double fY = convertAcceleration(trueFy);</span>
-<span class="fc" id="L891">        final double fZ = convertAcceleration(trueFz);</span>
-<span class="fc" id="L892">        fix(wX, wY, wZ, fX, fY, fZ, mResult);</span>
-<span class="fc" id="L893">        result.setValueCoordinates(mResult);</span>
-<span class="fc" id="L894">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L895">    }</span>
+<span class="fc" id="L887">        final double wX = convertAngularSpeed(measuredAngularRateX);</span>
+<span class="fc" id="L888">        final double wY = convertAngularSpeed(measuredAngularRateY);</span>
+<span class="fc" id="L889">        final double wZ = convertAngularSpeed(measuredAngularRateZ);</span>
+<span class="fc" id="L890">        final double fX = convertAcceleration(trueFx);</span>
+<span class="fc" id="L891">        final double fY = convertAcceleration(trueFy);</span>
+<span class="fc" id="L892">        final double fZ = convertAcceleration(trueFz);</span>
+<span class="fc" id="L893">        fix(wX, wY, wZ, fX, fY, fZ, mResult);</span>
+<span class="fc" id="L894">        result.setValueCoordinates(mResult);</span>
+<span class="fc" id="L895">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L896">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -915,14 +916,14 @@ public class AngularRateFixer {
             final double[] measuredAngularRate,
             final double[] trueF,
             final double[] result) throws AlgebraException {
-<span class="fc bfc" id="L918" title="All 2 branches covered.">        if (measuredAngularRate.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L919">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L919" title="All 2 branches covered.">        if (measuredAngularRate.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L920">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L921" title="All 2 branches covered.">        if (trueF.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L922">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L922" title="All 2 branches covered.">        if (trueF.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L923">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L924" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L925">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L925" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L926">            throw new IllegalArgumentException();</span>
         }
 
         // The gyroscope model is
@@ -930,19 +931,19 @@ public class AngularRateFixer {
 
         // Ωtrue = (I + Mg)^-1 * (Ωmeas - bg - Gg * ftrue)
 
-<span class="fc" id="L933">        mTmp3.fromArray(trueF);</span>
-<span class="fc" id="L934">        mGDependantCrossBias.multiply(mTmp3, mTmp4);</span>
+<span class="fc" id="L934">        mTmp3.fromArray(trueF);</span>
+<span class="fc" id="L935">        mGDependantCrossBias.multiply(mTmp3, mTmp4);</span>
 
-<span class="fc bfc" id="L936" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyKinematics.COMPONENTS; i++) {</span>
-<span class="fc" id="L937">            mDiff.setElementAtIndex(i,</span>
-<span class="fc" id="L938">                    measuredAngularRate[i] - mBias.getElementAtIndex(i)</span>
-<span class="fc" id="L939">                            - mTmp4.getElementAtIndex(i));</span>
+<span class="fc bfc" id="L937" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyKinematics.COMPONENTS; i++) {</span>
+<span class="fc" id="L938">            mDiff.setElementAtIndex(i,</span>
+<span class="fc" id="L939">                    measuredAngularRate[i] - mBias.getElementAtIndex(i)</span>
+<span class="fc" id="L940">                            - mTmp4.getElementAtIndex(i));</span>
         }
 
-<span class="fc" id="L942">        mTmp2.multiply(mDiff, mTmp5);</span>
+<span class="fc" id="L943">        mTmp2.multiply(mDiff, mTmp5);</span>
 
-<span class="fc" id="L944">        mTmp5.toArray(result);</span>
-<span class="fc" id="L945">    }</span>
+<span class="fc" id="L945">        mTmp5.toArray(result);</span>
+<span class="fc" id="L946">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -965,17 +966,17 @@ public class AngularRateFixer {
             final Matrix measuredAngularRate,
             final Matrix trueF,
             final double[] result) throws AlgebraException {
-<span class="fc bfc" id="L968" title="All 2 branches covered.">        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L969" title="All 2 branches covered.">                || measuredAngularRate.getColumns() != 1) {</span>
-<span class="fc" id="L970">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L969" title="All 2 branches covered.">        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L970" title="All 2 branches covered.">                || measuredAngularRate.getColumns() != 1) {</span>
+<span class="fc" id="L971">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L972" title="All 2 branches covered.">        if (trueF.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L973" title="All 2 branches covered.">                || trueF.getColumns() != 1) {</span>
-<span class="fc" id="L974">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L973" title="All 2 branches covered.">        if (trueF.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L974" title="All 2 branches covered.">                || trueF.getColumns() != 1) {</span>
+<span class="fc" id="L975">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L977">        fix(measuredAngularRate.getBuffer(), trueF.getBuffer(), result);</span>
-<span class="fc" id="L978">    }</span>
+<span class="fc" id="L978">        fix(measuredAngularRate.getBuffer(), trueF.getBuffer(), result);</span>
+<span class="fc" id="L979">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -999,13 +1000,13 @@ public class AngularRateFixer {
             final Matrix trueF,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1002" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="pc bpc" id="L1003" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1004">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1003" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="pc bpc" id="L1004" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1005">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1007">        fix(measuredAngularRate, trueF, result.getBuffer());</span>
-<span class="fc" id="L1008">    }</span>
+<span class="fc" id="L1008">        fix(measuredAngularRate, trueF, result.getBuffer());</span>
+<span class="fc" id="L1009">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1043,16 +1044,16 @@ public class AngularRateFixer {
             final double trueFz,
             final double[] result) throws AlgebraException {
 
-<span class="fc" id="L1046">        mMeasuredAngularRate[0] = measuredAngularRateX;</span>
-<span class="fc" id="L1047">        mMeasuredAngularRate[1] = measuredAngularRateY;</span>
-<span class="fc" id="L1048">        mMeasuredAngularRate[2] = measuredAngularRateZ;</span>
+<span class="fc" id="L1047">        mMeasuredAngularRate[0] = measuredAngularRateX;</span>
+<span class="fc" id="L1048">        mMeasuredAngularRate[1] = measuredAngularRateY;</span>
+<span class="fc" id="L1049">        mMeasuredAngularRate[2] = measuredAngularRateZ;</span>
 
-<span class="fc" id="L1050">        mTrueF[0] = trueFx;</span>
-<span class="fc" id="L1051">        mTrueF[1] = trueFy;</span>
-<span class="fc" id="L1052">        mTrueF[2] = trueFz;</span>
+<span class="fc" id="L1051">        mTrueF[0] = trueFx;</span>
+<span class="fc" id="L1052">        mTrueF[1] = trueFy;</span>
+<span class="fc" id="L1053">        mTrueF[2] = trueFz;</span>
 
-<span class="fc" id="L1054">        fix(mMeasuredAngularRate, mTrueF, result);</span>
-<span class="fc" id="L1055">    }</span>
+<span class="fc" id="L1055">        fix(mMeasuredAngularRate, mTrueF, result);</span>
+<span class="fc" id="L1056">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1090,14 +1091,14 @@ public class AngularRateFixer {
             final double trueFz,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1093" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1094" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1095">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1094" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1095" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1096">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1098">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
-<span class="fc" id="L1099">                trueFx, trueFy, trueFz, result.getBuffer());</span>
-<span class="fc" id="L1100">    }</span>
+<span class="fc" id="L1099">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1100">                trueFx, trueFy, trueFz, result.getBuffer());</span>
+<span class="fc" id="L1101">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1127,48 +1128,48 @@ public class AngularRateFixer {
             final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias,
             final double[] result) throws AlgebraException {
-<span class="fc bfc" id="L1130" title="All 2 branches covered.">        if (measuredAngularRate.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1131">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1131" title="All 2 branches covered.">        if (measuredAngularRate.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1132">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1133" title="All 2 branches covered.">        if (trueF.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1134">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1134" title="All 2 branches covered.">        if (trueF.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1135">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1136" title="All 4 branches covered.">        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {</span>
-<span class="fc" id="L1137">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1137" title="All 4 branches covered.">        if (bias.getRows() != BodyKinematics.COMPONENTS || bias.getColumns() != 1) {</span>
+<span class="fc" id="L1138">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1139" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1140" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1141">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1140" title="All 2 branches covered.">        if (crossCouplingErrors.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1141" title="All 2 branches covered.">                || crossCouplingErrors.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1142">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1143" title="All 2 branches covered.">        if (gDependantCrossBias.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1144" title="All 2 branches covered.">                || gDependantCrossBias.getColumns() != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1145">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1144" title="All 2 branches covered.">        if (gDependantCrossBias.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1145" title="All 2 branches covered.">                || gDependantCrossBias.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1146">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1147" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1148">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1148" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1149">            throw new IllegalArgumentException();</span>
         }
 
         // The gyroscope model is
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue
 
         // Ωtrue = (I + Mg)^-1 * (Ωmeas - bg - Gg * ftrue)
-<span class="fc" id="L1155">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
+<span class="fc" id="L1156">        mIdentity.add(crossCouplingErrors, mTmp1);</span>
 
-<span class="fc" id="L1157">        Utils.inverse(mTmp1, mTmp2);</span>
+<span class="fc" id="L1158">        Utils.inverse(mTmp1, mTmp2);</span>
 
-<span class="fc" id="L1159">        mTmp3.fromArray(trueF);</span>
-<span class="fc" id="L1160">        gDependantCrossBias.multiply(mTmp3, mTmp4);</span>
+<span class="fc" id="L1160">        mTmp3.fromArray(trueF);</span>
+<span class="fc" id="L1161">        gDependantCrossBias.multiply(mTmp3, mTmp4);</span>
 
-<span class="fc bfc" id="L1162" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyKinematics.COMPONENTS; i++) {</span>
-<span class="fc" id="L1163">            mDiff.setElementAtIndex(i,</span>
-<span class="fc" id="L1164">                    measuredAngularRate[i] - bias.getElementAtIndex(i)</span>
-<span class="fc" id="L1165">                            - mTmp4.getElementAtIndex(i));</span>
+<span class="fc bfc" id="L1163" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyKinematics.COMPONENTS; i++) {</span>
+<span class="fc" id="L1164">            mDiff.setElementAtIndex(i,</span>
+<span class="fc" id="L1165">                    measuredAngularRate[i] - bias.getElementAtIndex(i)</span>
+<span class="fc" id="L1166">                            - mTmp4.getElementAtIndex(i));</span>
         }
 
-<span class="fc" id="L1168">        mTmp2.multiply(mDiff, mTmp5);</span>
+<span class="fc" id="L1169">        mTmp2.multiply(mDiff, mTmp5);</span>
 
-<span class="fc" id="L1170">        mTmp5.toArray(result);</span>
-<span class="fc" id="L1171">    }</span>
+<span class="fc" id="L1171">        mTmp5.toArray(result);</span>
+<span class="fc" id="L1172">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1199,18 +1200,18 @@ public class AngularRateFixer {
             final Matrix gDependantCrossBias,
             final double[] result) throws AlgebraException {
 
-<span class="fc bfc" id="L1202" title="All 2 branches covered.">        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1203" title="All 2 branches covered.">                || measuredAngularRate.getColumns() != 1) {</span>
-<span class="fc" id="L1204">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1203" title="All 2 branches covered.">        if (measuredAngularRate.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1204" title="All 2 branches covered.">                || measuredAngularRate.getColumns() != 1) {</span>
+<span class="fc" id="L1205">            throw new IllegalArgumentException();</span>
         }
-<span class="fc bfc" id="L1206" title="All 2 branches covered.">        if (trueF.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1207" title="All 2 branches covered.">                || trueF.getColumns() != 1) {</span>
-<span class="fc" id="L1208">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1207" title="All 2 branches covered.">        if (trueF.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1208" title="All 2 branches covered.">                || trueF.getColumns() != 1) {</span>
+<span class="fc" id="L1209">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1211">        fix(measuredAngularRate.getBuffer(), trueF.getBuffer(),</span>
+<span class="fc" id="L1212">        fix(measuredAngularRate.getBuffer(), trueF.getBuffer(),</span>
                 bias, crossCouplingErrors, gDependantCrossBias, result);
-<span class="fc" id="L1213">    }</span>
+<span class="fc" id="L1214">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1241,14 +1242,14 @@ public class AngularRateFixer {
             final Matrix gDependantCrossBias,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1244" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="pc bpc" id="L1245" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1246">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1245" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="pc bpc" id="L1246" title="1 of 2 branches missed.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1247">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1249">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
-<span class="fc" id="L1250">                gDependantCrossBias, result.getBuffer());</span>
-<span class="fc" id="L1251">    }</span>
+<span class="fc" id="L1250">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
+<span class="fc" id="L1251">                gDependantCrossBias, result.getBuffer());</span>
+<span class="fc" id="L1252">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1297,21 +1298,21 @@ public class AngularRateFixer {
             final Matrix gDependantCrossBias,
             final double[] result) throws AlgebraException {
 
-<span class="fc" id="L1300">        mMeasuredAngularRate[0] = measuredAngularRateX;</span>
-<span class="fc" id="L1301">        mMeasuredAngularRate[1] = measuredAngularRateY;</span>
-<span class="fc" id="L1302">        mMeasuredAngularRate[2] = measuredAngularRateZ;</span>
+<span class="fc" id="L1301">        mMeasuredAngularRate[0] = measuredAngularRateX;</span>
+<span class="fc" id="L1302">        mMeasuredAngularRate[1] = measuredAngularRateY;</span>
+<span class="fc" id="L1303">        mMeasuredAngularRate[2] = measuredAngularRateZ;</span>
 
-<span class="fc" id="L1304">        mTrueF[0] = trueFx;</span>
-<span class="fc" id="L1305">        mTrueF[1] = trueFy;</span>
-<span class="fc" id="L1306">        mTrueF[2] = trueFz;</span>
+<span class="fc" id="L1305">        mTrueF[0] = trueFx;</span>
+<span class="fc" id="L1306">        mTrueF[1] = trueFy;</span>
+<span class="fc" id="L1307">        mTrueF[2] = trueFz;</span>
 
-<span class="fc" id="L1308">        mBias.setElementAtIndex(0, biasX);</span>
-<span class="fc" id="L1309">        mBias.setElementAtIndex(1, biasY);</span>
-<span class="fc" id="L1310">        mBias.setElementAtIndex(2, biasZ);</span>
+<span class="fc" id="L1309">        mBias.setElementAtIndex(0, biasX);</span>
+<span class="fc" id="L1310">        mBias.setElementAtIndex(1, biasY);</span>
+<span class="fc" id="L1311">        mBias.setElementAtIndex(2, biasZ);</span>
 
-<span class="fc" id="L1312">        fix(mMeasuredAngularRate, mTrueF, mBias, crossCouplingErrors,</span>
+<span class="fc" id="L1313">        fix(mMeasuredAngularRate, mTrueF, mBias, crossCouplingErrors,</span>
                 gDependantCrossBias, result);
-<span class="fc" id="L1314">    }</span>
+<span class="fc" id="L1315">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1360,16 +1361,16 @@ public class AngularRateFixer {
             final Matrix gDependantCrossBias,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1363" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1364" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1365">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1364" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1365" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1366">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1368">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1369">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 crossCouplingErrors, gDependantCrossBias,
-<span class="fc" id="L1371">                result.getBuffer());</span>
-<span class="fc" id="L1372">    }</span>
+<span class="fc" id="L1372">                result.getBuffer());</span>
+<span class="fc" id="L1373">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1438,30 +1439,30 @@ public class AngularRateFixer {
             final double g13, final double g23, final double g33,
             final double[] result) throws AlgebraException {
 
-<span class="fc" id="L1441">        mCrossCouplingErrors.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L1442">        mCrossCouplingErrors.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L1443">        mCrossCouplingErrors.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L1444">        mCrossCouplingErrors.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L1445">        mCrossCouplingErrors.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L1446">        mCrossCouplingErrors.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L1447">        mCrossCouplingErrors.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L1448">        mCrossCouplingErrors.setElementAt(2, 0, mzx);</span>
-<span class="fc" id="L1449">        mCrossCouplingErrors.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L1442">        mCrossCouplingErrors.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L1443">        mCrossCouplingErrors.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L1444">        mCrossCouplingErrors.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L1445">        mCrossCouplingErrors.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L1446">        mCrossCouplingErrors.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L1447">        mCrossCouplingErrors.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L1448">        mCrossCouplingErrors.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L1449">        mCrossCouplingErrors.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L1450">        mCrossCouplingErrors.setElementAt(2, 1, mzy);</span>
 
-<span class="fc" id="L1451">        mGDependantCrossBias.setElementAt(0, 0, g11);</span>
-<span class="fc" id="L1452">        mGDependantCrossBias.setElementAt(1, 0, g21);</span>
-<span class="fc" id="L1453">        mGDependantCrossBias.setElementAt(2, 0, g31);</span>
-<span class="fc" id="L1454">        mGDependantCrossBias.setElementAt(0, 1, g12);</span>
-<span class="fc" id="L1455">        mGDependantCrossBias.setElementAt(1, 1, g22);</span>
-<span class="fc" id="L1456">        mGDependantCrossBias.setElementAt(2, 1, g32);</span>
-<span class="fc" id="L1457">        mGDependantCrossBias.setElementAt(0, 2, g13);</span>
-<span class="fc" id="L1458">        mGDependantCrossBias.setElementAt(1, 2, g23);</span>
-<span class="fc" id="L1459">        mGDependantCrossBias.setElementAt(2, 2, g33);</span>
+<span class="fc" id="L1452">        mGDependantCrossBias.setElementAt(0, 0, g11);</span>
+<span class="fc" id="L1453">        mGDependantCrossBias.setElementAt(1, 0, g21);</span>
+<span class="fc" id="L1454">        mGDependantCrossBias.setElementAt(2, 0, g31);</span>
+<span class="fc" id="L1455">        mGDependantCrossBias.setElementAt(0, 1, g12);</span>
+<span class="fc" id="L1456">        mGDependantCrossBias.setElementAt(1, 1, g22);</span>
+<span class="fc" id="L1457">        mGDependantCrossBias.setElementAt(2, 1, g32);</span>
+<span class="fc" id="L1458">        mGDependantCrossBias.setElementAt(0, 2, g13);</span>
+<span class="fc" id="L1459">        mGDependantCrossBias.setElementAt(1, 2, g23);</span>
+<span class="fc" id="L1460">        mGDependantCrossBias.setElementAt(2, 2, g33);</span>
 
-<span class="fc" id="L1461">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1462">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 mCrossCouplingErrors, mGDependantCrossBias, result);
-<span class="fc" id="L1464">    }</span>
+<span class="fc" id="L1465">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1530,17 +1531,17 @@ public class AngularRateFixer {
             final double g13, final double g23, final double g33,
             final Matrix result) throws AlgebraException {
 
-<span class="fc bfc" id="L1533" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1534" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1535">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1534" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1535" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1536">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1538">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1539">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
                 g11, g21, g31, g12, g22, g32, g13, g23, g33,
-<span class="fc" id="L1542">                result.getBuffer());</span>
-<span class="fc" id="L1543">    }</span>
+<span class="fc" id="L1543">                result.getBuffer());</span>
+<span class="fc" id="L1544">    }</span>
 
     /**
      * Fixes provided measured angular rate values by undoing the errors
@@ -1555,9 +1556,9 @@ public class AngularRateFixer {
     public AngularSpeedTriad fixAndReturnNew(
             final AngularSpeedTriad measuredAngularRate,
             final AccelerationTriad trueF) throws AlgebraException {
-<span class="fc" id="L1558">        final AngularSpeedTriad result = new AngularSpeedTriad();</span>
-<span class="fc" id="L1559">        fix(measuredAngularRate, trueF, result);</span>
-<span class="fc" id="L1560">        return result;</span>
+<span class="fc" id="L1559">        final AngularSpeedTriad result = new AngularSpeedTriad();</span>
+<span class="fc" id="L1560">        fix(measuredAngularRate, trueF, result);</span>
+<span class="fc" id="L1561">        return result;</span>
     }
 
     /**
@@ -1581,10 +1582,10 @@ public class AngularRateFixer {
             final Acceleration trueFx,
             final Acceleration trueFy,
             final Acceleration trueFz) throws AlgebraException {
-<span class="fc" id="L1584">        final AngularSpeedTriad result = new AngularSpeedTriad();</span>
-<span class="fc" id="L1585">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1585">        final AngularSpeedTriad result = new AngularSpeedTriad();</span>
+<span class="fc" id="L1586">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, result);
-<span class="fc" id="L1587">        return result;</span>
+<span class="fc" id="L1588">        return result;</span>
     }
 
     /**
@@ -1606,9 +1607,9 @@ public class AngularRateFixer {
     public double[] fixAndReturnNew(
             final double[] measuredAngularRate,
             final double[] trueF) throws AlgebraException {
-<span class="fc" id="L1609">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1610">        fix(measuredAngularRate, trueF, result);</span>
-<span class="fc" id="L1611">        return result;</span>
+<span class="fc" id="L1610">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1611">        fix(measuredAngularRate, trueF, result);</span>
+<span class="fc" id="L1612">        return result;</span>
     }
 
     /**
@@ -1631,9 +1632,9 @@ public class AngularRateFixer {
             final Matrix measuredAngularRate,
             final Matrix trueF) throws AlgebraException {
 
-<span class="fc" id="L1634">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1635">        fix(measuredAngularRate, trueF, result);</span>
-<span class="fc" id="L1636">        return result;</span>
+<span class="fc" id="L1635">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1636">        fix(measuredAngularRate, trueF, result);</span>
+<span class="fc" id="L1637">        return result;</span>
     }
 
     /**
@@ -1656,10 +1657,10 @@ public class AngularRateFixer {
             final Matrix measuredAngularRate,
             final Matrix trueF) throws AlgebraException {
 
-<span class="fc" id="L1659">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1660">        final Matrix result = new Matrix(</span>
                 BodyKinematics.COMPONENTS, 1);
-<span class="fc" id="L1661">        fix(measuredAngularRate, trueF, result);</span>
-<span class="fc" id="L1662">        return result;</span>
+<span class="fc" id="L1662">        fix(measuredAngularRate, trueF, result);</span>
+<span class="fc" id="L1663">        return result;</span>
     }
 
     /**
@@ -1694,10 +1695,10 @@ public class AngularRateFixer {
             final double trueFy,
             final double trueFz) throws AlgebraException {
 
-<span class="fc" id="L1697">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1698">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1698">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1699">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, result);
-<span class="fc" id="L1700">        return result;</span>
+<span class="fc" id="L1701">        return result;</span>
     }
 
     /**
@@ -1732,11 +1733,11 @@ public class AngularRateFixer {
             final double trueFy,
             final double trueFz) throws AlgebraException {
 
-<span class="fc" id="L1735">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1736">        final Matrix result = new Matrix(</span>
                 BodyKinematics.COMPONENTS, 1);
-<span class="fc" id="L1737">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1738">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, result);
-<span class="fc" id="L1739">        return result;</span>
+<span class="fc" id="L1740">        return result;</span>
     }
 
 
@@ -1767,10 +1768,10 @@ public class AngularRateFixer {
             final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias) throws AlgebraException {
 
-<span class="fc" id="L1770">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1771">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
+<span class="fc" id="L1771">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1772">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
                 gDependantCrossBias, result);
-<span class="fc" id="L1773">        return result;</span>
+<span class="fc" id="L1774">        return result;</span>
     }
 
     /**
@@ -1800,10 +1801,10 @@ public class AngularRateFixer {
             final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias) throws AlgebraException {
 
-<span class="fc" id="L1803">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1804">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
+<span class="fc" id="L1804">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1805">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
                 gDependantCrossBias, result);
-<span class="fc" id="L1806">        return result;</span>
+<span class="fc" id="L1807">        return result;</span>
     }
 
     /**
@@ -1833,11 +1834,11 @@ public class AngularRateFixer {
             final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias) throws AlgebraException {
 
-<span class="fc" id="L1836">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1837">        final Matrix result = new Matrix(</span>
                 BodyKinematics.COMPONENTS, 1);
-<span class="fc" id="L1838">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
+<span class="fc" id="L1839">        fix(measuredAngularRate, trueF, bias, crossCouplingErrors,</span>
                 gDependantCrossBias, result);
-<span class="fc" id="L1840">        return result;</span>
+<span class="fc" id="L1841">        return result;</span>
     }
 
     /**
@@ -1885,11 +1886,11 @@ public class AngularRateFixer {
             final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias) throws AlgebraException {
 
-<span class="fc" id="L1888">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1889">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1889">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1890">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 crossCouplingErrors, gDependantCrossBias, result);
-<span class="fc" id="L1892">        return result;</span>
+<span class="fc" id="L1893">        return result;</span>
     }
 
     /**
@@ -1937,12 +1938,12 @@ public class AngularRateFixer {
             final Matrix crossCouplingErrors,
             final Matrix gDependantCrossBias) throws AlgebraException {
 
-<span class="fc" id="L1940">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L1941">        final Matrix result = new Matrix(</span>
                 BodyKinematics.COMPONENTS, 1);
-<span class="fc" id="L1942">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L1943">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 crossCouplingErrors, gDependantCrossBias, result);
-<span class="fc" id="L1945">        return result;</span>
+<span class="fc" id="L1946">        return result;</span>
     }
 
     /**
@@ -2009,13 +2010,13 @@ public class AngularRateFixer {
             final double g13, final double g23, final double g33)
             throws AlgebraException {
 
-<span class="fc" id="L2012">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L2013">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L2013">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L2014">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
                 g11, g21, g31, g12, g22, g32,
                 g13, g23, g33, result);
-<span class="fc" id="L2018">        return result;</span>
+<span class="fc" id="L2019">        return result;</span>
     }
 
     /**
@@ -2082,14 +2083,14 @@ public class AngularRateFixer {
             final double g13, final double g23, final double g33)
             throws AlgebraException {
 
-<span class="fc" id="L2085">        final Matrix result = new Matrix(</span>
+<span class="fc" id="L2086">        final Matrix result = new Matrix(</span>
                 BodyKinematics.COMPONENTS, 1);
-<span class="fc" id="L2087">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
+<span class="fc" id="L2088">        fix(measuredAngularRateX, measuredAngularRateY, measuredAngularRateZ,</span>
                 trueFx, trueFy, trueFz, biasX, biasY, biasZ,
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy,
                 g11, g21, g31, g12, g22, g32, g13, g23, g33,
                 result);
-<span class="fc" id="L2092">        return result;</span>
+<span class="fc" id="L2093">        return result;</span>
     }
 
     /**
@@ -2101,7 +2102,7 @@ public class AngularRateFixer {
      */
     private static double convertAngularSpeed(
             final double value, final AngularSpeedUnit unit) {
-<span class="fc" id="L2104">        return AngularSpeedConverter.convert(value, unit,</span>
+<span class="fc" id="L2105">        return AngularSpeedConverter.convert(value, unit,</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -2112,8 +2113,8 @@ public class AngularRateFixer {
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-<span class="fc" id="L2115">        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),</span>
-<span class="fc" id="L2116">                angularSpeed.getUnit());</span>
+<span class="fc" id="L2116">        return convertAngularSpeed(angularSpeed.getValue().doubleValue(),</span>
+<span class="fc" id="L2117">                angularSpeed.getUnit());</span>
     }
 
     /**
@@ -2125,7 +2126,7 @@ public class AngularRateFixer {
      */
     private static double convertAcceleration(
             final double value, final AccelerationUnit unit) {
-<span class="fc" id="L2128">        return AccelerationConverter.convert(value, unit,</span>
+<span class="fc" id="L2129">        return AccelerationConverter.convert(value, unit,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2136,8 +2137,8 @@ public class AngularRateFixer {
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L2139">        return convertAcceleration(acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L2140">                acceleration.getUnit());</span>
+<span class="fc" id="L2140">        return convertAcceleration(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L2141">                acceleration.getUnit());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -435,48 +435,49 @@
 <a class="jxr_linenumber" name="L427" href="#L427">427</a> 
 <a class="jxr_linenumber" name="L428" href="#L428">428</a>         <em class="jxr_comment">//noinspection ConstantConditions,SimplifiableJUnitAssertion</em>
 <a class="jxr_linenumber" name="L429" href="#L429">429</a>         assertTrue(gravitation1.equals((Object) gravitation1));
-<a class="jxr_linenumber" name="L430" href="#L430">430</a>         assertTrue(gravitation1.equals(gravitation1));
-<a class="jxr_linenumber" name="L431" href="#L431">431</a>         assertTrue(gravitation1.equals(gravitation2));
-<a class="jxr_linenumber" name="L432" href="#L432">432</a>         assertFalse(gravitation1.equals(gravitation3));
-<a class="jxr_linenumber" name="L433" href="#L433">433</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>         assertFalse(gravitation1.equals((Object) <strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L435" href="#L435">435</a>         assertFalse(gravitation1.equals(<strong class="jxr_keyword">null</strong>));
-<a class="jxr_linenumber" name="L436" href="#L436">436</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
-<a class="jxr_linenumber" name="L437" href="#L437">437</a>         assertFalse(gravitation1.equals(<strong class="jxr_keyword">new</strong> Object()));
-<a class="jxr_linenumber" name="L438" href="#L438">438</a>     }
-<a class="jxr_linenumber" name="L439" href="#L439">439</a> 
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>     @Test
-<a class="jxr_linenumber" name="L441" href="#L441">441</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
-<a class="jxr_linenumber" name="L442" href="#L442">442</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L443" href="#L443">443</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L444" href="#L444">444</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L445" href="#L445">445</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L446" href="#L446">446</a> 
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation1 = <strong class="jxr_keyword">new</strong> ECIGravitation(gx, gy, gz);
-<a class="jxr_linenumber" name="L448" href="#L448">448</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation2 = <strong class="jxr_keyword">new</strong> ECIGravitation(gx, gy, gz);
-<a class="jxr_linenumber" name="L449" href="#L449">449</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation3 = <strong class="jxr_keyword">new</strong> ECIGravitation();
-<a class="jxr_linenumber" name="L450" href="#L450">450</a> 
-<a class="jxr_linenumber" name="L451" href="#L451">451</a>         assertTrue(gravitation1.equals(gravitation1, THRESHOLD));
-<a class="jxr_linenumber" name="L452" href="#L452">452</a>         assertTrue(gravitation1.equals(gravitation2, THRESHOLD));
-<a class="jxr_linenumber" name="L453" href="#L453">453</a>         assertFalse(gravitation1.equals(gravitation3, THRESHOLD));
-<a class="jxr_linenumber" name="L454" href="#L454">454</a>         assertFalse(gravitation1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
-<a class="jxr_linenumber" name="L455" href="#L455">455</a>     }
-<a class="jxr_linenumber" name="L456" href="#L456">456</a> 
-<a class="jxr_linenumber" name="L457" href="#L457">457</a>     @Test
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
-<a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
-<a class="jxr_linenumber" name="L460" href="#L460">460</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L461" href="#L461">461</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L462" href="#L462">462</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
-<a class="jxr_linenumber" name="L463" href="#L463">463</a> 
-<a class="jxr_linenumber" name="L464" href="#L464">464</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation1 = <strong class="jxr_keyword">new</strong> ECIGravitation(gx, gy, gz);
-<a class="jxr_linenumber" name="L465" href="#L465">465</a> 
-<a class="jxr_linenumber" name="L466" href="#L466">466</a>         <strong class="jxr_keyword">final</strong> Object gravitation2 = gravitation1.clone();
-<a class="jxr_linenumber" name="L467" href="#L467">467</a> 
-<a class="jxr_linenumber" name="L468" href="#L468">468</a>         <em class="jxr_comment">// check</em>
-<a class="jxr_linenumber" name="L469" href="#L469">469</a>         assertEquals(gravitation1, gravitation2);
-<a class="jxr_linenumber" name="L470" href="#L470">470</a>     }
-<a class="jxr_linenumber" name="L471" href="#L471">471</a> }
+<a class="jxr_linenumber" name="L430" href="#L430">430</a>         <em class="jxr_comment">//noinspection EqualsWithItself</em>
+<a class="jxr_linenumber" name="L431" href="#L431">431</a>         assertTrue(gravitation1.equals(gravitation1));
+<a class="jxr_linenumber" name="L432" href="#L432">432</a>         assertTrue(gravitation1.equals(gravitation2));
+<a class="jxr_linenumber" name="L433" href="#L433">433</a>         assertFalse(gravitation1.equals(gravitation3));
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion,ConstantConditions</em>
+<a class="jxr_linenumber" name="L435" href="#L435">435</a>         assertFalse(gravitation1.equals((Object) <strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L436" href="#L436">436</a>         assertFalse(gravitation1.equals(<strong class="jxr_keyword">null</strong>));
+<a class="jxr_linenumber" name="L437" href="#L437">437</a>         <em class="jxr_comment">//noinspection SimplifiableJUnitAssertion</em>
+<a class="jxr_linenumber" name="L438" href="#L438">438</a>         assertFalse(gravitation1.equals(<strong class="jxr_keyword">new</strong> Object()));
+<a class="jxr_linenumber" name="L439" href="#L439">439</a>     }
+<a class="jxr_linenumber" name="L440" href="#L440">440</a> 
+<a class="jxr_linenumber" name="L441" href="#L441">441</a>     @Test
+<a class="jxr_linenumber" name="L442" href="#L442">442</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testEqualsWithThreshold() {
+<a class="jxr_linenumber" name="L443" href="#L443">443</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L444" href="#L444">444</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L445" href="#L445">445</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L446" href="#L446">446</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L447" href="#L447">447</a> 
+<a class="jxr_linenumber" name="L448" href="#L448">448</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation1 = <strong class="jxr_keyword">new</strong> ECIGravitation(gx, gy, gz);
+<a class="jxr_linenumber" name="L449" href="#L449">449</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation2 = <strong class="jxr_keyword">new</strong> ECIGravitation(gx, gy, gz);
+<a class="jxr_linenumber" name="L450" href="#L450">450</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation3 = <strong class="jxr_keyword">new</strong> ECIGravitation();
+<a class="jxr_linenumber" name="L451" href="#L451">451</a> 
+<a class="jxr_linenumber" name="L452" href="#L452">452</a>         assertTrue(gravitation1.equals(gravitation1, THRESHOLD));
+<a class="jxr_linenumber" name="L453" href="#L453">453</a>         assertTrue(gravitation1.equals(gravitation2, THRESHOLD));
+<a class="jxr_linenumber" name="L454" href="#L454">454</a>         assertFalse(gravitation1.equals(gravitation3, THRESHOLD));
+<a class="jxr_linenumber" name="L455" href="#L455">455</a>         assertFalse(gravitation1.equals(<strong class="jxr_keyword">null</strong>, THRESHOLD));
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>     }
+<a class="jxr_linenumber" name="L457" href="#L457">457</a> 
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>     @Test
+<a class="jxr_linenumber" name="L459" href="#L459">459</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testClone() <strong class="jxr_keyword">throws</strong> CloneNotSupportedException {
+<a class="jxr_linenumber" name="L460" href="#L460">460</a>         <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer = <strong class="jxr_keyword">new</strong> UniformRandomizer(<strong class="jxr_keyword">new</strong> Random());
+<a class="jxr_linenumber" name="L461" href="#L461">461</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L462" href="#L462">462</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L463" href="#L463">463</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+<a class="jxr_linenumber" name="L464" href="#L464">464</a> 
+<a class="jxr_linenumber" name="L465" href="#L465">465</a>         <strong class="jxr_keyword">final</strong> ECIGravitation gravitation1 = <strong class="jxr_keyword">new</strong> ECIGravitation(gx, gy, gz);
+<a class="jxr_linenumber" name="L466" href="#L466">466</a> 
+<a class="jxr_linenumber" name="L467" href="#L467">467</a>         <strong class="jxr_keyword">final</strong> Object gravitation2 = gravitation1.clone();
+<a class="jxr_linenumber" name="L468" href="#L468">468</a> 
+<a class="jxr_linenumber" name="L469" href="#L469">469</a>         <em class="jxr_comment">// check</em>
+<a class="jxr_linenumber" name="L470" href="#L470">470</a>         assertEquals(gravitation1, gravitation2);
+<a class="jxr_linenumber" name="L471" href="#L471">471</a>     }
+<a class="jxr_linenumber" name="L472" href="#L472">472</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

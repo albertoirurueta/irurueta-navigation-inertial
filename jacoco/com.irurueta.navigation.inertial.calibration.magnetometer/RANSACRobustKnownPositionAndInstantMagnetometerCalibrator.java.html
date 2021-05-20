@@ -1041,123 +1041,124 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1047" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1048">            throw new LockedException();</span>
+<span class="fc bfc" id="L1048" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1049">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1050" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1051">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1051" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1052">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1054">        final RANSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1055">        final RANSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new RANSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L1056">                        new RANSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L1057">                        new RANSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1059">                        return mThreshold;</span>
+<span class="fc" id="L1060">                        return mThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1064">                        return mMeasurements.size();</span>
+<span class="fc" id="L1065">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1069">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1070">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1076">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1077">                    }</span>
+<span class="fc" id="L1077">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1078">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation,
                             final int i) {
-<span class="fc" id="L1083">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L1084">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1088">                        return RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.super.isReady();</span>
+<span class="fc" id="L1089">                        return RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.super.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1094">                    }</span>
+<span class="fc" id="L1095">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1099">                    }</span>
+<span class="fc" id="L1100">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1105" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1106">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1106" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1107">                            mListener.onCalibrateNextIteration(</span>
                                     RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1110">                    }</span>
+<span class="fc" id="L1111">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="pc bpc" id="L1116" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1117">                            mListener.onCalibrateProgressChange(</span>
+<span class="pc bpc" id="L1117" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1118">                            mListener.onCalibrateProgressChange(</span>
                                     RANSACRobustKnownPositionAndInstantMagnetometerCalibrator.this,
                                     progress);
                         }
-<span class="fc" id="L1121">                    }</span>
+<span class="fc" id="L1122">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1125">            mRunning = true;</span>
+<span class="fc" id="L1126">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1127" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1128">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1128" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1129">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1131">            mInliersData = null;</span>
+<span class="fc" id="L1132">            mInliersData = null;</span>
 
-<span class="fc" id="L1133">            initialize();</span>
+<span class="fc" id="L1134">            initialize();</span>
 
-<span class="pc bpc" id="L1135" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="pc bpc" id="L1136" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="pc bpc" id="L1137" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="pc bpc" id="L1138" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L1139">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1140">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1141">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1142">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1143">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1140">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1141">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1142">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1143">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1144">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1145">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1146">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1147" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1148">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1148" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1149">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1151">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1152">            throw new LockedException(e);</span>
-<span class="nc" id="L1153">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1154">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1155">        } catch (final RobustEstimatorException | IOException e) {</span>
-<span class="nc" id="L1156">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1152">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1153">            throw new LockedException(e);</span>
+<span class="nc" id="L1154">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1155">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1156">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L1157">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1158">            mRunning = false;</span>
+<span class="fc" id="L1159">            mRunning = false;</span>
         }
-<span class="fc" id="L1160">    }</span>
+<span class="fc" id="L1161">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1166,7 +1167,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1169">        return RobustEstimatorMethod.RANSAC;</span>
+<span class="fc" id="L1170">        return RobustEstimatorMethod.RANSAC;</span>
     }
 
     /**
@@ -1177,7 +1178,7 @@ public class RANSACRobustKnownPositionAndInstantMagnetometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1180">        return false;</span>
+<span class="fc" id="L1181">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -7829,7 +7829,7 @@ import com.irurueta.units.TimeUnit;
 <span class="fc" id="L7829">            omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / rePlusHeight);</span>
 
             // Obtain coordinate transformation matrix from the new attitude with respect
-            // an intertial frame to the old using Rodrigues' formula, (5.73)
+            // an inertial frame to the old using Rodrigues' formula, (5.73)
 <span class="fc" id="L7833">            final Matrix cNewOld = Matrix.identity(ROWS, ROWS);</span>
 <span class="fc bfc" id="L7834" title="All 2 branches covered.">            if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
 <span class="fc" id="L7835">                final double magAlpha2 = magAlpha * magAlpha;</span>

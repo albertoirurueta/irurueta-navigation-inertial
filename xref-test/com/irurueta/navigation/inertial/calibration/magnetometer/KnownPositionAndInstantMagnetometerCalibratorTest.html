@@ -8292,7 +8292,7 @@
 <a class="jxr_linenumber" name="L8284" href="#L8284">8284</a>         assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
 <a class="jxr_linenumber" name="L8285" href="#L8285">8285</a>         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
 <a class="jxr_linenumber" name="L8286" href="#L8286">8286</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad std2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad();
-<a class="jxr_linenumber" name="L8287" href="#L8287">8287</a>         calibrator.getEstimatedHardIronStandardDeviation(std2);
+<a class="jxr_linenumber" name="L8287" href="#L8287">8287</a>         assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
 <a class="jxr_linenumber" name="L8288" href="#L8288">8288</a> 
 <a class="jxr_linenumber" name="L8289" href="#L8289">8289</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
 <a class="jxr_linenumber" name="L8290" href="#L8290">8290</a>                 calibrator.getEstimatedHardIronYStandardDeviation() +

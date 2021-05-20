@@ -49,7 +49,7 @@ import java.util.List;
  * - I is the 3x3 identity matrix.
  * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
  * a perfect accelerometer, this should be a 3x3 zero matrix.
- * - ftrue is ground-trush specific force.
+ * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
 public class PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
@@ -1680,119 +1680,120 @@ public class PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L1685" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1686">            throw new LockedException();</span>
+<span class="fc bfc" id="L1686" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1687">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1688" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1689">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1689" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1690">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1692">        final PROMedSRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
-<span class="fc" id="L1693">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
+<span class="fc" id="L1693">        final PROMedSRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
+<span class="fc" id="L1694">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L1696">                        return mQualityScores;</span>
+<span class="fc" id="L1697">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1701">                        return mStopThreshold;</span>
+<span class="fc" id="L1702">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1706">                        return mMeasurements.size();</span>
+<span class="fc" id="L1707">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1711">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1712">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;Matrix&gt; solutions) {
-<span class="fc" id="L1718">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1719">                    }</span>
+<span class="fc" id="L1719">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1720">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final Matrix currentEstimation, final int i) {
-<span class="fc" id="L1724">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L1725">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1729">                        return PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator.this.isReady();</span>
+<span class="fc" id="L1730">                        return PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L1735">                    }</span>
+<span class="fc" id="L1736">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L1740">                    }</span>
+<span class="fc" id="L1741">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;Matrix&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1746" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1747">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1747" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1748">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1751">                    }</span>
+<span class="fc" id="L1752">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;Matrix&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L1757" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1758">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L1758" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L1759">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L1762">                    }</span>
+<span class="nc" id="L1763">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1766">            mRunning = true;</span>
+<span class="fc" id="L1767">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1768" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1769">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1769" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1770">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1772">            mInliersData = null;</span>
-<span class="fc" id="L1773">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L1774">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1775">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1776">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1777">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1778">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1773">            mInliersData = null;</span>
+<span class="fc" id="L1774">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1775">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1776">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1777">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1778">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1779">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1780">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1781">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1782" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1783">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1783" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1784">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1786">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1787">            throw new LockedException(e);</span>
-<span class="nc" id="L1788">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1789">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1790">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L1791">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1787">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1788">            throw new LockedException(e);</span>
+<span class="nc" id="L1789">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1790">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1791">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1792">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1793">            mRunning = false;</span>
+<span class="fc" id="L1794">            mRunning = false;</span>
         }
-<span class="fc" id="L1795">    }</span>
+<span class="fc" id="L1796">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1801,7 +1802,7 @@ public class PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1804">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L1805">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -1812,7 +1813,7 @@ public class PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1815">        return true;</span>
+<span class="fc" id="L1816">        return true;</span>
     }
 
     /**
@@ -1825,12 +1826,12 @@ public class PROMedSRobustKnownBiasAndFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1828" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L1829" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; MINIMUM_MEASUREMENTS) {
-<span class="fc" id="L1830">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L1831">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1833">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1834">    }</span>
+<span class="fc" id="L1834">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1835">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -56,7 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * solution.</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * To use this calibrator at least 10 measurements taken at a single unknown position must</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * be takent at 10 different unknown orientations and zero velocity when common z-axis is</em>
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * be taken at 10 different unknown orientations and zero velocity when common z-axis is</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * assumed, otherwise at least 13 measurements are required.</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;&lt;/p&gt;</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
@@ -71,7 +71,7 @@
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment"> * - I is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment"> * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on</em>
 <a class="jxr_linenumber" name="L65" href="#L65">65</a>  <em class="jxr_javadoccomment"> * a perfect accelerometer, this should be a 3x3 zero matrix.</em>
-<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-trush specific force.</em>
+<a class="jxr_linenumber" name="L66" href="#L66">66</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-truth specific force.</em>
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>  <em class="jxr_javadoccomment"> * - w is measurement noise.</em>
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>  <em class="jxr_javadoccomment"> *</em>
 <a class="jxr_linenumber" name="L69" href="#L69">69</a>  <em class="jxr_javadoccomment"> * @param &lt;C&gt; a calibrator type.</em>
@@ -102,7 +102,7 @@
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>  <em class="jxr_javadoccomment">     * Required minimum number of measurements when common z-axis is assumed.</em>
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L97" href="#L97">97</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> MINIMUM_MEASUREMENTS_COMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
+<a class="jxr_linenumber" name="L97" href="#L97">97</a>      <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> MINIMUM_MEASUREMENTS_COMMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
 <a class="jxr_linenumber" name="L98" href="#L98">98</a>  
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>      <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L100" href="#L100">100</a> <em class="jxr_javadoccomment">     * Required minimum number of measurements for the general case.</em>
@@ -246,7 +246,7 @@
 <a class="jxr_linenumber" name="L238" href="#L238">238</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L239" href="#L239">239</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L240" href="#L240">240</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L241" href="#L241">241</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L241" href="#L241">241</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>     <strong class="jxr_keyword">private</strong> Matrix mEstimatedMa;
 <a class="jxr_linenumber" name="L244" href="#L244">244</a> 
@@ -5160,7 +5160,7 @@
 <a class="jxr_linenumber" name="L5152" href="#L5152">5152</a> <em class="jxr_javadoccomment">     * the standard deviations of accelerometer and gyroscope measurements.</em>
 <a class="jxr_linenumber" name="L5153" href="#L5153">5153</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L5154" href="#L5154">5154</a> <em class="jxr_javadoccomment">     * @param measurements collection of body kinematics measurements at a</em>
-<a class="jxr_linenumber" name="L5155" href="#L5155">5155</a> <em class="jxr_javadoccomment">     *                     known position witn unknown orientations.</em>
+<a class="jxr_linenumber" name="L5155" href="#L5155">5155</a> <em class="jxr_javadoccomment">     *                     known position with unknown orientations.</em>
 <a class="jxr_linenumber" name="L5156" href="#L5156">5156</a> <em class="jxr_javadoccomment">     * @throws LockedException if calibrator is currently running.</em>
 <a class="jxr_linenumber" name="L5157" href="#L5157">5157</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L5158" href="#L5158">5158</a>     @Override
@@ -5265,7 +5265,7 @@
 <a class="jxr_linenumber" name="L5257" href="#L5257">5257</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L5258" href="#L5258">5258</a>     @Override
 <a class="jxr_linenumber" name="L5259" href="#L5259">5259</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getMinimumRequiredMeasurements() {
-<a class="jxr_linenumber" name="L5260" href="#L5260">5260</a>         <strong class="jxr_keyword">return</strong> mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMON_Z_AXIS :
+<a class="jxr_linenumber" name="L5260" href="#L5260">5260</a>         <strong class="jxr_keyword">return</strong> mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :
 <a class="jxr_linenumber" name="L5261" href="#L5261">5261</a>                 MINIMUM_MEASUREMENTS_GENERAL;
 <a class="jxr_linenumber" name="L5262" href="#L5262">5262</a>     }
 <a class="jxr_linenumber" name="L5263" href="#L5263">5263</a> 
@@ -5585,7 +5585,7 @@
 <a class="jxr_linenumber" name="L5577" href="#L5577">5577</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L5578" href="#L5578">5578</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L5579" href="#L5579">5579</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L5580" href="#L5580">5580</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L5580" href="#L5580">5580</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L5581" href="#L5581">5581</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L5582" href="#L5582">5582</a> <em class="jxr_javadoccomment">     * @return estimated accelerometer scale factors and cross coupling errors, or null</em>
 <a class="jxr_linenumber" name="L5583" href="#L5583">5583</a> <em class="jxr_javadoccomment">     * if not available.</em>

@@ -137,7 +137,7 @@
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> <em class="jxr_javadoccomment">     * Estimated Kalman filter error covariance matrix.</em>
 <a class="jxr_linenumber" name="L130" href="#L130">130</a> <em class="jxr_javadoccomment">     * Notice that covariance is expressed in terms of ECEF coordinates.</em>
 <a class="jxr_linenumber" name="L131" href="#L131">131</a> <em class="jxr_javadoccomment">     * If accuracy of position, attitude or velocity needs to be expressed in terms</em>
-<a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     * of NED coordinates, their respective submatrices of this covariance matrix</em>
+<a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     * of NED coordinates, their respective sub-matrices of this covariance matrix</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     * must be rotated, taking into account the Jacobian of the matrix transformation</em>
 <a class="jxr_linenumber" name="L134" href="#L134">134</a> <em class="jxr_javadoccomment">     * relating both coordinates, the covariance can be expressed following the law</em>
 <a class="jxr_linenumber" name="L135" href="#L135">135</a> <em class="jxr_javadoccomment">     * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)</em>
@@ -941,7 +941,7 @@
 <a class="jxr_linenumber" name="L933" href="#L933">933</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L934" href="#L934">934</a> <em class="jxr_javadoccomment">     * Sets estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).</em>
 <a class="jxr_linenumber" name="L935" href="#L935">935</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L936" href="#L936">936</a> <em class="jxr_javadoccomment">     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per scond (m/s).</em>
+<a class="jxr_linenumber" name="L936" href="#L936">936</a> <em class="jxr_javadoccomment">     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).</em>
 <a class="jxr_linenumber" name="L937" href="#L937">937</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L938" href="#L938">938</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> setVy(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> vy) {
 <a class="jxr_linenumber" name="L939" href="#L939">939</a>         mVy = vy;
@@ -1219,7 +1219,7 @@
 <a class="jxr_linenumber" name="L1211" href="#L1211">1211</a> <em class="jxr_javadoccomment">     * Gets Kalman filter error covariance matrix.</em>
 <a class="jxr_linenumber" name="L1212" href="#L1212">1212</a> <em class="jxr_javadoccomment">     * Notice that covariance is expressed in terms of ECEF coordinates.</em>
 <a class="jxr_linenumber" name="L1213" href="#L1213">1213</a> <em class="jxr_javadoccomment">     * If accuracy of position, attitude or velocity needs to be expressed in terms</em>
-<a class="jxr_linenumber" name="L1214" href="#L1214">1214</a> <em class="jxr_javadoccomment">     * of NED coordinates, their respective submatrices of this covariance matrix</em>
+<a class="jxr_linenumber" name="L1214" href="#L1214">1214</a> <em class="jxr_javadoccomment">     * of NED coordinates, their respective sub-matrices of this covariance matrix</em>
 <a class="jxr_linenumber" name="L1215" href="#L1215">1215</a> <em class="jxr_javadoccomment">     * must be rotated, taking into account the Jacobian of the matrix transformation</em>
 <a class="jxr_linenumber" name="L1216" href="#L1216">1216</a> <em class="jxr_javadoccomment">     * relating both coordinates, the covariance can be expressed following the law</em>
 <a class="jxr_linenumber" name="L1217" href="#L1217">1217</a> <em class="jxr_javadoccomment">     * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)</em>
@@ -1241,7 +1241,7 @@
 <a class="jxr_linenumber" name="L1233" href="#L1233">1233</a> <em class="jxr_javadoccomment">     * Gets Kalman filter error covariance matrix.</em>
 <a class="jxr_linenumber" name="L1234" href="#L1234">1234</a> <em class="jxr_javadoccomment">     * Notice that covariance is expressed in terms of ECEF coordinates.</em>
 <a class="jxr_linenumber" name="L1235" href="#L1235">1235</a> <em class="jxr_javadoccomment">     * If accuracy of position, attitude or velocity needs to be expressed in terms</em>
-<a class="jxr_linenumber" name="L1236" href="#L1236">1236</a> <em class="jxr_javadoccomment">     * of NED coordinates, their respective submatrices of this covariance matrix</em>
+<a class="jxr_linenumber" name="L1236" href="#L1236">1236</a> <em class="jxr_javadoccomment">     * of NED coordinates, their respective sub-matrices of this covariance matrix</em>
 <a class="jxr_linenumber" name="L1237" href="#L1237">1237</a> <em class="jxr_javadoccomment">     * must be rotated, taking into account the Jacobian of the matrix transformation</em>
 <a class="jxr_linenumber" name="L1238" href="#L1238">1238</a> <em class="jxr_javadoccomment">     * relating both coordinates, the covariance can be expressed following the law</em>
 <a class="jxr_linenumber" name="L1239" href="#L1239">1239</a> <em class="jxr_javadoccomment">     * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)</em>

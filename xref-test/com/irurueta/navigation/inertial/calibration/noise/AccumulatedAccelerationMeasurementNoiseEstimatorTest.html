@@ -268,7 +268,7 @@
 <a class="jxr_linenumber" name="L260" href="#L260">260</a> 
 <a class="jxr_linenumber" name="L261" href="#L261">261</a>             value = triad.getNorm();
 <a class="jxr_linenumber" name="L262" href="#L262">262</a> 
-<a class="jxr_linenumber" name="L263" href="#L263">263</a>             assertTrue(estimator.addMeasurement(value));
+<a class="jxr_linenumber" name="L263" href="#L263">263</a>             estimator.addMeasurement(value);
 <a class="jxr_linenumber" name="L264" href="#L264">264</a> 
 <a class="jxr_linenumber" name="L265" href="#L265">265</a>             assertTrue(estimator.getLastMeasurement(lastMeasurement));
 <a class="jxr_linenumber" name="L266" href="#L266">266</a>             assertEquals(lastMeasurement, triad.getMeasurementNorm());
@@ -403,7 +403,7 @@
 <a class="jxr_linenumber" name="L395" href="#L395">395</a> 
 <a class="jxr_linenumber" name="L396" href="#L396">396</a>             value = triad.getNorm();
 <a class="jxr_linenumber" name="L397" href="#L397">397</a> 
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>             assertTrue(estimator.addMeasurement(triad.getMeasurementNorm()));
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>             estimator.addMeasurement(triad.getMeasurementNorm());
 <a class="jxr_linenumber" name="L399" href="#L399">399</a> 
 <a class="jxr_linenumber" name="L400" href="#L400">400</a>             assertTrue(estimator.getLastMeasurement(lastMeasurement));
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>             assertEquals(lastMeasurement, triad.getMeasurementNorm());

@@ -12411,7 +12411,7 @@
 <a class="jxr_linenumber" name="L12403" href="#L12403">12403</a>         assertEquals(trueKinematics, expectedKinematics2);
 <a class="jxr_linenumber" name="L12404" href="#L12404">12404</a> 
 <a class="jxr_linenumber" name="L12405" href="#L12405">12405</a>         <em class="jxr_comment">// reset</em>
-<a class="jxr_linenumber" name="L12406" href="#L12406">12406</a>         estimator.reset();
+<a class="jxr_linenumber" name="L12406" href="#L12406">12406</a>         assertTrue(estimator.reset());
 <a class="jxr_linenumber" name="L12407" href="#L12407">12407</a> 
 <a class="jxr_linenumber" name="L12408" href="#L12408">12408</a>         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
 <a class="jxr_linenumber" name="L12409" href="#L12409">12409</a>         assertNull(estimator.getLastBodyKinematics());
@@ -12652,7 +12652,7 @@
 <a class="jxr_linenumber" name="L12644" href="#L12644">12644</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
 <a class="jxr_linenumber" name="L12645" href="#L12645">12645</a>         }
 <a class="jxr_linenumber" name="L12646" href="#L12646">12646</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L12647" href="#L12647">12647</a>             estimator.reset();
+<a class="jxr_linenumber" name="L12647" href="#L12647">12647</a>             assertFalse(estimator.reset());
 <a class="jxr_linenumber" name="L12648" href="#L12648">12648</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
 <a class="jxr_linenumber" name="L12649" href="#L12649">12649</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
 <a class="jxr_linenumber" name="L12650" href="#L12650">12650</a>         }

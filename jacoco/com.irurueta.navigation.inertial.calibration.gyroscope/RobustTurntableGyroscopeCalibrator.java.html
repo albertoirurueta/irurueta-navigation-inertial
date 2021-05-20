@@ -163,7 +163,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -419,7 +419,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * &lt;/pre&gt;
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -4129,7 +4129,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      * the standard deviations of accelerometer and gyroscope measurements.
      *
      * @param measurements collection of body kinematics measurements at a
-     *                     known position witn unknown orientations.
+     *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
@@ -4808,7 +4808,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * &lt;/pre&gt;
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -5976,7 +5976,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L5979" title="All 5 branches missed.">        switch (method) {</span>
+<span class="pc bpc" id="L5979" title="4 of 5 branches missed.">        switch (method) {</span>
             case RANSAC:
 <span class="nc" id="L5981">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
@@ -5984,7 +5984,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg);
             case LMedS:
-<span class="nc" id="L5987">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L5987">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
@@ -6068,7 +6068,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L6071" title="All 5 branches missed.">        switch (method) {</span>
+<span class="pc bpc" id="L6071" title="4 of 5 branches missed.">        switch (method) {</span>
             case RANSAC:
 <span class="nc" id="L6073">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
@@ -6076,7 +6076,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg, listener);
             case LMedS:
-<span class="nc" id="L6079">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L6079">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
@@ -7358,7 +7358,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L7361" title="All 5 branches missed.">        switch (method) {</span>
+<span class="pc bpc" id="L7361" title="4 of 5 branches missed.">        switch (method) {</span>
             case RANSAC:
 <span class="nc" id="L7363">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
@@ -7366,7 +7366,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg);
             case LMedS:
-<span class="nc" id="L7369">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L7369">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
@@ -7450,7 +7450,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L7453" title="All 5 branches missed.">        switch (method) {</span>
+<span class="pc bpc" id="L7453" title="4 of 5 branches missed.">        switch (method) {</span>
             case RANSAC:
 <span class="nc" id="L7455">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
@@ -7458,7 +7458,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg, listener);
             case LMedS:
-<span class="nc" id="L7461">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L7461">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
@@ -8843,34 +8843,34 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L8846" title="All 5 branches missed.">        switch (method) {</span>
+<span class="fc bfc" id="L8846" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="nc" id="L8848">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8848">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg);
             case LMedS:
-<span class="nc" id="L8854">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8854">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg);
             case MSAC:
-<span class="nc" id="L8860">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8860">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg);
             case PROSAC:
-<span class="nc" id="L8866">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8866">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg);
             case PROMedS:
             default:
-<span class="nc" id="L8873">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8873">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
@@ -8941,34 +8941,34 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L8944" title="All 5 branches missed.">        switch (method) {</span>
+<span class="fc bfc" id="L8944" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="nc" id="L8946">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8946">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg, listener);
             case LMedS:
-<span class="nc" id="L8952">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8952">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg, listener);
             case MSAC:
-<span class="nc" id="L8958">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8958">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg, listener);
             case PROSAC:
-<span class="nc" id="L8964">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8964">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
                         initialBias, initialMg, initialGg, listener);
             case PROMedS:
             default:
-<span class="nc" id="L8971">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L8971">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases,
@@ -10331,34 +10331,34 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L10334" title="All 5 branches missed.">        switch (method) {</span>
+<span class="fc bfc" id="L10334" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="nc" id="L10336">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10336">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg);
             case LMedS:
-<span class="nc" id="L10342">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10342">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg);
             case MSAC:
-<span class="nc" id="L10348">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10348">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg);
             case PROSAC:
-<span class="nc" id="L10354">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10354">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg);
             case PROMedS:
             default:
-<span class="nc" id="L10361">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10361">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
@@ -10429,34 +10429,34 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="nc bnc" id="L10432" title="All 5 branches missed.">        switch (method) {</span>
+<span class="fc bfc" id="L10432" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="nc" id="L10434">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10434">                return new RANSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg, listener);
             case LMedS:
-<span class="nc" id="L10440">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10440">                return new LMedSRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg, listener);
             case MSAC:
-<span class="nc" id="L10446">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10446">                return new MSACRobustTurntableGyroscopeCalibrator(</span>
                         position, turntableRotationRate, timeInterval,
                         measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg, listener);
             case PROSAC:
-<span class="nc" id="L10452">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10452">                return new PROSACRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
                         initialMg, initialGg, listener);
             case PROMedS:
             default:
-<span class="nc" id="L10459">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
+<span class="fc" id="L10459">                return new PROMedSRobustTurntableGyroscopeCalibrator(</span>
                         qualityScores, position, turntableRotationRate,
                         timeInterval, measurements, commonAxisUsed,
                         estimateGDependentCrossBiases, initialBias,
@@ -11570,7 +11570,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="nc" id="L11573">        return create(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L11573">        return create(position, turntableRotationRate, timeInterval,</span>
                 measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, DEFAULT_ROBUST_METHOD);
@@ -11631,7 +11631,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="nc" id="L11634">        return create(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L11634">        return create(position, turntableRotationRate, timeInterval,</span>
                 measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, listener, DEFAULT_ROBUST_METHOD);
@@ -12496,7 +12496,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="nc" id="L12499">        return create(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L12499">        return create(position, turntableRotationRate, timeInterval,</span>
                 measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, DEFAULT_ROBUST_METHOD);
@@ -12557,7 +12557,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="nc" id="L12560">        return create(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L12560">        return create(position, turntableRotationRate, timeInterval,</span>
                 measurements, commonAxisUsed,
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, listener, DEFAULT_ROBUST_METHOD);
@@ -13322,7 +13322,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
          *          [0     sy   myz]
          *          [0     0    sz ]
          * &lt;/pre&gt;
-         * Values of this matrix are unitless.
+         * Values of this matrix are unit-less.
          */
         private Matrix mEstimatedMg;
 

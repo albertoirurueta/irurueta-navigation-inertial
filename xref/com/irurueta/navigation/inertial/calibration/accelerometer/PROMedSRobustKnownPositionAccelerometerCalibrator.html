@@ -56,7 +56,7 @@
 <a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * - I is the 3x3 identity matrix.</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * a perfect accelerometer, this should be a 3x3 zero matrix.</em>
-<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-trush specific force.</em>
+<a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * - ftrue is ground-truth specific force.</em>
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * - w is measurement noise.</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> */</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">class</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/PROMedSRobustKnownPositionAccelerometerCalibrator.html">PROMedSRobustKnownPositionAccelerometerCalibrator</a> <strong class="jxr_keyword">extends</strong>
@@ -1715,7 +1715,7 @@
 <a class="jxr_linenumber" name="L1707" href="#L1707">1707</a> <em class="jxr_javadoccomment">     * best estimated threshold using median of residuals is not small enough.</em>
 <a class="jxr_linenumber" name="L1708" href="#L1708">1708</a> <em class="jxr_javadoccomment">     * Once a solution is found that generates a threshold below this value, the</em>
 <a class="jxr_linenumber" name="L1709" href="#L1709">1709</a> <em class="jxr_javadoccomment">     * algorithm will stop.</em>
-<a class="jxr_linenumber" name="L1710" href="#L1710">1710</a> <em class="jxr_javadoccomment">     * The stop threshold can be used to prevent the LMedS algrithm to iterate</em>
+<a class="jxr_linenumber" name="L1710" href="#L1710">1710</a> <em class="jxr_javadoccomment">     * The stop threshold can be used to prevent the LMedS algorithm to iterate</em>
 <a class="jxr_linenumber" name="L1711" href="#L1711">1711</a> <em class="jxr_javadoccomment">     * too many times in cases where samples have a very similar accuracy.</em>
 <a class="jxr_linenumber" name="L1712" href="#L1712">1712</a> <em class="jxr_javadoccomment">     * For instance, in cases where proportion of outliers is very small (close</em>
 <a class="jxr_linenumber" name="L1713" href="#L1713">1713</a> <em class="jxr_javadoccomment">     * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would</em>
@@ -1814,162 +1814,163 @@
 <a class="jxr_linenumber" name="L1806" href="#L1806">1806</a> <em class="jxr_javadoccomment">     * @throws NotReadyException    if calibrator is not ready.</em>
 <a class="jxr_linenumber" name="L1807" href="#L1807">1807</a> <em class="jxr_javadoccomment">     * @throws CalibrationException if estimation fails for numerical reasons.</em>
 <a class="jxr_linenumber" name="L1808" href="#L1808">1808</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1809" href="#L1809">1809</a>     @Override
-<a class="jxr_linenumber" name="L1810" href="#L1810">1810</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> calibrate() <strong class="jxr_keyword">throws</strong> LockedException, NotReadyException, CalibrationException {
-<a class="jxr_linenumber" name="L1811" href="#L1811">1811</a>         <strong class="jxr_keyword">if</strong> (mRunning) {
-<a class="jxr_linenumber" name="L1812" href="#L1812">1812</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LockedException();
-<a class="jxr_linenumber" name="L1813" href="#L1813">1813</a>         }
-<a class="jxr_linenumber" name="L1814" href="#L1814">1814</a>         <strong class="jxr_keyword">if</strong> (!isReady()) {
-<a class="jxr_linenumber" name="L1815" href="#L1815">1815</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> NotReadyException();
-<a class="jxr_linenumber" name="L1816" href="#L1816">1816</a>         }
-<a class="jxr_linenumber" name="L1817" href="#L1817">1817</a> 
-<a class="jxr_linenumber" name="L1818" href="#L1818">1818</a>         mGravityNorm = computeGravityNorm();
-<a class="jxr_linenumber" name="L1819" href="#L1819">1819</a> 
-<a class="jxr_linenumber" name="L1820" href="#L1820">1820</a>         <strong class="jxr_keyword">final</strong> PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =
-<a class="jxr_linenumber" name="L1821" href="#L1821">1821</a>                 <strong class="jxr_keyword">new</strong> PROMedSRobustEstimator&lt;&gt;(<strong class="jxr_keyword">new</strong> PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {
-<a class="jxr_linenumber" name="L1822" href="#L1822">1822</a>                     @Override
-<a class="jxr_linenumber" name="L1823" href="#L1823">1823</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong>[] getQualityScores() {
-<a class="jxr_linenumber" name="L1824" href="#L1824">1824</a>                         <strong class="jxr_keyword">return</strong> mQualityScores;
-<a class="jxr_linenumber" name="L1825" href="#L1825">1825</a>                     }
-<a class="jxr_linenumber" name="L1826" href="#L1826">1826</a> 
-<a class="jxr_linenumber" name="L1827" href="#L1827">1827</a>                     @Override
-<a class="jxr_linenumber" name="L1828" href="#L1828">1828</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> getThreshold() {
-<a class="jxr_linenumber" name="L1829" href="#L1829">1829</a>                         <strong class="jxr_keyword">return</strong> mStopThreshold;
-<a class="jxr_linenumber" name="L1830" href="#L1830">1830</a>                     }
-<a class="jxr_linenumber" name="L1831" href="#L1831">1831</a> 
-<a class="jxr_linenumber" name="L1832" href="#L1832">1832</a>                     @Override
-<a class="jxr_linenumber" name="L1833" href="#L1833">1833</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getTotalSamples() {
-<a class="jxr_linenumber" name="L1834" href="#L1834">1834</a>                         <strong class="jxr_keyword">return</strong> mMeasurements.size();
-<a class="jxr_linenumber" name="L1835" href="#L1835">1835</a>                     }
-<a class="jxr_linenumber" name="L1836" href="#L1836">1836</a> 
-<a class="jxr_linenumber" name="L1837" href="#L1837">1837</a>                     @Override
-<a class="jxr_linenumber" name="L1838" href="#L1838">1838</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getSubsetSize() {
-<a class="jxr_linenumber" name="L1839" href="#L1839">1839</a>                         <strong class="jxr_keyword">return</strong> mPreliminarySubsetSize;
-<a class="jxr_linenumber" name="L1840" href="#L1840">1840</a>                     }
-<a class="jxr_linenumber" name="L1841" href="#L1841">1841</a> 
-<a class="jxr_linenumber" name="L1842" href="#L1842">1842</a>                     @Override
-<a class="jxr_linenumber" name="L1843" href="#L1843">1843</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> estimatePreliminarSolutions(
-<a class="jxr_linenumber" name="L1844" href="#L1844">1844</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong>[] samplesIndices,
-<a class="jxr_linenumber" name="L1845" href="#L1845">1845</a>                             <strong class="jxr_keyword">final</strong> List&lt;PreliminaryResult&gt; solutions) {
-<a class="jxr_linenumber" name="L1846" href="#L1846">1846</a>                         computePreliminarySolutions(samplesIndices, solutions);
-<a class="jxr_linenumber" name="L1847" href="#L1847">1847</a>                     }
-<a class="jxr_linenumber" name="L1848" href="#L1848">1848</a> 
-<a class="jxr_linenumber" name="L1849" href="#L1849">1849</a>                     @Override
-<a class="jxr_linenumber" name="L1850" href="#L1850">1850</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> computeResidual(
-<a class="jxr_linenumber" name="L1851" href="#L1851">1851</a>                             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">PreliminaryResult</a> currentEstimation, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> i) {
-<a class="jxr_linenumber" name="L1852" href="#L1852">1852</a>                         <strong class="jxr_keyword">return</strong> computeError(mMeasurements.get(i), currentEstimation);
-<a class="jxr_linenumber" name="L1853" href="#L1853">1853</a>                     }
-<a class="jxr_linenumber" name="L1854" href="#L1854">1854</a> 
-<a class="jxr_linenumber" name="L1855" href="#L1855">1855</a>                     @Override
-<a class="jxr_linenumber" name="L1856" href="#L1856">1856</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isReady() {
-<a class="jxr_linenumber" name="L1857" href="#L1857">1857</a>                         <strong class="jxr_keyword">return</strong> PROMedSRobustKnownPositionAccelerometerCalibrator.<strong class="jxr_keyword">this</strong>.isReady();
-<a class="jxr_linenumber" name="L1858" href="#L1858">1858</a>                     }
-<a class="jxr_linenumber" name="L1859" href="#L1859">1859</a> 
-<a class="jxr_linenumber" name="L1860" href="#L1860">1860</a>                     @Override
-<a class="jxr_linenumber" name="L1861" href="#L1861">1861</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateStart(
-<a class="jxr_linenumber" name="L1862" href="#L1862">1862</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<a class="jxr_linenumber" name="L1863" href="#L1863">1863</a>                     }
-<a class="jxr_linenumber" name="L1864" href="#L1864">1864</a> 
-<a class="jxr_linenumber" name="L1865" href="#L1865">1865</a>                     @Override
-<a class="jxr_linenumber" name="L1866" href="#L1866">1866</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateEnd(
-<a class="jxr_linenumber" name="L1867" href="#L1867">1867</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<a class="jxr_linenumber" name="L1868" href="#L1868">1868</a>                     }
-<a class="jxr_linenumber" name="L1869" href="#L1869">1869</a> 
-<a class="jxr_linenumber" name="L1870" href="#L1870">1870</a>                     @Override
-<a class="jxr_linenumber" name="L1871" href="#L1871">1871</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateNextIteration(
-<a class="jxr_linenumber" name="L1872" href="#L1872">1872</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator,
-<a class="jxr_linenumber" name="L1873" href="#L1873">1873</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> iteration) {
-<a class="jxr_linenumber" name="L1874" href="#L1874">1874</a>                         <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L1875" href="#L1875">1875</a>                             mListener.onCalibrateNextIteration(
-<a class="jxr_linenumber" name="L1876" href="#L1876">1876</a>                                     PROMedSRobustKnownPositionAccelerometerCalibrator.<strong class="jxr_keyword">this</strong>,
-<a class="jxr_linenumber" name="L1877" href="#L1877">1877</a>                                     iteration);
-<a class="jxr_linenumber" name="L1878" href="#L1878">1878</a>                         }
-<a class="jxr_linenumber" name="L1879" href="#L1879">1879</a>                     }
-<a class="jxr_linenumber" name="L1880" href="#L1880">1880</a> 
-<a class="jxr_linenumber" name="L1881" href="#L1881">1881</a>                     @Override
-<a class="jxr_linenumber" name="L1882" href="#L1882">1882</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateProgressChange(
-<a class="jxr_linenumber" name="L1883" href="#L1883">1883</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator,
-<a class="jxr_linenumber" name="L1884" href="#L1884">1884</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">float</strong> progress) {
-<a class="jxr_linenumber" name="L1885" href="#L1885">1885</a>                         <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L1886" href="#L1886">1886</a>                             mListener.onCalibrateProgressChange(
-<a class="jxr_linenumber" name="L1887" href="#L1887">1887</a>                                     PROMedSRobustKnownPositionAccelerometerCalibrator.<strong class="jxr_keyword">this</strong>,
-<a class="jxr_linenumber" name="L1888" href="#L1888">1888</a>                                     progress);
-<a class="jxr_linenumber" name="L1889" href="#L1889">1889</a>                         }
-<a class="jxr_linenumber" name="L1890" href="#L1890">1890</a>                     }
-<a class="jxr_linenumber" name="L1891" href="#L1891">1891</a>                 });
-<a class="jxr_linenumber" name="L1892" href="#L1892">1892</a> 
-<a class="jxr_linenumber" name="L1893" href="#L1893">1893</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L1894" href="#L1894">1894</a>             mRunning = <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L1895" href="#L1895">1895</a> 
-<a class="jxr_linenumber" name="L1896" href="#L1896">1896</a>             <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L1897" href="#L1897">1897</a>                 mListener.onCalibrateStart(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L1898" href="#L1898">1898</a>             }
-<a class="jxr_linenumber" name="L1899" href="#L1899">1899</a> 
-<a class="jxr_linenumber" name="L1900" href="#L1900">1900</a>             mInliersData = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L1901" href="#L1901">1901</a>             innerEstimator.setUseInlierThresholds(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L1902" href="#L1902">1902</a>             innerEstimator.setConfidence(mConfidence);
-<a class="jxr_linenumber" name="L1903" href="#L1903">1903</a>             innerEstimator.setMaxIterations(mMaxIterations);
-<a class="jxr_linenumber" name="L1904" href="#L1904">1904</a>             innerEstimator.setProgressDelta(mProgressDelta);
-<a class="jxr_linenumber" name="L1905" href="#L1905">1905</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">PreliminaryResult</a> preliminaryResult = innerEstimator.estimate();
-<a class="jxr_linenumber" name="L1906" href="#L1906">1906</a>             mInliersData = innerEstimator.getInliersData();
-<a class="jxr_linenumber" name="L1907" href="#L1907">1907</a> 
-<a class="jxr_linenumber" name="L1908" href="#L1908">1908</a>             attemptRefine(preliminaryResult);
-<a class="jxr_linenumber" name="L1909" href="#L1909">1909</a> 
-<a class="jxr_linenumber" name="L1910" href="#L1910">1910</a>             <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L1911" href="#L1911">1911</a>                 mListener.onCalibrateEnd(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L1912" href="#L1912">1912</a>             }
-<a class="jxr_linenumber" name="L1913" href="#L1913">1913</a> 
-<a class="jxr_linenumber" name="L1914" href="#L1914">1914</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> com.irurueta.numerical.LockedException e) {
-<a class="jxr_linenumber" name="L1915" href="#L1915">1915</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LockedException(e);
-<a class="jxr_linenumber" name="L1916" href="#L1916">1916</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> com.irurueta.numerical.NotReadyException e) {
-<a class="jxr_linenumber" name="L1917" href="#L1917">1917</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> NotReadyException(e);
-<a class="jxr_linenumber" name="L1918" href="#L1918">1918</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> RobustEstimatorException e) {
-<a class="jxr_linenumber" name="L1919" href="#L1919">1919</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/CalibrationException.html">CalibrationException</a>(e);
-<a class="jxr_linenumber" name="L1920" href="#L1920">1920</a>         } <strong class="jxr_keyword">finally</strong> {
-<a class="jxr_linenumber" name="L1921" href="#L1921">1921</a>             mRunning = false;
-<a class="jxr_linenumber" name="L1922" href="#L1922">1922</a>         }
-<a class="jxr_linenumber" name="L1923" href="#L1923">1923</a>     }
-<a class="jxr_linenumber" name="L1924" href="#L1924">1924</a> 
-<a class="jxr_linenumber" name="L1925" href="#L1925">1925</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L1926" href="#L1926">1926</a> <em class="jxr_javadoccomment">     * Returns method being used for robust estimation.</em>
-<a class="jxr_linenumber" name="L1927" href="#L1927">1927</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1928" href="#L1928">1928</a> <em class="jxr_javadoccomment">     * @return method being used for robust estimation.</em>
-<a class="jxr_linenumber" name="L1929" href="#L1929">1929</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1930" href="#L1930">1930</a>     @Override
-<a class="jxr_linenumber" name="L1931" href="#L1931">1931</a>     <strong class="jxr_keyword">public</strong> RobustEstimatorMethod getMethod() {
-<a class="jxr_linenumber" name="L1932" href="#L1932">1932</a>         <strong class="jxr_keyword">return</strong> RobustEstimatorMethod.PROMedS;
-<a class="jxr_linenumber" name="L1933" href="#L1933">1933</a>     }
-<a class="jxr_linenumber" name="L1934" href="#L1934">1934</a> 
-<a class="jxr_linenumber" name="L1935" href="#L1935">1935</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L1936" href="#L1936">1936</a> <em class="jxr_javadoccomment">     * Indicates whether this calibrator requires quality scores for each</em>
-<a class="jxr_linenumber" name="L1937" href="#L1937">1937</a> <em class="jxr_javadoccomment">     * measurement or not.</em>
-<a class="jxr_linenumber" name="L1938" href="#L1938">1938</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1939" href="#L1939">1939</a> <em class="jxr_javadoccomment">     * @return true if quality scores are required, false otherwise.</em>
-<a class="jxr_linenumber" name="L1940" href="#L1940">1940</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1941" href="#L1941">1941</a>     @Override
-<a class="jxr_linenumber" name="L1942" href="#L1942">1942</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isQualityScoresRequired() {
-<a class="jxr_linenumber" name="L1943" href="#L1943">1943</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
-<a class="jxr_linenumber" name="L1944" href="#L1944">1944</a>     }
-<a class="jxr_linenumber" name="L1945" href="#L1945">1945</a> 
-<a class="jxr_linenumber" name="L1946" href="#L1946">1946</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L1947" href="#L1947">1947</a> <em class="jxr_javadoccomment">     * Sets quality scores corresponding to each provided sample.</em>
-<a class="jxr_linenumber" name="L1948" href="#L1948">1948</a> <em class="jxr_javadoccomment">     * This method is used internally and does not check whether instance is</em>
-<a class="jxr_linenumber" name="L1949" href="#L1949">1949</a> <em class="jxr_javadoccomment">     * locked or not.</em>
-<a class="jxr_linenumber" name="L1950" href="#L1950">1950</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L1951" href="#L1951">1951</a> <em class="jxr_javadoccomment">     * @param qualityScores quality scores to be set.</em>
-<a class="jxr_linenumber" name="L1952" href="#L1952">1952</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided quality scores length</em>
-<a class="jxr_linenumber" name="L1953" href="#L1953">1953</a> <em class="jxr_javadoccomment">     *                                  is smaller than the minimum required</em>
-<a class="jxr_linenumber" name="L1954" href="#L1954">1954</a> <em class="jxr_javadoccomment">     *                                  number of samples (10 or 13).</em>
-<a class="jxr_linenumber" name="L1955" href="#L1955">1955</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1956" href="#L1956">1956</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> internalSetQualityScores(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores) {
-<a class="jxr_linenumber" name="L1957" href="#L1957">1957</a>         <strong class="jxr_keyword">if</strong> (qualityScores == <strong class="jxr_keyword">null</strong> ||
-<a class="jxr_linenumber" name="L1958" href="#L1958">1958</a>                 qualityScores.length &lt; getMinimumRequiredMeasurements()) {
-<a class="jxr_linenumber" name="L1959" href="#L1959">1959</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException();
-<a class="jxr_linenumber" name="L1960" href="#L1960">1960</a>         }
-<a class="jxr_linenumber" name="L1961" href="#L1961">1961</a> 
-<a class="jxr_linenumber" name="L1962" href="#L1962">1962</a>         mQualityScores = qualityScores;
-<a class="jxr_linenumber" name="L1963" href="#L1963">1963</a>     }
-<a class="jxr_linenumber" name="L1964" href="#L1964">1964</a> }
+<a class="jxr_linenumber" name="L1809" href="#L1809">1809</a>     @SuppressWarnings(<span class="jxr_string">"DuplicatedCode"</span>)
+<a class="jxr_linenumber" name="L1810" href="#L1810">1810</a>     @Override
+<a class="jxr_linenumber" name="L1811" href="#L1811">1811</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> calibrate() <strong class="jxr_keyword">throws</strong> LockedException, NotReadyException, CalibrationException {
+<a class="jxr_linenumber" name="L1812" href="#L1812">1812</a>         <strong class="jxr_keyword">if</strong> (mRunning) {
+<a class="jxr_linenumber" name="L1813" href="#L1813">1813</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LockedException();
+<a class="jxr_linenumber" name="L1814" href="#L1814">1814</a>         }
+<a class="jxr_linenumber" name="L1815" href="#L1815">1815</a>         <strong class="jxr_keyword">if</strong> (!isReady()) {
+<a class="jxr_linenumber" name="L1816" href="#L1816">1816</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> NotReadyException();
+<a class="jxr_linenumber" name="L1817" href="#L1817">1817</a>         }
+<a class="jxr_linenumber" name="L1818" href="#L1818">1818</a> 
+<a class="jxr_linenumber" name="L1819" href="#L1819">1819</a>         mGravityNorm = computeGravityNorm();
+<a class="jxr_linenumber" name="L1820" href="#L1820">1820</a> 
+<a class="jxr_linenumber" name="L1821" href="#L1821">1821</a>         <strong class="jxr_keyword">final</strong> PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =
+<a class="jxr_linenumber" name="L1822" href="#L1822">1822</a>                 <strong class="jxr_keyword">new</strong> PROMedSRobustEstimator&lt;&gt;(<strong class="jxr_keyword">new</strong> PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {
+<a class="jxr_linenumber" name="L1823" href="#L1823">1823</a>                     @Override
+<a class="jxr_linenumber" name="L1824" href="#L1824">1824</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong>[] getQualityScores() {
+<a class="jxr_linenumber" name="L1825" href="#L1825">1825</a>                         <strong class="jxr_keyword">return</strong> mQualityScores;
+<a class="jxr_linenumber" name="L1826" href="#L1826">1826</a>                     }
+<a class="jxr_linenumber" name="L1827" href="#L1827">1827</a> 
+<a class="jxr_linenumber" name="L1828" href="#L1828">1828</a>                     @Override
+<a class="jxr_linenumber" name="L1829" href="#L1829">1829</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> getThreshold() {
+<a class="jxr_linenumber" name="L1830" href="#L1830">1830</a>                         <strong class="jxr_keyword">return</strong> mStopThreshold;
+<a class="jxr_linenumber" name="L1831" href="#L1831">1831</a>                     }
+<a class="jxr_linenumber" name="L1832" href="#L1832">1832</a> 
+<a class="jxr_linenumber" name="L1833" href="#L1833">1833</a>                     @Override
+<a class="jxr_linenumber" name="L1834" href="#L1834">1834</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getTotalSamples() {
+<a class="jxr_linenumber" name="L1835" href="#L1835">1835</a>                         <strong class="jxr_keyword">return</strong> mMeasurements.size();
+<a class="jxr_linenumber" name="L1836" href="#L1836">1836</a>                     }
+<a class="jxr_linenumber" name="L1837" href="#L1837">1837</a> 
+<a class="jxr_linenumber" name="L1838" href="#L1838">1838</a>                     @Override
+<a class="jxr_linenumber" name="L1839" href="#L1839">1839</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">int</strong> getSubsetSize() {
+<a class="jxr_linenumber" name="L1840" href="#L1840">1840</a>                         <strong class="jxr_keyword">return</strong> mPreliminarySubsetSize;
+<a class="jxr_linenumber" name="L1841" href="#L1841">1841</a>                     }
+<a class="jxr_linenumber" name="L1842" href="#L1842">1842</a> 
+<a class="jxr_linenumber" name="L1843" href="#L1843">1843</a>                     @Override
+<a class="jxr_linenumber" name="L1844" href="#L1844">1844</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> estimatePreliminarSolutions(
+<a class="jxr_linenumber" name="L1845" href="#L1845">1845</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong>[] samplesIndices,
+<a class="jxr_linenumber" name="L1846" href="#L1846">1846</a>                             <strong class="jxr_keyword">final</strong> List&lt;PreliminaryResult&gt; solutions) {
+<a class="jxr_linenumber" name="L1847" href="#L1847">1847</a>                         computePreliminarySolutions(samplesIndices, solutions);
+<a class="jxr_linenumber" name="L1848" href="#L1848">1848</a>                     }
+<a class="jxr_linenumber" name="L1849" href="#L1849">1849</a> 
+<a class="jxr_linenumber" name="L1850" href="#L1850">1850</a>                     @Override
+<a class="jxr_linenumber" name="L1851" href="#L1851">1851</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">double</strong> computeResidual(
+<a class="jxr_linenumber" name="L1852" href="#L1852">1852</a>                             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">PreliminaryResult</a> currentEstimation, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> i) {
+<a class="jxr_linenumber" name="L1853" href="#L1853">1853</a>                         <strong class="jxr_keyword">return</strong> computeError(mMeasurements.get(i), currentEstimation);
+<a class="jxr_linenumber" name="L1854" href="#L1854">1854</a>                     }
+<a class="jxr_linenumber" name="L1855" href="#L1855">1855</a> 
+<a class="jxr_linenumber" name="L1856" href="#L1856">1856</a>                     @Override
+<a class="jxr_linenumber" name="L1857" href="#L1857">1857</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isReady() {
+<a class="jxr_linenumber" name="L1858" href="#L1858">1858</a>                         <strong class="jxr_keyword">return</strong> PROMedSRobustKnownPositionAccelerometerCalibrator.<strong class="jxr_keyword">this</strong>.isReady();
+<a class="jxr_linenumber" name="L1859" href="#L1859">1859</a>                     }
+<a class="jxr_linenumber" name="L1860" href="#L1860">1860</a> 
+<a class="jxr_linenumber" name="L1861" href="#L1861">1861</a>                     @Override
+<a class="jxr_linenumber" name="L1862" href="#L1862">1862</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateStart(
+<a class="jxr_linenumber" name="L1863" href="#L1863">1863</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+<a class="jxr_linenumber" name="L1864" href="#L1864">1864</a>                     }
+<a class="jxr_linenumber" name="L1865" href="#L1865">1865</a> 
+<a class="jxr_linenumber" name="L1866" href="#L1866">1866</a>                     @Override
+<a class="jxr_linenumber" name="L1867" href="#L1867">1867</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateEnd(
+<a class="jxr_linenumber" name="L1868" href="#L1868">1868</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+<a class="jxr_linenumber" name="L1869" href="#L1869">1869</a>                     }
+<a class="jxr_linenumber" name="L1870" href="#L1870">1870</a> 
+<a class="jxr_linenumber" name="L1871" href="#L1871">1871</a>                     @Override
+<a class="jxr_linenumber" name="L1872" href="#L1872">1872</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateNextIteration(
+<a class="jxr_linenumber" name="L1873" href="#L1873">1873</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator,
+<a class="jxr_linenumber" name="L1874" href="#L1874">1874</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> iteration) {
+<a class="jxr_linenumber" name="L1875" href="#L1875">1875</a>                         <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L1876" href="#L1876">1876</a>                             mListener.onCalibrateNextIteration(
+<a class="jxr_linenumber" name="L1877" href="#L1877">1877</a>                                     PROMedSRobustKnownPositionAccelerometerCalibrator.<strong class="jxr_keyword">this</strong>,
+<a class="jxr_linenumber" name="L1878" href="#L1878">1878</a>                                     iteration);
+<a class="jxr_linenumber" name="L1879" href="#L1879">1879</a>                         }
+<a class="jxr_linenumber" name="L1880" href="#L1880">1880</a>                     }
+<a class="jxr_linenumber" name="L1881" href="#L1881">1881</a> 
+<a class="jxr_linenumber" name="L1882" href="#L1882">1882</a>                     @Override
+<a class="jxr_linenumber" name="L1883" href="#L1883">1883</a>                     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onEstimateProgressChange(
+<a class="jxr_linenumber" name="L1884" href="#L1884">1884</a>                             <strong class="jxr_keyword">final</strong> RobustEstimator&lt;PreliminaryResult&gt; estimator,
+<a class="jxr_linenumber" name="L1885" href="#L1885">1885</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">float</strong> progress) {
+<a class="jxr_linenumber" name="L1886" href="#L1886">1886</a>                         <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L1887" href="#L1887">1887</a>                             mListener.onCalibrateProgressChange(
+<a class="jxr_linenumber" name="L1888" href="#L1888">1888</a>                                     PROMedSRobustKnownPositionAccelerometerCalibrator.<strong class="jxr_keyword">this</strong>,
+<a class="jxr_linenumber" name="L1889" href="#L1889">1889</a>                                     progress);
+<a class="jxr_linenumber" name="L1890" href="#L1890">1890</a>                         }
+<a class="jxr_linenumber" name="L1891" href="#L1891">1891</a>                     }
+<a class="jxr_linenumber" name="L1892" href="#L1892">1892</a>                 });
+<a class="jxr_linenumber" name="L1893" href="#L1893">1893</a> 
+<a class="jxr_linenumber" name="L1894" href="#L1894">1894</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L1895" href="#L1895">1895</a>             mRunning = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L1896" href="#L1896">1896</a> 
+<a class="jxr_linenumber" name="L1897" href="#L1897">1897</a>             <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L1898" href="#L1898">1898</a>                 mListener.onCalibrateStart(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L1899" href="#L1899">1899</a>             }
+<a class="jxr_linenumber" name="L1900" href="#L1900">1900</a> 
+<a class="jxr_linenumber" name="L1901" href="#L1901">1901</a>             mInliersData = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L1902" href="#L1902">1902</a>             innerEstimator.setUseInlierThresholds(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L1903" href="#L1903">1903</a>             innerEstimator.setConfidence(mConfidence);
+<a class="jxr_linenumber" name="L1904" href="#L1904">1904</a>             innerEstimator.setMaxIterations(mMaxIterations);
+<a class="jxr_linenumber" name="L1905" href="#L1905">1905</a>             innerEstimator.setProgressDelta(mProgressDelta);
+<a class="jxr_linenumber" name="L1906" href="#L1906">1906</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">PreliminaryResult</a> preliminaryResult = innerEstimator.estimate();
+<a class="jxr_linenumber" name="L1907" href="#L1907">1907</a>             mInliersData = innerEstimator.getInliersData();
+<a class="jxr_linenumber" name="L1908" href="#L1908">1908</a> 
+<a class="jxr_linenumber" name="L1909" href="#L1909">1909</a>             attemptRefine(preliminaryResult);
+<a class="jxr_linenumber" name="L1910" href="#L1910">1910</a> 
+<a class="jxr_linenumber" name="L1911" href="#L1911">1911</a>             <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L1912" href="#L1912">1912</a>                 mListener.onCalibrateEnd(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L1913" href="#L1913">1913</a>             }
+<a class="jxr_linenumber" name="L1914" href="#L1914">1914</a> 
+<a class="jxr_linenumber" name="L1915" href="#L1915">1915</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> com.irurueta.numerical.LockedException e) {
+<a class="jxr_linenumber" name="L1916" href="#L1916">1916</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> LockedException(e);
+<a class="jxr_linenumber" name="L1917" href="#L1917">1917</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> com.irurueta.numerical.NotReadyException e) {
+<a class="jxr_linenumber" name="L1918" href="#L1918">1918</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> NotReadyException(e);
+<a class="jxr_linenumber" name="L1919" href="#L1919">1919</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> RobustEstimatorException e) {
+<a class="jxr_linenumber" name="L1920" href="#L1920">1920</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/CalibrationException.html">CalibrationException</a>(e);
+<a class="jxr_linenumber" name="L1921" href="#L1921">1921</a>         } <strong class="jxr_keyword">finally</strong> {
+<a class="jxr_linenumber" name="L1922" href="#L1922">1922</a>             mRunning = false;
+<a class="jxr_linenumber" name="L1923" href="#L1923">1923</a>         }
+<a class="jxr_linenumber" name="L1924" href="#L1924">1924</a>     }
+<a class="jxr_linenumber" name="L1925" href="#L1925">1925</a> 
+<a class="jxr_linenumber" name="L1926" href="#L1926">1926</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L1927" href="#L1927">1927</a> <em class="jxr_javadoccomment">     * Returns method being used for robust estimation.</em>
+<a class="jxr_linenumber" name="L1928" href="#L1928">1928</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L1929" href="#L1929">1929</a> <em class="jxr_javadoccomment">     * @return method being used for robust estimation.</em>
+<a class="jxr_linenumber" name="L1930" href="#L1930">1930</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L1931" href="#L1931">1931</a>     @Override
+<a class="jxr_linenumber" name="L1932" href="#L1932">1932</a>     <strong class="jxr_keyword">public</strong> RobustEstimatorMethod getMethod() {
+<a class="jxr_linenumber" name="L1933" href="#L1933">1933</a>         <strong class="jxr_keyword">return</strong> RobustEstimatorMethod.PROMedS;
+<a class="jxr_linenumber" name="L1934" href="#L1934">1934</a>     }
+<a class="jxr_linenumber" name="L1935" href="#L1935">1935</a> 
+<a class="jxr_linenumber" name="L1936" href="#L1936">1936</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L1937" href="#L1937">1937</a> <em class="jxr_javadoccomment">     * Indicates whether this calibrator requires quality scores for each</em>
+<a class="jxr_linenumber" name="L1938" href="#L1938">1938</a> <em class="jxr_javadoccomment">     * measurement or not.</em>
+<a class="jxr_linenumber" name="L1939" href="#L1939">1939</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L1940" href="#L1940">1940</a> <em class="jxr_javadoccomment">     * @return true if quality scores are required, false otherwise.</em>
+<a class="jxr_linenumber" name="L1941" href="#L1941">1941</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L1942" href="#L1942">1942</a>     @Override
+<a class="jxr_linenumber" name="L1943" href="#L1943">1943</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">boolean</strong> isQualityScoresRequired() {
+<a class="jxr_linenumber" name="L1944" href="#L1944">1944</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L1945" href="#L1945">1945</a>     }
+<a class="jxr_linenumber" name="L1946" href="#L1946">1946</a> 
+<a class="jxr_linenumber" name="L1947" href="#L1947">1947</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L1948" href="#L1948">1948</a> <em class="jxr_javadoccomment">     * Sets quality scores corresponding to each provided sample.</em>
+<a class="jxr_linenumber" name="L1949" href="#L1949">1949</a> <em class="jxr_javadoccomment">     * This method is used internally and does not check whether instance is</em>
+<a class="jxr_linenumber" name="L1950" href="#L1950">1950</a> <em class="jxr_javadoccomment">     * locked or not.</em>
+<a class="jxr_linenumber" name="L1951" href="#L1951">1951</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L1952" href="#L1952">1952</a> <em class="jxr_javadoccomment">     * @param qualityScores quality scores to be set.</em>
+<a class="jxr_linenumber" name="L1953" href="#L1953">1953</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided quality scores length</em>
+<a class="jxr_linenumber" name="L1954" href="#L1954">1954</a> <em class="jxr_javadoccomment">     *                                  is smaller than the minimum required</em>
+<a class="jxr_linenumber" name="L1955" href="#L1955">1955</a> <em class="jxr_javadoccomment">     *                                  number of samples (10 or 13).</em>
+<a class="jxr_linenumber" name="L1956" href="#L1956">1956</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L1957" href="#L1957">1957</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> internalSetQualityScores(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] qualityScores) {
+<a class="jxr_linenumber" name="L1958" href="#L1958">1958</a>         <strong class="jxr_keyword">if</strong> (qualityScores == <strong class="jxr_keyword">null</strong> ||
+<a class="jxr_linenumber" name="L1959" href="#L1959">1959</a>                 qualityScores.length &lt; getMinimumRequiredMeasurements()) {
+<a class="jxr_linenumber" name="L1960" href="#L1960">1960</a>             <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException();
+<a class="jxr_linenumber" name="L1961" href="#L1961">1961</a>         }
+<a class="jxr_linenumber" name="L1962" href="#L1962">1962</a> 
+<a class="jxr_linenumber" name="L1963" href="#L1963">1963</a>         mQualityScores = qualityScores;
+<a class="jxr_linenumber" name="L1964" href="#L1964">1964</a>     }
+<a class="jxr_linenumber" name="L1965" href="#L1965">1965</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

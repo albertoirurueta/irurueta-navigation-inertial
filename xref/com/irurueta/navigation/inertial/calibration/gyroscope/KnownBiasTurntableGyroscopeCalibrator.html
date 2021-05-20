@@ -114,7 +114,7 @@
 <a class="jxr_linenumber" name="L106" href="#L106">106</a> <em class="jxr_javadoccomment">     * Indicates that by default G-dependent cross biases introduced</em>
 <a class="jxr_linenumber" name="L107" href="#L107">107</a> <em class="jxr_javadoccomment">     * by the accelerometer on the gyroscope are estimated.</em>
 <a class="jxr_linenumber" name="L108" href="#L108">108</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> DEFAULT_ESTIMATE_G_DPENDENT_CROSS_BIASES = <strong class="jxr_keyword">true</strong>;
+<a class="jxr_linenumber" name="L109" href="#L109">109</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = <strong class="jxr_keyword">true</strong>;
 <a class="jxr_linenumber" name="L110" href="#L110">110</a> 
 <a class="jxr_linenumber" name="L111" href="#L111">111</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L112" href="#L112">112</a> <em class="jxr_javadoccomment">     * Number of unknowns when common z-axis is assumed for both the accelerometer</em>
@@ -368,7 +368,7 @@
 <a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     * When enabled, this adds 9 variables from Gg matrix.</em>
 <a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L362" href="#L362">362</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">boolean</strong> mEstimateGDependentCrossBiases =
-<a class="jxr_linenumber" name="L363" href="#L363">363</a>             DEFAULT_ESTIMATE_G_DPENDENT_CROSS_BIASES;
+<a class="jxr_linenumber" name="L363" href="#L363">363</a>             DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 <a class="jxr_linenumber" name="L364" href="#L364">364</a> 
 <a class="jxr_linenumber" name="L365" href="#L365">365</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     * Listener to handle events raised by this calibrator.</em>
@@ -412,7 +412,7 @@
 <a class="jxr_linenumber" name="L404" href="#L404">404</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L405" href="#L405">405</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L409" href="#L409">409</a>     <strong class="jxr_keyword">private</strong> Matrix mEstimatedMg;
 <a class="jxr_linenumber" name="L410" href="#L410">410</a> 
@@ -4129,7 +4129,7 @@
 <a class="jxr_linenumber" name="L4121" href="#L4121">4121</a> <em class="jxr_javadoccomment">     * the standard deviations of accelerometer and gyroscope measurements.</em>
 <a class="jxr_linenumber" name="L4122" href="#L4122">4122</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L4123" href="#L4123">4123</a> <em class="jxr_javadoccomment">     * @param measurements collection of body kinematics measurements at a</em>
-<a class="jxr_linenumber" name="L4124" href="#L4124">4124</a> <em class="jxr_javadoccomment">     *                     known position witn unknown orientations.</em>
+<a class="jxr_linenumber" name="L4124" href="#L4124">4124</a> <em class="jxr_javadoccomment">     *                     known position with unknown orientations.</em>
 <a class="jxr_linenumber" name="L4125" href="#L4125">4125</a> <em class="jxr_javadoccomment">     * @throws LockedException if calibrator is currently running.</em>
 <a class="jxr_linenumber" name="L4126" href="#L4126">4126</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L4127" href="#L4127">4127</a>     @Override
@@ -4466,7 +4466,7 @@
 <a class="jxr_linenumber" name="L4458" href="#L4458">4458</a> <em class="jxr_javadoccomment">     *          [0     sy   myz]</em>
 <a class="jxr_linenumber" name="L4459" href="#L4459">4459</a> <em class="jxr_javadoccomment">     *          [0     0    sz ]</em>
 <a class="jxr_linenumber" name="L4460" href="#L4460">4460</a> <em class="jxr_javadoccomment">     * &lt;/pre&gt;</em>
-<a class="jxr_linenumber" name="L4461" href="#L4461">4461</a> <em class="jxr_javadoccomment">     * Values of this matrix are unitless.</em>
+<a class="jxr_linenumber" name="L4461" href="#L4461">4461</a> <em class="jxr_javadoccomment">     * Values of this matrix are unit-less.</em>
 <a class="jxr_linenumber" name="L4462" href="#L4462">4462</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L4463" href="#L4463">4463</a> <em class="jxr_javadoccomment">     * @return estimated gyroscope scale factors and cross coupling errors, or null</em>
 <a class="jxr_linenumber" name="L4464" href="#L4464">4464</a> <em class="jxr_javadoccomment">     * if not available.</em>
@@ -5306,7 +5306,7 @@
 <a class="jxr_linenumber" name="L5298" href="#L5298">5298</a>         <em class="jxr_comment">// Ideally a least squares solution tries to minimize noise component, so:</em>
 <a class="jxr_linenumber" name="L5299" href="#L5299">5299</a>         <em class="jxr_comment">// Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue</em>
 <a class="jxr_linenumber" name="L5300" href="#L5300">5300</a> 
-<a class="jxr_linenumber" name="L5301" href="#L5301">5301</a>         <em class="jxr_comment">// Since G-dependent cross giases are ignored, we can assume that Gg = 0</em>
+<a class="jxr_linenumber" name="L5301" href="#L5301">5301</a>         <em class="jxr_comment">// Since G-dependent cross biases are ignored, we can assume that Gg = 0</em>
 <a class="jxr_linenumber" name="L5302" href="#L5302">5302</a> 
 <a class="jxr_linenumber" name="L5303" href="#L5303">5303</a>         <em class="jxr_comment">// Hence:</em>
 <a class="jxr_linenumber" name="L5304" href="#L5304">5304</a>         <em class="jxr_comment">// Ωmeas = bg + (I + Mg) * Ωtrue</em>
@@ -5986,7 +5986,7 @@
 <a class="jxr_linenumber" name="L5978" href="#L5978">5978</a> <em class="jxr_javadoccomment">     * Computes estimated true angular rate squared norm using current measured</em>
 <a class="jxr_linenumber" name="L5979" href="#L5979">5979</a> <em class="jxr_javadoccomment">     * angular rate and specific force along with provided parameters for the</em>
 <a class="jxr_linenumber" name="L5980" href="#L5980">5980</a> <em class="jxr_javadoccomment">     * general case when G-dependent cross biases are taken into account.</em>
-<a class="jxr_linenumber" name="L5981" href="#L5981">5981</a> <em class="jxr_javadoccomment">     * This methos is internally executed during gradient estimation and</em>
+<a class="jxr_linenumber" name="L5981" href="#L5981">5981</a> <em class="jxr_javadoccomment">     * This method is internally executed during gradient estimation and</em>
 <a class="jxr_linenumber" name="L5982" href="#L5982">5982</a> <em class="jxr_javadoccomment">     * Levenberg-Marquardt fitting needed for calibration computation.</em>
 <a class="jxr_linenumber" name="L5983" href="#L5983">5983</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L5984" href="#L5984">5984</a> <em class="jxr_javadoccomment">     * @param params array containing parameters for the general purpose case</em>
@@ -6031,7 +6031,7 @@
 <a class="jxr_linenumber" name="L6023" href="#L6023">6023</a> <em class="jxr_javadoccomment">     * angular rate and specific force along with provided parameters when</em>
 <a class="jxr_linenumber" name="L6024" href="#L6024">6024</a> <em class="jxr_javadoccomment">     * common z-axis is assumed and G-dependent cross biases are taken into</em>
 <a class="jxr_linenumber" name="L6025" href="#L6025">6025</a> <em class="jxr_javadoccomment">     * account.</em>
-<a class="jxr_linenumber" name="L6026" href="#L6026">6026</a> <em class="jxr_javadoccomment">     * This methos is internally executed during gradient estimation and</em>
+<a class="jxr_linenumber" name="L6026" href="#L6026">6026</a> <em class="jxr_javadoccomment">     * This method is internally executed during gradient estimation and</em>
 <a class="jxr_linenumber" name="L6027" href="#L6027">6027</a> <em class="jxr_javadoccomment">     * Levenberg-Marquardt fitting needed for calibration computation.</em>
 <a class="jxr_linenumber" name="L6028" href="#L6028">6028</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L6029" href="#L6029">6029</a> <em class="jxr_javadoccomment">     * @param params array containing parameters for the general purpose case</em>
@@ -6127,7 +6127,7 @@
 <a class="jxr_linenumber" name="L6119" href="#L6119">6119</a> <em class="jxr_javadoccomment">     * Computes estimated true angular rate squared norm using current measured</em>
 <a class="jxr_linenumber" name="L6120" href="#L6120">6120</a> <em class="jxr_javadoccomment">     * angular rate and provided parameters.</em>
 <a class="jxr_linenumber" name="L6121" href="#L6121">6121</a> <em class="jxr_javadoccomment">     * This method is internally executed during gradient estimation and</em>
-<a class="jxr_linenumber" name="L6122" href="#L6122">6122</a> <em class="jxr_javadoccomment">     * Levenberg-Marquardt fittin needed for calibration computation.</em>
+<a class="jxr_linenumber" name="L6122" href="#L6122">6122</a> <em class="jxr_javadoccomment">     * Levenberg-Marquardt fitting needed for calibration computation.</em>
 <a class="jxr_linenumber" name="L6123" href="#L6123">6123</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L6124" href="#L6124">6124</a> <em class="jxr_javadoccomment">     * @param m11 element 1,1 of cross-coupling error matrix.</em>
 <a class="jxr_linenumber" name="L6125" href="#L6125">6125</a> <em class="jxr_javadoccomment">     * @param m21 element 2,1 of cross-coupling error matrix.</em>

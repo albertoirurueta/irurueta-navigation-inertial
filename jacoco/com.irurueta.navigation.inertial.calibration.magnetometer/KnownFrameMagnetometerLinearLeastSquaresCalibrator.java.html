@@ -66,6 +66,7 @@ import java.util.Collection;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
+@SuppressWarnings(&quot;DuplicatedCode&quot;)
 public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
         KnownFrameMagnetometerCalibrator&lt;FrameBodyMagneticFluxDensity,
                 KnownFrameMagnetometerLinearLeastSquaresCalibratorListener&gt;,
@@ -120,7 +121,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * gyroscope and magnetometer.
      * When enabled, this eliminates 3 variables from Mm matrix.
      */
-<span class="fc" id="L123">    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
+<span class="fc" id="L124">    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
 
     /**
      * Listener to handle events raised by this calibrator.
@@ -171,7 +172,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * &lt;/pre&gt;
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMm;
 
@@ -188,8 +189,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     /**
      * Constructor.
      */
-<span class="fc" id="L191">    public KnownFrameMagnetometerLinearLeastSquaresCalibrator() {</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L192">    public KnownFrameMagnetometerLinearLeastSquaresCalibrator() {</span>
+<span class="fc" id="L193">    }</span>
 
     /**
      * Constructor.
@@ -197,9 +198,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      * @param listener listener to handle events raised by this calibrator.
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-<span class="fc" id="L200">            final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {</span>
-<span class="fc" id="L201">        mListener = listener;</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L201">            final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {</span>
+<span class="fc" id="L202">        mListener = listener;</span>
+<span class="fc" id="L203">    }</span>
 
     /**
      * Constructor.
@@ -208,9 +209,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *                     taken at different frames (positions and orientations).
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-<span class="fc" id="L211">            final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements) {</span>
-<span class="fc" id="L212">        mMeasurements = measurements;</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L212">            final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements) {</span>
+<span class="fc" id="L213">        mMeasurements = measurements;</span>
+<span class="fc" id="L214">    }</span>
 
     /**
      * Constructor.
@@ -222,9 +223,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L225">        this(measurements);</span>
-<span class="fc" id="L226">        mListener = listener;</span>
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L226">        this(measurements);</span>
+<span class="fc" id="L227">        mListener = listener;</span>
+<span class="fc" id="L228">    }</span>
 
     /**
      * Constructor.
@@ -233,9 +234,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-<span class="fc" id="L236">            final boolean commonAxisUsed) {</span>
-<span class="fc" id="L237">        mCommonAxisUsed = commonAxisUsed;</span>
-<span class="fc" id="L238">    }</span>
+<span class="fc" id="L237">            final boolean commonAxisUsed) {</span>
+<span class="fc" id="L238">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L239">    }</span>
 
     /**
      * Constructor.
@@ -247,9 +248,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L250">        this(commonAxisUsed);</span>
-<span class="fc" id="L251">        mListener = listener;</span>
-<span class="fc" id="L252">    }</span>
+<span class="fc" id="L251">        this(commonAxisUsed);</span>
+<span class="fc" id="L252">        mListener = listener;</span>
+<span class="fc" id="L253">    }</span>
 
     /**
      * Constructor.
@@ -262,9 +263,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L265">        this(measurements);</span>
-<span class="fc" id="L266">        mCommonAxisUsed = commonAxisUsed;</span>
-<span class="fc" id="L267">    }</span>
+<span class="fc" id="L266">        this(measurements);</span>
+<span class="fc" id="L267">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L268">    }</span>
 
     /**
      * Constructor.
@@ -279,9 +280,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L282">        this(measurements, commonAxisUsed);</span>
-<span class="fc" id="L283">        mListener = listener;</span>
-<span class="fc" id="L284">    }</span>
+<span class="fc" id="L283">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L284">        mListener = listener;</span>
+<span class="fc" id="L285">    }</span>
 
     /**
      * Constructor.
@@ -290,9 +291,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *                      will be used instead.
      */
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
-<span class="fc" id="L293">            final WorldMagneticModel magneticModel) {</span>
-<span class="fc" id="L294">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L295">    }</span>
+<span class="fc" id="L294">            final WorldMagneticModel magneticModel) {</span>
+<span class="fc" id="L295">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L296">    }</span>
 
     /**
      * Constructor.
@@ -304,9 +305,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L307">        this(listener);</span>
-<span class="fc" id="L308">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L309">    }</span>
+<span class="fc" id="L308">        this(listener);</span>
+<span class="fc" id="L309">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L310">    }</span>
 
     /**
      * Constructor.
@@ -319,9 +320,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements,
             final WorldMagneticModel magneticModel) {
-<span class="fc" id="L322">        this(measurements);</span>
-<span class="fc" id="L323">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L324">    }</span>
+<span class="fc" id="L323">        this(measurements);</span>
+<span class="fc" id="L324">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L325">    }</span>
 
     /**
      * Constructor.
@@ -336,9 +337,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements,
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L339">        this(measurements, listener);</span>
-<span class="fc" id="L340">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L341">    }</span>
+<span class="fc" id="L340">        this(measurements, listener);</span>
+<span class="fc" id="L341">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L342">    }</span>
 
     /**
      * Constructor.
@@ -351,9 +352,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public KnownFrameMagnetometerLinearLeastSquaresCalibrator(
             final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel) {
-<span class="fc" id="L354">        this(commonAxisUsed);</span>
-<span class="fc" id="L355">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L356">    }</span>
+<span class="fc" id="L355">        this(commonAxisUsed);</span>
+<span class="fc" id="L356">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L357">    }</span>
 
     /**
      * Constructor.
@@ -368,9 +369,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L371">        this(commonAxisUsed, listener);</span>
-<span class="fc" id="L372">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L373">    }</span>
+<span class="fc" id="L372">        this(commonAxisUsed, listener);</span>
+<span class="fc" id="L373">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L374">    }</span>
 
     /**
      * Constructor.
@@ -386,9 +387,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel) {
-<span class="fc" id="L389">        this(measurements, commonAxisUsed);</span>
-<span class="fc" id="L390">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L391">    }</span>
+<span class="fc" id="L390">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L391">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L392">    }</span>
 
     /**
      * Constructor.
@@ -406,9 +407,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
             final boolean commonAxisUsed,
             final WorldMagneticModel magneticModel,
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener) {
-<span class="fc" id="L409">        this(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L410">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L411">    }</span>
+<span class="fc" id="L410">        this(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L411">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L412">    }</span>
 
     /**
      * Gets a collection of body magnetic flux density measurements taken at different
@@ -428,7 +429,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; getMeasurements() {
-<span class="fc" id="L431">        return mMeasurements;</span>
+<span class="fc" id="L432">        return mMeasurements;</span>
     }
 
     /**
@@ -453,11 +454,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public void setMeasurements(
             final Collection&lt;? extends FrameBodyMagneticFluxDensity&gt; measurements)
             throws LockedException {
-<span class="fc bfc" id="L456" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L457">            throw new LockedException();</span>
+<span class="fc bfc" id="L457" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L458">            throw new LockedException();</span>
         }
-<span class="fc" id="L459">        mMeasurements = measurements;</span>
-<span class="fc" id="L460">    }</span>
+<span class="fc" id="L460">        mMeasurements = measurements;</span>
+<span class="fc" id="L461">    }</span>
 
     /**
      * Indicates the type of measurement used by this calibrator.
@@ -466,7 +467,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagnetometerCalibratorMeasurementType getMeasurementType() {
-<span class="fc" id="L469">        return MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY;</span>
+<span class="fc" id="L470">        return MagnetometerCalibratorMeasurementType.FRAME_BODY_MAGNETIC_FLUX_DENSITY;</span>
     }
 
     /**
@@ -477,7 +478,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isOrderedMeasurementsRequired() {
-<span class="fc" id="L480">        return false;</span>
+<span class="fc" id="L481">        return false;</span>
     }
 
     /**
@@ -488,7 +489,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L491">        return false;</span>
+<span class="fc" id="L492">        return false;</span>
     }
 
     /**
@@ -501,7 +502,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isCommonAxisUsed() {
-<span class="fc" id="L504">        return mCommonAxisUsed;</span>
+<span class="fc" id="L505">        return mCommonAxisUsed;</span>
     }
 
     /**
@@ -517,12 +518,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed)
             throws LockedException {
-<span class="fc bfc" id="L520" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L521">            throw new LockedException();</span>
+<span class="fc bfc" id="L521" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L522">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L524">        mCommonAxisUsed = commonAxisUsed;</span>
-<span class="fc" id="L525">    }</span>
+<span class="fc" id="L525">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L526">    }</span>
 
     /**
      * Gets listener to handle events raised by this calibrator.
@@ -531,7 +532,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public KnownFrameMagnetometerLinearLeastSquaresCalibratorListener getListener() {
-<span class="fc" id="L534">        return mListener;</span>
+<span class="fc" id="L535">        return mListener;</span>
     }
 
     /**
@@ -544,12 +545,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     public void setListener(
             final KnownFrameMagnetometerLinearLeastSquaresCalibratorListener listener)
             throws LockedException {
-<span class="fc bfc" id="L547" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L548">            throw new LockedException();</span>
+<span class="fc bfc" id="L548" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L549">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L551">        mListener = listener;</span>
-<span class="fc" id="L552">    }</span>
+<span class="fc" id="L552">        mListener = listener;</span>
+<span class="fc" id="L553">    }</span>
 
     /**
      * Gets minimum number of required measurements.
@@ -558,7 +559,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-<span class="fc" id="L561">        return MINIMUM_MEASUREMENTS;</span>
+<span class="fc" id="L562">        return MINIMUM_MEASUREMENTS;</span>
     }
 
     /**
@@ -568,8 +569,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L571" title="All 2 branches covered.">        return mMeasurements != null</span>
-<span class="fc bfc" id="L572" title="All 2 branches covered.">                &amp;&amp; mMeasurements.size() &gt;= MINIMUM_MEASUREMENTS;</span>
+<span class="fc bfc" id="L572" title="All 2 branches covered.">        return mMeasurements != null</span>
+<span class="fc bfc" id="L573" title="All 2 branches covered.">                &amp;&amp; mMeasurements.size() &gt;= MINIMUM_MEASUREMENTS;</span>
     }
 
     /**
@@ -579,7 +580,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean isRunning() {
-<span class="fc" id="L582">        return mRunning;</span>
+<span class="fc" id="L583">        return mRunning;</span>
     }
 
     /**
@@ -589,7 +590,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public WorldMagneticModel getMagneticModel() {
-<span class="fc" id="L592">        return mMagneticModel;</span>
+<span class="fc" id="L593">        return mMagneticModel;</span>
     }
 
     /**
@@ -602,11 +603,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     @Override
     public void setMagneticModel(final WorldMagneticModel magneticModel)
             throws LockedException {
-<span class="fc bfc" id="L605" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L606">            throw new LockedException();</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L607">            throw new LockedException();</span>
         }
-<span class="fc" id="L608">        mMagneticModel = magneticModel;</span>
-<span class="fc" id="L609">    }</span>
+<span class="fc" id="L609">        mMagneticModel = magneticModel;</span>
+<span class="fc" id="L610">    }</span>
 
     /**
      * Estimates accelerometer calibration parameters containing scale factors
@@ -619,37 +620,37 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L622" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L623">            throw new LockedException();</span>
+<span class="fc bfc" id="L623" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L624">            throw new LockedException();</span>
         }
 
-<span class="pc bpc" id="L626" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L627">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L627" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L628">            throw new NotReadyException();</span>
         }
 
         try {
-<span class="fc" id="L631">            mRunning = true;</span>
+<span class="fc" id="L632">            mRunning = true;</span>
 
-<span class="fc bfc" id="L633" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L634">                mListener.onCalibrateStart(this);</span>
+<span class="fc bfc" id="L634" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L635">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc bfc" id="L637" title="All 2 branches covered.">            if (mCommonAxisUsed) {</span>
-<span class="fc" id="L638">                calibrateCommonAxis();</span>
+<span class="fc bfc" id="L638" title="All 2 branches covered.">            if (mCommonAxisUsed) {</span>
+<span class="fc" id="L639">                calibrateCommonAxis();</span>
             } else {
-<span class="fc" id="L640">                calibrateGeneral();</span>
+<span class="fc" id="L641">                calibrateGeneral();</span>
             }
 
-<span class="fc bfc" id="L643" title="All 2 branches covered.">            if (mListener != null) {</span>
-<span class="fc" id="L644">                mListener.onCalibrateEnd(this);</span>
+<span class="fc bfc" id="L644" title="All 2 branches covered.">            if (mListener != null) {</span>
+<span class="fc" id="L645">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L647">        } catch (final AlgebraException | IOException e) {</span>
-<span class="nc" id="L648">            throw new CalibrationException(e);</span>
+<span class="nc" id="L648">        } catch (final AlgebraException | IOException e) {</span>
+<span class="nc" id="L649">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L650">            mRunning = false;</span>
+<span class="fc" id="L651">            mRunning = false;</span>
         }
-<span class="fc" id="L652">    }</span>
+<span class="fc" id="L653">    }</span>
 
     /**
      * Gets array containing x,y,z components of estimated magnetometer
@@ -660,7 +661,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public double[] getEstimatedHardIron() {
-<span class="fc" id="L663">        return mEstimatedHardIron;</span>
+<span class="fc" id="L664">        return mEstimatedHardIron;</span>
     }
 
     /**
@@ -674,12 +675,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIron(final double[] result) {
-<span class="fc bfc" id="L677" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
-<span class="fc" id="L678">            System.arraycopy(mEstimatedHardIron, 0, result,</span>
+<span class="fc bfc" id="L678" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L679">            System.arraycopy(mEstimatedHardIron, 0, result,</span>
                     0, mEstimatedHardIron.length);
-<span class="fc" id="L680">            return true;</span>
+<span class="fc" id="L681">            return true;</span>
         } else {
-<span class="fc" id="L682">            return false;</span>
+<span class="fc" id="L683">            return false;</span>
         }
     }
 
@@ -692,7 +693,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Matrix getEstimatedHardIronAsMatrix() {
-<span class="fc bfc" id="L695" title="All 2 branches covered.">        return mEstimatedHardIron != null ? Matrix.newFromArray(mEstimatedHardIron) : null;</span>
+<span class="fc bfc" id="L696" title="All 2 branches covered.">        return mEstimatedHardIron != null ? Matrix.newFromArray(mEstimatedHardIron) : null;</span>
     }
 
     /**
@@ -706,11 +707,11 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
     @Override
     public boolean getEstimatedHardIronAsMatrix(final Matrix result)
             throws WrongSizeException {
-<span class="fc bfc" id="L709" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
-<span class="fc" id="L710">            result.fromArray(mEstimatedHardIron);</span>
-<span class="fc" id="L711">            return true;</span>
+<span class="fc bfc" id="L710" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L711">            result.fromArray(mEstimatedHardIron);</span>
+<span class="fc" id="L712">            return true;</span>
         } else {
-<span class="fc" id="L713">            return false;</span>
+<span class="fc" id="L714">            return false;</span>
         }
     }
 
@@ -723,7 +724,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedHardIronX() {
-<span class="fc bfc" id="L726" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[0] : null;</span>
+<span class="fc bfc" id="L727" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[0] : null;</span>
     }
 
     /**
@@ -735,7 +736,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedHardIronY() {
-<span class="fc bfc" id="L738" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[1] : null;</span>
+<span class="fc bfc" id="L739" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[1] : null;</span>
     }
 
     /**
@@ -747,7 +748,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedHardIronZ() {
-<span class="fc bfc" id="L750" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[2] : null;</span>
+<span class="fc bfc" id="L751" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[2] : null;</span>
     }
 
     /**
@@ -757,8 +758,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronXAsMagneticFluxDensity() {
-<span class="fc bfc" id="L760" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
-<span class="fc" id="L761">                new MagneticFluxDensity(mEstimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;</span>
+<span class="fc bfc" id="L761" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L762">                new MagneticFluxDensity(mEstimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;</span>
     }
 
     /**
@@ -769,12 +770,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
-<span class="fc bfc" id="L772" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
-<span class="fc" id="L773">            result.setValue(mEstimatedHardIron[0]);</span>
-<span class="fc" id="L774">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L775">            return true;</span>
+<span class="fc bfc" id="L773" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L774">            result.setValue(mEstimatedHardIron[0]);</span>
+<span class="fc" id="L775">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L776">            return true;</span>
         } else {
-<span class="fc" id="L777">            return false;</span>
+<span class="fc" id="L778">            return false;</span>
         }
     }
 
@@ -785,8 +786,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronYAsMagneticFluxDensity() {
-<span class="fc bfc" id="L788" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
-<span class="fc" id="L789">                new MagneticFluxDensity(mEstimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;</span>
+<span class="fc bfc" id="L789" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L790">                new MagneticFluxDensity(mEstimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;</span>
     }
 
     /**
@@ -797,12 +798,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
-<span class="fc bfc" id="L800" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
-<span class="fc" id="L801">            result.setValue(mEstimatedHardIron[1]);</span>
-<span class="fc" id="L802">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L803">            return true;</span>
+<span class="fc bfc" id="L801" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L802">            result.setValue(mEstimatedHardIron[1]);</span>
+<span class="fc" id="L803">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L804">            return true;</span>
         } else {
-<span class="fc" id="L805">            return false;</span>
+<span class="fc" id="L806">            return false;</span>
         }
     }
 
@@ -813,8 +814,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensity getEstimatedHardIronZAsMagneticFluxDensity() {
-<span class="fc bfc" id="L816" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
-<span class="fc" id="L817">                new MagneticFluxDensity(mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;</span>
+<span class="fc bfc" id="L817" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L818">                new MagneticFluxDensity(mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;</span>
     }
 
     /**
@@ -825,12 +826,12 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
-<span class="fc bfc" id="L828" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
-<span class="fc" id="L829">            result.setValue(mEstimatedHardIron[2]);</span>
-<span class="fc" id="L830">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
-<span class="fc" id="L831">            return true;</span>
+<span class="fc bfc" id="L829" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L830">            result.setValue(mEstimatedHardIron[2]);</span>
+<span class="fc" id="L831">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L832">            return true;</span>
         } else {
-<span class="fc" id="L833">            return false;</span>
+<span class="fc" id="L834">            return false;</span>
         }
     }
 
@@ -841,9 +842,9 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public MagneticFluxDensityTriad getEstimatedHardIronAsTriad() {
-<span class="fc bfc" id="L844" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
-<span class="fc" id="L845">                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
-<span class="fc" id="L846">                        mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2]) : null;</span>
+<span class="fc bfc" id="L845" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L846">                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
+<span class="fc" id="L847">                        mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2]) : null;</span>
     }
 
     /**
@@ -855,13 +856,13 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public boolean getEstimatedHardIronAsTriad(final MagneticFluxDensityTriad result) {
-<span class="fc bfc" id="L858" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
-<span class="fc" id="L859">            result.setValueCoordinatesAndUnit(</span>
+<span class="fc bfc" id="L859" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L860">            result.setValueCoordinatesAndUnit(</span>
                     mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2],
                     MagneticFluxDensityUnit.TESLA);
-<span class="fc" id="L862">            return true;</span>
+<span class="fc" id="L863">            return true;</span>
         } else {
-<span class="fc" id="L864">            return false;</span>
+<span class="fc" id="L865">            return false;</span>
         }
     }
 
@@ -903,14 +904,14 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * &lt;/pre&gt;
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
      * or null if not available.
      */
     @Override
     public Matrix getEstimatedMm() {
-<span class="fc" id="L913">        return mEstimatedMm;</span>
+<span class="fc" id="L914">        return mEstimatedMm;</span>
     }
 
     /**
@@ -920,8 +921,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-<span class="fc bfc" id="L923" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L924">                mEstimatedMm.getElementAt(0, 0) : null;</span>
+<span class="fc bfc" id="L924" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L925">                mEstimatedMm.getElementAt(0, 0) : null;</span>
     }
 
     /**
@@ -931,8 +932,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-<span class="fc bfc" id="L934" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L935">                mEstimatedMm.getElementAt(1, 1) : null;</span>
+<span class="fc bfc" id="L935" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L936">                mEstimatedMm.getElementAt(1, 1) : null;</span>
     }
 
     /**
@@ -942,8 +943,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-<span class="fc bfc" id="L945" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L946">                mEstimatedMm.getElementAt(2, 2) : null;</span>
+<span class="fc bfc" id="L946" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L947">                mEstimatedMm.getElementAt(2, 2) : null;</span>
     }
 
     /**
@@ -953,8 +954,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-<span class="fc bfc" id="L956" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L957">                mEstimatedMm.getElementAt(0, 1) : null;</span>
+<span class="fc bfc" id="L957" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L958">                mEstimatedMm.getElementAt(0, 1) : null;</span>
     }
 
     /**
@@ -964,8 +965,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-<span class="fc bfc" id="L967" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L968">                mEstimatedMm.getElementAt(0, 2) : null;</span>
+<span class="fc bfc" id="L968" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L969">                mEstimatedMm.getElementAt(0, 2) : null;</span>
     }
 
     /**
@@ -975,8 +976,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-<span class="fc bfc" id="L978" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L979">                mEstimatedMm.getElementAt(1, 0) : null;</span>
+<span class="fc bfc" id="L979" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L980">                mEstimatedMm.getElementAt(1, 0) : null;</span>
     }
 
     /**
@@ -986,8 +987,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-<span class="fc bfc" id="L989" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L990">                mEstimatedMm.getElementAt(1, 2) : null;</span>
+<span class="fc bfc" id="L990" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L991">                mEstimatedMm.getElementAt(1, 2) : null;</span>
     }
 
     /**
@@ -997,8 +998,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-<span class="fc bfc" id="L1000" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L1001">                mEstimatedMm.getElementAt(2, 0) : null;</span>
+<span class="fc bfc" id="L1001" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L1002">                mEstimatedMm.getElementAt(2, 0) : null;</span>
     }
 
     /**
@@ -1008,8 +1009,8 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-<span class="fc bfc" id="L1011" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
-<span class="fc" id="L1012">                mEstimatedMm.getElementAt(2, 1) : null;</span>
+<span class="fc bfc" id="L1012" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L1013">                mEstimatedMm.getElementAt(2, 1) : null;</span>
     }
 
     /**
@@ -1067,96 +1068,96 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
         //                                                                   [myz]
 
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
-<span class="fc bfc" id="L1070" title="All 2 branches covered.">        if (mMagneticModel != null) {</span>
-<span class="fc" id="L1071">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);</span>
+<span class="fc bfc" id="L1071" title="All 2 branches covered.">        if (mMagneticModel != null) {</span>
+<span class="fc" id="L1072">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);</span>
         } else {
-<span class="fc" id="L1073">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
+<span class="fc" id="L1074">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
         }
 
-<span class="fc" id="L1076">        final BodyMagneticFluxDensity expectedMagneticFluxDensity =</span>
+<span class="fc" id="L1077">        final BodyMagneticFluxDensity expectedMagneticFluxDensity =</span>
                 new BodyMagneticFluxDensity();
-<span class="fc" id="L1078">        final NEDFrame nedFrame = new NEDFrame();</span>
-<span class="fc" id="L1079">        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L1080">        final CoordinateTransformation cbn = new CoordinateTransformation(</span>
+<span class="fc" id="L1079">        final NEDFrame nedFrame = new NEDFrame();</span>
+<span class="fc" id="L1080">        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L1081">        final CoordinateTransformation cbn = new CoordinateTransformation(</span>
                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-<span class="fc" id="L1082">        final CoordinateTransformation cnb = new CoordinateTransformation(</span>
+<span class="fc" id="L1083">        final CoordinateTransformation cnb = new CoordinateTransformation(</span>
                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-<span class="fc" id="L1085">        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();</span>
-<span class="fc" id="L1086">        final Matrix a = new Matrix(rows, COMMON_Z_AXIS_UNKNOWNS);</span>
-<span class="fc" id="L1087">        final Matrix b = new Matrix(rows, 1);</span>
-<span class="fc" id="L1088">        int i = 0;</span>
-<span class="fc bfc" id="L1089" title="All 2 branches covered.">        for (final FrameBodyMagneticFluxDensity measurement : mMeasurements) {</span>
-<span class="fc" id="L1090">            final BodyMagneticFluxDensity measuredMagneticFluxDensity =</span>
-<span class="fc" id="L1091">                    measurement.getMagneticFluxDensity();</span>
+<span class="fc" id="L1086">        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();</span>
+<span class="fc" id="L1087">        final Matrix a = new Matrix(rows, COMMON_Z_AXIS_UNKNOWNS);</span>
+<span class="fc" id="L1088">        final Matrix b = new Matrix(rows, 1);</span>
+<span class="fc" id="L1089">        int i = 0;</span>
+<span class="fc bfc" id="L1090" title="All 2 branches covered.">        for (final FrameBodyMagneticFluxDensity measurement : mMeasurements) {</span>
+<span class="fc" id="L1091">            final BodyMagneticFluxDensity measuredMagneticFluxDensity =</span>
+<span class="fc" id="L1092">                    measurement.getMagneticFluxDensity();</span>
 
             // estimate Earth magnetic flux density at frame position and
             // timestamp using WMM
-<span class="fc" id="L1095">            final ECEFFrame ecefFrame = measurement.getFrame();</span>
-<span class="fc" id="L1096">            ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);</span>
+<span class="fc" id="L1096">            final ECEFFrame ecefFrame = measurement.getFrame();</span>
+<span class="fc" id="L1097">            ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);</span>
 
-<span class="fc" id="L1098">            final double year = measurement.getYear();</span>
+<span class="fc" id="L1099">            final double year = measurement.getYear();</span>
 
-<span class="fc" id="L1100">            final double latitude = nedFrame.getLatitude();</span>
-<span class="fc" id="L1101">            final double longitude = nedFrame.getLongitude();</span>
-<span class="fc" id="L1102">            final double height = nedFrame.getHeight();</span>
+<span class="fc" id="L1101">            final double latitude = nedFrame.getLatitude();</span>
+<span class="fc" id="L1102">            final double longitude = nedFrame.getLongitude();</span>
+<span class="fc" id="L1103">            final double height = nedFrame.getHeight();</span>
 
-<span class="fc" id="L1104">            nedFrame.getCoordinateTransformation(cbn);</span>
-<span class="fc" id="L1105">            cbn.inverse(cnb);</span>
+<span class="fc" id="L1105">            nedFrame.getCoordinateTransformation(cbn);</span>
+<span class="fc" id="L1106">            cbn.inverse(cnb);</span>
 
-<span class="fc" id="L1107">            wmmEstimator.estimate(latitude, longitude, height, year, earthB);</span>
+<span class="fc" id="L1108">            wmmEstimator.estimate(latitude, longitude, height, year, earthB);</span>
 
-            // estimate expected body mangetic flux density taking into
+            // estimate expected body magnetic flux density taking into
             // account body attitude (inverse of frame orientation) and
             // estimated Earth magnetic flux density
-<span class="fc" id="L1112">            BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,</span>
+<span class="fc" id="L1113">            BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,</span>
                     expectedMagneticFluxDensity);
 
-<span class="fc" id="L1115">            final double bMeasX = measuredMagneticFluxDensity.getBx();</span>
-<span class="fc" id="L1116">            final double bMeasY = measuredMagneticFluxDensity.getBy();</span>
-<span class="fc" id="L1117">            final double bMeasZ = measuredMagneticFluxDensity.getBz();</span>
+<span class="fc" id="L1116">            final double bMeasX = measuredMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L1117">            final double bMeasY = measuredMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L1118">            final double bMeasZ = measuredMagneticFluxDensity.getBz();</span>
 
-<span class="fc" id="L1119">            final double bTrueX = expectedMagneticFluxDensity.getBx();</span>
-<span class="fc" id="L1120">            final double bTrueY = expectedMagneticFluxDensity.getBy();</span>
-<span class="fc" id="L1121">            final double bTrueZ = expectedMagneticFluxDensity.getBz();</span>
+<span class="fc" id="L1120">            final double bTrueX = expectedMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L1121">            final double bTrueY = expectedMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L1122">            final double bTrueZ = expectedMagneticFluxDensity.getBz();</span>
 
-<span class="fc" id="L1123">            a.setElementAt(i, 0, 1.0);</span>
-<span class="fc" id="L1124">            a.setElementAt(i, 3, bTrueX);</span>
-<span class="fc" id="L1125">            a.setElementAt(i, 6, bTrueY);</span>
-<span class="fc" id="L1126">            a.setElementAt(i, 7, bTrueZ);</span>
+<span class="fc" id="L1124">            a.setElementAt(i, 0, 1.0);</span>
+<span class="fc" id="L1125">            a.setElementAt(i, 3, bTrueX);</span>
+<span class="fc" id="L1126">            a.setElementAt(i, 6, bTrueY);</span>
+<span class="fc" id="L1127">            a.setElementAt(i, 7, bTrueZ);</span>
 
-<span class="fc" id="L1128">            b.setElementAtIndex(i, bMeasX - bTrueX);</span>
-<span class="fc" id="L1129">            i++;</span>
+<span class="fc" id="L1129">            b.setElementAtIndex(i, bMeasX - bTrueX);</span>
+<span class="fc" id="L1130">            i++;</span>
 
-<span class="fc" id="L1131">            a.setElementAt(i, 1, 1.0);</span>
-<span class="fc" id="L1132">            a.setElementAt(i, 4, bTrueY);</span>
-<span class="fc" id="L1133">            a.setElementAt(i, 8, bTrueZ);</span>
+<span class="fc" id="L1132">            a.setElementAt(i, 1, 1.0);</span>
+<span class="fc" id="L1133">            a.setElementAt(i, 4, bTrueY);</span>
+<span class="fc" id="L1134">            a.setElementAt(i, 8, bTrueZ);</span>
 
-<span class="fc" id="L1135">            b.setElementAtIndex(i, bMeasY - bTrueY);</span>
-<span class="fc" id="L1136">            i++;</span>
+<span class="fc" id="L1136">            b.setElementAtIndex(i, bMeasY - bTrueY);</span>
+<span class="fc" id="L1137">            i++;</span>
 
-<span class="fc" id="L1138">            a.setElementAt(i, 2, 1.0);</span>
-<span class="fc" id="L1139">            a.setElementAt(i, 5, bTrueZ);</span>
+<span class="fc" id="L1139">            a.setElementAt(i, 2, 1.0);</span>
+<span class="fc" id="L1140">            a.setElementAt(i, 5, bTrueZ);</span>
 
-<span class="fc" id="L1141">            b.setElementAtIndex(i, bMeasZ - bTrueZ);</span>
-<span class="fc" id="L1142">            i++;</span>
-<span class="fc" id="L1143">        }</span>
+<span class="fc" id="L1142">            b.setElementAtIndex(i, bMeasZ - bTrueZ);</span>
+<span class="fc" id="L1143">            i++;</span>
+<span class="fc" id="L1144">        }</span>
 
-<span class="fc" id="L1145">        final Matrix unknowns = Utils.solve(a, b);</span>
+<span class="fc" id="L1146">        final Matrix unknowns = Utils.solve(a, b);</span>
 
-<span class="fc" id="L1147">        final double bx = unknowns.getElementAtIndex(0);</span>
-<span class="fc" id="L1148">        final double by = unknowns.getElementAtIndex(1);</span>
-<span class="fc" id="L1149">        final double bz = unknowns.getElementAtIndex(2);</span>
-<span class="fc" id="L1150">        final double sx = unknowns.getElementAtIndex(3);</span>
-<span class="fc" id="L1151">        final double sy = unknowns.getElementAtIndex(4);</span>
-<span class="fc" id="L1152">        final double sz = unknowns.getElementAtIndex(5);</span>
-<span class="fc" id="L1153">        final double mxy = unknowns.getElementAtIndex(6);</span>
-<span class="fc" id="L1154">        final double mxz = unknowns.getElementAtIndex(7);</span>
-<span class="fc" id="L1155">        final double myz = unknowns.getElementAtIndex(8);</span>
+<span class="fc" id="L1148">        final double bx = unknowns.getElementAtIndex(0);</span>
+<span class="fc" id="L1149">        final double by = unknowns.getElementAtIndex(1);</span>
+<span class="fc" id="L1150">        final double bz = unknowns.getElementAtIndex(2);</span>
+<span class="fc" id="L1151">        final double sx = unknowns.getElementAtIndex(3);</span>
+<span class="fc" id="L1152">        final double sy = unknowns.getElementAtIndex(4);</span>
+<span class="fc" id="L1153">        final double sz = unknowns.getElementAtIndex(5);</span>
+<span class="fc" id="L1154">        final double mxy = unknowns.getElementAtIndex(6);</span>
+<span class="fc" id="L1155">        final double mxz = unknowns.getElementAtIndex(7);</span>
+<span class="fc" id="L1156">        final double myz = unknowns.getElementAtIndex(8);</span>
 
-<span class="fc" id="L1157">        fillHardIronBiases(bx, by, bz);</span>
-<span class="fc" id="L1158">        fillMm(sx, sy, sz, mxy, mxz, 0.0, myz, 0.0, 0.0);</span>
-<span class="fc" id="L1159">    }</span>
+<span class="fc" id="L1158">        fillHardIronBiases(bx, by, bz);</span>
+<span class="fc" id="L1159">        fillMm(sx, sy, sz, mxy, mxz, 0.0, myz, 0.0, 0.0);</span>
+<span class="fc" id="L1160">    }</span>
 
     /**
      * Internal method to perform general calibration.
@@ -1208,102 +1209,102 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
         //                                                                                              [mzy]
 
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator;
-<span class="fc bfc" id="L1211" title="All 2 branches covered.">        if (mMagneticModel != null) {</span>
-<span class="fc" id="L1212">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);</span>
+<span class="fc bfc" id="L1212" title="All 2 branches covered.">        if (mMagneticModel != null) {</span>
+<span class="fc" id="L1213">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator(mMagneticModel);</span>
         } else {
-<span class="fc" id="L1214">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
+<span class="fc" id="L1215">            wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
         }
 
-<span class="fc" id="L1217">        final BodyMagneticFluxDensity expectedMagneticFluxDensity =</span>
+<span class="fc" id="L1218">        final BodyMagneticFluxDensity expectedMagneticFluxDensity =</span>
                 new BodyMagneticFluxDensity();
-<span class="fc" id="L1219">        final NEDFrame nedFrame = new NEDFrame();</span>
-<span class="fc" id="L1220">        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L1221">        final CoordinateTransformation cbn = new CoordinateTransformation(</span>
+<span class="fc" id="L1220">        final NEDFrame nedFrame = new NEDFrame();</span>
+<span class="fc" id="L1221">        final NEDMagneticFluxDensity earthB = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L1222">        final CoordinateTransformation cbn = new CoordinateTransformation(</span>
                 FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
-<span class="fc" id="L1223">        final CoordinateTransformation cnb = new CoordinateTransformation(</span>
+<span class="fc" id="L1224">        final CoordinateTransformation cnb = new CoordinateTransformation(</span>
                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
 
-<span class="fc" id="L1226">        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();</span>
-<span class="fc" id="L1227">        final Matrix a = new Matrix(rows, GENERAL_UNKNOWNS);</span>
-<span class="fc" id="L1228">        final Matrix b = new Matrix(rows, 1);</span>
-<span class="fc" id="L1229">        int i = 0;</span>
-<span class="fc bfc" id="L1230" title="All 2 branches covered.">        for (final FrameBodyMagneticFluxDensity measurement : mMeasurements) {</span>
-<span class="fc" id="L1231">            final BodyMagneticFluxDensity measuredMagneticFluxDensity =</span>
-<span class="fc" id="L1232">                    measurement.getMagneticFluxDensity();</span>
+<span class="fc" id="L1227">        final int rows = EQUATIONS_PER_MEASUREMENT * mMeasurements.size();</span>
+<span class="fc" id="L1228">        final Matrix a = new Matrix(rows, GENERAL_UNKNOWNS);</span>
+<span class="fc" id="L1229">        final Matrix b = new Matrix(rows, 1);</span>
+<span class="fc" id="L1230">        int i = 0;</span>
+<span class="fc bfc" id="L1231" title="All 2 branches covered.">        for (final FrameBodyMagneticFluxDensity measurement : mMeasurements) {</span>
+<span class="fc" id="L1232">            final BodyMagneticFluxDensity measuredMagneticFluxDensity =</span>
+<span class="fc" id="L1233">                    measurement.getMagneticFluxDensity();</span>
 
             // estimate Earth magnetic flux density at frame position and
             // timestamp using WMM
-<span class="fc" id="L1236">            final ECEFFrame ecefFrame = measurement.getFrame();</span>
-<span class="fc" id="L1237">            ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);</span>
+<span class="fc" id="L1237">            final ECEFFrame ecefFrame = measurement.getFrame();</span>
+<span class="fc" id="L1238">            ECEFtoNEDFrameConverter.convertECEFtoNED(ecefFrame, nedFrame);</span>
 
-<span class="fc" id="L1239">            final double year = measurement.getYear();</span>
+<span class="fc" id="L1240">            final double year = measurement.getYear();</span>
 
-<span class="fc" id="L1241">            final double latitude = nedFrame.getLatitude();</span>
-<span class="fc" id="L1242">            final double longitude = nedFrame.getLongitude();</span>
-<span class="fc" id="L1243">            final double height = nedFrame.getHeight();</span>
+<span class="fc" id="L1242">            final double latitude = nedFrame.getLatitude();</span>
+<span class="fc" id="L1243">            final double longitude = nedFrame.getLongitude();</span>
+<span class="fc" id="L1244">            final double height = nedFrame.getHeight();</span>
 
-<span class="fc" id="L1245">            nedFrame.getCoordinateTransformation(cbn);</span>
-<span class="fc" id="L1246">            cbn.inverse(cnb);</span>
+<span class="fc" id="L1246">            nedFrame.getCoordinateTransformation(cbn);</span>
+<span class="fc" id="L1247">            cbn.inverse(cnb);</span>
 
-<span class="fc" id="L1248">            wmmEstimator.estimate(latitude, longitude, height, year, earthB);</span>
+<span class="fc" id="L1249">            wmmEstimator.estimate(latitude, longitude, height, year, earthB);</span>
 
-            // estimate expected body mangetic flux density taking into
+            // estimate expected body magnetic flux density taking into
             // account body attitude (inverse of frame orientation) and
             // estimated Earth magnetic flux density
-<span class="fc" id="L1253">            BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,</span>
+<span class="fc" id="L1254">            BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,</span>
                     expectedMagneticFluxDensity);
 
-<span class="fc" id="L1256">            final double bMeasX = measuredMagneticFluxDensity.getBx();</span>
-<span class="fc" id="L1257">            final double bMeasY = measuredMagneticFluxDensity.getBy();</span>
-<span class="fc" id="L1258">            final double bMeasZ = measuredMagneticFluxDensity.getBz();</span>
+<span class="fc" id="L1257">            final double bMeasX = measuredMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L1258">            final double bMeasY = measuredMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L1259">            final double bMeasZ = measuredMagneticFluxDensity.getBz();</span>
 
-<span class="fc" id="L1260">            final double bTrueX = expectedMagneticFluxDensity.getBx();</span>
-<span class="fc" id="L1261">            final double bTrueY = expectedMagneticFluxDensity.getBy();</span>
-<span class="fc" id="L1262">            final double bTrueZ = expectedMagneticFluxDensity.getBz();</span>
+<span class="fc" id="L1261">            final double bTrueX = expectedMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L1262">            final double bTrueY = expectedMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L1263">            final double bTrueZ = expectedMagneticFluxDensity.getBz();</span>
 
-<span class="fc" id="L1264">            a.setElementAt(i, 0, 1.0);</span>
-<span class="fc" id="L1265">            a.setElementAt(i, 3, bTrueX);</span>
-<span class="fc" id="L1266">            a.setElementAt(i, 6, bTrueY);</span>
-<span class="fc" id="L1267">            a.setElementAt(i, 7, bTrueZ);</span>
+<span class="fc" id="L1265">            a.setElementAt(i, 0, 1.0);</span>
+<span class="fc" id="L1266">            a.setElementAt(i, 3, bTrueX);</span>
+<span class="fc" id="L1267">            a.setElementAt(i, 6, bTrueY);</span>
+<span class="fc" id="L1268">            a.setElementAt(i, 7, bTrueZ);</span>
 
-<span class="fc" id="L1269">            b.setElementAtIndex(i, bMeasX - bTrueX);</span>
-<span class="fc" id="L1270">            i++;</span>
+<span class="fc" id="L1270">            b.setElementAtIndex(i, bMeasX - bTrueX);</span>
+<span class="fc" id="L1271">            i++;</span>
 
-<span class="fc" id="L1272">            a.setElementAt(i, 1, 1.0);</span>
-<span class="fc" id="L1273">            a.setElementAt(i, 4, bTrueY);</span>
-<span class="fc" id="L1274">            a.setElementAt(i, 8, bTrueX);</span>
-<span class="fc" id="L1275">            a.setElementAt(i, 9, bTrueZ);</span>
+<span class="fc" id="L1273">            a.setElementAt(i, 1, 1.0);</span>
+<span class="fc" id="L1274">            a.setElementAt(i, 4, bTrueY);</span>
+<span class="fc" id="L1275">            a.setElementAt(i, 8, bTrueX);</span>
+<span class="fc" id="L1276">            a.setElementAt(i, 9, bTrueZ);</span>
 
-<span class="fc" id="L1277">            b.setElementAtIndex(i, bMeasY - bTrueY);</span>
-<span class="fc" id="L1278">            i++;</span>
+<span class="fc" id="L1278">            b.setElementAtIndex(i, bMeasY - bTrueY);</span>
+<span class="fc" id="L1279">            i++;</span>
 
-<span class="fc" id="L1280">            a.setElementAt(i, 2, 1.0);</span>
-<span class="fc" id="L1281">            a.setElementAt(i, 5, bTrueZ);</span>
-<span class="fc" id="L1282">            a.setElementAt(i, 10, bTrueX);</span>
-<span class="fc" id="L1283">            a.setElementAt(i, 11, bTrueY);</span>
+<span class="fc" id="L1281">            a.setElementAt(i, 2, 1.0);</span>
+<span class="fc" id="L1282">            a.setElementAt(i, 5, bTrueZ);</span>
+<span class="fc" id="L1283">            a.setElementAt(i, 10, bTrueX);</span>
+<span class="fc" id="L1284">            a.setElementAt(i, 11, bTrueY);</span>
 
-<span class="fc" id="L1285">            b.setElementAtIndex(i, bMeasZ - bTrueZ);</span>
-<span class="fc" id="L1286">            i++;</span>
-<span class="fc" id="L1287">        }</span>
+<span class="fc" id="L1286">            b.setElementAtIndex(i, bMeasZ - bTrueZ);</span>
+<span class="fc" id="L1287">            i++;</span>
+<span class="fc" id="L1288">        }</span>
 
-<span class="fc" id="L1289">        final Matrix unknowns = Utils.solve(a, b);</span>
+<span class="fc" id="L1290">        final Matrix unknowns = Utils.solve(a, b);</span>
 
-<span class="fc" id="L1291">        final double bx = unknowns.getElementAtIndex(0);</span>
-<span class="fc" id="L1292">        final double by = unknowns.getElementAtIndex(1);</span>
-<span class="fc" id="L1293">        final double bz = unknowns.getElementAtIndex(2);</span>
-<span class="fc" id="L1294">        final double sx = unknowns.getElementAtIndex(3);</span>
-<span class="fc" id="L1295">        final double sy = unknowns.getElementAtIndex(4);</span>
-<span class="fc" id="L1296">        final double sz = unknowns.getElementAtIndex(5);</span>
-<span class="fc" id="L1297">        final double mxy = unknowns.getElementAtIndex(6);</span>
-<span class="fc" id="L1298">        final double mxz = unknowns.getElementAtIndex(7);</span>
-<span class="fc" id="L1299">        final double myx = unknowns.getElementAtIndex(8);</span>
-<span class="fc" id="L1300">        final double myz = unknowns.getElementAtIndex(9);</span>
-<span class="fc" id="L1301">        final double mzx = unknowns.getElementAtIndex(10);</span>
-<span class="fc" id="L1302">        final double mzy = unknowns.getElementAtIndex(11);</span>
+<span class="fc" id="L1292">        final double bx = unknowns.getElementAtIndex(0);</span>
+<span class="fc" id="L1293">        final double by = unknowns.getElementAtIndex(1);</span>
+<span class="fc" id="L1294">        final double bz = unknowns.getElementAtIndex(2);</span>
+<span class="fc" id="L1295">        final double sx = unknowns.getElementAtIndex(3);</span>
+<span class="fc" id="L1296">        final double sy = unknowns.getElementAtIndex(4);</span>
+<span class="fc" id="L1297">        final double sz = unknowns.getElementAtIndex(5);</span>
+<span class="fc" id="L1298">        final double mxy = unknowns.getElementAtIndex(6);</span>
+<span class="fc" id="L1299">        final double mxz = unknowns.getElementAtIndex(7);</span>
+<span class="fc" id="L1300">        final double myx = unknowns.getElementAtIndex(8);</span>
+<span class="fc" id="L1301">        final double myz = unknowns.getElementAtIndex(9);</span>
+<span class="fc" id="L1302">        final double mzx = unknowns.getElementAtIndex(10);</span>
+<span class="fc" id="L1303">        final double mzy = unknowns.getElementAtIndex(11);</span>
 
-<span class="fc" id="L1304">        fillHardIronBiases(bx, by, bz);</span>
-<span class="fc" id="L1305">        fillMm(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);</span>
-<span class="fc" id="L1306">    }</span>
+<span class="fc" id="L1305">        fillHardIronBiases(bx, by, bz);</span>
+<span class="fc" id="L1306">        fillMm(sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);</span>
+<span class="fc" id="L1307">    }</span>
 
     /**
      * Fills estimated biases array with estimated values.
@@ -1314,14 +1315,14 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
      */
     private void fillHardIronBiases(
             final double bx, final double by, final double bz) {
-<span class="fc bfc" id="L1317" title="All 2 branches covered.">        if (mEstimatedHardIron == null) {</span>
-<span class="fc" id="L1318">            mEstimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];</span>
+<span class="fc bfc" id="L1318" title="All 2 branches covered.">        if (mEstimatedHardIron == null) {</span>
+<span class="fc" id="L1319">            mEstimatedHardIron = new double[BodyMagneticFluxDensity.COMPONENTS];</span>
         }
 
-<span class="fc" id="L1321">        mEstimatedHardIron[0] = bx;</span>
-<span class="fc" id="L1322">        mEstimatedHardIron[1] = by;</span>
-<span class="fc" id="L1323">        mEstimatedHardIron[2] = bz;</span>
-<span class="fc" id="L1324">    }</span>
+<span class="fc" id="L1322">        mEstimatedHardIron[0] = bx;</span>
+<span class="fc" id="L1323">        mEstimatedHardIron[1] = by;</span>
+<span class="fc" id="L1324">        mEstimatedHardIron[2] = bz;</span>
+<span class="fc" id="L1325">    }</span>
 
     /**
      * Fills scale factor and cross coupling error matrix with estimated values.
@@ -1341,22 +1342,22 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibrator implements
                         final double mxy, final double mxz, final double myx,
                         final double myz, final double mzx, final double mzy)
             throws WrongSizeException {
-<span class="fc bfc" id="L1344" title="All 2 branches covered.">        if (mEstimatedMm == null) {</span>
-<span class="fc" id="L1345">            mEstimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+<span class="fc bfc" id="L1345" title="All 2 branches covered.">        if (mEstimatedMm == null) {</span>
+<span class="fc" id="L1346">            mEstimatedMm = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
                     BodyMagneticFluxDensity.COMPONENTS);
         }
 
-<span class="fc" id="L1349">        mEstimatedMm.setElementAt(0, 0, sx);</span>
-<span class="fc" id="L1350">        mEstimatedMm.setElementAt(1, 0, myx);</span>
-<span class="fc" id="L1351">        mEstimatedMm.setElementAt(2, 0, mzx);</span>
+<span class="fc" id="L1350">        mEstimatedMm.setElementAt(0, 0, sx);</span>
+<span class="fc" id="L1351">        mEstimatedMm.setElementAt(1, 0, myx);</span>
+<span class="fc" id="L1352">        mEstimatedMm.setElementAt(2, 0, mzx);</span>
 
-<span class="fc" id="L1353">        mEstimatedMm.setElementAt(0, 1, mxy);</span>
-<span class="fc" id="L1354">        mEstimatedMm.setElementAt(1, 1, sy);</span>
-<span class="fc" id="L1355">        mEstimatedMm.setElementAt(2, 1, mzy);</span>
+<span class="fc" id="L1354">        mEstimatedMm.setElementAt(0, 1, mxy);</span>
+<span class="fc" id="L1355">        mEstimatedMm.setElementAt(1, 1, sy);</span>
+<span class="fc" id="L1356">        mEstimatedMm.setElementAt(2, 1, mzy);</span>
 
-<span class="fc" id="L1357">        mEstimatedMm.setElementAt(0, 2, mxz);</span>
-<span class="fc" id="L1358">        mEstimatedMm.setElementAt(1, 2, myz);</span>
-<span class="fc" id="L1359">        mEstimatedMm.setElementAt(2, 2, sz);</span>
-<span class="fc" id="L1360">    }</span>
+<span class="fc" id="L1358">        mEstimatedMm.setElementAt(0, 2, mxz);</span>
+<span class="fc" id="L1359">        mEstimatedMm.setElementAt(1, 2, myz);</span>
+<span class="fc" id="L1360">        mEstimatedMm.setElementAt(2, 2, sz);</span>
+<span class="fc" id="L1361">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -184,14 +184,14 @@
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> 
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gammaX = tmp3 * x;
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gammaY = tmp3 * y;
-<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gammaz = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
+<a class="jxr_linenumber" name="L179" href="#L179">179</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gammaZ = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
 <a class="jxr_linenumber" name="L180" href="#L180">180</a> 
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>             <em class="jxr_comment">// Add centripetal acceleration using (2.133)</em>
 <a class="jxr_linenumber" name="L182" href="#L182">182</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> omega2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gx = gammaX + omega2 * x;
 <a class="jxr_linenumber" name="L184" href="#L184">184</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> gy = gammaY + omega2 * y;
 <a class="jxr_linenumber" name="L185" href="#L185">185</a> 
-<a class="jxr_linenumber" name="L186" href="#L186">186</a>             result.setCoordinates(gx, gy, gammaz);
+<a class="jxr_linenumber" name="L186" href="#L186">186</a>             result.setCoordinates(gx, gy, gammaZ);
 <a class="jxr_linenumber" name="L187" href="#L187">187</a>         }
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>     }
 <a class="jxr_linenumber" name="L189" href="#L189">189</a> 

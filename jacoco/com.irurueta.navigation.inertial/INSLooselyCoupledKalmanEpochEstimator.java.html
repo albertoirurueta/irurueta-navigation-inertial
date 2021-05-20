@@ -44,11 +44,6 @@ import com.irurueta.units.TimeUnit;
 <span class="nc" id="L44">public class INSLooselyCoupledKalmanEpochEstimator {</span>
 
     /**
-     * Speed of light in the vacuum expressed in meters per second (m/s).
-     */
-    public static final double SPEED_OF_LIGHT = Constants.SPEED_OF_LIGHT;
-
-    /**
      * Earth rotation rate expressed in radians per second (rad/s).
      */
     public static final double EARTH_ROTATION_RATE = Constants.EARTH_ROTATION_RATE;
@@ -88,10 +83,10 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L91">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L92">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L86">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L87">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
                 bodyKinematics, config, result);
-<span class="fc" id="L94">        return result;</span>
+<span class="fc" id="L89">        return result;</span>
     }
 
     /**
@@ -117,13 +112,13 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L120">        final double fx = bodyKinematics.getFx();</span>
-<span class="fc" id="L121">        final double fy = bodyKinematics.getFy();</span>
-<span class="fc" id="L122">        final double fz = bodyKinematics.getFz();</span>
+<span class="fc" id="L115">        final double fx = bodyKinematics.getFx();</span>
+<span class="fc" id="L116">        final double fy = bodyKinematics.getFy();</span>
+<span class="fc" id="L117">        final double fz = bodyKinematics.getFz();</span>
 
-<span class="fc" id="L124">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L119">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
                 fx, fy, fz, config, result);
-<span class="fc" id="L126">    }</span>
+<span class="fc" id="L121">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -147,10 +142,10 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L150">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L151">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L145">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L146">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
                 bodyKinematics, previousLatitude, config, result);
-<span class="fc" id="L153">        return result;</span>
+<span class="fc" id="L148">        return result;</span>
     }
 
     /**
@@ -178,13 +173,13 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L181">        final double fx = bodyKinematics.getFx();</span>
-<span class="fc" id="L182">        final double fy = bodyKinematics.getFy();</span>
-<span class="fc" id="L183">        final double fz = bodyKinematics.getFz();</span>
+<span class="fc" id="L176">        final double fx = bodyKinematics.getFx();</span>
+<span class="fc" id="L177">        final double fy = bodyKinematics.getFy();</span>
+<span class="fc" id="L178">        final double fz = bodyKinematics.getFz();</span>
 
-<span class="fc" id="L185">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L180">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L182">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -213,10 +208,10 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L216">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L217">        estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L211">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L212">        estimate(userPosition, userVelocity, propagationInterval,</span>
                 previousState, fx, fy, fz, config, result);
-<span class="fc" id="L219">        return result;</span>
+<span class="fc" id="L214">        return result;</span>
     }
 
     /**
@@ -249,17 +244,17 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L252">        final double x = userPosition.getX();</span>
-<span class="fc" id="L253">        final double y = userPosition.getY();</span>
-<span class="fc" id="L254">        final double z = userPosition.getZ();</span>
+<span class="fc" id="L247">        final double x = userPosition.getX();</span>
+<span class="fc" id="L248">        final double y = userPosition.getY();</span>
+<span class="fc" id="L249">        final double z = userPosition.getZ();</span>
 
-<span class="fc" id="L256">        final double vx = userVelocity.getVx();</span>
-<span class="fc" id="L257">        final double vy = userVelocity.getVy();</span>
-<span class="fc" id="L258">        final double vz = userVelocity.getVz();</span>
+<span class="fc" id="L251">        final double vx = userVelocity.getVx();</span>
+<span class="fc" id="L252">        final double vy = userVelocity.getVy();</span>
+<span class="fc" id="L253">        final double vz = userVelocity.getVz();</span>
 
-<span class="fc" id="L260">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L255">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, config, result);
-<span class="fc" id="L262">    }</span>
+<span class="fc" id="L257">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -290,10 +285,10 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L293">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L294">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L288">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L289">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L296">        return result;</span>
+<span class="fc" id="L291">        return result;</span>
     }
 
     /**
@@ -328,17 +323,17 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L331">        final double x = userPosition.getX();</span>
-<span class="fc" id="L332">        final double y = userPosition.getY();</span>
-<span class="fc" id="L333">        final double z = userPosition.getZ();</span>
+<span class="fc" id="L326">        final double x = userPosition.getX();</span>
+<span class="fc" id="L327">        final double y = userPosition.getY();</span>
+<span class="fc" id="L328">        final double z = userPosition.getZ();</span>
 
-<span class="fc" id="L335">        final double vx = userVelocity.getVx();</span>
-<span class="fc" id="L336">        final double vy = userVelocity.getVy();</span>
-<span class="fc" id="L337">        final double vz = userVelocity.getVz();</span>
+<span class="fc" id="L330">        final double vx = userVelocity.getVx();</span>
+<span class="fc" id="L331">        final double vy = userVelocity.getVy();</span>
+<span class="fc" id="L332">        final double vz = userVelocity.getVz();</span>
 
-<span class="fc" id="L339">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L334">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L341">    }</span>
+<span class="fc" id="L336">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -370,10 +365,10 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L373">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L374">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L368">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L369">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 bodyKinematics, config, result);
-<span class="fc" id="L376">        return result;</span>
+<span class="fc" id="L371">        return result;</span>
     }
 
     /**
@@ -409,13 +404,13 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L412">        final double fx = bodyKinematics.getFx();</span>
-<span class="fc" id="L413">        final double fy = bodyKinematics.getFy();</span>
-<span class="fc" id="L414">        final double fz = bodyKinematics.getFz();</span>
+<span class="fc" id="L407">        final double fx = bodyKinematics.getFx();</span>
+<span class="fc" id="L408">        final double fy = bodyKinematics.getFy();</span>
+<span class="fc" id="L409">        final double fz = bodyKinematics.getFz();</span>
 
-<span class="fc" id="L416">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L411">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, config, result);
-<span class="fc" id="L418">    }</span>
+<span class="fc" id="L413">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -449,10 +444,10 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L452">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L453">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L447">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L448">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 bodyKinematics, previousLatitude, config, result);
-<span class="fc" id="L455">        return result;</span>
+<span class="fc" id="L450">        return result;</span>
     }
 
     /**
@@ -490,13 +485,13 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L493">        final double fx = bodyKinematics.getFx();</span>
-<span class="fc" id="L494">        final double fy = bodyKinematics.getFy();</span>
-<span class="fc" id="L495">        final double fz = bodyKinematics.getFz();</span>
+<span class="fc" id="L488">        final double fx = bodyKinematics.getFx();</span>
+<span class="fc" id="L489">        final double fy = bodyKinematics.getFy();</span>
+<span class="fc" id="L490">        final double fz = bodyKinematics.getFz();</span>
 
-<span class="fc" id="L497">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L492">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L499">    }</span>
+<span class="fc" id="L494">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -535,10 +530,10 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L538">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L539">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L533">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L534">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, config, result);
-<span class="fc" id="L541">        return result;</span>
+<span class="fc" id="L536">        return result;</span>
     }
 
     /**
@@ -581,18 +576,18 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L584">        final com.irurueta.navigation.frames.NEDPosition prevNedPosition = new NEDPosition();</span>
-<span class="fc" id="L585">        final com.irurueta.navigation.frames.NEDVelocity prevNedVelocity = new NEDVelocity();</span>
-<span class="fc" id="L586">        ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(</span>
-<span class="fc" id="L587">                previousState.getX(), previousState.getY(), previousState.getZ(),</span>
-<span class="fc" id="L588">                previousState.getVx(), previousState.getVy(), previousState.getVz(),</span>
+<span class="fc" id="L579">        final com.irurueta.navigation.frames.NEDPosition prevNedPosition = new NEDPosition();</span>
+<span class="fc" id="L580">        final com.irurueta.navigation.frames.NEDVelocity prevNedVelocity = new NEDVelocity();</span>
+<span class="fc" id="L581">        ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(</span>
+<span class="fc" id="L582">                previousState.getX(), previousState.getY(), previousState.getZ(),</span>
+<span class="fc" id="L583">                previousState.getVx(), previousState.getVy(), previousState.getVz(),</span>
                 prevNedPosition, prevNedVelocity);
 
-<span class="fc" id="L591">        final double previousLatitude = prevNedPosition.getLatitude();</span>
+<span class="fc" id="L586">        final double previousLatitude = prevNedPosition.getLatitude();</span>
 
-<span class="fc" id="L593">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L588">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L595">    }</span>
+<span class="fc" id="L590">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -633,10 +628,10 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L636">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
-<span class="fc" id="L637">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L631">        final INSLooselyCoupledKalmanState result = new INSLooselyCoupledKalmanState();</span>
+<span class="fc" id="L632">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L639">        return result;</span>
+<span class="fc" id="L634">        return result;</span>
     }
 
     /**
@@ -681,124 +676,124 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
 
-<span class="fc" id="L684">        final Matrix omegaIe = Utils.skewMatrix(</span>
+<span class="fc" id="L679">        final Matrix omegaIe = Utils.skewMatrix(</span>
                 new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
 
         // SYSTEM PROPAGATION PHASE
 
         // 1. Determine transition matrix using (14.50) (first-order approx)
-<span class="fc" id="L690">        final Matrix phiMatrix = Matrix.identity(</span>
+<span class="fc" id="L685">        final Matrix phiMatrix = Matrix.identity(</span>
                 INSLooselyCoupledKalmanState.NUM_PARAMS,
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
 
-<span class="fc" id="L694">        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(</span>
+<span class="fc" id="L689">        final Matrix tmp1 = omegaIe.multiplyByScalarAndReturnNew(</span>
                 propagationInterval);
-<span class="fc" id="L696">        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0,</span>
+<span class="fc" id="L691">        final Matrix tmp2 = phiMatrix.getSubmatrix(0, 0,</span>
                 2, 2);
-<span class="fc" id="L698">        tmp2.subtract(tmp1);</span>
+<span class="fc" id="L693">        tmp2.subtract(tmp1);</span>
 
-<span class="fc" id="L700">        phiMatrix.setSubmatrix(0, 0,</span>
+<span class="fc" id="L695">        phiMatrix.setSubmatrix(0, 0,</span>
                 2, 2, tmp2);
 
-<span class="fc" id="L703">        final Matrix estCbeOld = previousState</span>
-<span class="fc" id="L704">                .getBodyToEcefCoordinateTransformationMatrix();</span>
-<span class="fc" id="L705">        tmp1.copyFrom(estCbeOld);</span>
-<span class="fc" id="L706">        tmp1.multiplyByScalar(propagationInterval);</span>
+<span class="fc" id="L698">        final Matrix estCbeOld = previousState</span>
+<span class="fc" id="L699">                .getBodyToEcefCoordinateTransformationMatrix();</span>
+<span class="fc" id="L700">        tmp1.copyFrom(estCbeOld);</span>
+<span class="fc" id="L701">        tmp1.multiplyByScalar(propagationInterval);</span>
 
-<span class="fc" id="L708">        phiMatrix.setSubmatrix(0, 12,</span>
+<span class="fc" id="L703">        phiMatrix.setSubmatrix(0, 12,</span>
                 2, 14, tmp1);
-<span class="fc" id="L710">        phiMatrix.setSubmatrix(3, 9,</span>
+<span class="fc" id="L705">        phiMatrix.setSubmatrix(3, 9,</span>
                 5, 11, tmp1);
 
-<span class="fc" id="L713">        final Matrix measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L714">        measFibb.setElementAtIndex(0, fx);</span>
-<span class="fc" id="L715">        measFibb.setElementAtIndex(1, fy);</span>
-<span class="fc" id="L716">        measFibb.setElementAtIndex(2, fz);</span>
+<span class="fc" id="L708">        final Matrix measFibb = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L709">        measFibb.setElementAtIndex(0, fx);</span>
+<span class="fc" id="L710">        measFibb.setElementAtIndex(1, fy);</span>
+<span class="fc" id="L711">        measFibb.setElementAtIndex(2, fz);</span>
 
-<span class="fc" id="L718">        estCbeOld.multiply(measFibb, tmp1);</span>
+<span class="fc" id="L713">        estCbeOld.multiply(measFibb, tmp1);</span>
 
-<span class="fc" id="L720">        Utils.skewMatrix(tmp1, tmp2);</span>
-<span class="fc" id="L721">        tmp2.multiplyByScalar(-propagationInterval);</span>
+<span class="fc" id="L715">        Utils.skewMatrix(tmp1, tmp2);</span>
+<span class="fc" id="L716">        tmp2.multiplyByScalar(-propagationInterval);</span>
 
-<span class="fc" id="L723">        phiMatrix.setSubmatrix(3, 0,</span>
+<span class="fc" id="L718">        phiMatrix.setSubmatrix(3, 0,</span>
                 5, 2, tmp2);
 
-<span class="fc" id="L726">        phiMatrix.getSubmatrix(3, 3,</span>
+<span class="fc" id="L721">        phiMatrix.getSubmatrix(3, 3,</span>
                 5, 5, tmp1);
-<span class="fc" id="L728">        tmp2.copyFrom(omegaIe);</span>
-<span class="fc" id="L729">        tmp2.multiplyByScalar(2.0 * propagationInterval);</span>
-<span class="fc" id="L730">        tmp1.subtract(tmp2);</span>
-<span class="fc" id="L731">        phiMatrix.setSubmatrix(3, 3,</span>
+<span class="fc" id="L723">        tmp2.copyFrom(omegaIe);</span>
+<span class="fc" id="L724">        tmp2.multiplyByScalar(2.0 * propagationInterval);</span>
+<span class="fc" id="L725">        tmp1.subtract(tmp2);</span>
+<span class="fc" id="L726">        phiMatrix.setSubmatrix(3, 3,</span>
                 5, 5, tmp1);
 
-<span class="fc" id="L734">        final double sinPrevLat = Math.sin(previousLatitude);</span>
-<span class="fc" id="L735">        final double cosPrevLat = Math.cos(previousLatitude);</span>
-<span class="fc" id="L736">        final double sinPrevLat2 = sinPrevLat * sinPrevLat;</span>
-<span class="fc" id="L737">        final double cosPrevLat2 = cosPrevLat * cosPrevLat;</span>
+<span class="fc" id="L729">        final double sinPrevLat = Math.sin(previousLatitude);</span>
+<span class="fc" id="L730">        final double cosPrevLat = Math.cos(previousLatitude);</span>
+<span class="fc" id="L731">        final double sinPrevLat2 = sinPrevLat * sinPrevLat;</span>
+<span class="fc" id="L732">        final double cosPrevLat2 = cosPrevLat * cosPrevLat;</span>
 
         // From (2.137)
-<span class="fc" id="L740">        final double geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84</span>
-<span class="fc" id="L741">                / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0))</span>
-<span class="fc" id="L742">                * Math.sqrt(cosPrevLat2</span>
-<span class="fc" id="L743">                + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);</span>
+<span class="fc" id="L735">        final double geocentricRadius = EARTH_EQUATORIAL_RADIUS_WGS84</span>
+<span class="fc" id="L736">                / Math.sqrt(1.0 - Math.pow(EARTH_ECCENTRICITY * sinPrevLat, 2.0))</span>
+<span class="fc" id="L737">                * Math.sqrt(cosPrevLat2</span>
+<span class="fc" id="L738">                + Math.pow(1.0 - EARTH_ECCENTRICITY * EARTH_ECCENTRICITY, 2.0) * sinPrevLat2);</span>
 
-<span class="fc" id="L745">        final double prevX = previousState.getX();</span>
-<span class="fc" id="L746">        final double prevY = previousState.getY();</span>
-<span class="fc" id="L747">        final double prevZ = previousState.getZ();</span>
-<span class="fc" id="L748">        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(</span>
+<span class="fc" id="L740">        final double prevX = previousState.getX();</span>
+<span class="fc" id="L741">        final double prevY = previousState.getY();</span>
+<span class="fc" id="L742">        final double prevZ = previousState.getZ();</span>
+<span class="fc" id="L743">        final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(</span>
                 prevX, prevY, prevZ);
 
-<span class="fc" id="L751">        final double previousPositionNorm = Math.sqrt(prevX * prevX +</span>
+<span class="fc" id="L746">        final double previousPositionNorm = Math.sqrt(prevX * prevX +</span>
                 prevY * prevY + prevZ * prevZ);
 
-<span class="fc" id="L754">        final Matrix estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);</span>
-<span class="fc" id="L755">        estRebeOld.setElementAtIndex(0, prevX);</span>
-<span class="fc" id="L756">        estRebeOld.setElementAtIndex(1, prevY);</span>
-<span class="fc" id="L757">        estRebeOld.setElementAtIndex(2, prevZ);</span>
+<span class="fc" id="L749">        final Matrix estRebeOld = new Matrix(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS, 1);</span>
+<span class="fc" id="L750">        estRebeOld.setElementAtIndex(0, prevX);</span>
+<span class="fc" id="L751">        estRebeOld.setElementAtIndex(1, prevY);</span>
+<span class="fc" id="L752">        estRebeOld.setElementAtIndex(2, prevZ);</span>
 
-<span class="fc" id="L759">        final Matrix g = gravity.asMatrix();</span>
-<span class="fc" id="L760">        g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);</span>
+<span class="fc" id="L754">        final Matrix g = gravity.asMatrix();</span>
+<span class="fc" id="L755">        g.multiplyByScalar(-2.0 * propagationInterval / geocentricRadius);</span>
 
-<span class="fc" id="L762">        final Matrix estRebeOldTrans = estRebeOld.transposeAndReturnNew();</span>
-<span class="fc" id="L763">        estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);</span>
+<span class="fc" id="L757">        final Matrix estRebeOldTrans = estRebeOld.transposeAndReturnNew();</span>
+<span class="fc" id="L758">        estRebeOldTrans.multiplyByScalar(1.0 / previousPositionNorm);</span>
 
-<span class="fc" id="L765">        g.multiply(estRebeOldTrans, tmp1);</span>
+<span class="fc" id="L760">        g.multiply(estRebeOldTrans, tmp1);</span>
 
-<span class="fc" id="L767">        phiMatrix.setSubmatrix(3, 6,</span>
+<span class="fc" id="L762">        phiMatrix.setSubmatrix(3, 6,</span>
                 5, 8, tmp1);
 
-<span class="fc bfc" id="L770" title="All 2 branches covered.">        for (int i = 0; i &lt; com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {</span>
-<span class="fc" id="L771">            phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);</span>
+<span class="fc bfc" id="L765" title="All 2 branches covered.">        for (int i = 0; i &lt; com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {</span>
+<span class="fc" id="L766">            phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);</span>
         }
 
 
         // 2. Determine approximate system noise covariance matrix using (14.82)
-<span class="fc" id="L776">        final Matrix qPrimeMatrix = new Matrix(</span>
+<span class="fc" id="L771">        final Matrix qPrimeMatrix = new Matrix(</span>
                 INSLooselyCoupledKalmanState.NUM_PARAMS,
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
 
-<span class="fc" id="L780">        final double gyroNoisePSD = config.getGyroNoisePSD();</span>
-<span class="fc" id="L781">        final double gyroNoiseValue = gyroNoisePSD * propagationInterval;</span>
-<span class="fc bfc" id="L782" title="All 2 branches covered.">        for (int i = 0; i &lt; 3; i++) {</span>
-<span class="fc" id="L783">            qPrimeMatrix.setElementAt(i, i, gyroNoiseValue);</span>
+<span class="fc" id="L775">        final double gyroNoisePSD = config.getGyroNoisePSD();</span>
+<span class="fc" id="L776">        final double gyroNoiseValue = gyroNoisePSD * propagationInterval;</span>
+<span class="fc bfc" id="L777" title="All 2 branches covered.">        for (int i = 0; i &lt; 3; i++) {</span>
+<span class="fc" id="L778">            qPrimeMatrix.setElementAt(i, i, gyroNoiseValue);</span>
         }
 
-<span class="fc" id="L786">        final double accelNoisePSD = config.getAccelerometerNoisePSD();</span>
-<span class="fc" id="L787">        final double accelNoiseValue = accelNoisePSD * propagationInterval;</span>
-<span class="fc bfc" id="L788" title="All 2 branches covered.">        for (int i = 3; i &lt; 6; i++) {</span>
-<span class="fc" id="L789">            qPrimeMatrix.setElementAt(i, i, accelNoiseValue);</span>
+<span class="fc" id="L781">        final double accelNoisePSD = config.getAccelerometerNoisePSD();</span>
+<span class="fc" id="L782">        final double accelNoiseValue = accelNoisePSD * propagationInterval;</span>
+<span class="fc bfc" id="L783" title="All 2 branches covered.">        for (int i = 3; i &lt; 6; i++) {</span>
+<span class="fc" id="L784">            qPrimeMatrix.setElementAt(i, i, accelNoiseValue);</span>
         }
 
-<span class="fc" id="L792">        final double accelBiasPSD = config.getAccelerometerBiasPSD();</span>
-<span class="fc" id="L793">        final double accelBiasValue = accelBiasPSD * propagationInterval;</span>
-<span class="fc bfc" id="L794" title="All 2 branches covered.">        for (int i = 9; i &lt; 12; i++) {</span>
-<span class="fc" id="L795">            qPrimeMatrix.setElementAt(i, i, accelBiasValue);</span>
+<span class="fc" id="L787">        final double accelBiasPSD = config.getAccelerometerBiasPSD();</span>
+<span class="fc" id="L788">        final double accelBiasValue = accelBiasPSD * propagationInterval;</span>
+<span class="fc bfc" id="L789" title="All 2 branches covered.">        for (int i = 9; i &lt; 12; i++) {</span>
+<span class="fc" id="L790">            qPrimeMatrix.setElementAt(i, i, accelBiasValue);</span>
         }
 
-<span class="fc" id="L798">        final double gyroBiasPSD = config.getGyroBiasPSD();</span>
-<span class="fc" id="L799">        final double gyroBiasValue = gyroBiasPSD * propagationInterval;</span>
-<span class="fc bfc" id="L800" title="All 2 branches covered.">        for (int i = 12; i &lt; 15; i++) {</span>
-<span class="fc" id="L801">            qPrimeMatrix.setElementAt(i, i, gyroBiasValue);</span>
+<span class="fc" id="L793">        final double gyroBiasPSD = config.getGyroBiasPSD();</span>
+<span class="fc" id="L794">        final double gyroBiasValue = gyroBiasPSD * propagationInterval;</span>
+<span class="fc bfc" id="L795" title="All 2 branches covered.">        for (int i = 12; i &lt; 15; i++) {</span>
+<span class="fc" id="L796">            qPrimeMatrix.setElementAt(i, i, gyroBiasValue);</span>
         }
 
 
@@ -807,129 +802,129 @@ import com.irurueta.units.TimeUnit;
         // x_est_propagated(1:15, 1) = 0;
 
         // 4. Propagate state estimation error covariance matrix using (3.46)
-<span class="fc" id="L810">        final Matrix pMatrixOld = previousState.getCovariance();</span>
+<span class="fc" id="L805">        final Matrix pMatrixOld = previousState.getCovariance();</span>
 
-<span class="fc" id="L812">        qPrimeMatrix.multiplyByScalar(0.5);</span>
+<span class="fc" id="L807">        qPrimeMatrix.multiplyByScalar(0.5);</span>
 
-<span class="fc" id="L814">        final Matrix tmp3 = pMatrixOld.addAndReturnNew(qPrimeMatrix);</span>
-<span class="fc" id="L815">        final Matrix pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp3);</span>
+<span class="fc" id="L809">        final Matrix tmp3 = pMatrixOld.addAndReturnNew(qPrimeMatrix);</span>
+<span class="fc" id="L810">        final Matrix pMatrixPropagated = phiMatrix.multiplyAndReturnNew(tmp3);</span>
 
-<span class="fc" id="L817">        phiMatrix.transpose();</span>
-<span class="fc" id="L818">        pMatrixPropagated.multiply(phiMatrix);</span>
+<span class="fc" id="L812">        phiMatrix.transpose();</span>
+<span class="fc" id="L813">        pMatrixPropagated.multiply(phiMatrix);</span>
 
-<span class="fc" id="L820">        pMatrixPropagated.add(qPrimeMatrix);</span>
+<span class="fc" id="L815">        pMatrixPropagated.add(qPrimeMatrix);</span>
 
 
         // MEASUREMENT UPDATE PHASE
 
         // 5. Set-up measurement matrix using (14.115)
-<span class="fc" id="L826">        final Matrix h = new Matrix(POS_AND_VEL_COMPONENTS,</span>
+<span class="fc" id="L821">        final Matrix h = new Matrix(POS_AND_VEL_COMPONENTS,</span>
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
-<span class="fc bfc" id="L828" title="All 2 branches covered.">        for (int i = 0; i &lt; 3; i++) {</span>
-<span class="fc" id="L829">            h.setElementAt(i, POS_AND_VEL_COMPONENTS + i, -1.0);</span>
-<span class="fc" id="L830">            int j = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS + i;</span>
-<span class="fc" id="L831">            h.setElementAt(j, j, -1.0);</span>
+<span class="fc bfc" id="L823" title="All 2 branches covered.">        for (int i = 0; i &lt; 3; i++) {</span>
+<span class="fc" id="L824">            h.setElementAt(i, POS_AND_VEL_COMPONENTS + i, -1.0);</span>
+<span class="fc" id="L825">            int j = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS + i;</span>
+<span class="fc" id="L826">            h.setElementAt(j, j, -1.0);</span>
         }
 
         // 6. Set-up measurement noise covariance matrix assuming all components of
         // GNSS position and velocity are independent and have equal variance.
-<span class="fc" id="L836">        final Matrix r = new Matrix(POS_AND_VEL_COMPONENTS, POS_AND_VEL_COMPONENTS);</span>
+<span class="fc" id="L831">        final Matrix r = new Matrix(POS_AND_VEL_COMPONENTS, POS_AND_VEL_COMPONENTS);</span>
 
-<span class="fc" id="L838">        final double posMeasSD = config.getPositionNoiseSD();</span>
-<span class="fc" id="L839">        final double posMeasSD2 = posMeasSD * posMeasSD;</span>
-<span class="fc bfc" id="L840" title="All 2 branches covered.">        for (int i = 0; i &lt; com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {</span>
-<span class="fc" id="L841">            r.setElementAt(i, i, posMeasSD2);</span>
+<span class="fc" id="L833">        final double posMeasSD = config.getPositionNoiseSD();</span>
+<span class="fc" id="L834">        final double posMeasSD2 = posMeasSD * posMeasSD;</span>
+<span class="fc bfc" id="L835" title="All 2 branches covered.">        for (int i = 0; i &lt; com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i++) {</span>
+<span class="fc" id="L836">            r.setElementAt(i, i, posMeasSD2);</span>
         }
 
-<span class="fc" id="L844">        final double velMeasSD = config.getVelocityNoiseSD();</span>
-<span class="fc" id="L845">        final double velMeasSD2 = velMeasSD * velMeasSD;</span>
-<span class="fc bfc" id="L846" title="All 2 branches covered.">        for (int i = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i &lt; POS_AND_VEL_COMPONENTS; i++) {</span>
-<span class="fc" id="L847">            r.setElementAt(i, i, velMeasSD2);</span>
+<span class="fc" id="L839">        final double velMeasSD = config.getVelocityNoiseSD();</span>
+<span class="fc" id="L840">        final double velMeasSD2 = velMeasSD * velMeasSD;</span>
+<span class="fc bfc" id="L841" title="All 2 branches covered.">        for (int i = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS; i &lt; POS_AND_VEL_COMPONENTS; i++) {</span>
+<span class="fc" id="L842">            r.setElementAt(i, i, velMeasSD2);</span>
         }
 
         // 7. Calculate Kalman gain using (3.21)
-<span class="fc" id="L851">        final Matrix hTrans = h.transposeAndReturnNew();</span>
+<span class="fc" id="L846">        final Matrix hTrans = h.transposeAndReturnNew();</span>
 
-<span class="fc" id="L853">        final Matrix tmp4 = h.multiplyAndReturnNew(pMatrixPropagated);</span>
-<span class="fc" id="L854">        tmp4.multiply(hTrans);</span>
-<span class="fc" id="L855">        tmp4.add(r);</span>
+<span class="fc" id="L848">        final Matrix tmp4 = h.multiplyAndReturnNew(pMatrixPropagated);</span>
+<span class="fc" id="L849">        tmp4.multiply(hTrans);</span>
+<span class="fc" id="L850">        tmp4.add(r);</span>
 
-<span class="fc" id="L857">        final Matrix tmp5 = Utils.inverse(tmp4);</span>
+<span class="fc" id="L852">        final Matrix tmp5 = Utils.inverse(tmp4);</span>
 
-<span class="fc" id="L859">        final Matrix k = pMatrixPropagated.multiplyAndReturnNew(hTrans);</span>
-<span class="fc" id="L860">        k.multiply(tmp5);</span>
+<span class="fc" id="L854">        final Matrix k = pMatrixPropagated.multiplyAndReturnNew(hTrans);</span>
+<span class="fc" id="L855">        k.multiply(tmp5);</span>
 
         // 8. Formulate measurement innovations using (14.102), noting that zero
         // lever arm is assumed here
-<span class="fc" id="L864">        final double prevVx = previousState.getVx();</span>
-<span class="fc" id="L865">        final double prevVy = previousState.getVy();</span>
-<span class="fc" id="L866">        final double prevVz = previousState.getVz();</span>
+<span class="fc" id="L859">        final double prevVx = previousState.getVx();</span>
+<span class="fc" id="L860">        final double prevVy = previousState.getVy();</span>
+<span class="fc" id="L861">        final double prevVz = previousState.getVz();</span>
 
-<span class="fc" id="L868">        final Matrix deltaZ = new Matrix(POS_AND_VEL_COMPONENTS, 1);</span>
-<span class="fc" id="L869">        deltaZ.setElementAtIndex(0, x - prevX);</span>
-<span class="fc" id="L870">        deltaZ.setElementAtIndex(1, y - prevY);</span>
-<span class="fc" id="L871">        deltaZ.setElementAtIndex(2, z - prevZ);</span>
-<span class="fc" id="L872">        deltaZ.setElementAtIndex(3, vx - prevVx);</span>
-<span class="fc" id="L873">        deltaZ.setElementAtIndex(4, vy - prevVy);</span>
-<span class="fc" id="L874">        deltaZ.setElementAtIndex(5, vz - prevVz);</span>
+<span class="fc" id="L863">        final Matrix deltaZ = new Matrix(POS_AND_VEL_COMPONENTS, 1);</span>
+<span class="fc" id="L864">        deltaZ.setElementAtIndex(0, x - prevX);</span>
+<span class="fc" id="L865">        deltaZ.setElementAtIndex(1, y - prevY);</span>
+<span class="fc" id="L866">        deltaZ.setElementAtIndex(2, z - prevZ);</span>
+<span class="fc" id="L867">        deltaZ.setElementAtIndex(3, vx - prevVx);</span>
+<span class="fc" id="L868">        deltaZ.setElementAtIndex(4, vy - prevVy);</span>
+<span class="fc" id="L869">        deltaZ.setElementAtIndex(5, vz - prevVz);</span>
 
         // 9. Update state estimates using (3.24)
         // x_est_new = x_est_propagated + K_matrix * delta_z;
-<span class="fc" id="L878">        final Matrix xEstNew = k.multiplyAndReturnNew(deltaZ);</span>
+<span class="fc" id="L873">        final Matrix xEstNew = k.multiplyAndReturnNew(deltaZ);</span>
 
         // 10. Update state estimation error covariance matrix using (3.25)
-<span class="fc" id="L881">        k.multiply(h);</span>
-<span class="fc" id="L882">        final Matrix pNew = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS,</span>
+<span class="fc" id="L876">        k.multiply(h);</span>
+<span class="fc" id="L877">        final Matrix pNew = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS,</span>
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
-<span class="fc" id="L884">        pNew.subtract(k);</span>
-<span class="fc" id="L885">        pNew.multiply(pMatrixPropagated);</span>
+<span class="fc" id="L879">        pNew.subtract(k);</span>
+<span class="fc" id="L880">        pNew.multiply(pMatrixPropagated);</span>
 
         // CLOSED-LOOP CORRECTION
 
         // Correct attitude, velocity, and position using (14.7-9)
-<span class="fc" id="L890">        final Matrix tmp6 = xEstNew.getSubmatrix(0, 0,</span>
+<span class="fc" id="L885">        final Matrix tmp6 = xEstNew.getSubmatrix(0, 0,</span>
                 2, 0);
-<span class="fc" id="L892">        Matrix tmp7 = Utils.skewMatrix(tmp6);</span>
+<span class="fc" id="L887">        Matrix tmp7 = Utils.skewMatrix(tmp6);</span>
 
-<span class="fc" id="L894">        final Matrix estCbeNew = Matrix.identity(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS,</span>
+<span class="fc" id="L889">        final Matrix estCbeNew = Matrix.identity(com.irurueta.navigation.frames.ECEFPosition.COMPONENTS,</span>
                 com.irurueta.navigation.frames.ECEFPosition.COMPONENTS);
-<span class="fc" id="L896">        estCbeNew.subtract(tmp7);</span>
-<span class="fc" id="L897">        estCbeNew.multiply(estCbeOld);</span>
+<span class="fc" id="L891">        estCbeNew.subtract(tmp7);</span>
+<span class="fc" id="L892">        estCbeNew.multiply(estCbeOld);</span>
 
-<span class="fc" id="L899">        final double newVx = prevVx - xEstNew.getElementAtIndex(3);</span>
-<span class="fc" id="L900">        final double newVy = prevVy - xEstNew.getElementAtIndex(4);</span>
-<span class="fc" id="L901">        final double newVz = prevVz - xEstNew.getElementAtIndex(5);</span>
+<span class="fc" id="L894">        final double newVx = prevVx - xEstNew.getElementAtIndex(3);</span>
+<span class="fc" id="L895">        final double newVy = prevVy - xEstNew.getElementAtIndex(4);</span>
+<span class="fc" id="L896">        final double newVz = prevVz - xEstNew.getElementAtIndex(5);</span>
 
-<span class="fc" id="L903">        final double newX = prevX - xEstNew.getElementAtIndex(6);</span>
-<span class="fc" id="L904">        final double newY = prevY - xEstNew.getElementAtIndex(7);</span>
-<span class="fc" id="L905">        final double newZ = prevZ - xEstNew.getElementAtIndex(8);</span>
+<span class="fc" id="L898">        final double newX = prevX - xEstNew.getElementAtIndex(6);</span>
+<span class="fc" id="L899">        final double newY = prevY - xEstNew.getElementAtIndex(7);</span>
+<span class="fc" id="L900">        final double newZ = prevZ - xEstNew.getElementAtIndex(8);</span>
 
         // Update IMU bias estimates
-<span class="fc" id="L908">        final double newAccelerationBiasX = previousState.getAccelerationBiasX()</span>
-<span class="fc" id="L909">                + xEstNew.getElementAtIndex(9);</span>
-<span class="fc" id="L910">        final double newAccelerationBiasY = previousState.getAccelerationBiasY()</span>
-<span class="fc" id="L911">                + xEstNew.getElementAtIndex(10);</span>
-<span class="fc" id="L912">        final double newAccelerationBiasZ = previousState.getAccelerationBiasZ()</span>
-<span class="fc" id="L913">                + xEstNew.getElementAtIndex(11);</span>
+<span class="fc" id="L903">        final double newAccelerationBiasX = previousState.getAccelerationBiasX()</span>
+<span class="fc" id="L904">                + xEstNew.getElementAtIndex(9);</span>
+<span class="fc" id="L905">        final double newAccelerationBiasY = previousState.getAccelerationBiasY()</span>
+<span class="fc" id="L906">                + xEstNew.getElementAtIndex(10);</span>
+<span class="fc" id="L907">        final double newAccelerationBiasZ = previousState.getAccelerationBiasZ()</span>
+<span class="fc" id="L908">                + xEstNew.getElementAtIndex(11);</span>
 
-<span class="fc" id="L915">        final double newGyroBiasX = previousState.getGyroBiasX()</span>
-<span class="fc" id="L916">                + xEstNew.getElementAtIndex(12);</span>
-<span class="fc" id="L917">        final double newGyroBiasY = previousState.getGyroBiasY()</span>
-<span class="fc" id="L918">                + xEstNew.getElementAtIndex(13);</span>
-<span class="fc" id="L919">        final double newGyroBiasZ = previousState.getGyroBiasZ()</span>
-<span class="fc" id="L920">                + xEstNew.getElementAtIndex(14);</span>
+<span class="fc" id="L910">        final double newGyroBiasX = previousState.getGyroBiasX()</span>
+<span class="fc" id="L911">                + xEstNew.getElementAtIndex(12);</span>
+<span class="fc" id="L912">        final double newGyroBiasY = previousState.getGyroBiasY()</span>
+<span class="fc" id="L913">                + xEstNew.getElementAtIndex(13);</span>
+<span class="fc" id="L914">        final double newGyroBiasZ = previousState.getGyroBiasZ()</span>
+<span class="fc" id="L915">                + xEstNew.getElementAtIndex(14);</span>
 
 
         // set result values
-<span class="fc" id="L924">        result.setBodyToEcefCoordinateTransformationMatrix(estCbeNew);</span>
-<span class="fc" id="L925">        result.setVelocityCoordinates(newVx, newVy, newVz);</span>
-<span class="fc" id="L926">        result.setPositionCoordinates(newX, newY, newZ);</span>
-<span class="fc" id="L927">        result.setAccelerationBiasCoordinates(newAccelerationBiasX,</span>
+<span class="fc" id="L919">        result.setBodyToEcefCoordinateTransformationMatrix(estCbeNew);</span>
+<span class="fc" id="L920">        result.setVelocityCoordinates(newVx, newVy, newVz);</span>
+<span class="fc" id="L921">        result.setPositionCoordinates(newX, newY, newZ);</span>
+<span class="fc" id="L922">        result.setAccelerationBiasCoordinates(newAccelerationBiasX,</span>
                 newAccelerationBiasY, newAccelerationBiasZ);
-<span class="fc" id="L929">        result.setGyroBiasCoordinates(newGyroBiasX, newGyroBiasY,</span>
+<span class="fc" id="L924">        result.setGyroBiasCoordinates(newGyroBiasX, newGyroBiasY,</span>
                 newGyroBiasZ);
-<span class="fc" id="L931">        result.setCovariance(pNew);</span>
-<span class="fc" id="L932">    }</span>
+<span class="fc" id="L926">        result.setCovariance(pNew);</span>
+<span class="fc" id="L927">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -951,7 +946,7 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L954">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L949">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, config);
     }
 
@@ -977,16 +972,16 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L980">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L975">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, config, result);
-<span class="fc" id="L982">    }</span>
+<span class="fc" id="L977">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position.
      * @param userVelocity        ECEF user velocity.
-     * @param propagationInterval propagaion interval.
+     * @param propagationInterval propagation interval.
      * @param previousState       previous Kalman filter state.
      * @param bodyKinematics      body kinematics containing measured specific force
      *                            resolved along body frame axes.
@@ -1003,7 +998,7 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1006">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L1001">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, previousLatitude, config);
     }
 
@@ -1031,10 +1026,10 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1034">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L1029">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, previousLatitude, config,
                 result);
-<span class="fc" id="L1037">    }</span>
+<span class="fc" id="L1032">    }</span>
 
     /**
      * Estimates the update of Kalman filter state of a single epoch.
@@ -1063,7 +1058,7 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1066">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L1061">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, config);
     }
 
@@ -1096,9 +1091,9 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1099">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L1094">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, config, result);
-<span class="fc" id="L1101">    }</span>
+<span class="fc" id="L1096">    }</span>
 
     /**
      * Estimates the update of Kalman filter state of a single epoch.
@@ -1129,7 +1124,7 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1132">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L1127">        return estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, previousLatitude, config);
     }
 
@@ -1164,9 +1159,9 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1167">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
+<span class="fc" id="L1162">        estimate(userPosition, userVelocity, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L1169">    }</span>
+<span class="fc" id="L1164">    }</span>
 
     /**
      * Estimates the update of Kalman filter state of a single epoch.
@@ -1198,7 +1193,7 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1201">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1196">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, config);
     }
 
@@ -1234,9 +1229,9 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1237">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState,</span>
+<span class="fc" id="L1232">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval), previousState,</span>
                 bodyKinematics, config, result);
-<span class="fc" id="L1239">    }</span>
+<span class="fc" id="L1234">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1270,7 +1265,7 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1273">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1268">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, previousLatitude, config);
     }
 
@@ -1308,9 +1303,9 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1311">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1306">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, bodyKinematics, previousLatitude, config, result);
-<span class="fc" id="L1313">    }</span>
+<span class="fc" id="L1308">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1349,7 +1344,7 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1352">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1347">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, config);
     }
 
@@ -1392,9 +1387,9 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1395">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1390">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, config, result);
-<span class="fc" id="L1397">    }</span>
+<span class="fc" id="L1392">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1435,7 +1430,7 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1438">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1433">        return estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, previousLatitude, config);
     }
 
@@ -1480,9 +1475,9 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1483">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
+<span class="fc" id="L1478">        estimate(x, y, z, vx, vy, vz, convertTime(propagationInterval),</span>
                 previousState, fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L1485">    }</span>
+<span class="fc" id="L1480">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1504,9 +1499,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1507">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1508">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1509">                userVelocity.getVz(), propagationInterval, previousState, bodyKinematics,</span>
+<span class="fc" id="L1502">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1503">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1504">                userVelocity.getVz(), propagationInterval, previousState, bodyKinematics,</span>
                 config);
     }
 
@@ -1532,11 +1527,11 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1535">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1536">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1537">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1530">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1531">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1532">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 bodyKinematics, config, result);
-<span class="fc" id="L1539">    }</span>
+<span class="fc" id="L1534">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1560,9 +1555,9 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1563">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1564">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1565">                userVelocity.getVz(), propagationInterval,</span>
+<span class="fc" id="L1558">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1559">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1560">                userVelocity.getVz(), propagationInterval,</span>
                 previousState, bodyKinematics, previousLatitude, config);
     }
 
@@ -1590,11 +1585,11 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1593">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1594">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1595">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1588">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1589">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1590">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 bodyKinematics, previousLatitude, config, result);
-<span class="fc" id="L1597">    }</span>
+<span class="fc" id="L1592">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1623,9 +1618,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1626">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1627">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1628">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1621">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1622">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1623">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, config);
     }
 
@@ -1658,11 +1653,11 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1661">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1662">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1663">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1656">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1657">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1658">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, config, result);
-<span class="fc" id="L1665">    }</span>
+<span class="fc" id="L1660">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1693,9 +1688,9 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1696">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1697">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1698">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1691">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1692">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1693">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config);
     }
 
@@ -1730,11 +1725,11 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1733">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1734">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1735">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1728">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1729">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1730">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L1737">    }</span>
+<span class="fc" id="L1732">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1756,9 +1751,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1759">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1760">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1761">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1754">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1755">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1756">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 bodyKinematics, config);
     }
 
@@ -1784,12 +1779,12 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1787">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1788">                userPosition.getInhomZ(), userVelocity.getVx(),</span>
-<span class="fc" id="L1789">                userVelocity.getVy(), userVelocity.getVz(),</span>
+<span class="fc" id="L1782">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1783">                userPosition.getInhomZ(), userVelocity.getVx(),</span>
+<span class="fc" id="L1784">                userVelocity.getVy(), userVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics, config,
                 result);
-<span class="fc" id="L1792">    }</span>
+<span class="fc" id="L1787">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1813,9 +1808,9 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1816">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1817">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1818">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1811">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1812">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1813">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 bodyKinematics, previousLatitude, config);
     }
 
@@ -1843,11 +1838,11 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1846">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1847">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1848">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1841">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1842">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1843">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 bodyKinematics, previousLatitude, config, result);
-<span class="fc" id="L1850">    }</span>
+<span class="fc" id="L1845">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -1876,9 +1871,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1879">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1880">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1881">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1874">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1875">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1876">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, config);
     }
 
@@ -1901,7 +1896,7 @@ import com.irurueta.units.TimeUnit;
      * @param config              Loosely Coupled Kalman filter configuration.
      * @param result              instance where new state of Kalman filter will be
      *                            stored.
-     * @throws AlgebraException if there are anumerical instabilities.
+     * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
             final Point3D userPosition,
@@ -1911,14 +1906,14 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1914">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1915">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1916">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1909">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1910">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1911">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, config, result);
-<span class="fc" id="L1918">    }</span>
+<span class="fc" id="L1913">    }</span>
 
     /**
-     * Estimtes the update of Kalman filter state for a single epoch.
+     * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position expressed in meters (m).
      * @param userVelocity        ECEF user velocity.
@@ -1946,9 +1941,9 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L1949">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1950">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1951">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1944">        return estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1945">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1946">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config);
     }
 
@@ -1983,11 +1978,11 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L1986">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
-<span class="fc" id="L1987">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
-<span class="fc" id="L1988">                userVelocity.getVz(), propagationInterval, previousState,</span>
+<span class="fc" id="L1981">        estimate(userPosition.getInhomX(), userPosition.getInhomY(),</span>
+<span class="fc" id="L1982">                userPosition.getInhomZ(), userVelocity.getVx(), userVelocity.getVy(),</span>
+<span class="fc" id="L1983">                userVelocity.getVz(), propagationInterval, previousState,</span>
                 fx, fy, fz, previousLatitude, config, result);
-<span class="fc" id="L1990">    }</span>
+<span class="fc" id="L1985">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2007,9 +2002,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2010">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2011">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2012">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2005">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2006">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2007">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 config);
     }
@@ -2034,12 +2029,12 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2037">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2038">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2039">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2032">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2033">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2034">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 config, result);
-<span class="fc" id="L2042">    }</span>
+<span class="fc" id="L2037">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2061,9 +2056,9 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2064">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2065">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2066">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2059">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2060">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2061">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 previousLatitude, config);
     }
@@ -2090,12 +2085,12 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2093">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2094">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2095">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2088">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2089">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2090">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 previousLatitude, config, result);
-<span class="fc" id="L2098">    }</span>
+<span class="fc" id="L2093">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2122,9 +2117,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2125">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2126">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2127">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2120">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2121">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2122">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, config);
     }
 
@@ -2154,11 +2149,11 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2157">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2158">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2159">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2152">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2153">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2154">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, config, result);
-<span class="fc" id="L2161">    }</span>
+<span class="fc" id="L2156">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2187,9 +2182,9 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2190">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2191">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2192">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2185">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2186">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2187">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, previousLatitude,
                 config);
     }
@@ -2223,12 +2218,12 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2226">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2227">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2228">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2221">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2222">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2223">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, previousLatitude,
                 config, result);
-<span class="fc" id="L2231">    }</span>
+<span class="fc" id="L2226">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2248,9 +2243,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2251">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2252">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2253">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2246">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2247">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2248">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics, config);
     }
 
@@ -2263,7 +2258,7 @@ import com.irurueta.units.TimeUnit;
      * @param bodyKinematics      body kinematics containing measured specific force
      *                            resolved along body frame axes.
      * @param config              Loosely Coupled Kalman filter configuration.
-     * @param result              instace where new state of Kalman filter will be
+     * @param result              instance where new state of Kalman filter will be
      *                            stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
@@ -2274,12 +2269,12 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2277">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2278">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2279">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2272">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2273">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2274">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 config, result);
-<span class="fc" id="L2282">    }</span>
+<span class="fc" id="L2277">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2301,9 +2296,9 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2304">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2305">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2306">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2299">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2300">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2301">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 previousLatitude, config);
     }
@@ -2330,12 +2325,12 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2333">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2334">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2335">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2328">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2329">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2330">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, bodyKinematics,
                 previousLatitude, config, result);
-<span class="fc" id="L2338">    }</span>
+<span class="fc" id="L2333">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2362,9 +2357,9 @@ import com.irurueta.units.TimeUnit;
             final INSLooselyCoupledKalmanState previousState,
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2365">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2366">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2367">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2360">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2361">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2362">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, config);
     }
 
@@ -2395,11 +2390,11 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2398">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2399">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2400">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2393">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2394">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2395">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, config, result);
-<span class="fc" id="L2402">    }</span>
+<span class="fc" id="L2397">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2428,9 +2423,9 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2431">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2432">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2433">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2426">        return estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2427">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2428">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, previousLatitude,
                 config);
     }
@@ -2464,12 +2459,12 @@ import com.irurueta.units.TimeUnit;
             final double previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2467">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
-<span class="fc" id="L2468">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
-<span class="fc" id="L2469">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
+<span class="fc" id="L2462">        estimate(positionAndVelocity.getX(), positionAndVelocity.getY(),</span>
+<span class="fc" id="L2463">                positionAndVelocity.getZ(), positionAndVelocity.getVx(),</span>
+<span class="fc" id="L2464">                positionAndVelocity.getVy(), positionAndVelocity.getVz(),</span>
                 propagationInterval, previousState, fx, fy, fz, previousLatitude,
                 config, result);
-<span class="fc" id="L2472">    }</span>
+<span class="fc" id="L2467">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2493,8 +2488,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2496">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L2497">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
+<span class="fc" id="L2491">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L2492">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -2522,9 +2517,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2525">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L2526">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L2527">    }</span>
+<span class="fc" id="L2520">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L2521">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L2522">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2555,8 +2550,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2558">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L2559">                previousState, fx, fy, fz, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L2553">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L2554">                previousState, fx, fy, fz, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -2590,10 +2585,10 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2593">        estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L2594">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
+<span class="fc" id="L2588">        estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L2589">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
                 config, result);
-<span class="fc" id="L2596">    }</span>
+<span class="fc" id="L2591">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2627,8 +2622,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2630">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2631">                bodyKinematics, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L2625">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2626">                bodyKinematics, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -2665,9 +2660,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2668">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2669">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L2670">    }</span>
+<span class="fc" id="L2663">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2664">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L2665">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2708,8 +2703,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2711">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2712">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L2706">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2707">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -2753,16 +2748,16 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2756">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2757">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L2758">    }</span>
+<span class="fc" id="L2751">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2752">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L2753">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position.
      * @param userVelocity        ECEF user velocity.
-     * @param propagationInterval propagaion interval.
+     * @param propagationInterval propagation interval.
      * @param previousState       previous Kalman filter state.
      * @param bodyKinematics      body kinematics containing measured specific force
      *                            resolved along body frame axes.
@@ -2779,8 +2774,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="nc" id="L2782">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="nc" id="L2783">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
+<span class="fc" id="L2777">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L2778">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -2808,9 +2803,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2811">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L2812">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L2813">    }</span>
+<span class="fc" id="L2806">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L2807">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L2808">    }</span>
 
     /**
      * Estimates the update of Kalman filter state of a single epoch.
@@ -2841,8 +2836,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2844">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L2845">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
+<span class="fc" id="L2839">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L2840">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -2877,9 +2872,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2880">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L2881">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L2882">    }</span>
+<span class="fc" id="L2875">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L2876">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L2877">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2913,8 +2908,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2916">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2917">                bodyKinematics, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L2911">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2912">                bodyKinematics, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -2951,9 +2946,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L2954">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2955">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L2956">    }</span>
+<span class="fc" id="L2949">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2950">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L2951">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -2994,8 +2989,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L2997">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L2998">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L2992">        return estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L2993">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -3039,9 +3034,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3042">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
-<span class="fc" id="L3043">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3044">    }</span>
+<span class="fc" id="L3037">        estimate(x, y, z, vx, vy, vz, propagationInterval, previousState,</span>
+<span class="fc" id="L3038">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3039">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3065,8 +3060,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3068">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L3069">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
+<span class="fc" id="L3063">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L3064">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -3094,9 +3089,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3097">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3098">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3099">    }</span>
+<span class="fc" id="L3092">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3093">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3094">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3127,8 +3122,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3130">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L3131">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
+<span class="fc" id="L3125">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L3126">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -3163,9 +3158,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3166">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3167">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3168">    }</span>
+<span class="fc" id="L3161">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3162">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3163">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3189,8 +3184,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="nc" id="L3192">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="nc" id="L3193">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
+<span class="fc" id="L3187">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L3188">                previousState, bodyKinematics, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -3218,12 +3213,12 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3221">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3222">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3223">    }</span>
+<span class="fc" id="L3216">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3217">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3218">    }</span>
 
     /**
-     * Estimtes the update of Kalman filter state for a single epoch.
+     * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position expressed in meters (m).
      * @param userVelocity        ECEF user velocity.
@@ -3251,8 +3246,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3254">        return estimate(userPosition, userVelocity, propagationInterval,</span>
-<span class="fc" id="L3255">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
+<span class="fc" id="L3249">        return estimate(userPosition, userVelocity, propagationInterval,</span>
+<span class="fc" id="L3250">                previousState, fx, fy, fz, convertAngle(previousLatitude),</span>
                 config);
     }
 
@@ -3287,9 +3282,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3290">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3291">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3292">    }</span>
+<span class="fc" id="L3285">        estimate(userPosition, userVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3286">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3287">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3311,8 +3306,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3314">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3315">                bodyKinematics, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L3309">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3310">                bodyKinematics, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -3337,10 +3332,10 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3340">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3341">                bodyKinematics, convertAngle(previousLatitude), config,</span>
+<span class="fc" id="L3335">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3336">                bodyKinematics, convertAngle(previousLatitude), config,</span>
                 result);
-<span class="fc" id="L3343">    }</span>
+<span class="fc" id="L3338">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3369,8 +3364,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3372">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3373">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L3367">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3368">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -3402,9 +3397,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3405">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3406">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3407">    }</span>
+<span class="fc" id="L3400">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3401">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3402">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3426,8 +3421,8 @@ import com.irurueta.units.TimeUnit;
             final BodyKinematics bodyKinematics,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3429">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3430">                bodyKinematics, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L3424">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3425">                bodyKinematics, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -3452,9 +3447,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3455">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3456">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3457">    }</span>
+<span class="fc" id="L3450">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3451">                bodyKinematics, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3452">    }</span>
 
     /**
      * Estimates the update of Kalman filter state for a single epoch.
@@ -3483,8 +3478,8 @@ import com.irurueta.units.TimeUnit;
             final double fx, final double fy, final double fz,
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config) throws AlgebraException {
-<span class="fc" id="L3486">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3487">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
+<span class="fc" id="L3481">        return estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3482">                fx, fy, fz, convertAngle(previousLatitude), config);</span>
     }
 
     /**
@@ -3516,9 +3511,9 @@ import com.irurueta.units.TimeUnit;
             final Angle previousLatitude,
             final INSLooselyCoupledKalmanConfig config,
             final INSLooselyCoupledKalmanState result) throws AlgebraException {
-<span class="fc" id="L3519">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
-<span class="fc" id="L3520">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
-<span class="fc" id="L3521">    }</span>
+<span class="fc" id="L3514">        estimate(positionAndVelocity, propagationInterval, previousState,</span>
+<span class="fc" id="L3515">                fx, fy, fz, convertAngle(previousLatitude), config, result);</span>
+<span class="fc" id="L3516">    }</span>
 
     /**
      * Converts time instance into a value expressed in seconds.
@@ -3527,8 +3522,8 @@ import com.irurueta.units.TimeUnit;
      * @return time value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-<span class="fc" id="L3530">        return TimeConverter.convert(time.getValue().doubleValue(),</span>
-<span class="fc" id="L3531">                time.getUnit(), TimeUnit.SECOND);</span>
+<span class="fc" id="L3525">        return TimeConverter.convert(time.getValue().doubleValue(),</span>
+<span class="fc" id="L3526">                time.getUnit(), TimeUnit.SECOND);</span>
     }
 
     /**
@@ -3538,8 +3533,8 @@ import com.irurueta.units.TimeUnit;
      * @return angle value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L3541">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
-<span class="fc" id="L3542">                angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L3536">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
+<span class="fc" id="L3537">                angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

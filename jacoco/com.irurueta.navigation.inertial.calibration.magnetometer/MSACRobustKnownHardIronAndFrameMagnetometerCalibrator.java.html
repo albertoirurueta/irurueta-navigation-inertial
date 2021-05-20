@@ -207,118 +207,119 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L212" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L213">            throw new LockedException();</span>
+<span class="fc bfc" id="L213" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L214">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L215" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L216">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L217">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L219">        final MSACRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
-<span class="fc" id="L220">                new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;Matrix&gt;() {</span>
+<span class="fc" id="L220">        final MSACRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
+<span class="fc" id="L221">                new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;Matrix&gt;() {</span>
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L223">                        return mThreshold;</span>
+<span class="fc" id="L224">                        return mThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L228">                        return mMeasurements.size();</span>
+<span class="fc" id="L229">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L233">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L234">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;Matrix&gt; solutions) {
-<span class="fc" id="L240">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L241">                    }</span>
+<span class="fc" id="L241">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L242">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final Matrix currentEstimation,
                             final int i) {
-<span class="fc" id="L247">                        return computeError(mMeasurements.get(i),</span>
+<span class="fc" id="L248">                        return computeError(mMeasurements.get(i),</span>
                                 currentEstimation);
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L253">                        return MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.super.isReady();</span>
+<span class="fc" id="L254">                        return MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.super.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L259">                    }</span>
+<span class="fc" id="L260">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L264">                    }</span>
+<span class="fc" id="L265">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;Matrix&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L271">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L271" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L272">                            mListener.onCalibrateNextIteration(</span>
                                     MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L275">                    }</span>
+<span class="fc" id="L276">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;Matrix&gt; estimator,
                             final float progress) {
-<span class="pc bpc" id="L281" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L282">                            mListener.onCalibrateProgressChange(</span>
+<span class="pc bpc" id="L282" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L283">                            mListener.onCalibrateProgressChange(</span>
                                     MSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
                                     progress);
                         }
-<span class="fc" id="L286">                    }</span>
+<span class="fc" id="L287">                    }</span>
                 });
 
         try {
-<span class="fc" id="L290">            mRunning = true;</span>
+<span class="fc" id="L291">            mRunning = true;</span>
 
-<span class="pc bpc" id="L292" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L293">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L293" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L294">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L296">            mInliersData = null;</span>
+<span class="fc" id="L297">            mInliersData = null;</span>
 
-<span class="fc" id="L298">            setupWmmEstimator();</span>
+<span class="fc" id="L299">            setupWmmEstimator();</span>
 
-<span class="fc" id="L300">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L301">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L302">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L303">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L304">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L301">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L302">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L303">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L304">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L305">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L306">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L307">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L308" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L309">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L309" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L310">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L312">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L313">            throw new LockedException(e);</span>
-<span class="nc" id="L314">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L315">            throw new NotReadyException(e);</span>
-<span class="nc" id="L316">        } catch (final RobustEstimatorException | IOException e) {</span>
-<span class="nc" id="L317">            throw new CalibrationException(e);</span>
+<span class="nc" id="L313">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L314">            throw new LockedException(e);</span>
+<span class="nc" id="L315">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L316">            throw new NotReadyException(e);</span>
+<span class="nc" id="L317">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L318">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L319">            mRunning = false;</span>
+<span class="fc" id="L320">            mRunning = false;</span>
         }
-<span class="fc" id="L321">    }</span>
+<span class="fc" id="L322">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -327,7 +328,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L330">        return RobustEstimatorMethod.MSAC;</span>
+<span class="fc" id="L331">        return RobustEstimatorMethod.MSAC;</span>
     }
 
     /**
@@ -338,7 +339,7 @@ public class MSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L341">        return false;</span>
+<span class="fc" id="L342">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
