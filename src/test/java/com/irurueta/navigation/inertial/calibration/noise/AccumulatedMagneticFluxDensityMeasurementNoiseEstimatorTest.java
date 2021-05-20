@@ -282,7 +282,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
             value = triad.getNorm();
 
-            assertTrue(estimator.addMeasurement(value));
+            estimator.addMeasurement(value);
 
             assertTrue(estimator.getLastMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, triad.getMeasurementNorm());
@@ -399,7 +399,7 @@ public class AccumulatedMagneticFluxDensityMeasurementNoiseEstimatorTest impleme
 
             value = triad.getNorm();
 
-            assertTrue(estimator.addMeasurement(triad.getMeasurementNorm()));
+            estimator.addMeasurement(triad.getMeasurementNorm());
 
             assertTrue(estimator.getLastMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, triad.getMeasurementNorm());

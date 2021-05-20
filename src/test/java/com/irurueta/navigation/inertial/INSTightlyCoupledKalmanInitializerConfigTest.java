@@ -835,6 +835,7 @@ public class INSTightlyCoupledKalmanInitializerConfigTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(config1.equals((Object) config1));
+        //noinspection EqualsWithItself
         assertTrue(config1.equals(config1));
         assertTrue(config1.equals(config2));
         assertFalse(config1.equals(config3));

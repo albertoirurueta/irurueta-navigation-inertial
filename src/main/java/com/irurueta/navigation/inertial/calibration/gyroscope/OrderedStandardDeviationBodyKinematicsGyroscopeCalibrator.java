@@ -42,7 +42,7 @@ public interface OrderedStandardDeviationBodyKinematicsGyroscopeCalibrator exten
      * the standard deviations of accelerometer and gyroscope measurements.
      *
      * @param measurements collection of body kinematics measurements at a
-     *                     known position witn unknown orientations.
+     *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
     void setMeasurements(

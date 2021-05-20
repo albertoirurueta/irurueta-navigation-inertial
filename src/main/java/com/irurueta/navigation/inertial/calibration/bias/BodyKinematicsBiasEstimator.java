@@ -1453,7 +1453,7 @@ public class BodyKinematicsBiasEstimator {
     /**
      * Sets current body orientation as a transformation from body to ECEF coordinates.
      * Notice that ECEF orientation refers to ECEF Earth axes, which means that
-     * orientation is not relative to the ground or horizont at current body position.
+     * orientation is not relative to the ground or horizon at current body position.
      * Typically it is more convenient to use
      * {@link #setNedC(CoordinateTransformation)} to specify orientation relative to
      * the ground or horizon at current body position.
@@ -2555,7 +2555,7 @@ public class BodyKinematicsBiasEstimator {
      * Gets estimated standard deviation of x coordinate of gyroscope sensed angular
      * rate expressed in (rad/s).
      *
-     * @return estimated standard deviaton of x coordinate of sensed angular rate.
+     * @return estimated standard deviation of x coordinate of sensed angular rate.
      */
     public double getStandardDeviationAngularRateX() {
         return Math.sqrt(mVarianceAngularRateX);

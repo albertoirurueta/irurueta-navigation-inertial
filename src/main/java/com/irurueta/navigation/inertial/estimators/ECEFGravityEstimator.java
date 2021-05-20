@@ -176,14 +176,14 @@ public class ECEFGravityEstimator {
 
             final double gammaX = tmp3 * x;
             final double gammaY = tmp3 * y;
-            final double gammaz = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
+            final double gammaZ = tmp1 * (1.0 + tmp2 * (3.0 - zScale)) * z;
 
             // Add centripetal acceleration using (2.133)
             final double omega2 = EARTH_ROTATION_RATE * EARTH_ROTATION_RATE;
             final double gx = gammaX + omega2 * x;
             final double gy = gammaY + omega2 * y;
 
-            result.setCoordinates(gx, gy, gammaz);
+            result.setCoordinates(gx, gy, gammaZ);
         }
     }
 

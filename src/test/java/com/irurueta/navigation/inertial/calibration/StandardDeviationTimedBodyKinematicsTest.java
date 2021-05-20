@@ -974,7 +974,7 @@ public class StandardDeviationTimedBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyContructor() {
+    public void testCopyConstructor() {
         final BodyKinematics kinematics = createBodyKinematics();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
@@ -1204,7 +1204,7 @@ public class StandardDeviationTimedBodyKinematicsTest {
     }
 
     @Test
-    public void testCopyFrmmWhenBodyKinematicsIsAvailableAtSourceAndDestinationIsEmpty() {
+    public void testCopyFromWhenBodyKinematicsIsAvailableAtSourceAndDestinationIsEmpty() {
         final BodyKinematics kinematics = createBodyKinematics();
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1397,6 +1397,7 @@ public class StandardDeviationTimedBodyKinematicsTest {
 
         // noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(standardDeviationTimedBodyKinematics1.equals((Object) standardDeviationTimedBodyKinematics1));
+        //noinspection EqualsWithItself
         assertTrue(standardDeviationTimedBodyKinematics1.equals(standardDeviationTimedBodyKinematics1));
         assertTrue(standardDeviationTimedBodyKinematics1.equals(standardDeviationTimedBodyKinematics2));
         assertFalse(standardDeviationTimedBodyKinematics1.equals(standardDeviationTimedBodyKinematics3));

@@ -57,6 +57,7 @@ import java.util.Collection;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
+@SuppressWarnings("DuplicatedCode")
 public class KnownFrameAccelerometerLinearLeastSquaresCalibrator implements
         KnownFrameAccelerometerCalibrator<FrameBodyKinematics,
                 KnownFrameAccelerometerLinearLeastSquaresCalibratorListener>,
@@ -159,7 +160,7 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMa;
 
@@ -725,7 +726,7 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated accelerometer scale factors and cross coupling errors, or null
      * if not available.

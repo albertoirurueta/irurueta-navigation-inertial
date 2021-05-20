@@ -64,7 +64,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     private static final double MAX_ANGLE_DEGREES = 180.0;
 
     private static final double MIN_LATITUDE_DEGREES = -90.0;
-    private static final double MAX_LATITUDE_DEGREEs = 90.0;
+    private static final double MAX_LATITUDE_DEGREES = 90.0;
     private static final double MIN_LONGITUDE_DEGREES = -180.0;
     private static final double MAX_LONGITUDE_DEGREES = 180.0;
     private static final double MIN_HEIGHT = -50.0;
@@ -9169,7 +9169,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor79() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9287,7 +9287,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor80() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9408,7 +9408,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9529,7 +9529,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9648,7 +9648,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor83() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9767,7 +9767,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor84() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -9888,7 +9888,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
                 Collections.emptyList();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10009,7 +10009,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
                 Collections.emptyList();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10133,7 +10133,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10257,7 +10257,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10384,7 +10384,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10511,7 +10511,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10635,7 +10635,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10759,7 +10759,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -10886,7 +10886,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11013,7 +11013,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11144,7 +11144,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11275,7 +11275,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11409,7 +11409,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11543,7 +11543,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11674,7 +11674,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11805,7 +11805,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -11939,7 +11939,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12073,7 +12073,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12202,7 +12202,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12334,7 +12334,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12466,7 +12466,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12595,7 +12595,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12724,7 +12724,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12857,7 +12857,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -12989,7 +12989,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13126,7 +13126,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13262,7 +13262,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13401,7 +13401,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13540,7 +13540,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13676,7 +13676,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13812,7 +13812,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -13955,7 +13955,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14094,7 +14094,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14229,7 +14229,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14373,7 +14373,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14517,7 +14517,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14658,7 +14658,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14799,7 +14799,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -14943,7 +14943,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15087,7 +15087,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15235,7 +15235,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15383,7 +15383,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15534,7 +15534,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15685,7 +15685,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15833,7 +15833,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -15981,7 +15981,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16132,7 +16132,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16283,7 +16283,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16414,7 +16414,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16548,7 +16548,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16686,7 +16686,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16824,7 +16824,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -16959,7 +16959,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17094,7 +17094,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17232,7 +17232,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17370,7 +17370,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17505,7 +17505,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17645,7 +17645,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17789,7 +17789,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -17933,7 +17933,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -18074,7 +18074,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -18215,7 +18215,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -18361,7 +18361,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -18507,7 +18507,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -18661,7 +18661,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -18829,7 +18829,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -19001,7 +19001,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -19173,7 +19173,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -19342,7 +19342,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -19511,7 +19511,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -19683,7 +19683,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -19859,7 +19859,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20015,7 +20015,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor157() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20133,7 +20133,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor158() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20254,7 +20254,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20375,7 +20375,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20494,7 +20494,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor161() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20613,7 +20613,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
     public void testConstructor162() throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20734,7 +20734,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
                 Collections.emptyList();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20855,7 +20855,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
                 Collections.emptyList();
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -20979,7 +20979,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21103,7 +21103,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21230,7 +21230,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21357,7 +21357,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21481,7 +21481,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21605,7 +21605,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21732,7 +21732,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21859,7 +21859,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -21990,7 +21990,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22121,7 +22121,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22255,7 +22255,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22389,7 +22389,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22520,7 +22520,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22651,7 +22651,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22785,7 +22785,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -22919,7 +22919,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23048,7 +23048,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23180,7 +23180,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23312,7 +23312,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23441,7 +23441,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23570,7 +23570,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23703,7 +23703,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23835,7 +23835,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -23972,7 +23972,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24108,7 +24108,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24247,7 +24247,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24386,7 +24386,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24522,7 +24522,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24658,7 +24658,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24797,7 +24797,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -24936,7 +24936,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25071,7 +25071,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25215,7 +25215,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25359,7 +25359,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25500,7 +25500,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25641,7 +25641,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25785,7 +25785,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -25929,7 +25929,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26077,7 +26077,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26225,7 +26225,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26376,7 +26376,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26527,7 +26527,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26675,7 +26675,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26823,7 +26823,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -26974,7 +26974,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27125,7 +27125,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27256,7 +27256,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27390,7 +27390,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27528,7 +27528,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27666,7 +27666,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27801,7 +27801,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -27936,7 +27936,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28074,7 +28074,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28212,7 +28212,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28347,7 +28347,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28487,7 +28487,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28631,7 +28631,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28775,7 +28775,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -28916,7 +28916,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -29057,7 +29057,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -29203,7 +29203,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -29349,7 +29349,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -29503,7 +29503,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -29671,7 +29671,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -29887,7 +29887,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -30059,7 +30059,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -30268,7 +30268,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -30437,7 +30437,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -30609,7 +30609,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -30785,7 +30785,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -31555,7 +31555,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -31584,7 +31584,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double latitude = Math.toRadians(
-                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
         final double longitude = Math.toRadians(
                 randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -31688,7 +31688,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
 
         // set enough measurements for common axis case
         measurements2.clear();
-        for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS; i++) {
+        for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);
@@ -31726,7 +31726,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -31839,7 +31839,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -31957,7 +31957,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
@@ -31968,7 +31968,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
             final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
             final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS; i++) {
+            for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
                 final double roll = Math.toRadians(
                         randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
                 final double pitch = Math.toRadians(
@@ -32070,7 +32070,7 @@ public class KnownBiasAndPositionAccelerometerCalibratorTest implements
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREEs));
+                    randomizer.nextDouble(MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
             final double longitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);

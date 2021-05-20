@@ -35,11 +35,12 @@ import java.util.List;
 /**
  * Calculates position, velocity, attitude and IMU biases using a GNSS unweighted
  * iterated least squares estimator along with an INS loosely coupled Kalman filter
- * to take into account intertial measurements to smooth results.
+ * to take into account inertial measurements to smooth results.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m
  */
+@SuppressWarnings("DuplicatedCode")
 public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
 
     /**
@@ -1299,7 +1300,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      *
      * @param config INS loosely coupled Kalman configuration parameters to be
      *               set.
-     * @throws LockedException if this estimator is already runnign.
+     * @throws LockedException if this estimator is already running.
      */
     public void setConfig(final INSLooselyCoupledKalmanConfig config)
             throws LockedException {
@@ -1393,7 +1394,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      * GNSS and INS measurements until convergence is reached.
      *
      * @param initialConfig initial configuration to be set.
-     * @throws LockedException if this estimator is already runnign.
+     * @throws LockedException if this estimator is already running.
      */
     public void setInitialConfig(
             final INSLooselyCoupledKalmanInitializerConfig initialConfig)
@@ -1571,7 +1572,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Gets timestamp since epoch time when Kalman filter state was las propagated.
      *
-     * @param result instance where timestamp since epoch tiem when Kalman filter
+     * @param result instance where timestamp since epoch time when Kalman filter
      *               state was last propagated will be stored.
      * @return true if result instance is updated, false otherwise.
      */
@@ -1582,7 +1583,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
     /**
      * Gets timestamp since epoch time when Kalman filter state was last propagated.
      *
-     * @return timestamp since epoch time when Kalman fitler state was last
+     * @return timestamp since epoch time when Kalman filter state was last
      * propagated.
      */
     public Time getLastStateTimestampAsTime() {
@@ -1729,7 +1730,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
      *
      * @param kinematics kinematics applied to body (specific force and angular rate)
      *                   during last period of time. These measures are obtained from
-     *                   an intertial unit (IMU).
+     *                   an inertial unit (IMU).
      * @param timestamp  timestamp expressed in seconds since epoch time when specific
      *                   force and angular rate values were updated.
      * @return true if body kinematics values were updated, false otherwise.

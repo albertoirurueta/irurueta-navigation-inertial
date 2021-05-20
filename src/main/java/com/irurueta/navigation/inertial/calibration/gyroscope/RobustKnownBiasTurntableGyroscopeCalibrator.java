@@ -158,7 +158,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -408,7 +408,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -4083,7 +4083,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      * the standard deviations of accelerometer and gyroscope measurements.
      *
      * @param measurements collection of body kinematics measurements at a
-     *                     known position witn unknown orientations.
+     *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
@@ -4560,7 +4560,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -12416,7 +12416,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
          *          [0     sy   myz]
          *          [0     0    sz ]
          * </pre>
-         * Values of this matrix are unitless.
+         * Values of this matrix are unit-less.
          */
         private Matrix mEstimatedMg;
 

@@ -219,7 +219,7 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMa;
 
@@ -2425,7 +2425,7 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
      * Gets known accelerometer bias as an array.
      * Array values are expressed in meters per squared second (m/s^2).
      *
-     * @return array containint coordinates of known bias.
+     * @return array containing coordinates of known bias.
      */
     @Override
     public double[] getBias() {
@@ -2854,7 +2854,7 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated accelerometer scale factors and cross coupling errors, or null
      * if not available.

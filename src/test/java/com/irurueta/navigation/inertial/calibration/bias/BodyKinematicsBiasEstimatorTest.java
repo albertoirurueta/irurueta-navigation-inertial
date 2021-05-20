@@ -12403,7 +12403,7 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         assertEquals(trueKinematics, expectedKinematics2);
 
         // reset
-        estimator.reset();
+        assertTrue(estimator.reset());
 
         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
         assertNull(estimator.getLastBodyKinematics());
@@ -12644,7 +12644,7 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         } catch (final LockedException ignore) {
         }
         try {
-            estimator.reset();
+            assertFalse(estimator.reset());
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }

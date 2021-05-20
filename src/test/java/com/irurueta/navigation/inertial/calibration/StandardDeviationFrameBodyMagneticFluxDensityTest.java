@@ -1326,7 +1326,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenOnlyBodyMagneticFluxAreavailableAtSourceAndDestinationIsEmpty()
+    public void testCopyFromWhenOnlyBodyMagneticFluxAreaAvailableAtSourceAndDestinationIsEmpty()
             throws IOException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(
@@ -1595,6 +1595,7 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(frameBodyMagneticFluxDensity1.equals((Object) frameBodyMagneticFluxDensity1));
+        //noinspection EqualsWithItself
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity1));
         assertTrue(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity2));
         assertFalse(frameBodyMagneticFluxDensity1.equals(frameBodyMagneticFluxDensity3));

@@ -108,6 +108,7 @@ public class LevelingEstimator {
      *                     radians per second (rad/s).
      * @return yaw angle expressed in radians.
      */
+    @SuppressWarnings("DuplicatedCode")
     public static double getYaw(
             final double roll, final double pitch,
             final double angularRateX, final double angularRateY,

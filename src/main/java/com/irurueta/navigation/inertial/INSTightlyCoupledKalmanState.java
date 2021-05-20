@@ -137,7 +137,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * Estimated Kalman filter error covariance matrix.
      * Notice that covariance is expressed in terms of ECEF coordinates.
      * If accuracy of position, attitude or velocity needs to be expressed in terms
-     * of NED coordinates, their respective submatrices of this covariance matrix
+     * of NED coordinates, their respective sub-matrices of this covariance matrix
      * must be rotated, taking into account the Jacobian of the matrix transformation
      * relating both coordinates, the covariance can be expressed following the law
      * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
@@ -1065,7 +1065,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Sets estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      *
-     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per scond (m/s).
+     * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      */
     public void setVy(final double vy) {
         mVy = vy;
@@ -1381,7 +1381,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * Gets Kalman filter error covariance matrix.
      * Notice that covariance is expressed in terms of ECEF coordinates.
      * If accuracy of position, attitude or velocity needs to be expressed in terms
-     * of NED coordinates, their respective submatrices of this covariance matrix
+     * of NED coordinates, their respective sub-matrices of this covariance matrix
      * must be rotated, taking into account the Jacobian of the matrix transformation
      * relating both coordinates, the covariance can be expressed following the law
      * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)
@@ -1403,7 +1403,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * Gets Kalman filter error covariance matrix.
      * Notice that covariance is expressed in terms of ECEF coordinates.
      * If accuracy of position, attitude or velocity needs to be expressed in terms
-     * of NED coordinates, their respective submatrices of this covariance matrix
+     * of NED coordinates, their respective sub-matrices of this covariance matrix
      * must be rotated, taking into account the Jacobian of the matrix transformation
      * relating both coordinates, the covariance can be expressed following the law
      * of propagation of uncertainties (https://en.wikipedia.org/wiki/Propagation_of_uncertainty)

@@ -260,7 +260,7 @@ public class AccumulatedAngularSpeedMeasurementNoiseEstimatorTest implements
 
             value = triad.getNorm();
 
-            assertTrue(estimator.addMeasurement(value));
+            estimator.addMeasurement(value);
 
             assertTrue(estimator.getLastMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, triad.getMeasurementNorm());
@@ -395,7 +395,7 @@ public class AccumulatedAngularSpeedMeasurementNoiseEstimatorTest implements
 
             value = triad.getNorm();
 
-            assertTrue(estimator.addMeasurement(triad.getMeasurementNorm()));
+            estimator.addMeasurement(triad.getMeasurementNorm());
 
             assertTrue(estimator.getLastMeasurement(lastMeasurement));
             assertEquals(lastMeasurement, triad.getMeasurementNorm());

@@ -102,7 +102,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     private double mVariance;
 
     /**
-     * Indicates popsition of first element in window.
+     * Indicates position of first element in window.
      */
     private int mFirstCursor;
 
@@ -422,7 +422,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      * in (m^2 * s^-3) for accelerometer, (rad^2/s) for gyroscope or (T^2 * s) for
      * magnetometer.
      *
-     * @return measureent noise PSD.
+     * @return measurement noise PSD.
      */
     public double getPsd() {
         return mVariance * mTimeInterval;

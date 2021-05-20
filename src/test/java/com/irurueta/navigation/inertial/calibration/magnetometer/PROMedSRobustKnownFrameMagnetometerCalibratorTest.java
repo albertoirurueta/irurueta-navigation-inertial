@@ -3186,7 +3186,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibratorTest implements
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
                 new WMMEarthMagneticFluxDensityEstimator();
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, softIron,
                         wmmEstimator, randomizer);
 
@@ -4331,7 +4331,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
         final MagneticFluxDensityTriad std2 = new MagneticFluxDensityTriad();
-        calibrator.getEstimatedHardIronStandardDeviation(std2);
+        assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
 
         final double avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
                 calibrator.getEstimatedHardIronYStandardDeviation() +
@@ -4377,8 +4377,7 @@ public class PROMedSRobustKnownFrameMagnetometerCalibratorTest implements
         }
     }
 
-    private static List<StandardDeviationFrameBodyMagneticFluxDensity>
-    generateMeasurementsMultipleOrientationswithSamePosition(
+    private static List<StandardDeviationFrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
             final UniformRandomizer randomizer)

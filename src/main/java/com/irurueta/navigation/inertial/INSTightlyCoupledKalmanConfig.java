@@ -123,7 +123,7 @@ public class INSTightlyCoupledKalmanConfig implements Serializable, Cloneable {
      *                              in squared radians per second (rad^2/s).
      * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
      *                              expressed in (m^2 * s^-3).
-     * @param accelerometerBiasPSD  accelereometer bias random walk PSD (Power Spectral
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
      *                              Density) expressed in (m^2 * s^-5).
      * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
      *                              expressed in (rad^2 * s^-3).

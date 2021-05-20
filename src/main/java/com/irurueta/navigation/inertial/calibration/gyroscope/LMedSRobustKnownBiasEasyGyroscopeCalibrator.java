@@ -654,7 +654,7 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      * best estimated threshold using median of residuals is not small enough.
      * Once a solution is found that generates a threshold below this value, the
      * algorithm will stop.
-     * The stop threshold can be used to prevent the LMedS algrithm to iterate
+     * The stop threshold can be used to prevent the LMedS algorithm to iterate
      * too many times in cases where samples have a very similar accuracy.
      * For instance, in cases where proportion of outliers is very small (close
      * to 0%), and samples are very accurate (i.e. 1e-6), the algorithm would
@@ -712,6 +712,7 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {

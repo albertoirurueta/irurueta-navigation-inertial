@@ -131,7 +131,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -350,7 +350,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -1983,7 +1983,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -3033,7 +3033,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Creates a robust gyroscope calibrator using default robust ethod.
+     * Creates a robust gyroscope calibrator using default robust method.
      *
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
@@ -3045,7 +3045,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Creates a robust gyroscope calibrator using default robust ethod.
+     * Creates a robust gyroscope calibrator using default robust method.
      *
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
@@ -3510,7 +3510,7 @@ public abstract class RobustKnownFrameGyroscopeCalibrator implements
          *          [0     sy   myz]
          *          [0     0    sz ]
          * </pre>
-         * Values of this matrix are unitless.
+         * Values of this matrix are unit-less.
          */
         private Matrix mEstimatedMg;
 

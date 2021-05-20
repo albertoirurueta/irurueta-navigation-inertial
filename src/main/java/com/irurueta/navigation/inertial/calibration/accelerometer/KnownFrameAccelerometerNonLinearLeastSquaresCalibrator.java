@@ -60,7 +60,7 @@ import java.util.Collection;
  * - I is the 3x3 identity matrix.
  * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
  * a perfect accelerometer, this should be a 3x3 zero matrix.
- * - ftrue is ground-trush specific force.
+ * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
 public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
@@ -232,7 +232,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMa;
 
@@ -3346,7 +3346,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated accelerometer scale factors and cross coupling errors, or null
      * if not available.

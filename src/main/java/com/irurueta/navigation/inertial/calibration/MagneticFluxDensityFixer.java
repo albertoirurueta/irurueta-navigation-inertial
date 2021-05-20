@@ -29,6 +29,7 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  * Fixes magnetic flux density values taking into account provided bias and
  * cross coupling errors.
  */
+@SuppressWarnings("DuplicatedCode")
 public class MagneticFluxDensityFixer {
     /**
      * Identity matrix to be reused.
@@ -987,7 +988,7 @@ public class MagneticFluxDensityFixer {
         // I is the 3x3 identity
         // Mm is the 3x3 cross couplings matrix
 
-        // Hecen:
+        // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
         for (int i = 0; i < MagneticFluxDensityTriad.COMPONENTS; i++) {
             mDiff.setElementAtIndex(i,
@@ -1152,7 +1153,7 @@ public class MagneticFluxDensityFixer {
         // I is the 3x3 identity
         // Mm is the 3x3 cross couplings matrix
 
-        // Hecen:
+        // Hence:
         // btrue = (I + Mm)^-1 * (bmeas - bm)
         mIdentity.add(crossCouplingErrors, mTmp1);
 

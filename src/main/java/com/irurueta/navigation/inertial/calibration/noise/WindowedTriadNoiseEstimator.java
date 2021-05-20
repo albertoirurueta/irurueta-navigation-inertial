@@ -48,6 +48,7 @@ import java.util.LinkedList;
  * @param <E> an estimator type.
  * @param <L> a listener type.
  */
+@SuppressWarnings("DuplicatedCode")
 public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
         M extends Measurement<U>, T extends Triad<U, M>,
         E extends WindowedTriadNoiseEstimator<U, M, T, E, L>,

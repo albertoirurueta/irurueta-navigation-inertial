@@ -1661,7 +1661,7 @@ public class INSLooselyCoupledKalmanStateTest {
 
     @Test
     public void testGetSetFrame()
-            throws InvalidSourceAndDestinationFrameTypeException, WrongSizeException {
+            throws InvalidSourceAndDestinationFrameTypeException {
         final INSLooselyCoupledKalmanState state = new INSLooselyCoupledKalmanState();
 
         // check default value

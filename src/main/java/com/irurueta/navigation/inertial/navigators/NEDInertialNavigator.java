@@ -7829,7 +7829,7 @@ public class NEDInertialNavigator {
             omegaEnN.setElementAtIndex(2, -ve * Math.tan(latitude) / rePlusHeight);
 
             // Obtain coordinate transformation matrix from the new attitude with respect
-            // an intertial frame to the old using Rodrigues' formula, (5.73)
+            // an inertial frame to the old using Rodrigues' formula, (5.73)
             final Matrix cNewOld = Matrix.identity(ROWS, ROWS);
             if (magAlpha > ALPHA_THRESHOLD) {
                 final double magAlpha2 = magAlpha * magAlpha;

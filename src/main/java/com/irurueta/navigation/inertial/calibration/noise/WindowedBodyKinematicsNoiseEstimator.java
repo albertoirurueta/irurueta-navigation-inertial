@@ -48,6 +48,7 @@ import java.util.LinkedList;
  * cannot be used to determine biases. Only norm of noise estimations
  * (variance or standard deviation) can be safely used.
  */
+@SuppressWarnings("DuplicatedCode")
 public class WindowedBodyKinematicsNoiseEstimator
         implements AccelerometerNoiseRootPsdSource, GyroscopeNoiseRootPsdSource {
     /**

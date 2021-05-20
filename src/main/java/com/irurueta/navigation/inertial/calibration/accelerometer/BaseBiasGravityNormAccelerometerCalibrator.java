@@ -58,7 +58,7 @@ import java.util.Collection;
  * - I is the 3x3 identity matrix.
  * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
  * a perfect accelerometer, this should be a 3x3 zero matrix.
- * - ftrue is ground-trush specific force.
+ * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  *
  * @param <C> a calibrator type.
@@ -89,7 +89,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
     /**
      * Required minimum number of measurements when common z-axis is assumed.
      */
-    public static final int MINIMUM_MEASUREMENTS_COMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
+    public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
 
     /**
      * Required minimum number of measurements for the general case.
@@ -227,7 +227,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMa;
 
@@ -4821,7 +4821,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      * the standard deviations of accelerometer and gyroscope measurements.
      *
      * @param measurements collection of body kinematics measurements at a
-     *                     known position witn unknown orientations.
+     *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
@@ -4927,7 +4927,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMON_Z_AXIS :
+        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :
                 MINIMUM_MEASUREMENTS_GENERAL;
     }
 
@@ -5034,7 +5034,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated accelerometer scale factors and cross coupling errors, or null
      * if not available.

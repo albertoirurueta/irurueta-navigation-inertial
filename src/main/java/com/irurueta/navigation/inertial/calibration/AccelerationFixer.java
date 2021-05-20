@@ -27,6 +27,7 @@ import com.irurueta.units.AccelerationUnit;
 /**
  * Fixes acceleration values taking into account provided bias and cross coupling errors.
  */
+@SuppressWarnings("DuplicatedCode")
 public class AccelerationFixer {
     /**
      * Identity matrix to be reused.
@@ -859,7 +860,7 @@ public class AccelerationFixer {
         // I is the 3x3 identity
         // Ma is the 3x3 cross couplings matrix
 
-        // Hecen:
+        // Hence:
         // ftrue = (I + Ma)^-1 * (fmeas - ba)
         for (int i = 0; i < BodyKinematics.COMPONENTS; i++) {
             mDiff.setElementAtIndex(i,
@@ -1029,7 +1030,7 @@ public class AccelerationFixer {
         // I is the 3x3 identity
         // Ma is the 3x3 cross couplings matrix
 
-        // Hecen:
+        // Hence:
         // ftrue = (I + Ma)^-1 * (fmeas - ba)
         mIdentity.add(crossCouplingErrors, mTmp1);
 

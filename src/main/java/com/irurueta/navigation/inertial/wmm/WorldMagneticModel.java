@@ -53,7 +53,7 @@ public class WorldMagneticModel {
     private static final int N2 = N * N;
 
     /**
-     * The Gauss coefficients of main geomagneic model (nt)
+     * The Gauss coefficients of main geomagnetic model (nt)
      */
     final double[][] c = new double[N][N];
 

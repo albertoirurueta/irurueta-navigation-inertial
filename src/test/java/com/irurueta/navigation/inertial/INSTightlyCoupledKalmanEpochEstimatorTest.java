@@ -613,7 +613,7 @@ public class INSTightlyCoupledKalmanEpochEstimatorTest {
 
         // CLOSED-LOOP CORRECTION
 
-        // Correct attritude, velocity, and position using (14.7-9)
+        // Correct attitude, velocity, and position using (14.7-9)
         final Matrix estCbeNew = Matrix.identity(3, 3)
                 .subtractAndReturnNew(Utils.skewMatrix(
                         xEstNew.getSubmatrix(0, 0,

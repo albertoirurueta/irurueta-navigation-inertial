@@ -7010,8 +7010,7 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest
 
     @Test
     public void testCalibrateGeneralNoNoiseInlier()
-            throws IOException, LockedException, WrongSizeException,
-            CalibrationException, NotReadyException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7095,8 +7094,7 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest
 
     @Test
     public void testCalibrateCommonAxisNoNoiseInlier()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7183,8 +7181,7 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest
 
     @Test
     public void testCalibrateGeneralWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7277,8 +7274,7 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest
 
     @Test
     public void testCalibrateCommonAxisWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7367,9 +7363,7 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest
 
     @Test
     public void testCalibrateGeneralNoRefinement()
-            throws IOException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {

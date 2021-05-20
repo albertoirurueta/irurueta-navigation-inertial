@@ -1623,7 +1623,7 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
         INITIALIZING,
 
         /**
-         * Detector has sucessfully completed processing samples on the initial
+         * Detector has successfully completed processing samples on the initial
          * static period.
          */
         INITIALIZATION_COMPLETED,

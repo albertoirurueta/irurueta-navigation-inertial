@@ -28,7 +28,7 @@ import com.irurueta.units.TimeUnit;
  * along with their average values.
  * Implementations of this estimator must be used when the body where the measurement device
  * is attached to remains static on the same position with zero velocity, or
- * with constant anguular speed and orientation while capturing data.
+ * with constant angular speed and orientation while capturing data.
  * To compute PSD's, this estimator assumes that measurement samples are obtained
  * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
  * If not available, accelerometer sampling rate average can be estimated using
@@ -753,6 +753,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * @param valueZ z coordinate of measurement to be added and processed.
      * @throws LockedException if estimator is currently running.
      */
+    @SuppressWarnings("DuplicatedCode")
     public void addTriad(
             final double valueX, final double valueY, final double valueZ)
             throws LockedException {
@@ -877,16 +878,6 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      */
     protected abstract T createTriad(
             final double valueX, final double valueY, final double valueZ, final U unit);
-
-    /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    protected abstract T createTriad(final M valueX, final M valueY, final M valueZ);
 
     /**
      * Gets default unit for a measurement.

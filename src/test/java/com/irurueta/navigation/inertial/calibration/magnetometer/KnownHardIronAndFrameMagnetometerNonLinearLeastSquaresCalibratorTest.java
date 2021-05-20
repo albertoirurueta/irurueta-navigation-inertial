@@ -13195,7 +13195,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double[] hardIron = generateHardIron(randomizer);
         final Matrix mm = generateSoftIronGeneral();
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements2 =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, mm,
                         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -13234,7 +13234,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         assertNotNull(mm);
 
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron.getBuffer(), mm,
                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -13284,7 +13284,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         assertNotNull(mm);
 
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron.getBuffer(), mm,
                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -13339,7 +13339,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron.getBuffer(), mm,
                             LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
@@ -13404,7 +13404,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron.getBuffer(), mm,
                             SMALL_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
@@ -13521,7 +13521,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         assertNotNull(mm);
 
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron.getBuffer(), mm,
                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -13571,7 +13571,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         assertNotNull(mm);
 
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron.getBuffer(), mm,
                         KnownFrameMagnetometerNonLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -13626,7 +13626,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron.getBuffer(), mm,
                             LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
@@ -13691,7 +13691,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron.getBuffer(), mm,
                             SMALL_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
@@ -14021,8 +14021,7 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         }
     }
 
-    private static List<StandardDeviationFrameBodyMagneticFluxDensity>
-    generateMeasurementsMultipleOrientationswithSamePosition(
+    private static List<StandardDeviationFrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final int numberOfMeasurements,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,

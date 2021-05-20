@@ -950,14 +950,14 @@ public class IMUErrorsTest {
         final AngularSpeed[] array3 = errors.getGyroBiasesAsAngularSpeed();
         final AngularSpeed[] array4 = new AngularSpeed[COMPONENTS];
         array4[0] = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
-        errors.getGyroBiasesAsAngularspeed(array4);
+        errors.getGyroBiasesAsAngularSpeed(array4);
 
         assertArrayEquals(array2, array3);
         assertArrayEquals(array2, array4);
 
         // Force IllegalArgumentException
         try {
-            errors.getGyroBiasesAsAngularspeed(new AngularSpeed[1]);
+            errors.getGyroBiasesAsAngularSpeed(new AngularSpeed[1]);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }

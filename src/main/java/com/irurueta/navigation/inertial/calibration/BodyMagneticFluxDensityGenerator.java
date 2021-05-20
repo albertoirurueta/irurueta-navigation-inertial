@@ -27,6 +27,7 @@ import java.util.List;
  * flux density values taking into account provided magnetometer errors
  * for a calibrated magnetometer.
  */
+@SuppressWarnings("DuplicatedCode")
 public class BodyMagneticFluxDensityGenerator {
 
     /**

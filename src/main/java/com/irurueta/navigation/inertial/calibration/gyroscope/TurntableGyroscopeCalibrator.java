@@ -112,7 +112,7 @@ public class TurntableGyroscopeCalibrator implements
      * Indicates that by default G-dependent cross biases introduced
      * by the accelerometer on the gyroscope are estimated.
      */
-    public static final boolean DEFAULT_ESTIMATE_G_DPENDENT_CROSS_BIASES = true;
+    public static final boolean DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = true;
 
     /**
      * Number of unknowns when common z-axis is assumed for both the accelerometer
@@ -366,7 +366,7 @@ public class TurntableGyroscopeCalibrator implements
      * When enabled, this adds 9 variables from Gg matrix.
      */
     private boolean mEstimateGDependentCrossBiases =
-            DEFAULT_ESTIMATE_G_DPENDENT_CROSS_BIASES;
+            DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 
     /**
      * Listener to handle events raised by this calibrator.
@@ -416,7 +416,7 @@ public class TurntableGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -3383,15 +3383,15 @@ public class TurntableGyroscopeCalibrator implements
      * Sets initial z-coordinate of gyroscope bias to be used to find a
      * solution.
      *
-     * @param inigialBiasZ initial z-coordinate of gyroscope bias.
+     * @param initialBiasZ initial z-coordinate of gyroscope bias.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBiasZ(final AngularSpeed inigialBiasZ)
+    public void setInitialBiasZ(final AngularSpeed initialBiasZ)
             throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
-        mInitialBiasZ = convertAngularSpeed(inigialBiasZ);
+        mInitialBiasZ = convertAngularSpeed(initialBiasZ);
     }
 
     /**
@@ -4167,7 +4167,7 @@ public class TurntableGyroscopeCalibrator implements
      * the standard deviations of accelerometer and gyroscope measurements.
      *
      * @param measurements collection of body kinematics measurements at a
-     *                     known position witn unknown orientations.
+     *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
@@ -4718,7 +4718,7 @@ public class TurntableGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -6212,7 +6212,7 @@ public class TurntableGyroscopeCalibrator implements
         // Ideally a least squares solution tries to minimize noise component, so:
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue
 
-        // Since G-dependent cross giases are ignored, we can assume that Gg = 0
+        // Since G-dependent cross biases are ignored, we can assume that Gg = 0
 
         // Hence:
         // Ωmeas = bg + (I + Mg) * Ωtrue
@@ -6889,7 +6889,7 @@ public class TurntableGyroscopeCalibrator implements
      * Computes estimated true angular rate squared norm using current measured
      * angular rate and provided parameters.
      * This method is internally executed during gradient estimation and
-     * Levenberg-Marquardt fittin needed for calibration computation.
+     * Levenberg-Marquardt fitting needed for calibration computation.
      *
      * @param bx  x-coordinate of bias.
      * @param by  y-coordinate of bias.
@@ -7037,7 +7037,7 @@ public class TurntableGyroscopeCalibrator implements
      * Computes estimated true angular rate squared norm using current measured
      * angular rate and provided parameters.
      * This method is internally executed during gradient estimation and
-     * Levenberg-Marquardt fittin needed for calibration computation.
+     * Levenberg-Marquardt fitting needed for calibration computation.
      *
      * @param bx  x-coordinate of bias.
      * @param by  y-coordinate of bias.

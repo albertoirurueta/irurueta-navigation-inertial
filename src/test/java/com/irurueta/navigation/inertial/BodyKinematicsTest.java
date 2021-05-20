@@ -1080,6 +1080,7 @@ public class BodyKinematicsTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(k1.equals((Object) k1));
+        //noinspection EqualsWithItself
         assertTrue(k1.equals(k1));
         assertTrue(k1.equals(k2));
         assertFalse(k1.equals(k3));

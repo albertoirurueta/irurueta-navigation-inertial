@@ -159,7 +159,7 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
     }
 
     @Test
-    public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceandDestinationIsEmpty() {
+    public void testCopyFromWhenBodyMagneticFluxDensityIsAvailableAtSourceAndDestinationIsEmpty() {
         final UniformRandomizer randomizer = new UniformRandomizer(
                 new Random());
         final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
@@ -368,6 +368,7 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
 
         //noinspection SimplifiableJUnitAssertion,ConstantConditions
         assertTrue(stdMagnetic1.equals((Object) stdMagnetic1));
+        //noinspection EqualsWithItself
         assertTrue(stdMagnetic1.equals(stdMagnetic1));
         assertTrue(stdMagnetic1.equals(stdMagnetic2));
         assertFalse(stdMagnetic1.equals(stdMagnetic3));

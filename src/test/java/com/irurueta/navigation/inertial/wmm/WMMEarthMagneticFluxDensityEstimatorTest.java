@@ -15,25 +15,21 @@
  */
 package com.irurueta.navigation.inertial.wmm;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class WMMEarthMagneticFluxDensityEstimatorTest {
 
@@ -58,6 +54,8 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
 
     private static final double MIN_HEIGHT_METERS = -500.0;
     private static final double MAX_HEIGHT_METERS = 10000.0;
+
+    private static final double ABSOLUTE_ERROR = 1e-9;
 
     private static final Calendar START_CALENDAR = Calendar.getInstance();
     private static final Calendar END_CALENDAR = Calendar.getInstance();
@@ -3825,6 +3823,143 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
         assertEquals(intensity1, intensity7, 0.0);
         assertEquals(intensity1, intensity8, 0.0);
         assertEquals(intensity1, intensity9, 0.0);
+    }
+
+    @Test
+    public void testEstimate1() throws IOException {
+        final NEDPosition position = createPosition();
+        final double latitude = position.getLatitude();
+        final double longitude = position.getLongitude();
+        final Angle latitudeAngle = new Angle(latitude,
+                AngleUnit.RADIANS);
+        final Angle longitudeAngle = new Angle(longitude,
+                AngleUnit.RADIANS);
+
+        final WMMEarthMagneticFluxDensityEstimator estimator =
+                new WMMEarthMagneticFluxDensityEstimator();
+
+        final double bn = estimator.getNorthIntensity(latitude, longitude);
+        final double be = estimator.getEastIntensity(latitude, longitude);
+        final double bd = estimator.getVerticalIntensity(latitude, longitude);
+
+        final NEDMagneticFluxDensity b1 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitude, longitude, b1);
+
+        assertEquals(bn, b1.getBn(), ABSOLUTE_ERROR);
+        assertEquals(be, b1.getBe(), ABSOLUTE_ERROR);
+        assertEquals(bd, b1.getBd(), ABSOLUTE_ERROR);
+
+        final NEDMagneticFluxDensity b2 = estimator.estimate(latitude, longitude);
+        assertEquals(b1, b2);
+
+        final NEDMagneticFluxDensity b3 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitudeAngle, longitudeAngle, b3);
+        assertEquals(b1, b3);
+
+        final NEDMagneticFluxDensity b4 = estimator.estimate(
+                latitudeAngle, longitudeAngle);
+        assertEquals(b1, b4);
+    }
+
+    @Test
+    public void testEstimate2() throws IOException {
+        final NEDPosition position = createPosition();
+        final double latitude = position.getLatitude();
+        final double longitude = position.getLongitude();
+        final double height = position.getHeight();
+        final Angle latitudeAngle = new Angle(latitude,
+                AngleUnit.RADIANS);
+        final Angle longitudeAngle = new Angle(longitude,
+                AngleUnit.RADIANS);
+        final Distance heightDistance = new Distance(height,
+                DistanceUnit.METER);
+
+        final long timestamp = createTimestamp();
+        final Date date = createDate(timestamp);
+        final GregorianCalendar calendar = createCalendar(timestamp);
+        final double year = createYear(calendar);
+
+        final WMMEarthMagneticFluxDensityEstimator estimator =
+                new WMMEarthMagneticFluxDensityEstimator();
+
+        final double bn = estimator.getNorthIntensity(latitude, longitude, height, year);
+        final double be = estimator.getEastIntensity(latitude, longitude, height, year);
+        final double bd = estimator.getVerticalIntensity(latitude, longitude, height, year);
+
+        final NEDMagneticFluxDensity b1 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitude, longitude, height, year, b1);
+
+        assertEquals(bn, b1.getBn(), ABSOLUTE_ERROR);
+        assertEquals(be, b1.getBe(), ABSOLUTE_ERROR);
+        assertEquals(bd, b1.getBd(), ABSOLUTE_ERROR);
+
+        final NEDMagneticFluxDensity b2 = estimator.estimate(
+                latitude, longitude, height, year);
+        assertEquals(b1, b2);
+
+        final NEDMagneticFluxDensity b3 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitude, longitude, height, calendar, b3);
+        assertEquals(b1, b3);
+
+        final NEDMagneticFluxDensity b4 = estimator.estimate(
+                latitude, longitude, height, calendar);
+        assertEquals(b1, b4);
+
+        final NEDMagneticFluxDensity b5 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitude, longitude, height, date, b5);
+        assertEquals(b1, b5);
+
+        final NEDMagneticFluxDensity b6 = estimator.estimate(
+                latitude, longitude, height, date);
+        assertEquals(b1, b6);
+
+        final NEDMagneticFluxDensity b7 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitudeAngle, longitudeAngle, heightDistance,
+                year, b7);
+        assertEquals(b1, b7);
+
+        final NEDMagneticFluxDensity b8 = estimator.estimate(latitudeAngle,
+                longitudeAngle, heightDistance, year);
+        assertEquals(b1, b8);
+
+        final NEDMagneticFluxDensity b9 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitudeAngle, longitudeAngle, heightDistance,
+                calendar, b9);
+        assertEquals(b1, b9);
+
+        final NEDMagneticFluxDensity b10 = estimator.estimate(
+                latitudeAngle, longitudeAngle, heightDistance, calendar);
+        assertEquals(b1, b10);
+
+        final NEDMagneticFluxDensity b11 = new NEDMagneticFluxDensity();
+        estimator.estimate(latitudeAngle, longitudeAngle, heightDistance,
+                date, b11);
+        assertEquals(b1, b11);
+
+        final NEDMagneticFluxDensity b12 = estimator.estimate(latitudeAngle,
+                longitudeAngle, heightDistance, date);
+        assertEquals(b1, b12);
+
+        final NEDMagneticFluxDensity b13 = new NEDMagneticFluxDensity();
+        estimator.estimate(position, year, b13);
+        assertEquals(b1, b13);
+
+        final NEDMagneticFluxDensity b14 = estimator.estimate(position, year);
+        assertEquals(b1, b14);
+
+        final NEDMagneticFluxDensity b15 = new NEDMagneticFluxDensity();
+        estimator.estimate(position, calendar, b15);
+        assertEquals(b1, b15);
+
+        final NEDMagneticFluxDensity b16 = estimator.estimate(position, calendar);
+        assertEquals(b1, b16);
+
+        final NEDMagneticFluxDensity b17 = new NEDMagneticFluxDensity();
+        estimator.estimate(position, date, b17);
+        assertEquals(b1, b17);
+
+        final NEDMagneticFluxDensity b18 = estimator.estimate(position, date);
+        assertEquals(b1, b18);
     }
 
     public static double createYear(final GregorianCalendar calendar) {

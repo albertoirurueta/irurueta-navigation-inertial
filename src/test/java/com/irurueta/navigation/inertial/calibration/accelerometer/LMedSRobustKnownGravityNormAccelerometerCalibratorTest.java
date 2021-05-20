@@ -21,17 +21,17 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECEFGravity;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertTrue;
 
 public class LMedSRobustKnownGravityNormAccelerometerCalibratorTest implements
         RobustKnownGravityNormAccelerometerCalibratorListener {
@@ -8283,7 +8282,7 @@ public class LMedSRobustKnownGravityNormAccelerometerCalibratorTest implements
 
         // set enough measurements for common axis case
         measurements2.clear();
-        for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS; i++) {
+        for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);

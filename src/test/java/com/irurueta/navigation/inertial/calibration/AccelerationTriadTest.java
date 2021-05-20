@@ -322,7 +322,7 @@ public class AccelerationTriadTest {
     }
 
     @Test
-    public void testConstructor6() throws WrongSizeException {
+    public void testConstructor6() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double valueX = randomizer.nextDouble();
         final double valueY = randomizer.nextDouble();
@@ -764,7 +764,9 @@ public class AccelerationTriadTest {
 
         assertTrue(triad1.equals(triad2));
         assertTrue(triad2.equals(triad1));
+        //noinspection EqualsWithItself
         assertTrue(triad1.equals(triad1));
+        //noinspection EqualsWithItself
         assertTrue(triad2.equals(triad2));
         assertFalse(triad1.equals(triad3));
         assertFalse(triad2.equals(triad3));

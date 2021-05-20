@@ -156,7 +156,7 @@ public interface MagnetometerCalibrator {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
      * or null if not available.

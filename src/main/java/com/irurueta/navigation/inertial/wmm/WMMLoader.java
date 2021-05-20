@@ -174,7 +174,7 @@ public class WMMLoader {
                 }
             }
 
-            // convert Schmidt normalized Gauss coefficients to unnormalized
+            // convert Schmidt normalized Gauss coefficients to un-normalized
             result.snorm[0] = 1.0;
             for (int n = 1; n <= WorldMagneticModel.MAX_ORDER; n++) {
 

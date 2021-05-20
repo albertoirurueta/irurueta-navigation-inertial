@@ -8284,7 +8284,7 @@ public class KnownPositionAndInstantMagnetometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
         final MagneticFluxDensityTriad std2 = new MagneticFluxDensityTriad();
-        calibrator.getEstimatedHardIronStandardDeviation(std2);
+        assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
 
         final double avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
                 calibrator.getEstimatedHardIronYStandardDeviation() +

@@ -580,7 +580,7 @@ public class MagneticFluxDensityTriadTest {
 
         triad.setMeasurementZ(bz2);
 
-        // chekc
+        // check
         final MagneticFluxDensity bz3 = triad.getMeasurementZ();
         final MagneticFluxDensity bz4 = new MagneticFluxDensity(
                 0.0, MagneticFluxDensityUnit.TESLA);
@@ -702,7 +702,9 @@ public class MagneticFluxDensityTriadTest {
 
         assertTrue(triad1.equals(triad2));
         assertTrue(triad2.equals(triad1));
+        //noinspection EqualsWithItself
         assertTrue(triad1.equals(triad1));
+        //noinspection EqualsWithItself
         assertTrue(triad2.equals(triad2));
         assertFalse(triad1.equals(triad3));
         assertFalse(triad2.equals(triad3));

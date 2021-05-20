@@ -29,7 +29,6 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertSame;
 
 public class RobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
         RobustKnownBiasAndGravityNormAccelerometerCalibratorListener {
@@ -6930,7 +6929,7 @@ public class RobustKnownBiasAndGravityNormAccelerometerCalibratorTest implements
         assertEquals(initialMa, calibrator.getInitialMa());
         assertSame(this, calibrator.getListener());
     }
-    
+
     @Override
     public void onCalibrateStart(RobustKnownBiasAndGravityNormAccelerometerCalibrator calibrator) {
 

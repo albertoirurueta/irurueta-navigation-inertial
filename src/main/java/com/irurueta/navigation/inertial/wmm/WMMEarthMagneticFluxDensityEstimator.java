@@ -29,7 +29,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 /**
- * Estimates Earth magnetic flux density  resolved around NED frame at
+ * Estimates Earth magnetic flux density resolved around NED frame at
  * a given Earth location.
  */
 public class WMMEarthMagneticFluxDensityEstimator {
@@ -143,7 +143,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private final double[][] mTc = new double[N][N];
 
     /**
-     * The theta derivative of p(n,m) (unnormalized).
+     * The theta derivative of p(n,m) (un-normalized).
      */
     private final double[][] mDp = new double[N][N];
 
@@ -158,7 +158,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     private final double[] mCp = new double[N];
 
     /**
-     * The associated Legendre polynomials for m=1 (unnormalized).
+     * The associated Legendre polynomials for m=1 (un-normalized).
      */
     private final double[] mPp = new double[N];
 
@@ -2892,7 +2892,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * department of defense (DoD) spherical harmonic World Magnetic Model
      * (WMM-2010).  The WMM series of models is updated every 5 years on
      * January 1st of those years which are divisible by 5 (i.e. 1980, 1985,
-     * 1990, etc.) by the Navan Oceanographic Office in cooperation with the
+     * 1990, etc.) by the Naval Oceanographic Office in cooperation with the
      * British Geological Survey (BGS). The model is based on geomagnetic
      * survey measurements from aircraft, satellite and geomagnetic
      * observatories.
@@ -2933,7 +2933,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * surface (primarily over land, in continental margins and over oceanic
      * seamounts, ridges and trenches) of several degrees may be expected.
      * Also not included in the model are nonsecular temporal fluctuations
-     * of the geomagnetic field of magnetospheric and ionospheric origin.
+     * of the geomagnetic field of magneto-spheric and ionospheric origin.
      * During magnetic storms, temporal fluctuations can cause substantial
      * deviations of the geomagnetic field from model values. In arctic and
      * antarctic regions, as well as in equatorial regions, deviations from
@@ -2996,7 +2996,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
             ar = ar * aor;
             for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 > 0; D4--, m += D3) {
 
-                // compute unnormalized associated Legendre polynomials
+                // compute un-normalized associated Legendre polynomials
                 // and derivatives via recursion relations
                 if (mOldHeight == null || height != mOldHeight
                         || mOldLatitude == null || latitude != mOldLatitude) {
@@ -3005,8 +3005,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
                         mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];
                     }
                     if (n == 1 && m == 0) {
-                        mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N];
-                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N];
+                        mModel.snorm[n] = mCt * mModel.snorm[0];
+                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];
                     }
                     if (n > 1 && n != m) {
                         if (m > n - 2) {
@@ -3047,7 +3047,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
                 bp += (mModel.fm[m] * temp2 * par);
                 br += (mModel.fn[n] * temp1 * par);
 
-                // Special case: North/sourth geographic poles
+                // Special case: North/south geographic poles
 
                 if (mSt == 0.0 && m == 1) {
                     if (n == 1)

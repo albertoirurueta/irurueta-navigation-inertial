@@ -39,6 +39,7 @@ public class INSTightlyCoupledKalmanInitializer {
      * @param result instance where resulting initialized error covariance matrix
      *               will be stored. Matrix must be 17x17, otherwise it will be resized.
      */
+    @SuppressWarnings("DuplicatedCode")
     public static void initialize(final INSTightlyCoupledKalmanInitializerConfig config,
                                   final Matrix result) {
         if (result.getRows() != NUM_PARAMS || result.getColumns() != NUM_PARAMS) {

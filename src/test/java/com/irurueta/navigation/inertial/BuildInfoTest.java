@@ -15,51 +15,28 @@
  */
 package com.irurueta.navigation.inertial;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
+import org.junit.Test;
 
-import com.irurueta.navigation.BuildInfo;
 import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertSame;
 
 public class BuildInfoTest {
 
-    public BuildInfoTest() {
-    }
-
-    @BeforeClass
-    public static void setUpClass() {
-    }
-
-    @AfterClass
-    public static void tearDownClass() {
-    }
-
-    @Before
-    public void setUp() {
-    }
-
-    @After
-    public void tearDown() {
-    }
-
     @Test
     public void testGetInstance() {
-        final com.irurueta.navigation.BuildInfo info1 = com.irurueta.navigation.BuildInfo.getInstance();
-        final com.irurueta.navigation.BuildInfo info2 = com.irurueta.navigation.BuildInfo.getInstance();
+        final BuildInfo info1 = BuildInfo.getInstance();
+        final BuildInfo info2 = BuildInfo.getInstance();
 
         assertSame(info1, info2);
     }
 
     @Test
     public void testGetters() {
-        final com.irurueta.navigation.BuildInfo info = BuildInfo.getInstance();
+        final BuildInfo info = BuildInfo.getInstance();
 
         final String buildNumber = info.getBuildNumber();
         final String commit = info.getCommit();

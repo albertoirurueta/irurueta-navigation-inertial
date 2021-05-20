@@ -203,127 +203,135 @@ public class NEDKinematicsEstimatorTest {
 
         final BodyKinematics k17 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity,
-                oldLatitude, oldHeight, k17);
+                oldLatitudeAngle, oldHeightDistance, k17);
 
         final BodyKinematics k18 = new BodyKinematics();
-        estimator.estimate(timeInterval, frame, oldC, oldVelocity, oldLatitude,
-                oldHeight, k18);
+        estimator.estimate(timeInterval, frame, oldC, oldVelocity,
+                oldLatitudeAngle, oldHeightDistance, k18);
 
         final BodyKinematics k19 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, k19);
+        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity,
+                oldLatitude, oldHeight, k19);
 
         final BodyKinematics k20 = new BodyKinematics();
-        estimator.estimate(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
-                oldPosition, k20);
+        estimator.estimate(timeInterval, frame, oldC, oldVelocity, oldLatitude,
+                oldHeight, k20);
 
         final BodyKinematics k21 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldSpeedN,
-                oldSpeedE, oldSpeedD, oldPosition, k21);
+        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldVn, oldVe, oldVd,
+                oldPosition, k21);
 
         final BodyKinematics k22 = new BodyKinematics();
-        estimator.estimate(timeInterval, frame, oldC, oldSpeedN, oldSpeedE,
-                oldSpeedD, oldPosition, k22);
+        estimator.estimate(timeInterval, frame, oldC, oldVn, oldVe, oldVd,
+                oldPosition, k22);
 
         final BodyKinematics k23 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity,
-                oldPosition, k23);
+        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldSpeedN,
+                oldSpeedE, oldSpeedD, oldPosition, k23);
 
         final BodyKinematics k24 = new BodyKinematics();
-        estimator.estimate(timeInterval, frame, oldC, oldVelocity, oldPosition,
-                k24);
+        estimator.estimate(timeInterval, frame, oldC, oldSpeedN, oldSpeedE,
+                oldSpeedD, oldPosition, k24);
 
         final BodyKinematics k25 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, vn, ve, vd, latitude, height,
-                oldFrame, k25);
+        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity,
+                oldPosition, k25);
 
         final BodyKinematics k26 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, vn, ve, vd, latitude, height,
-                oldFrame, k26);
+        estimator.estimate(timeInterval, frame, oldC, oldVelocity, oldPosition,
+                k26);
 
         final BodyKinematics k27 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, velocity, latitude, height,
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, vn, ve, vd, latitude, height,
                 oldFrame, k27);
 
         final BodyKinematics k28 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, velocity, latitude, height, oldFrame,
-                k28);
+        estimator.estimate(timeInterval, c, vn, ve, vd, latitude, height,
+                oldFrame, k28);
 
         final BodyKinematics k29 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, velocity, latitudeAngle,
-                heightDistance, oldFrame, k29);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, velocity, latitude, height,
+                oldFrame, k29);
 
         final BodyKinematics k30 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, velocity, latitudeAngle, heightDistance,
-                oldFrame, k30);
+        estimator.estimate(timeInterval, c, velocity, latitude, height, oldFrame,
+                k30);
 
         final BodyKinematics k31 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, vn, ve, vd, position, oldFrame,
-                k31);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, velocity, latitudeAngle,
+                heightDistance, oldFrame, k31);
 
         final BodyKinematics k32 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, vn, ve, vd, position, oldFrame, k32);
+        estimator.estimate(timeInterval, c, velocity, latitudeAngle, heightDistance,
+                oldFrame, k32);
 
         final BodyKinematics k33 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, speedN, speedE, speedD,
-                position, oldFrame, k33);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, vn, ve, vd, position, oldFrame,
+                k33);
 
         final BodyKinematics k34 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, speedN, speedE, speedD, position,
-                oldFrame, k34);
+        estimator.estimate(timeInterval, c, vn, ve, vd, position, oldFrame, k34);
 
         final BodyKinematics k35 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, velocity, position, oldFrame,
-                k35);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, speedN, speedE, speedD,
+                position, oldFrame, k35);
 
         final BodyKinematics k36 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, velocity, position, oldFrame, k36);
+        estimator.estimate(timeInterval, c, speedN, speedE, speedD, position,
+                oldFrame, k36);
 
         final BodyKinematics k37 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldFrame, k37);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, velocity, position, oldFrame,
+                k37);
 
         final BodyKinematics k38 = new BodyKinematics();
-        estimator.estimate(timeInterval, frame, oldFrame, k38);
+        estimator.estimate(timeInterval, c, velocity, position, oldFrame, k38);
 
         final BodyKinematics k39 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, speedN, speedE, speedD,
-                oldSpeedN, oldSpeedE, oldSpeedD, latitude, height,
-                oldLatitude, oldHeight, k39);
+        estimator.estimate(TIME_INTERVAL_SECONDS, frame, oldFrame, k39);
 
         final BodyKinematics k40 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, oldC, speedN, speedE, speedD,
-                oldSpeedN, oldSpeedE, oldSpeedD, latitude, height,
-                oldLatitude, oldHeight, k40);
+        estimator.estimate(timeInterval, frame, oldFrame, k40);
 
         final BodyKinematics k41 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight,
-                k41);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, speedN, speedE, speedD,
+                oldSpeedN, oldSpeedE, oldSpeedD, latitude, height,
+                oldLatitude, oldHeight, k41);
 
         final BodyKinematics k42 = new BodyKinematics();
-        estimator.estimate(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight,
-                k42);
+        estimator.estimate(timeInterval, c, oldC, speedN, speedE, speedD,
+                oldSpeedN, oldSpeedE, oldSpeedD, latitude, height,
+                oldLatitude, oldHeight, k42);
 
         final BodyKinematics k43 = new BodyKinematics();
         estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, heightDistance,
-                oldLatitude, oldHeightDistance, k43);
+                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight,
+                k43);
 
         final BodyKinematics k44 = new BodyKinematics();
         estimator.estimate(timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, heightDistance,
-                oldLatitude, oldHeightDistance, k44);
+                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight,
+                k44);
 
         final BodyKinematics k45 = new BodyKinematics();
-        estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, speedN, speedE, speedD,
-                oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, heightDistance,
-                oldLatitudeAngle, oldHeightDistance, k45);
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, vn, ve, vd,
+                oldVn, oldVe, oldVd, latitude, heightDistance,
+                oldLatitude, oldHeightDistance, k45);
 
         final BodyKinematics k46 = new BodyKinematics();
+        estimator.estimate(timeInterval, c, oldC, vn, ve, vd,
+                oldVn, oldVe, oldVd, latitude, heightDistance,
+                oldLatitude, oldHeightDistance, k46);
+
+        final BodyKinematics k47 = new BodyKinematics();
+        estimator.estimate(TIME_INTERVAL_SECONDS, c, oldC, speedN, speedE, speedD,
+                oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, heightDistance,
+                oldLatitudeAngle, oldHeightDistance, k47);
+
+        final BodyKinematics k48 = new BodyKinematics();
         estimator.estimate(timeInterval, c, oldC, speedN, speedE, speedD,
                 oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, heightDistance,
-                oldLatitudeAngle, oldHeightDistance, k46);
+                oldLatitudeAngle, oldHeightDistance, k48);
 
         assertEquals(k1, k2);
         assertEquals(k1, k3);
@@ -370,6 +378,8 @@ public class NEDKinematicsEstimatorTest {
         assertEquals(k1, k44);
         assertEquals(k1, k45);
         assertEquals(k1, k46);
+        assertEquals(k1, k47);
+        assertEquals(k1, k48);
     }
 
     @Test
@@ -484,119 +494,127 @@ public class NEDKinematicsEstimatorTest {
                 oldHeight);
 
         final BodyKinematics k17 = estimator.estimateAndReturnNew(
+                TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity, oldLatitudeAngle,
+                oldHeightDistance);
+
+        final BodyKinematics k18 = estimator.estimateAndReturnNew(
+                timeInterval, frame, oldC, oldVelocity, oldLatitudeAngle,
+                oldHeightDistance);
+
+        final BodyKinematics k19 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity,
                 oldLatitude, oldHeight);
 
-        final BodyKinematics k18 = estimator.estimateAndReturnNew(
+        final BodyKinematics k20 = estimator.estimateAndReturnNew(
                 timeInterval, frame, oldC, oldVelocity, oldLatitude,
                 oldHeight);
 
-        final BodyKinematics k19 = estimator.estimateAndReturnNew(
+        final BodyKinematics k21 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, frame, oldC, oldVn, oldVe, oldVd,
                 oldPosition);
 
-        final BodyKinematics k20 = estimator.estimateAndReturnNew(
+        final BodyKinematics k22 = estimator.estimateAndReturnNew(
                 timeInterval, frame, oldC, oldVn, oldVe, oldVd,
                 oldPosition);
 
-        final BodyKinematics k21 = estimator.estimateAndReturnNew(
+        final BodyKinematics k23 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, frame, oldC, oldSpeedN,
                 oldSpeedE, oldSpeedD, oldPosition);
 
-        final BodyKinematics k22 = estimator.estimateAndReturnNew(
+        final BodyKinematics k24 = estimator.estimateAndReturnNew(
                 timeInterval, frame, oldC, oldSpeedN, oldSpeedE,
                 oldSpeedD, oldPosition);
 
-        final BodyKinematics k23 = estimator.estimateAndReturnNew(
+        final BodyKinematics k25 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, frame, oldC, oldVelocity,
                 oldPosition);
 
-        final BodyKinematics k24 = estimator.estimateAndReturnNew(
+        final BodyKinematics k26 = estimator.estimateAndReturnNew(
                 timeInterval, frame, oldC, oldVelocity, oldPosition);
 
-        final BodyKinematics k25 = estimator.estimateAndReturnNew(
+        final BodyKinematics k27 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, vn, ve, vd, latitude, height,
                 oldFrame);
 
-        final BodyKinematics k26 = estimator.estimateAndReturnNew(
+        final BodyKinematics k28 = estimator.estimateAndReturnNew(
                 timeInterval, c, vn, ve, vd, latitude, height,
                 oldFrame);
 
-        final BodyKinematics k27 = estimator.estimateAndReturnNew(
+        final BodyKinematics k29 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, velocity, latitude, height,
                 oldFrame);
 
-        final BodyKinematics k28 = estimator.estimateAndReturnNew(
+        final BodyKinematics k30 = estimator.estimateAndReturnNew(
                 timeInterval, c, velocity, latitude, height, oldFrame);
 
-        final BodyKinematics k29 = estimator.estimateAndReturnNew(
+        final BodyKinematics k31 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, velocity, latitudeAngle,
                 heightDistance, oldFrame);
 
-        final BodyKinematics k30 = estimator.estimateAndReturnNew(
+        final BodyKinematics k32 = estimator.estimateAndReturnNew(
                 timeInterval, c, velocity, latitudeAngle, heightDistance,
                 oldFrame);
 
-        final BodyKinematics k31 = estimator.estimateAndReturnNew(
+        final BodyKinematics k33 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, vn, ve, vd, position, oldFrame);
 
-        final BodyKinematics k32 = estimator.estimateAndReturnNew(
+        final BodyKinematics k34 = estimator.estimateAndReturnNew(
                 timeInterval, c, vn, ve, vd, position, oldFrame);
 
-        final BodyKinematics k33 = estimator.estimateAndReturnNew(
+        final BodyKinematics k35 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, speedN, speedE, speedD,
                 position, oldFrame);
 
-        final BodyKinematics k34 = estimator.estimateAndReturnNew(
+        final BodyKinematics k36 = estimator.estimateAndReturnNew(
                 timeInterval, c, speedN, speedE, speedD, position,
                 oldFrame);
 
-        final BodyKinematics k35 = estimator.estimateAndReturnNew(
+        final BodyKinematics k37 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, velocity, position, oldFrame);
 
-        final BodyKinematics k36 = estimator.estimateAndReturnNew(
+        final BodyKinematics k38 = estimator.estimateAndReturnNew(
                 timeInterval, c, velocity, position, oldFrame);
 
-        final BodyKinematics k37 = estimator.estimateAndReturnNew(
+        final BodyKinematics k39 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, frame, oldFrame);
 
-        final BodyKinematics k38 = estimator.estimateAndReturnNew(
+        final BodyKinematics k40 = estimator.estimateAndReturnNew(
                 timeInterval, frame, oldFrame);
 
-        final BodyKinematics k39 = estimator.estimateAndReturnNew(
+        final BodyKinematics k41 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, oldC, speedN, speedE, speedD,
                 oldSpeedN, oldSpeedE, oldSpeedD, latitude, height,
                 oldLatitude, oldHeight);
 
-        final BodyKinematics k40 = estimator.estimateAndReturnNew(
+        final BodyKinematics k42 = estimator.estimateAndReturnNew(
                 timeInterval, c, oldC, speedN, speedE, speedD,
                 oldSpeedN, oldSpeedE, oldSpeedD, latitude, height,
                 oldLatitude, oldHeight);
 
-        final BodyKinematics k41 = estimator.estimateAndReturnNew(
-                TIME_INTERVAL_SECONDS, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight);
-
-        final BodyKinematics k42 = estimator.estimateAndReturnNew(
-                timeInterval, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight);
-
         final BodyKinematics k43 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, oldC, vn, ve, vd,
-                oldVn, oldVe, oldVd, latitude, heightDistance,
-                oldLatitude, oldHeightDistance);
+                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight);
 
         final BodyKinematics k44 = estimator.estimateAndReturnNew(
                 timeInterval, c, oldC, vn, ve, vd,
+                oldVn, oldVe, oldVd, latitudeAngle, height, oldLatitudeAngle, oldHeight);
+
+        final BodyKinematics k45 = estimator.estimateAndReturnNew(
+                TIME_INTERVAL_SECONDS, c, oldC, vn, ve, vd,
                 oldVn, oldVe, oldVd, latitude, heightDistance,
                 oldLatitude, oldHeightDistance);
 
-        final BodyKinematics k45 = estimator.estimateAndReturnNew(
+        final BodyKinematics k46 = estimator.estimateAndReturnNew(
+                timeInterval, c, oldC, vn, ve, vd,
+                oldVn, oldVe, oldVd, latitude, heightDistance,
+                oldLatitude, oldHeightDistance);
+
+        final BodyKinematics k47 = estimator.estimateAndReturnNew(
                 TIME_INTERVAL_SECONDS, c, oldC, speedN, speedE, speedD,
                 oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, heightDistance,
                 oldLatitudeAngle, oldHeightDistance);
 
-        final BodyKinematics k46 = estimator.estimateAndReturnNew(
+        final BodyKinematics k48 = estimator.estimateAndReturnNew(
                 timeInterval, c, oldC, speedN, speedE, speedD,
                 oldSpeedN, oldSpeedE, oldSpeedD, latitudeAngle, heightDistance,
                 oldLatitudeAngle, oldHeightDistance);
@@ -646,6 +664,8 @@ public class NEDKinematicsEstimatorTest {
         assertEquals(k1, k44);
         assertEquals(k1, k45);
         assertEquals(k1, k46);
+        assertEquals(k1, k47);
+        assertEquals(k1, k48);
     }
 
     @Test

@@ -20,21 +20,21 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.FrameType;
-import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
+import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
@@ -52,7 +52,6 @@ import java.util.List;
 import java.util.Random;
 
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
         RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener {
@@ -10262,7 +10261,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
             calibrator = new PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
                     new double[6], ecefPosition, measurements, hardIron,
                     this);
-            fail("IllegalArgumentExcption expected but not thrown");
+            fail("IllegalArgumentException expected but not thrown");
         } catch (IllegalArgumentException ignore) {
         }
         try {
@@ -13030,8 +13029,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
 
     @Test
     public void testCalibrateGeneralNoNoiseInlier()
-            throws IOException, LockedException, WrongSizeException,
-            CalibrationException, NotReadyException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13123,7 +13121,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
     @Test
     public void testCalibrateCommonAxisNoNoiseInlier()
             throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13216,8 +13214,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
 
     @Test
     public void testCalibrateGeneralWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13317,7 +13314,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
     @Test
     public void testCalibrateCommonAxisWithInlierNoise()
             throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13413,8 +13410,7 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
     @Test
     public void testCalibrateGeneralNoRefinement()
             throws IOException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {

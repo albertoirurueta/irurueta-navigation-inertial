@@ -158,7 +158,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
     }
 
     /**
-     * Sets y component of magnetic flux density expresssed in Teslas (T).
+     * Sets y component of magnetic flux density expressed in Teslas (T).
      *
      * @param by y component of magnetic flux density.
      */
@@ -213,9 +213,9 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
     }
 
     /**
-     * Gets z component of magnetic fluz density.
+     * Gets z component of magnetic flux density.
      *
-     * @return z component of magnetic fluz density.
+     * @return z component of magnetic flux density.
      */
     public MagneticFluxDensity getBzAsMagneticFluxDensity() {
         return new MagneticFluxDensity(mBz, MagneticFluxDensityUnit.TESLA);
@@ -387,6 +387,7 @@ public class BodyMagneticFluxDensity implements Serializable, Cloneable {
      * @param result matrix instance where magnetic flux density coordinates
      *               will be stored in x,y,z order.
      */
+    @SuppressWarnings("DuplicatedCode")
     public void asMatrix(final Matrix result) {
         if (result.getColumns() != COMPONENTS || result.getRows() != 1) {
             try {

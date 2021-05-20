@@ -14301,7 +14301,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibratorTest implements
     }
 
     @Test
-    public void testCalibrateMultipleOrientationsForGeneralCasewithMinimumMeasuresAndNoNoise()
+    public void testCalibrateMultipleOrientationsForGeneralCaseWithMinimumMeasuresAndNoNoise()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException {
 

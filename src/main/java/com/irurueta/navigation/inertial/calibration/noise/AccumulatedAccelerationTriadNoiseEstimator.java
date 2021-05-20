@@ -84,20 +84,6 @@ public class AccumulatedAccelerationTriadNoiseEstimator extends
     }
 
     /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    @Override
-    protected AccelerationTriad createTriad(
-            final Acceleration valueX, final Acceleration valueY, final Acceleration valueZ) {
-        return new AccelerationTriad(valueX, valueY, valueZ);
-    }
-
-    /**
      * Gets default unit for a measurement.
      *
      * @return default unit for a measurement.

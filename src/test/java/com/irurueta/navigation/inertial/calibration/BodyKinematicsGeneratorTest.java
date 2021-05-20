@@ -61,6 +61,10 @@ public class BodyKinematicsGeneratorTest {
 
     private static final double LARGE_ABSOLUTE_ERROR = 1e-5;
 
+    private static final double ACCEL_QUANT_LEVEL = 1e-2;
+
+    private static final double GYRO_QUANT_LEVEL = 2e-4;
+
     @Test
     public void testGenerateSingleTimeIntervalQuantizedAndWithNoise()
             throws WrongSizeException {
@@ -71,11 +75,9 @@ public class BodyKinematicsGeneratorTest {
         final Matrix gg = generateGg();
         final double accelNoiseRootPSD = getAccelNoiseRootPSD();
         final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = getAccelQuantLevel();
-        final double gyroQuantLevel = getGyroQuantLevel();
 
         final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
@@ -222,11 +224,9 @@ public class BodyKinematicsGeneratorTest {
         final Matrix gg = generateGg();
         final double accelNoiseRootPSD = getAccelNoiseRootPSD();
         final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = getAccelQuantLevel();
-        final double gyroQuantLevel = getGyroQuantLevel();
 
         final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
@@ -283,11 +283,9 @@ public class BodyKinematicsGeneratorTest {
         final Matrix gg = generateGg();
         final double accelNoiseRootPSD = 0.0;
         final double gyroNoiseRootPSD = 0.0;
-        final double accelQuantLevel = getAccelQuantLevel();
-        final double gyroQuantLevel = getGyroQuantLevel();
 
         final IMUErrors errors = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
@@ -386,10 +384,8 @@ public class BodyKinematicsGeneratorTest {
                 result1, quantizationResiduals1);
 
 
-        final double accelQuantLevel2 = getAccelQuantLevel();
-        final double gyroQuantLevel2 = getGyroQuantLevel();
         final IMUErrors errors2 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel2, gyroQuantLevel2);
+                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
 
         // when no old quantization residuals are provided, quantization gets disabled
         final double[] quantizationResiduals2 = new double[6];
@@ -532,14 +528,11 @@ public class BodyKinematicsGeneratorTest {
         final Matrix gg = generateGg();
         final double accelNoiseRootPSD = getAccelNoiseRootPSD();
         final double gyroNoiseRootPSD = getGyroNoiseRootPSD();
-        final double accelQuantLevel = getAccelQuantLevel();
-        final double gyroQuantLevel = getGyroQuantLevel();
 
         final IMUErrors errors1 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
-                gyroNoiseRootPSD, accelQuantLevel, gyroQuantLevel);
+                gyroNoiseRootPSD, ACCEL_QUANT_LEVEL, GYRO_QUANT_LEVEL);
         final IMUErrors errors2 = new IMUErrors(ba, bg, ma, mg, gg, accelNoiseRootPSD,
                 gyroNoiseRootPSD, 0.0, 0.0);
-
 
         final Random random = mock(Random.class);
         when(random.nextGaussian()).thenReturn(0.5);
@@ -836,13 +829,5 @@ public class BodyKinematicsGeneratorTest {
 
     private double getGyroNoiseRootPSD() {
         return 0.01 * DEG_TO_RAD / 60.0;
-    }
-
-    private double getAccelQuantLevel() {
-        return 1e-2;
-    }
-
-    private double getGyroQuantLevel() {
-        return 2e-4;
     }
 }

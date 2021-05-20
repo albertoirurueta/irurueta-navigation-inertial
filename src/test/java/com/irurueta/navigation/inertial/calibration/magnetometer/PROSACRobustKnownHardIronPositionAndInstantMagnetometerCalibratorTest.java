@@ -10549,7 +10549,7 @@ public class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTe
             calibrator = new PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
                     new double[6], ecefPosition, measurements, hardIron,
                     this);
-            fail("IllegalArgumentExcption expected but not thrown");
+            fail("IllegalArgumentException expected but not thrown");
         } catch (IllegalArgumentException ignore) {
         }
         try {
@@ -13392,8 +13392,7 @@ public class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTe
 
     @Test
     public void testCalibrateGeneralNoNoiseInlier()
-            throws IOException, LockedException, WrongSizeException,
-            CalibrationException, NotReadyException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13486,8 +13485,7 @@ public class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTe
 
     @Test
     public void testCalibrateCommonAxisNoNoiseInlier()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13581,8 +13579,7 @@ public class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTe
 
     @Test
     public void testCalibrateGeneralWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13681,8 +13678,7 @@ public class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTe
 
     @Test
     public void testCalibrateCommonAxisWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -13777,9 +13773,7 @@ public class PROSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTe
 
     @Test
     public void testCalibrateGeneralNoRefinement()
-            throws IOException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            throws IOException, LockedException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {

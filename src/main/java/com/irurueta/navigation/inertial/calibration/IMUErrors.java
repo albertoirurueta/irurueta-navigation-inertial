@@ -100,7 +100,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      * By default it is the 3x3 zero matrix.
      */
     private Matrix mAccelerometerScaleFactorAndCrossCouplingErrors;
@@ -142,7 +142,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      * By default it is the 3x3 zero matrix.
      */
     private Matrix mGyroScaleFactorAndCrossCouplingErrors;
@@ -659,7 +659,7 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     public AngularSpeed[] getGyroBiasesAsAngularSpeed() {
         final AngularSpeed[] result = new AngularSpeed[GYRO_COMPONENTS];
-        getGyroBiasesAsAngularspeed(result);
+        getGyroBiasesAsAngularSpeed(result);
         return result;
     }
 
@@ -670,7 +670,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param result instance where data will be copied to.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public void getGyroBiasesAsAngularspeed(final AngularSpeed[] result) {
+    public void getGyroBiasesAsAngularSpeed(final AngularSpeed[] result) {
         if (result.length != GYRO_COMPONENTS) {
             throw new IllegalArgumentException();
         }
@@ -740,7 +740,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      * By default it is the 3x3 identity matrix.
      *
      * @return accelerometer scale factors and cross coupling errors.
@@ -786,7 +786,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      * By default it is the 3x3 identity matrix.
      *
      * @param result instance where data of scale factor and cross coupling matrix will
@@ -833,7 +833,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @param accelerometerScaleFactorAndCrossCouplingErrors scale factors and cross coupling
      *                                                       matrix to be set.
@@ -887,7 +887,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      * By default it is the 3x3 identity matrix.
      *
      * @return gyro scale factors and cross coupling errors.
@@ -933,7 +933,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      * By default it is the 3x3 identity matrix.
      *
      * @param result instance where data of scale factor and cross coupling matrix will
@@ -980,7 +980,7 @@ public class IMUErrors implements Serializable, Cloneable {
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @param gyroScaleFactorAndCrossCouplingErrors scale factors and cross coupling
      *                                              matrix to be set.
@@ -1187,7 +1187,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * Gets gyro quantization level expressed in radians per second (rad/s).
      * By default it is zero when no quantization is assumed.
      *
-     * @return gyro quantization level expressed in radians per seocnd.
+     * @return gyro quantization level expressed in radians per second.
      */
     public double getGyroQuantizationLevel() {
         return mGyroQuantizationLevel;

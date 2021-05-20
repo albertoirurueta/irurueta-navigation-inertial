@@ -203,7 +203,7 @@ public class IMUErrorsCreator {
      * Sets accelerometer quantization level expressed in meters per squared second
      * (m/s^2).
      *
-     * @param accelerometerQuantizationLevel accelerometer quantizaiton level.
+     * @param accelerometerQuantizationLevel accelerometer quantization level.
      */
     public void setAccelerometerQuantizationLevel(final double accelerometerQuantizationLevel) {
         mAccelerometerQuantizationLevel = accelerometerQuantizationLevel;

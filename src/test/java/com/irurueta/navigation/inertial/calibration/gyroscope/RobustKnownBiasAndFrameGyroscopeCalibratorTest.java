@@ -2881,6 +2881,83 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
+        // test create with quality scores, measurements, bias coordinates,
+        // common axis used and method
+
+        // RANSAC
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
+                qualityScores, measurements, biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasX(), biasX, 0.0);
+        assertEquals(calibrator.getBiasY(), biasY, 0.0);
+        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
+                qualityScores, measurements, biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.LMedS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasX(), biasX, 0.0);
+        assertEquals(calibrator.getBiasY(), biasY, 0.0);
+        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
+                qualityScores, measurements, biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasX(), biasX, 0.0);
+        assertEquals(calibrator.getBiasY(), biasY, 0.0);
+        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
+                qualityScores, measurements, biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasX(), biasX, 0.0);
+        assertEquals(calibrator.getBiasY(), biasY, 0.0);
+        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
+                qualityScores, measurements, biasX, biasY, biasZ, true,
+                this, RobustEstimatorMethod.PROMedS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasX(), biasX, 0.0);
+        assertEquals(calibrator.getBiasY(), biasY, 0.0);
+        assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias coordinates, common axis
         // used, listener and method
@@ -3400,6 +3477,83 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
 
+        // test create with quality scores, measurements, bias coordinates as angular
+        // speed, common axis used, listener and method
+
+        // RANSAC
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(qualityScores,
+                measurements, bx, by, bz, true, this,
+                RobustEstimatorMethod.RANSAC);
+
+        // check
+        assertTrue(calibrator instanceof RANSACRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasAngularSpeedX(), bx);
+        assertEquals(calibrator.getBiasAngularSpeedY(), by);
+        assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // LMedS
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(qualityScores,
+                measurements, bx, by, bz, true, this,
+                RobustEstimatorMethod.LMedS);
+
+        // check
+        assertTrue(calibrator instanceof LMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasAngularSpeedX(), bx);
+        assertEquals(calibrator.getBiasAngularSpeedY(), by);
+        assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // MSAC
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(qualityScores,
+                measurements, bx, by, bz, true, this,
+                RobustEstimatorMethod.MSAC);
+
+        // check
+        assertTrue(calibrator instanceof MSACRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertNull(calibrator.getQualityScores());
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasAngularSpeedX(), bx);
+        assertEquals(calibrator.getBiasAngularSpeedY(), by);
+        assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROSAC
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(qualityScores,
+                measurements, bx, by, bz, true, this,
+                RobustEstimatorMethod.PROSAC);
+
+        // check
+        assertTrue(calibrator instanceof PROSACRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasAngularSpeedX(), bx);
+        assertEquals(calibrator.getBiasAngularSpeedY(), by);
+        assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+
+        // PROMedS
+        calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(qualityScores,
+                measurements, bx, by, bz, true, this,
+                RobustEstimatorMethod.PROMedS);
+
+        // check
+        assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
+        assertSame(calibrator.getQualityScores(), qualityScores);
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getBiasAngularSpeedX(), bx);
+        assertEquals(calibrator.getBiasAngularSpeedY(), by);
+        assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
 
         // test create with quality scores, measurements, bias coordinates as angular
         // speed, common axis used, listener and method

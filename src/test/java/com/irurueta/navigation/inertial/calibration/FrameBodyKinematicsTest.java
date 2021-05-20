@@ -1045,6 +1045,7 @@ public class FrameBodyKinematicsTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(frameBodyKinematics1.equals((Object) frameBodyKinematics1));
+        //noinspection EqualsWithItself
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics1));
         assertTrue(frameBodyKinematics1.equals(frameBodyKinematics2));
         assertFalse(frameBodyKinematics1.equals(frameBodyKinematics3));

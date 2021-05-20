@@ -93,8 +93,8 @@ public class NEDMagneticFluxDensityTest {
         assertEquals(b.getBn(), bn, 0.0);
         assertEquals(b.getBe(), be, 0.0);
         assertEquals(b.getBd(), bd, 0.0);
-        assertEquals(b.getNorm(), Math.sqrt(bn * bn + be * be + bd * bd),
-                0.0);
+        final double bNorm = Math.sqrt(bn * bn + be * be + bd * bd);
+        assertEquals(b.getNorm(), bNorm, 0.0);
         bn1 = b.getBnAsMagneticFluxDensity();
         assertEquals(bn1.getValue().doubleValue(), bn, 0.0);
         assertEquals(bn1.getUnit(), MagneticFluxDensityUnit.TESLA);
@@ -132,8 +132,7 @@ public class NEDMagneticFluxDensityTest {
         assertEquals(b.getBn(), bn, 0.0);
         assertEquals(b.getBe(), be, 0.0);
         assertEquals(b.getBd(), bd, 0.0);
-        assertEquals(b.getNorm(), Math.sqrt(bn * bn + be * be + bd * bd),
-                0.0);
+        assertEquals(b.getNorm(), bNorm, 0.0);
         bn1 = b.getBnAsMagneticFluxDensity();
         assertEquals(bn1.getValue().doubleValue(), bn, 0.0);
         assertEquals(bn1.getUnit(), MagneticFluxDensityUnit.TESLA);
@@ -173,8 +172,7 @@ public class NEDMagneticFluxDensityTest {
         assertEquals(b.getBn(), bn, 0.0);
         assertEquals(b.getBe(), be, 0.0);
         assertEquals(b.getBd(), bd, 0.0);
-        assertEquals(b.getNorm(), Math.sqrt(bn * bn + be * be + bd * bd),
-                0.0);
+        assertEquals(b.getNorm(), bNorm, 0.0);
         bn1 = b.getBnAsMagneticFluxDensity();
         assertEquals(bn1.getValue().doubleValue(), bn, 0.0);
         assertEquals(bn1.getUnit(), MagneticFluxDensityUnit.TESLA);

@@ -745,7 +745,9 @@ public class AngularSpeedTriadTest {
 
         assertTrue(triad1.equals(triad2));
         assertTrue(triad2.equals(triad1));
+        //noinspection EqualsWithItself
         assertTrue(triad1.equals(triad1));
+        //noinspection EqualsWithItself
         assertTrue(triad2.equals(triad2));
         assertFalse(triad1.equals(triad3));
         assertFalse(triad2.equals(triad3));

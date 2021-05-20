@@ -43,7 +43,7 @@ public class BodyKinematicsFixer {
     private final AccelerationTriad mMeasuredAcceleration = new AccelerationTriad();
 
     /**
-     * Contains measured angular speed to be reuded.
+     * Contains measured angular speed to be reused.
      */
     private final AngularSpeedTriad mMeasuredAngularSpeed = new AngularSpeedTriad();
 

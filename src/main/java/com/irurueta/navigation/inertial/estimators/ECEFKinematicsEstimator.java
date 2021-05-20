@@ -84,7 +84,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -129,7 +129,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -336,7 +336,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -365,7 +365,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -473,7 +473,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -512,7 +512,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -551,7 +551,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -585,7 +585,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -614,7 +614,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -639,7 +639,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -674,7 +674,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -714,7 +714,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -795,7 +795,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
@@ -829,7 +829,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
@@ -868,7 +868,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -912,7 +912,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -1112,7 +1112,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -1141,7 +1141,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -1247,7 +1247,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -1285,7 +1285,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -1323,7 +1323,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -1355,7 +1355,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -1382,7 +1382,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1406,7 +1406,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -1440,7 +1440,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -1480,7 +1480,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -1561,7 +1561,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
@@ -1595,7 +1595,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
@@ -1667,7 +1667,7 @@ public class ECEFKinematicsEstimator {
                 cEarth.multiply(oldCbe);
                 cBe.multiply(cEarth); // here cBe is cOldNew
 
-                // Calculate the approximate angular rate with respect an intertial frame
+                // Calculate the approximate angular rate with respect an inertial frame
                 double alphaX = 0.5 * (cBe.getElementAt(1, 2)
                         - cBe.getElementAt(2, 1));
                 double alphaY = 0.5 * (cBe.getElementAt(2, 0)
@@ -1793,7 +1793,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -2010,7 +2010,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -2040,7 +2040,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -2157,7 +2157,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -2202,7 +2202,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -2247,7 +2247,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -2281,7 +2281,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -2310,7 +2310,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2339,7 +2339,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -2378,7 +2378,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -2418,7 +2418,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -2501,7 +2501,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
@@ -2535,7 +2535,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @param result       instance where body kinematics estimation will be stored.
@@ -2574,7 +2574,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -2620,7 +2620,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
@@ -2832,7 +2832,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -2862,7 +2862,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -2975,7 +2975,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -3015,7 +3015,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param x            cartesian x coordinate of body position expressed in meters (m)
      *                     with respect ECEF frame, resolved along ECEF-frame axes.
      * @param y            cartesian y coordinate of body position expressed in meters (m)
@@ -3055,7 +3055,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -3089,7 +3089,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     cartesian body position resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
@@ -3118,7 +3118,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -3144,7 +3144,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
@@ -3180,7 +3180,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -3221,7 +3221,7 @@ public class ECEFKinematicsEstimator {
      *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes and expressed in meters
+     *                     frame, resolved along ECEF-frame axes and expressed in meters
      *                     per second (m/s).
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
@@ -3306,7 +3306,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @return a new body kinematics instance.
@@ -3340,7 +3340,7 @@ public class ECEFKinematicsEstimator {
      * @param oldVy        previous velocity of body frame y coordinate with respect ECEF
      *                     frame, resolved along ECEF-frame axes.
      * @param oldVz        previous velocity of body frame z coordinate with respect ECEF
-     *                     frame, resolved along EVEF-frame axes.
+     *                     frame, resolved along ECEF-frame axes.
      * @param position     body position expressed in meters (m) with respect ECEF frame,
      *                     resolved along ECEF-frame axes.
      * @return a new body kinematics instance.

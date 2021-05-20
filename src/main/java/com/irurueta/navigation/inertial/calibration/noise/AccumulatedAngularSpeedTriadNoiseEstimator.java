@@ -83,20 +83,6 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
     }
 
     /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    @Override
-    protected AngularSpeedTriad createTriad(
-            final AngularSpeed valueX, final AngularSpeed valueY, final AngularSpeed valueZ) {
-        return new AngularSpeedTriad(valueX, valueY, valueZ);
-    }
-
-    /**
      * Gets default unit for a measurement.
      *
      * @return default unit for a measurement.

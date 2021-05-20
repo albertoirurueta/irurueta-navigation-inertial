@@ -2194,7 +2194,7 @@ public class INSTightlyCoupledKalmanStateTest {
     }
 
     @Test
-    public void testCopyToWhenInputHasValuesAndOuputDoesNotHaveValues()
+    public void testCopyToWhenInputHasValuesAndOutputDoesNotHaveValues()
             throws WrongSizeException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
@@ -2626,6 +2626,7 @@ public class INSTightlyCoupledKalmanStateTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(state1.equals((Object) state1));
+        //noinspection EqualsWithItself
         assertTrue(state1.equals(state1));
         assertTrue(state1.equals(state2));
         assertFalse(state1.equals(state3));

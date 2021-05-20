@@ -127,7 +127,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -337,7 +337,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -1072,7 +1072,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Sets known x coordinate of gyroscope bias expressed in radians persecond
+     * Sets known x coordinate of gyroscope bias expressed in radians per second
      * (rad/s).
      *
      * @param biasX x coordinate of gyroscope bias.
@@ -2294,7 +2294,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -2857,7 +2857,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Creaates a robust gyroscope calibrator.
+     * Creates a robust gyroscope calibrator.
      *
      * @param measurements list of body kinematics measurements with standard
      *                     deviations taken at different frames (positions, orientations
@@ -4148,7 +4148,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Cretes a robust gyroscope calibrator.
+     * Creates a robust gyroscope calibrator.
      *
      * @param qualityScores quality scores corresponding to each provided
      *                      measurement. The larger the score value the better
@@ -4695,7 +4695,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      * @param method         robust estimator method.
-     * @return a robust gyrocope calibrator.
+     * @return a robust gyroscope calibrator.
      * @throws IllegalArgumentException if provided quality scores length
      *                                  is smaller than 6 samples.
      */
@@ -6351,7 +6351,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     }
 
     /**
-     * Internally sets known gyrocope bias as a column matrix.
+     * Internally sets known gyroscope bias as a column matrix.
      * Matrix values are expressed in radians per second (rad/s).
      *
      * @param bias gyroscope bias to be set.
@@ -6432,7 +6432,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
          *          [0     sy   myz]
          *          [0     0    sz ]
          * </pre>
-         * Values of this matrix are unitless.
+         * Values of this matrix are unit-less.
          */
         private Matrix mEstimatedMg;
 

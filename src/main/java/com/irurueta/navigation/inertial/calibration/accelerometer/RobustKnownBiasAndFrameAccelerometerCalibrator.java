@@ -55,7 +55,7 @@ import java.util.List;
  * - I is the 3x3 identity matrix.
  * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
  * a perfect accelerometer, this should be a 3x3 zero matrix.
- * - ftrue is ground-trush specific force.
+ * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
 public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
@@ -121,7 +121,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -328,7 +328,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMa;
 
@@ -1953,7 +1953,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
     }
 
     /**
-     * Sepecifies whether a linear calibrator is used or not for preliminary
+     * Specifies whether a linear calibrator is used or not for preliminary
      * solutions.
      *
      * @param linearCalibratorUsed indicates whether a linear calibrator is used
@@ -2223,7 +2223,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated accelerometer scale factors and cross coupling errors, or null
      * if not available.
@@ -5430,7 +5430,7 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
     }
 
     /**
-     * Createss a robust accelerometer calibrator using default robust method.
+     * Creates a robust accelerometer calibrator using default robust method.
      *
      * @param measurements   list of body kinematics measurements with standard
      *                       deviations taken at different frames (positions, orientations

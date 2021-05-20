@@ -37,6 +37,7 @@ import com.irurueta.units.TimeUnit;
  * @param <E> an estimator type.
  * @param <L> a listener type.
  */
+@SuppressWarnings("DuplicatedCode")
 public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
         M extends Measurement<U>,
         E extends AccumulatedMeasurementNoiseEstimator<U, M, E, L>,
@@ -291,7 +292,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * in (m^2 * s^-3) for accelerometer, (rad^2/s) for gyroscope or (T^2 * s) for
      * magnetometer.
      *
-     * @return measureent noise PSD.
+     * @return measurement noise PSD.
      */
     public double getPsd() {
         return mVariance * mTimeInterval;
@@ -331,11 +332,9 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      * angular speed or T for magnetic flux density).
      *
      * @param value value to be added.
-     * @return true if provided measurement value has been processed, false if it has
-     * been ignored.
      * @throws LockedException if estimator is currently running.
      */
-    public boolean addMeasurement(final double value) throws LockedException {
+    public void addMeasurement(final double value) throws LockedException {
 
         if (mRunning) {
             throw new LockedException();
@@ -374,20 +373,16 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
         }
 
         mRunning = false;
-
-        return true;
     }
 
     /**
      * Adds a measurement value.
      *
      * @param measurement measurement to be added.
-     * @return true if provided measurement value has been processed, false if it has
-     * been ignored.
      * @throws LockedException if estimator is currently running.
      */
-    public boolean addMeasurement(final M measurement) throws LockedException {
-        return addMeasurement(convertToDefaultUnit(measurement));
+    public void addMeasurement(final M measurement) throws LockedException {
+        addMeasurement(convertToDefaultUnit(measurement));
     }
 
     /**

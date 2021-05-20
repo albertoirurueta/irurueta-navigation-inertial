@@ -28,7 +28,7 @@ import java.util.Objects;
 
 /**
  * Contains a body magnetic flux density along with the corresponding frame
- * (position, orientatoin and velocity) where the measurement was made.
+ * (position, orientation and velocity) where the measurement was made.
  */
 public class FrameBodyMagneticFluxDensity implements Serializable, Cloneable {
 

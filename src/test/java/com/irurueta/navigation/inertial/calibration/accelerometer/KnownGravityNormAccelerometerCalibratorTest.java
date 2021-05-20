@@ -40831,7 +40831,7 @@ public class KnownGravityNormAccelerometerCalibratorTest implements
 
         // set enough measurements for common axis case
         measurements2.clear();
-        for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS; i++) {
+        for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);
@@ -41143,7 +41143,7 @@ public class KnownGravityNormAccelerometerCalibratorTest implements
             final double angularRateStandardDeviation = getGyroNoiseRootPSD() / sqrtTimeInterval;
 
             final List<StandardDeviationBodyKinematics> measurements = new ArrayList<>();
-            for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS; i++) {
+            for (int i = 0; i < KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
                 final double roll = Math.toRadians(
                         randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
                 final double pitch = Math.toRadians(

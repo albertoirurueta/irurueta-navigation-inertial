@@ -63,6 +63,7 @@ import java.util.Collection;
  * - ftrue is ground-truth specific force. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
+@SuppressWarnings("DuplicatedCode")
 public class KnownFrameGyroscopeLinearLeastSquaresCalibrator implements
         KnownFrameGyroscopeCalibrator<FrameBodyKinematics,
                 KnownFrameGyroscopeLinearLeastSquaresCalibratorListener>,
@@ -165,7 +166,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -740,7 +741,7 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors.
      */

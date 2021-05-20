@@ -8226,7 +8226,7 @@ public class TurntableGyroscopeCalibratorTest implements
                     rotationRate, 0.0, measurements,
                     true,
                     false, bg, mg, gg);
-            fail("IllegalArgumentException expected but not thtornw");
+            fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {

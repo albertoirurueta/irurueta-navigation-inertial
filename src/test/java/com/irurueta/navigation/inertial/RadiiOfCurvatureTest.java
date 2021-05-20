@@ -260,6 +260,7 @@ public class RadiiOfCurvatureTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(radii1.equals((Object) radii1));
+        //noinspection EqualsWithItself
         assertTrue(radii1.equals(radii1));
         assertTrue(radii1.equals(radii2));
         assertFalse(radii1.equals(radii3));

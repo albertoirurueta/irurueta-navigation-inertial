@@ -396,6 +396,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * @param result matrix instance where magnetic flux density coordinates
      *               will be stored in n,e,d order.
      */
+    @SuppressWarnings("DuplicatedCode")
     public void asMatrix(final Matrix result) {
         if (result.getColumns() != COMPONENTS || result.getRows() != 1) {
             try {

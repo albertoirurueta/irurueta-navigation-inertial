@@ -81,21 +81,6 @@ public class AccumulatedMagneticFluxDensityTriadNoiseEstimator extends
     }
 
     /**
-     * Creates a triad with provided values.
-     *
-     * @param valueX x coordinate value.
-     * @param valueY y coordinate value.
-     * @param valueZ z coordinate value.
-     * @return created triad.
-     */
-    @Override
-    protected MagneticFluxDensityTriad createTriad(
-            final MagneticFluxDensity valueX, final MagneticFluxDensity valueY,
-            final MagneticFluxDensity valueZ) {
-        return new MagneticFluxDensityTriad(valueX, valueY, valueZ);
-    }
-
-    /**
      * Gets default unit for a measurement.
      *
      * @return default unit for a measurement.

@@ -403,8 +403,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor3() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor3() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -559,8 +558,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor4() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor4() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -716,8 +714,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor5() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor5() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -1489,8 +1486,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor10() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor10() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -1645,8 +1641,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor11() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor11() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -1802,8 +1797,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor12() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor12() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -2578,8 +2572,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor17() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor17() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -2734,8 +2727,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor18() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor18() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -2891,8 +2883,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor19() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor19() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -3666,8 +3657,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor24() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor24() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -3822,8 +3812,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor25() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor25() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -3979,8 +3968,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor26() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor26() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -4757,8 +4745,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor31() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor31() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -4914,8 +4901,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor32() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor32() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -5072,8 +5058,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor33() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor33() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -5852,8 +5837,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor38() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor38() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -6009,8 +5993,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor39() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor39() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -6167,8 +6150,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor40() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor40() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -6948,8 +6930,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor45() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor45() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -7105,8 +7086,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor46() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor46() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -7263,8 +7243,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor47() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor47() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -8046,8 +8025,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor52() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor52() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -8204,8 +8182,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor53() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor53() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -8362,8 +8339,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor54() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor54() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -9147,8 +9123,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor59() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor59() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -9305,8 +9280,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor60() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor60() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -9464,8 +9438,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor61() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor61() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -10252,8 +10225,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor66() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor66() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -10411,8 +10383,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor67() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor67() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 
@@ -10570,8 +10541,7 @@ public class BodyMagneticFluxDensityBiasEstimatorTest
     }
 
     @Test
-    public void testConstructor68() throws IOException,
-            InvalidSourceAndDestinationFrameTypeException {
+    public void testConstructor68() throws IOException {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final NEDPosition nedPosition = createPosition(randomizer);
 

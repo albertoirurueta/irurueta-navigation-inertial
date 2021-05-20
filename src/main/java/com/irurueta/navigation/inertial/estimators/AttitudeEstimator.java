@@ -86,7 +86,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -127,7 +127,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -167,7 +167,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -208,7 +208,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -248,7 +248,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -289,7 +289,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param latitude  Earth position latitude expressed in radians (rad).
@@ -329,7 +329,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -358,7 +358,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -386,7 +386,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -415,7 +415,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -443,7 +443,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -472,7 +472,7 @@ public class AttitudeEstimator {
      * to estimate the magnetic declination angle at a given Earth position
      * and timestamp.
      * Besides, a leveling algorithm is used to estimate roll and pitch
-     * attitude angles, which can later be used to estimate yaw attude angle
+     * attitude angles, which can later be used to estimate yaw attitude angle
      * with estimated declination angle and provided magnetometer measurements.
      *
      * @param position   Earth position resolved in NED coordinates.
@@ -1106,6 +1106,7 @@ public class AttitudeEstimator {
      * @param pitch known body pitch angle expressed in radians (rad).
      * @return magnetic heading expressed in radians (rad).
      */
+    @SuppressWarnings("DuplicatedCode")
     public static double getMagneticHeading(
             final double bx, final double by, final double bz,
             final double roll, final double pitch) {

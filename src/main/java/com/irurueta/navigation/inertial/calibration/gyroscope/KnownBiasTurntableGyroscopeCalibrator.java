@@ -106,7 +106,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * Indicates that by default G-dependent cross biases introduced
      * by the accelerometer on the gyroscope are estimated.
      */
-    public static final boolean DEFAULT_ESTIMATE_G_DPENDENT_CROSS_BIASES = true;
+    public static final boolean DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES = true;
 
     /**
      * Number of unknowns when common z-axis is assumed for both the accelerometer
@@ -360,7 +360,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * When enabled, this adds 9 variables from Gg matrix.
      */
     private boolean mEstimateGDependentCrossBiases =
-            DEFAULT_ESTIMATE_G_DPENDENT_CROSS_BIASES;
+            DEFAULT_ESTIMATE_G_DEPENDENT_CROSS_BIASES;
 
     /**
      * Listener to handle events raised by this calibrator.
@@ -404,7 +404,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -4121,7 +4121,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * the standard deviations of accelerometer and gyroscope measurements.
      *
      * @param measurements collection of body kinematics measurements at a
-     *                     known position witn unknown orientations.
+     *                     known position with unknown orientations.
      * @throws LockedException if calibrator is currently running.
      */
     @Override
@@ -4458,7 +4458,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.
@@ -5298,7 +5298,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
         // Ideally a least squares solution tries to minimize noise component, so:
         // Ωmeas = bg + (I + Mg) * Ωtrue + Gg * ftrue
 
-        // Since G-dependent cross giases are ignored, we can assume that Gg = 0
+        // Since G-dependent cross biases are ignored, we can assume that Gg = 0
 
         // Hence:
         // Ωmeas = bg + (I + Mg) * Ωtrue
@@ -5978,7 +5978,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * Computes estimated true angular rate squared norm using current measured
      * angular rate and specific force along with provided parameters for the
      * general case when G-dependent cross biases are taken into account.
-     * This methos is internally executed during gradient estimation and
+     * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
      * @param params array containing parameters for the general purpose case
@@ -6023,7 +6023,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * angular rate and specific force along with provided parameters when
      * common z-axis is assumed and G-dependent cross biases are taken into
      * account.
-     * This methos is internally executed during gradient estimation and
+     * This method is internally executed during gradient estimation and
      * Levenberg-Marquardt fitting needed for calibration computation.
      *
      * @param params array containing parameters for the general purpose case
@@ -6119,7 +6119,7 @@ public class KnownBiasTurntableGyroscopeCalibrator implements GyroscopeNonLinear
      * Computes estimated true angular rate squared norm using current measured
      * angular rate and provided parameters.
      * This method is internally executed during gradient estimation and
-     * Levenberg-Marquardt fittin needed for calibration computation.
+     * Levenberg-Marquardt fitting needed for calibration computation.
      *
      * @param m11 element 1,1 of cross-coupling error matrix.
      * @param m21 element 2,1 of cross-coupling error matrix.

@@ -6643,7 +6643,7 @@ public class LMedSRobustKnownBiasAndPositionAccelerometerCalibratorTest implemen
 
         // set enough measurements for common axis case
         measurements2.clear();
-        for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS; i++) {
+        for (int i = 0; i < KnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS; i++) {
             measurements2.add(new StandardDeviationBodyKinematics());
         }
         calibrator.setMeasurements(measurements2);

@@ -28,12 +28,13 @@ import com.irurueta.units.TimeUnit;
 
 /**
  * Calculates position, velocity, attitude and IMU biases using an INS loosely
- * coupled Kalman filter to take into account intertial measurements to
+ * coupled Kalman filter to take into account inertial measurements to
  * smooth results and taking into account an initial position.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Loosely_coupled_INS_GNSS.m
  */
+@SuppressWarnings("DuplicatedCode")
 public class INSLooselyCoupledKalmanFilteredEstimator {
 
     /**
@@ -575,8 +576,8 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      * @param epochInterval minimum epoch interval expressed in seconds (s) between
      *                      consecutive propagations or measurements.
      * @param initialConfig initial INS loosely coupled Kalman configuration to
-     *                      set proper initial covariane during filter initialization.
-     * @throws IllegalArgumentException if provided epoch intervla is negative.
+     *                      set proper initial covariance during filter initialization.
+     * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSLooselyCoupledKalmanFilteredEstimator(
             final INSLooselyCoupledKalmanConfig config, final double epochInterval,

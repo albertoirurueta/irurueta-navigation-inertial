@@ -1095,7 +1095,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                 gyroNoisePsd, ABSOLUTE_ERROR);
 
         // reset
-        estimator.reset();
+        assertTrue(estimator.reset());
 
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastBodyKinematics());
@@ -1593,7 +1593,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                 gyroNoisePsd, ABSOLUTE_ERROR);
 
         // reset
-        estimator.reset();
+        assertTrue(estimator.reset());
 
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastBodyKinematics());
@@ -2107,7 +2107,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                     gyroNoisePsd, ABSOLUTE_ERROR);
 
             // reset
-            estimator.reset();
+            assertTrue(estimator.reset());
 
             assertEquals(0, estimator.getNumberOfProcessedSamples());
             assertNull(estimator.getLastBodyKinematics());
@@ -2605,7 +2605,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
                 gyroNoisePsd, ABSOLUTE_ERROR);
 
         // reset
-        estimator.reset();
+        assertTrue(estimator.reset());
 
         assertEquals(0, estimator.getNumberOfProcessedSamples());
         assertNull(estimator.getLastBodyKinematics());
@@ -2682,7 +2682,7 @@ public class AccumulatedBodyKinematicsNoiseEstimatorTest implements
         } catch (final LockedException ignore) {
         }
         try {
-            estimator.reset();
+            assertFalse(estimator.reset());
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }

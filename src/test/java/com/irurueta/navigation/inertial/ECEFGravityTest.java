@@ -426,6 +426,7 @@ public class ECEFGravityTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(gravity1.equals((Object) gravity1));
+        //noinspection EqualsWithItself
         assertTrue(gravity1.equals(gravity1));
         assertTrue(gravity1.equals(gravity2));
         assertFalse(gravity1.equals(gravity3));

@@ -143,7 +143,7 @@ public class QuaternionIntegrator {
     }
 
     /**
-     * Normalize an input matrix corresponding to a quaterniont into a unit
+     * Normalize an input matrix corresponding to a quaternion into a unit
      * vector.
      *
      * @param quaternion matrix containing quaternion values to be normalized.
@@ -157,7 +157,7 @@ public class QuaternionIntegrator {
      * Gets skew symmetric matrix representation of angular speed.
      *
      * @param omega  matrix containing angular speed components. Must be 3x1.
-     * @param result computed skew symmetricmatrix representation. Must be 4x4.
+     * @param result computed skew symmetric matrix representation. Must be 4x4.
      */
     private static void computeOmegaSkew(final Matrix omega, final Matrix result) {
         final double omega0 = omega.getElementAtIndex(0);

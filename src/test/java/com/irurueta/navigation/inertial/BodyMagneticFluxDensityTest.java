@@ -89,7 +89,8 @@ public class BodyMagneticFluxDensityTest {
         assertEquals(b.getBx(), bx, 0.0);
         assertEquals(b.getBy(), by, 0.0);
         assertEquals(b.getBz(), bz, 0.0);
-        assertEquals(b.getNorm(), Math.sqrt(bx * bx + by * by + bz * bz),
+        final double bNorm = Math.sqrt(bx * bx + by * by + bz * bz);
+        assertEquals(b.getNorm(), bNorm,
                 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
         assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
@@ -128,7 +129,7 @@ public class BodyMagneticFluxDensityTest {
         assertEquals(b.getBx(), bx, 0.0);
         assertEquals(b.getBy(), by, 0.0);
         assertEquals(b.getBz(), bz, 0.0);
-        assertEquals(b.getNorm(), Math.sqrt(bx * bx + by * by + bz * bz),
+        assertEquals(b.getNorm(), bNorm,
                 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
         assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
@@ -166,7 +167,7 @@ public class BodyMagneticFluxDensityTest {
         assertEquals(b.getBx(), bx, 0.0);
         assertEquals(b.getBy(), by, 0.0);
         assertEquals(b.getBz(), bz, 0.0);
-        assertEquals(b.getNorm(), Math.sqrt(bx * bx + by * by + bz * bz),
+        assertEquals(b.getNorm(), bNorm,
                 0.0);
         bx1 = b.getBxAsMagneticFluxDensity();
         assertEquals(bx1.getValue().doubleValue(), bx, 0.0);
@@ -626,6 +627,7 @@ public class BodyMagneticFluxDensityTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(b1.equals((Object) b1));
+        //noinspection EqualsWithItself
         assertTrue(b1.equals(b1));
         assertTrue(b1.equals(b2));
         assertFalse(b1.equals(b3));

@@ -55,6 +55,7 @@ public class EarthMagneticFluxDensityEstimator {
      * @param result      instance where magnetic flux will be stored resolved
      *                    around NED frame.
      */
+    @SuppressWarnings("DuplicatedCode")
     public static void estimate(
             final double magnitude,
             final double declination,
@@ -201,10 +202,10 @@ public class EarthMagneticFluxDensityEstimator {
     }
 
     /**
-     * Converts an angle instanto into radians.
+     * Converts an angle instance into radians.
      *
      * @param angle angle to be converted.
-     * @return converted value  into radians.
+     * @return converted value into radians.
      */
     private static double convertAngle(final Angle angle) {
         return AngleConverter.convert(angle.getValue().doubleValue(),

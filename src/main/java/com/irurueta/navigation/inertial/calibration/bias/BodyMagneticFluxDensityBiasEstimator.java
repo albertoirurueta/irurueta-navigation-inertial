@@ -186,7 +186,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * Theoretical expected body magnetic flux density for provided instant,
      * body position and orientation, assuming that body remains at the same
      * position (zero velocity).
-     * When body remains static, sensed magentic flux density will remain constant
+     * When body remains static, sensed magnetic flux density will remain constant
      * for a few minutes respect to provided time instant.
      */
     private BodyMagneticFluxDensity mExpectedBodyMagneticFluxDensity;
@@ -2144,7 +2144,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
     /**
      * Sets current body orientation as a transformation from body to ECEF coordinates.
      * Notice that ECEF orientation refers to ECEF Earth axes, which means that
-     * orientation is not relative to the ground or horizont at current body position.
+     * orientation is not relative to the ground or horizon at current body position.
      * Typically it is more convenient to use
      * {@link #setNedC(CoordinateTransformation)} to specify orientation relative to
      * the ground or horizon at current body position.
@@ -3298,7 +3298,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * Gets theoretically expected body magnetic flux density for provided instant,
      * body position and orientation, assuming that body remains at the same
      * position (zero velocity).
-     * When body remains static, sensed magentic flux density will remain constant
+     * When body remains static, sensed magnetic flux density will remain constant
      * for a few minutes respect to provided time instant.
      *
      * @return expected body magnetic flux density.
@@ -3311,7 +3311,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
      * Gets theoretically expected body magnetic flux density for provided instant,
      * body position and orientation, assuming that body remains at the same
      * position (zero velocity).
-     * When body remains static, sensed magentic flux density will remain constant
+     * When body remains static, sensed magnetic flux density will remain constant
      * for a few minutes respect to provided time instant.
      *
      * @param result instance where expected body magnetic flux density will be
@@ -3500,7 +3500,7 @@ public class BodyMagneticFluxDensityBiasEstimator {
         final NEDMagneticFluxDensity earthB = mWmmEstimator.estimate(
                 latitude, longitude, height, mYear);
 
-        // estimate expected body mangetic flux density taking into
+        // estimate expected body magnetic flux density taking into
         // account body attitude (inverse of frame orientation) and
         // estimated Earth magnetic flux density
         if (mExpectedBodyMagneticFluxDensity == null) {

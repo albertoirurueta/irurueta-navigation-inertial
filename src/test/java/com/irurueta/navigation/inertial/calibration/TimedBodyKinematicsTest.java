@@ -302,6 +302,7 @@ public class TimedBodyKinematicsTest {
 
         // noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(timedBodyKinematics1.equals((Object) timedBodyKinematics1));
+        //noinspection EqualsWithItself
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics1));
         assertTrue(timedBodyKinematics1.equals(timedBodyKinematics2));
         assertFalse(timedBodyKinematics1.equals(timedBodyKinematics3));

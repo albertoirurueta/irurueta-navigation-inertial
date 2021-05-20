@@ -168,7 +168,7 @@ public class AccelerometerMeasurementsGeneratorTest implements
     }
 
     @Test
-    public void testConstructor2() throws LockedException {
+    public void testConstructor2() {
         final AccelerometerMeasurementsGenerator generator =
                 new AccelerometerMeasurementsGenerator(this);
 

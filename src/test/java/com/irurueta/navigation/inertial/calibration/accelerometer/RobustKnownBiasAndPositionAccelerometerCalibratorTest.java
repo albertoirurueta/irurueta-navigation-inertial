@@ -2829,7 +2829,7 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
                 qualityScores, ecefPosition, measurements,
                 true, bias, RobustEstimatorMethod.PROSAC);
 
-        // chekc
+        // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getEcefPosition(), ecefPosition);

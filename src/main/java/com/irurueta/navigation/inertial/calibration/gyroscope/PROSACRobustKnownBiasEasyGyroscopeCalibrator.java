@@ -1446,6 +1446,7 @@ public class PROSACRobustKnownBiasEasyGyroscopeCalibrator extends
      * @throws NotReadyException    if calibrator is not ready.
      * @throws CalibrationException if estimation fails for numerical reasons.
      */
+    @SuppressWarnings("DuplicatedCode")
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {

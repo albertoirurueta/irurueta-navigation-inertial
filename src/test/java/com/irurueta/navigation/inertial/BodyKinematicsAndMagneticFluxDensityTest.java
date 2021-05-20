@@ -285,6 +285,7 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
 
         //noinspection ConstantConditions,SimplifiableAssertion
         assertTrue(kb1.equals((Object) kb1));
+        //noinspection EqualsWithItself
         assertTrue(kb1.equals(kb1));
         assertTrue(kb1.equals(kb2));
         assertFalse(kb1.equals(kb3));

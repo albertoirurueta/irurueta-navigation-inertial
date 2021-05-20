@@ -256,7 +256,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
     /**
      * Sets listener to handle generated events.
      *
-     * @param listener listener to handle generated evets.
+     * @param listener listener to handle generated events.
      * @throws LockedException if generator is busy.
      */
     public void setListener(final L listener) throws LockedException {

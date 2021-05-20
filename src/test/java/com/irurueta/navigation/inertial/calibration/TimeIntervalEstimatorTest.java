@@ -251,7 +251,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertFalse(estimator.addTimestamp(0.0));
 
         // reset
-        estimator.reset();
+        assertTrue(estimator.reset());
 
         assertFalse(estimator.isFinished());
         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
@@ -350,7 +350,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertFalse(estimator.addTimestamp(timestamp));
 
         // reset
-        estimator.reset();
+        assertTrue(estimator.reset());
 
         assertFalse(estimator.isFinished());
         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
@@ -409,7 +409,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         } catch (final LockedException ignore) {
         }
         try {
-            estimator.reset();
+            assertFalse(estimator.reset());
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }

@@ -1088,7 +1088,7 @@ public class INSTightlyCoupledKalmanEpochEstimator {
     }
 
     /**
-     * Estimtes the update of Kalman filter state and covariance matrix for a single
+     * Estimates the update of Kalman filter state and covariance matrix for a single
      * epoch.
      *
      * @param measurements        satellite measurements data.

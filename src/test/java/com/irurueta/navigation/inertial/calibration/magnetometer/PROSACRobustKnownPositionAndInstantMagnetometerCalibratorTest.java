@@ -16228,8 +16228,7 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testCalibrateGeneralNoNoiseInlier()
-            throws IOException, LockedException, WrongSizeException,
-            CalibrationException, NotReadyException {
+            throws IOException, LockedException, WrongSizeException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -16430,8 +16429,7 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testCalibrateGeneralWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, NotReadyException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -16536,8 +16534,7 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
 
     @Test
     public void testCalibrateCommonAxisWithInlierNoise()
-            throws IOException, LockedException, CalibrationException,
-            NotReadyException, WrongSizeException {
+            throws IOException, LockedException, NotReadyException, WrongSizeException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -17122,7 +17119,7 @@ public class PROSACRobustKnownPositionAndInstantMagnetometerCalibratorTest imple
         assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
         final MagneticFluxDensityTriad std2 = new MagneticFluxDensityTriad();
-        calibrator.getEstimatedHardIronStandardDeviation(std2);
+        assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
 
         final double avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
                 calibrator.getEstimatedHardIronYStandardDeviation() +

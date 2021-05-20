@@ -31,6 +31,7 @@ import com.irurueta.units.AngularSpeedUnit;
  * Fixes angular rate values taking into
  * account provided bias, cross coupling errors and G-dependant errors.
  */
+@SuppressWarnings("DuplicatedCode")
 public class AngularRateFixer {
     /**
      * Identity matrix to be reused.

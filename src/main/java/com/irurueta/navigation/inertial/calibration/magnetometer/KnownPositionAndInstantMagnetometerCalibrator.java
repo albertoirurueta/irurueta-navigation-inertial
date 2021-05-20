@@ -254,7 +254,7 @@ public class KnownPositionAndInstantMagnetometerCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMm;
 
@@ -2144,7 +2144,7 @@ public class KnownPositionAndInstantMagnetometerCalibrator implements
      * Sets timestamp when magnetic flux density measurements have been
      * measured.
      *
-     * @param timestampMillis a timestamp expressed in milliseocnds since
+     * @param timestampMillis a timestamp expressed in milliseconds since
      *                        epoch time (January 1st, 1970 at midnight).
      * @throws LockedException if calibrator is currently running.
      */
@@ -2661,7 +2661,7 @@ public class KnownPositionAndInstantMagnetometerCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
      * or null if not available.
@@ -2913,7 +2913,7 @@ public class KnownPositionAndInstantMagnetometerCalibrator implements
      * Gets variance of estimated z coordinate of magnetometer bias expressed in
      * squared Teslas (T^2).
      *
-     * @return variance of estimated yzcoordinate of magnetometer bias or null if
+     * @return variance of estimated z coordinate of magnetometer bias or null if
      * not available.
      */
     public Double getEstimatedHardIronZVariance() {

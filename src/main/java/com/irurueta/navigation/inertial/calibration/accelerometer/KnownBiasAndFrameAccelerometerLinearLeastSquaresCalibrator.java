@@ -54,9 +54,10 @@ import java.util.Collection;
  * - I is the 3x3 identity matrix.
  * - Ma is the 3x3 matrix containing cross-couplings and scaling factors. Ideally, on
  * a perfect accelerometer, this should be a 3x3 zero matrix.
- * - ftrue is ground-trush specific force.
+ * - ftrue is ground-truth specific force.
  * - w is measurement noise.
  */
+@SuppressWarnings("DuplicatedCode")
 public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implements
         KnownBiasAndFrameAccelerometerCalibrator<FrameBodyKinematics,
                 KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorListener>,
@@ -171,7 +172,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMa;
 
@@ -937,7 +938,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      * @param biasX z coordinate of accelerometer bias.
      * @param biasY y coordinate of accelerometer bias.
      * @param biasZ z coordinate of accelerometer bias.
-     * @throws LockedException if estimator is curently running.
+     * @throws LockedException if estimator is currently running.
      */
     @Override
     public void setBiasCoordinates(final Acceleration biasX, final Acceleration biasY,
@@ -995,7 +996,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      * Gets known accelerometer bias as an array.
      * Array values are expressed in meters per squared second (m/s^2).
      *
-     * @return array containint coordinates of known bias.
+     * @return array containing coordinates of known bias.
      */
     @Override
     public double[] getBias() {
@@ -1210,7 +1211,7 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator implemen
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated accelerometer scale factors and cross coupling errors, or null
      * if not available.

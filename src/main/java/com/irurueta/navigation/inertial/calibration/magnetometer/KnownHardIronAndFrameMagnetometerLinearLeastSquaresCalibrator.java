@@ -43,7 +43,7 @@ import java.util.Collection;
 /**
  * Estimates magnetometer soft-iron cross couplings and scaling factors.
  * <p>
- * This calibrator uses a linear appreach to find a minimum least squared error
+ * This calibrator uses a linear approach to find a minimum least squared error
  * solution.
  * <p>
  * To use this calibrator at least 3 measurements at different known frames
@@ -66,6 +66,7 @@ import java.util.Collection;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  */
+@SuppressWarnings("DuplicatedCode")
 public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator implements
         KnownHardIronAndFrameMagnetometerCalibrator<FrameBodyMagneticFluxDensity,
                 KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibratorListener>,
@@ -183,7 +184,7 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMm;
 
@@ -2057,7 +2058,7 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
      * or null if not available.
@@ -2256,7 +2257,7 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
 
             wmmEstimator.estimate(latitude, longitude, height, year, earthB);
 
-            // estimate expected body mangetic flux density taking into
+            // estimate expected body magnetic flux density taking into
             // account body attitude (inverse of frame orientation) and
             // estimated Earth magnetic flux density
             BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,
@@ -2398,7 +2399,7 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
 
             wmmEstimator.estimate(latitude, longitude, height, year, earthB);
 
-            // estimate expected body mangetic flux density taking into
+            // estimate expected body magnetic flux density taking into
             // account body attitude (inverse of frame orientation) and
             // estimated Earth magnetic flux density
             BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,

@@ -30,9 +30,9 @@ import java.util.Objects;
 public class NEDGravity implements Serializable, Cloneable {
 
     /**
-     * Acceleration due to gravity through east-naxis of NED frame expressed in meters per squared second (m/s^2).
+     * Acceleration due to gravity through east-axis of NED frame expressed in meters per squared second (m/s^2).
      */
-    public static double GRAVITY_EAST = 0.0;
+    public static final double GRAVITY_EAST = 0.0;
 
     /**
      * Number of components.
@@ -320,6 +320,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @param result matrix instance where gravity coordinates will be stored in
      *               n,e,d order.
      */
+    @SuppressWarnings("DuplicatedCode")
     public void asMatrix(final Matrix result) {
         if (result.getColumns() != COMPONENTS || result.getRows() != 1) {
             try {

@@ -372,7 +372,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMg;
 
@@ -444,7 +444,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
     private Matrix mMeasuredAngularRate;
 
     /**
-     * Contains fixed specific force for a samplewithin a sequence
+     * Contains fixed specific force for a sample within a sequence
      * using current parameters being estimated.
      */
     private Matrix mTrueAngularRate;
@@ -3022,7 +3022,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated gyroscope scale factors and cross coupling errors, or null
      * if not available.

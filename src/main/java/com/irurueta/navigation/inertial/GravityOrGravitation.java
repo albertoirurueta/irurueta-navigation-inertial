@@ -345,6 +345,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param result matrix instance where gravity coordinates will be stored in
      *               x,y,z order.
      */
+    @SuppressWarnings("DuplicatedCode")
     public void asMatrix(final Matrix result) {
         if (result.getRows() != COMPONENTS || result.getColumns() != 1) {
             try {

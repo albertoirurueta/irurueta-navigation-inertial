@@ -44,11 +44,6 @@ import com.irurueta.units.TimeUnit;
 public class INSLooselyCoupledKalmanEpochEstimator {
 
     /**
-     * Speed of light in the vacuum expressed in meters per second (m/s).
-     */
-    public static final double SPEED_OF_LIGHT = Constants.SPEED_OF_LIGHT;
-
-    /**
      * Earth rotation rate expressed in radians per second (rad/s).
      */
     public static final double EARTH_ROTATION_RATE = Constants.EARTH_ROTATION_RATE;
@@ -986,7 +981,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      *
      * @param userPosition        ECEF user position.
      * @param userVelocity        ECEF user velocity.
-     * @param propagationInterval propagaion interval.
+     * @param propagationInterval propagation interval.
      * @param previousState       previous Kalman filter state.
      * @param bodyKinematics      body kinematics containing measured specific force
      *                            resolved along body frame axes.
@@ -1901,7 +1896,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @param config              Loosely Coupled Kalman filter configuration.
      * @param result              instance where new state of Kalman filter will be
      *                            stored.
-     * @throws AlgebraException if there are anumerical instabilities.
+     * @throws AlgebraException if there are numerical instabilities.
      */
     public static void estimate(
             final Point3D userPosition,
@@ -1918,7 +1913,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
     }
 
     /**
-     * Estimtes the update of Kalman filter state for a single epoch.
+     * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position expressed in meters (m).
      * @param userVelocity        ECEF user velocity.
@@ -2263,7 +2258,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      * @param bodyKinematics      body kinematics containing measured specific force
      *                            resolved along body frame axes.
      * @param config              Loosely Coupled Kalman filter configuration.
-     * @param result              instace where new state of Kalman filter will be
+     * @param result              instance where new state of Kalman filter will be
      *                            stored.
      * @throws AlgebraException if there are numerical instabilities.
      */
@@ -2762,7 +2757,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
      *
      * @param userPosition        ECEF user position.
      * @param userVelocity        ECEF user velocity.
-     * @param propagationInterval propagaion interval.
+     * @param propagationInterval propagation interval.
      * @param previousState       previous Kalman filter state.
      * @param bodyKinematics      body kinematics containing measured specific force
      *                            resolved along body frame axes.
@@ -3223,7 +3218,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
     }
 
     /**
-     * Estimtes the update of Kalman filter state for a single epoch.
+     * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position expressed in meters (m).
      * @param userVelocity        ECEF user velocity.

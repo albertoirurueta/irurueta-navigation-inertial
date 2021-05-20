@@ -392,6 +392,7 @@ public class TimeIntervalEstimator {
      * @return true if estimator was successfully reset, false if no reset was needed.
      * @throws LockedException if estimator is currently running.
      */
+    @SuppressWarnings("DuplicatedCode")
     public boolean reset() throws LockedException {
         if (mRunning) {
             throw new LockedException();

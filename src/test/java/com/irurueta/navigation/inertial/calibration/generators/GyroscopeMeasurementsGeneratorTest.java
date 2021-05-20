@@ -286,7 +286,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
   }
 
   @Test
-  public void testConstructor2() throws LockedException {
+  public void testConstructor2() {
     final GyroscopeMeasurementsGenerator generator =
         new GyroscopeMeasurementsGenerator(this);
 
@@ -1158,7 +1158,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
       assertEquals(mInitializationCompleted, 1);
 
       final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-      final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS;
+      final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
       final int n = Math.max(numSequences + 1, numMeasurements);
 
       final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
@@ -2075,7 +2075,7 @@ public class GyroscopeMeasurementsGeneratorTest implements
       assertEquals(mInitializationCompleted, 1);
 
       final int numSequences = EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS;
-      final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMON_Z_AXIS;
+      final int numMeasurements = KnownGravityNormAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS;
       final int n = Math.max(numSequences + 1, numMeasurements);
 
       final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;

@@ -241,7 +241,7 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMm;
 
@@ -4240,7 +4240,7 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
      * or null if not available.
@@ -4492,7 +4492,7 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
      * Gets variance of estimated z coordinate of magnetometer bias expressed in
      * squared Teslas (T^2).
      *
-     * @return variance of estimated yzcoordinate of magnetometer bias or null if
+     * @return variance of estimated z coordinate of magnetometer bias or null if
      * not available.
      */
     public Double getEstimatedHardIronZVariance() {
@@ -5237,7 +5237,7 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
 
             wmmEstimator.estimate(latitude, longitude, height, year, earthB);
 
-            // estimate expected body mangetic flux density taking into
+            // estimate expected body magnetic flux density taking into
             // account body attitude (inverse of frame orientation) and
             // estimated Earth magnetic flux density
             BodyMagneticFluxDensityEstimator.estimate(earthB, cnb,

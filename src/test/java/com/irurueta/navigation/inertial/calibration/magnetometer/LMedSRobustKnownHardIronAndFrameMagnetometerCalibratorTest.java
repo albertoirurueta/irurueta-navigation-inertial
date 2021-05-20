@@ -1681,7 +1681,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
                 new WMMEarthMagneticFluxDensityEstimator();
         final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, softIron,
                         wmmEstimator, randomizer);
 
@@ -1883,8 +1883,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
     public void testCalibrateGeneralNoNoiseInlier()
             throws IOException,
             InvalidSourceAndDestinationFrameTypeException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
@@ -1957,8 +1956,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
     public void testCalibrateCommonAxisNoNoiseInlier()
             throws IOException,
             InvalidSourceAndDestinationFrameTypeException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
@@ -2031,8 +2029,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
     public void testCalibrateGeneralWithInlierNoise()
             throws IOException,
             InvalidSourceAndDestinationFrameTypeException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2119,8 +2116,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
     public void testCalibrateCommonAxisWithInlierNoise()
             throws IOException,
             InvalidSourceAndDestinationFrameTypeException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2207,8 +2203,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
     public void testCalibrateGeneralNoRefinement()
             throws IOException,
             InvalidSourceAndDestinationFrameTypeException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2293,8 +2288,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
     public void testCalibrateGeneralNonLinearWithInitialValue()
             throws IOException,
             InvalidSourceAndDestinationFrameTypeException,
-            LockedException, CalibrationException, NotReadyException,
-            WrongSizeException {
+            LockedException, CalibrationException, NotReadyException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -2657,8 +2651,7 @@ public class LMedSRobustKnownHardIronAndFrameMagnetometerCalibratorTest implemen
         }
     }
 
-    private static List<StandardDeviationFrameBodyMagneticFluxDensity>
-    generateMeasurementsMultipleOrientationswithSamePosition(
+    private static List<StandardDeviationFrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
             final UniformRandomizer randomizer)

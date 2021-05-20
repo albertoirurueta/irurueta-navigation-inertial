@@ -236,8 +236,8 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
         assertEquals(config.getInitialPositionUncertainty(), 0.0, 0.0);
 
         // set new value
-        final UniformRandomizer randomizser = new UniformRandomizer(new Random());
-        final double initialPositionUncertainty = randomizser.nextDouble(
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double initialPositionUncertainty = randomizer.nextDouble(
                 MIN_VALUE, MAX_VALUE);
         config.setInitialPositionUncertainty(initialPositionUncertainty);
 
@@ -625,6 +625,7 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
 
         //noinspection ConstantConditions,SimplifiableJUnitAssertion
         assertTrue(config1.equals((Object) config1));
+        //noinspection EqualsWithItself
         assertTrue(config1.equals(config1));
         assertTrue(config1.equals(config2));
         assertFalse(config1.equals(config3));

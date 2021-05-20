@@ -369,7 +369,7 @@ public class AccelerometerAndGyroscopeMeasurementsGenerator
     /**
      * Sets listener to handle generated events.
      *
-     * @param listener listener to handle generated evets.
+     * @param listener listener to handle generated events.
      * @throws LockedException if generator is busy.
      */
     public void setListener(final AccelerometerAndGyroscopeMeasurementsGeneratorListener listener)

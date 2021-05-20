@@ -132,7 +132,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
     /**
      * Constant defining default confidence of the estimated result, which is
      * 99%. This means that with a probability of 99% estimation will be
-     * accurate because chosen subsamples will be inliers.
+     * accurate because chosen sub-samples will be inliers.
      */
     public static final double DEFAULT_CONFIDENCE = 0.99;
 
@@ -256,7 +256,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      */
     private Matrix mEstimatedMm;
 
@@ -2190,7 +2190,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      * Sets timestamp when magnetic flux density measurements have been
      * measured.
      *
-     * @param timestampMillis a timestamp expressed in milliseocnds since
+     * @param timestampMillis a timestamp expressed in milliseconds since
      *                        epoch time (January 1st, 1970 at midnight).
      * @throws LockedException if calibrator is currently running.
      */
@@ -2619,7 +2619,7 @@ public abstract class RobustKnownHardIronPositionAndInstantMagnetometerCalibrato
      *          [0     sy   myz]
      *          [0     0    sz ]
      * </pre>
-     * Values of this matrix are unitless.
+     * Values of this matrix are unit-less.
      *
      * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
      * or null if not available.

@@ -33,6 +33,7 @@ import java.util.Random;
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/IMU_model.m
  */
+@SuppressWarnings("DuplicatedCode")
 public class BodyKinematicsGenerator {
 
     /**
@@ -371,7 +372,7 @@ public class BodyKinematicsGenerator {
      * @param mg                       3x3 matrix to be reused for gyro scaling and cross
      *                                 coupling errors.
      * @param bg                       3x1 matrix to be reused for gyro biases.
-     * @param gg                       3x3 matrix to be reused for gyro dependan cross
+     * @param gg                       3x3 matrix to be reused for gyro dependant cross
      *                                 coupling errors.
      * @param identity                 3x3 identity matrix to be reused.
      * @param tmp33                    3x3 matrix to be reused.

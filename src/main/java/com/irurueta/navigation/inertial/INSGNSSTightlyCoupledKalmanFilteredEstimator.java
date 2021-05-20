@@ -44,6 +44,7 @@ import java.util.List;
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Tightly_coupled_INS_GNSS.m
  */
+@SuppressWarnings("DuplicatedCode")
 public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
 
     /**

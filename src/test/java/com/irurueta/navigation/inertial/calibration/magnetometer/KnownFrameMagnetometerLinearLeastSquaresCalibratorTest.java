@@ -930,7 +930,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
                 new WMMEarthMagneticFluxDensityEstimator();
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, softIron,
                         KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -972,7 +972,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, mm,
                         KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -1022,7 +1022,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, mm,
                         KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -1077,7 +1077,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron, mm, LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
@@ -1145,7 +1145,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron, mm, SMALL_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
@@ -1271,7 +1271,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, mm,
                         KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -1321,7 +1321,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
         assertNotNull(mm);
 
         final List<FrameBodyMagneticFluxDensity> measurements =
-                generateMeasurementsMultipleOrientationswithSamePosition(
+                generateMeasurementsMultipleOrientationsWithSamePosition(
                         hardIron, mm,
                         KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS,
                         wmmEstimator, randomizer, null);
@@ -1375,7 +1375,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron, mm, LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
@@ -1443,7 +1443,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
             final List<FrameBodyMagneticFluxDensity> measurements =
-                    generateMeasurementsMultipleOrientationswithSamePosition(
+                    generateMeasurementsMultipleOrientationsWithSamePosition(
                             hardIron, mm, SMALL_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer);
 
@@ -1677,8 +1677,7 @@ public class KnownFrameMagnetometerLinearLeastSquaresCalibratorTest implements
                 0.0);
     }
 
-    private static List<FrameBodyMagneticFluxDensity>
-    generateMeasurementsMultipleOrientationswithSamePosition(
+    private static List<FrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final int numberOfMeasurements,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
