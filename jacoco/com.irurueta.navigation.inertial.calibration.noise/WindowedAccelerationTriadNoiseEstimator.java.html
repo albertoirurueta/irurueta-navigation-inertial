@@ -84,7 +84,7 @@ public class WindowedAccelerationTriadNoiseEstimator extends
      * @param valueX x coordinate value.
      * @param valueY y coordinate value.
      * @param valueZ z coordinate value.
-     * @param unit unit.
+     * @param unit   unit.
      * @return created triad.
      */
     @Override
@@ -122,7 +122,7 @@ public class WindowedAccelerationTriadNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override

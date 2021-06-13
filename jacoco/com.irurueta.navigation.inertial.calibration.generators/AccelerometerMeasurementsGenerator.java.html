@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.irurueta.navigation.inertial.calibration.generators;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
@@ -48,8 +47,8 @@ public class AccelerometerMeasurementsGenerator extends
      * Constructor.
      */
     public AccelerometerMeasurementsGenerator() {
-<span class="fc" id="L51">        super();</span>
-<span class="fc" id="L52">    }</span>
+<span class="fc" id="L50">        super();</span>
+<span class="fc" id="L51">    }</span>
 
     /**
      * Constructor.
@@ -58,8 +57,8 @@ public class AccelerometerMeasurementsGenerator extends
      */
     public AccelerometerMeasurementsGenerator(
             final AccelerometerMeasurementsGeneratorListener listener) {
-<span class="fc" id="L61">        super(listener);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L60">        super(listener);</span>
+<span class="fc" id="L61">    }</span>
 
     /**
      * Post process provided input sample.
@@ -67,9 +66,9 @@ public class AccelerometerMeasurementsGenerator extends
      * @param sample an input sample.
      */
     @Override
-    protected void postProcess(BodyKinematics sample) {
+    protected void postProcess(final BodyKinematics sample) {
         // no action required for accelerometer calibration
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L71">    }</span>
 
     /**
      * Gets corresponding acceleration triad from provided input sample.
@@ -80,30 +79,30 @@ public class AccelerometerMeasurementsGenerator extends
     @Override
     protected void getAccelerationTriadFromInputSample(
             final BodyKinematics sample) {
-<span class="fc" id="L83">        sample.getSpecificForceTriad(mTriad);</span>
-<span class="fc" id="L84">    }</span>
+<span class="fc" id="L82">        sample.getSpecificForceTriad(mTriad);</span>
+<span class="fc" id="L83">    }</span>
 
     /**
      * Handles a static-to-dynamic interval change.
      *
-     * @param accumulatedAvgX   average x-coordinate of measurements during last
-     *                          static period expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accumulatedAvgY   average y-coordinate of specific force during last
-     *                          static period expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accumulatedAvgZ   average z-coordinate of specific force during last
-     *                          static period expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accumulatedStdX   standard deviation of x-coordinate of measurements
-     *                          during last static period expressed in meters per
-     *                          squared second (m/s^2).
-     * @param accumulatedStdY   standard deviation of y-coordinate of measurements
-     *                          during last static period expressed in meters per
-     *                          squared second (m/s^2).
-     * @param accumulatedStdZ   standard deviation of z-coordinate of measurements
-     *                          during last static period expressed in meters per
-     *                          squared second (m/s^2).
+     * @param accumulatedAvgX average x-coordinate of measurements during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgY average y-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgZ average z-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedStdX standard deviation of x-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdY standard deviation of y-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdZ standard deviation of z-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
      */
     @Override
     protected void handleStaticToDynamicChange(
@@ -117,23 +116,23 @@ public class AccelerometerMeasurementsGenerator extends
         // specific force during last static interval and generate new measurement
         // NOTE: generated body kinematics instances will have zero angular rate
         // since it is not needed for accelerometer calibration
-<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (!isStaticIntervalSkipped()) {</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">        if (!isStaticIntervalSkipped()) {</span>
 
-<span class="fc" id="L122">            final BodyKinematics kinematics = new BodyKinematics();</span>
-<span class="fc" id="L123">            kinematics.setSpecificForceCoordinates(</span>
+<span class="fc" id="L121">            final BodyKinematics kinematics = new BodyKinematics();</span>
+<span class="fc" id="L122">            kinematics.setSpecificForceCoordinates(</span>
                     accumulatedAvgX, accumulatedAvgY, accumulatedAvgZ);
 
-<span class="fc" id="L126">            final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics();</span>
-<span class="fc" id="L127">            measurement.setKinematics(kinematics);</span>
+<span class="fc" id="L125">            final StandardDeviationBodyKinematics measurement = new StandardDeviationBodyKinematics();</span>
+<span class="fc" id="L126">            measurement.setKinematics(kinematics);</span>
 
-<span class="fc" id="L129">            final double avgStd = (accumulatedStdX + accumulatedStdY + accumulatedStdZ) / 3.0;</span>
-<span class="fc" id="L130">            measurement.setSpecificForceStandardDeviation(avgStd);</span>
+<span class="fc" id="L128">            final double avgStd = (accumulatedStdX + accumulatedStdY + accumulatedStdZ) / 3.0;</span>
+<span class="fc" id="L129">            measurement.setSpecificForceStandardDeviation(avgStd);</span>
 
-<span class="pc bpc" id="L132" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L133">                mListener.onGeneratedMeasurement(this, measurement);</span>
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L132">                mListener.onGeneratedMeasurement(this, measurement);</span>
             }
         }
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L135">    }</span>
 
     /**
      * Handles a dynamic-to-static interval change.
@@ -141,7 +140,7 @@ public class AccelerometerMeasurementsGenerator extends
     @Override
     protected void handleDynamicToStaticChange() {
         // no action needed.
-<span class="fc" id="L144">    }</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Handles an initialization completion.
@@ -149,7 +148,7 @@ public class AccelerometerMeasurementsGenerator extends
     @Override
     protected void handleInitializationCompleted() {
         // no action needed.
-<span class="fc" id="L152">    }</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * Handles an error during initialization.
@@ -157,6 +156,6 @@ public class AccelerometerMeasurementsGenerator extends
     @Override
     protected void handleInitializationFailed() {
         // no action needed.
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L159">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

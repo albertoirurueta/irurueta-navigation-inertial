@@ -27,6 +27,7 @@ import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.units.Acceleration;
+
 import java.util.Collection;
 
 /**
@@ -54,7 +55,7 @@ import java.util.Collection;
  */
 public class KnownPositionAccelerometerCalibrator extends
         BaseGravityNormAccelerometerCalibrator&lt;KnownPositionAccelerometerCalibrator,
-                        KnownPositionAccelerometerCalibratorListener&gt; {
+                KnownPositionAccelerometerCalibratorListener&gt; {
 
 
     /**
@@ -66,8 +67,8 @@ public class KnownPositionAccelerometerCalibrator extends
      * Constructor.
      */
     public KnownPositionAccelerometerCalibrator() {
-<span class="fc" id="L69">        super();</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L70">        super();</span>
+<span class="fc" id="L71">    }</span>
 
     /**
      * Constructor.
@@ -76,8 +77,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L79">        super(listener);</span>
-<span class="fc" id="L80">    }</span>
+<span class="fc" id="L80">        super(listener);</span>
+<span class="fc" id="L81">    }</span>
 
     /**
      * Constructor.
@@ -88,8 +89,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L91">        super(measurements);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L92">        super(measurements);</span>
+<span class="fc" id="L93">    }</span>
 
     /**
      * Constructor.
@@ -102,8 +103,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L105">        super(measurements, listener);</span>
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L106">        super(measurements, listener);</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * Constructor.
@@ -113,8 +114,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L116">        super(commonAxisUsed);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L117">        super(commonAxisUsed);</span>
+<span class="fc" id="L118">    }</span>
 
     /**
      * Constructor.
@@ -126,8 +127,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L129">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L130">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L131">    }</span>
 
     /**
      * Constructor.
@@ -141,8 +142,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L144">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L145">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * Constructor.
@@ -158,8 +159,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L161">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L162">    }</span>
+<span class="fc" id="L162">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Constructor.
@@ -177,8 +178,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L180">        super(initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L181">        super(initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L182">    }</span>
 
     /**
      * Constructor.
@@ -198,8 +199,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L201">        super(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L202">        super(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L203">    }</span>
 
     /**
      * Constructor.
@@ -221,8 +222,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L224">        super(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L225">        super(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L226">    }</span>
 
     /**
      * Constructor.
@@ -246,8 +247,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L249">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L250">    }</span>
+<span class="fc" id="L250">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L251">    }</span>
 
     /**
      * Constructor.
@@ -268,8 +269,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L271">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L272">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * Constructor.
@@ -292,8 +293,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L295">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L296">    }</span>
+<span class="fc" id="L296">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L297">    }</span>
 
     /**
      * Constructor.
@@ -318,8 +319,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L321">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L322">    }</span>
+<span class="fc" id="L322">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L323">    }</span>
 
     /**
      * Constructor.
@@ -346,8 +347,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L349">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L350">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L351">    }</span>
 
     /**
      * Constructor.
@@ -362,8 +363,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
-<span class="fc" id="L365">        super(initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L366">    }</span>
+<span class="fc" id="L366">        super(initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L367">    }</span>
 
     /**
      * Constructor.
@@ -380,8 +381,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L383">        super(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L384">    }</span>
+<span class="fc" id="L384">        super(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L385">    }</span>
 
     /**
      * Constructor.
@@ -400,8 +401,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
-<span class="fc" id="L403">        super(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L404">    }</span>
+<span class="fc" id="L404">        super(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L405">    }</span>
 
     /**
      * Constructor.
@@ -422,8 +423,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L425">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L426">    }</span>
+<span class="fc" id="L426">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L427">    }</span>
 
     /**
      * Constructor.
@@ -440,8 +441,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L443">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L444">    }</span>
+<span class="fc" id="L444">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L445">    }</span>
 
     /**
      * Constructor.
@@ -460,8 +461,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L463">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L464">    }</span>
+<span class="fc" id="L464">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L465">    }</span>
 
     /**
      * Constructor.
@@ -482,8 +483,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L485">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
-<span class="fc" id="L486">    }</span>
+<span class="fc" id="L486">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L487">    }</span>
 
     /**
      * Constructor.
@@ -506,8 +507,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L509">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
-<span class="fc" id="L510">    }</span>
+<span class="fc" id="L510">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L511">    }</span>
 
     /**
      * Constructor.
@@ -529,8 +530,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L532">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);</span>
-<span class="fc" id="L533">    }</span>
+<span class="fc" id="L533">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L534">    }</span>
 
     /**
      * Constructor.
@@ -556,9 +557,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L559">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L560">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L561">    }</span>
+<span class="fc" id="L562">    }</span>
 
     /**
      * Constructor.
@@ -586,9 +587,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L589">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy,</span>
+<span class="fc" id="L590">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy,</span>
                 initialSz, listener);
-<span class="fc" id="L591">    }</span>
+<span class="fc" id="L592">    }</span>
 
     /**
      * Constructor.
@@ -612,9 +613,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L615">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L616">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L617">    }</span>
+<span class="fc" id="L618">    }</span>
 
     /**
      * Constructor.
@@ -640,9 +641,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L643">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L644">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L645">    }</span>
+<span class="fc" id="L646">    }</span>
 
     /**
      * Constructor.
@@ -670,9 +671,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final double initialBiasX,
             final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L673">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L674">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L675">    }</span>
+<span class="fc" id="L676">    }</span>
 
     /**
      * Constructor.
@@ -702,9 +703,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L705">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L706">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L707">    }</span>
+<span class="fc" id="L708">    }</span>
 
     /**
      * Constructor.
@@ -723,8 +724,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L726">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);</span>
-<span class="fc" id="L727">    }</span>
+<span class="fc" id="L727">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L728">    }</span>
 
     /**
      * Constructor.
@@ -745,9 +746,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L748">        super(initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L749">        super(initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L750">    }</span>
+<span class="fc" id="L751">    }</span>
 
     /**
      * Constructor.
@@ -770,9 +771,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L773">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L774">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L775">    }</span>
+<span class="fc" id="L776">    }</span>
 
     /**
      * Constructor.
@@ -797,9 +798,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L800">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L801">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L802">    }</span>
+<span class="fc" id="L803">    }</span>
 
     /**
      * Constructor.
@@ -820,9 +821,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-<span class="fc" id="L823">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L824">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L825">    }</span>
+<span class="fc" id="L826">    }</span>
 
     /**
      * Constructor.
@@ -845,9 +846,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L848">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L849">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L850">    }</span>
+<span class="fc" id="L851">    }</span>
 
     /**
      * Constructor.
@@ -872,9 +873,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-<span class="fc" id="L875">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L876">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L877">    }</span>
+<span class="fc" id="L878">    }</span>
 
     /**
      * Constructor.
@@ -901,9 +902,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L904">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L905">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L906">    }</span>
+<span class="fc" id="L907">    }</span>
 
     /**
      * Constructor.
@@ -933,9 +934,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L936">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L937">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L938">    }</span>
+<span class="fc" id="L939">    }</span>
 
     /**
      * Constructor.
@@ -969,9 +970,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L972">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L973">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L974">    }</span>
+<span class="fc" id="L975">    }</span>
 
     /**
      * Constructor.
@@ -1007,10 +1008,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1010">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1011">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1013">    }</span>
+<span class="fc" id="L1014">    }</span>
 
     /**
      * Constructor.
@@ -1043,9 +1044,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L1046">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L1047">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1048">    }</span>
+<span class="fc" id="L1049">    }</span>
 
     /**
      * Constructor.
@@ -1080,10 +1081,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1083">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1084">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1086">    }</span>
+<span class="fc" id="L1087">    }</span>
 
     /**
      * Constructor.
@@ -1120,10 +1121,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L1123">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1124">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1126">    }</span>
+<span class="fc" id="L1127">    }</span>
 
     /**
      * Constructor.
@@ -1162,10 +1163,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1165">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1166">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1168">    }</span>
+<span class="fc" id="L1169">    }</span>
 
     /**
      * Constructor.
@@ -1192,9 +1193,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSy, final double initialSz, final double initialMxy,
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-<span class="fc" id="L1195">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L1196">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1197">    }</span>
+<span class="fc" id="L1198">    }</span>
 
     /**
      * Constructor.
@@ -1223,9 +1224,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1226">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L1227">        super(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1228">    }</span>
+<span class="fc" id="L1229">    }</span>
 
     /**
      * Constructor.
@@ -1256,9 +1257,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSy, final double initialSz, final double initialMxy,
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-<span class="fc" id="L1259">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L1260">        super(measurements, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1261">    }</span>
+<span class="fc" id="L1262">    }</span>
 
     /**
      * Constructor.
@@ -1291,10 +1292,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1294">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1295">        super(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1297">    }</span>
+<span class="fc" id="L1298">    }</span>
 
     /**
      * Constructor.
@@ -1323,9 +1324,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-<span class="fc" id="L1326">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L1327">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1328">    }</span>
+<span class="fc" id="L1329">    }</span>
 
     /**
      * Constructor.
@@ -1356,10 +1357,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1359">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1360">        super(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1362">    }</span>
+<span class="fc" id="L1363">    }</span>
 
     /**
      * Constructor.
@@ -1392,10 +1393,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-<span class="fc" id="L1395">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1396">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1398">    }</span>
+<span class="fc" id="L1399">    }</span>
 
     /**
      * Constructor.
@@ -1430,10 +1431,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1433">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L1434">        super(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L1436">    }</span>
+<span class="fc" id="L1437">    }</span>
 
     /**
      * Constructor.
@@ -1445,8 +1446,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final double[] initialBias) {
-<span class="fc" id="L1448">        super(initialBias);</span>
-<span class="fc" id="L1449">    }</span>
+<span class="fc" id="L1449">        super(initialBias);</span>
+<span class="fc" id="L1450">    }</span>
 
     /**
      * Constructor.
@@ -1460,8 +1461,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1463">        super(initialBias, listener);</span>
-<span class="fc" id="L1464">    }</span>
+<span class="fc" id="L1464">        super(initialBias, listener);</span>
+<span class="fc" id="L1465">    }</span>
 
     /**
      * Constructor.
@@ -1477,8 +1478,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L1480">        super(measurements, initialBias);</span>
-<span class="fc" id="L1481">    }</span>
+<span class="fc" id="L1481">        super(measurements, initialBias);</span>
+<span class="fc" id="L1482">    }</span>
 
     /**
      * Constructor.
@@ -1496,8 +1497,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1499">        super(measurements, initialBias, listener);</span>
-<span class="fc" id="L1500">    }</span>
+<span class="fc" id="L1500">        super(measurements, initialBias, listener);</span>
+<span class="fc" id="L1501">    }</span>
 
     /**
      * Constructor.
@@ -1511,8 +1512,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L1514">        super(commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1515">    }</span>
+<span class="fc" id="L1515">        super(commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1516">    }</span>
 
     /**
      * Constructor.
@@ -1528,8 +1529,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1531">        super(commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1532">    }</span>
+<span class="fc" id="L1532">        super(commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1533">    }</span>
 
     /**
      * Constructor.
@@ -1547,8 +1548,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L1550">        super(measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1551">    }</span>
+<span class="fc" id="L1551">        super(measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1552">    }</span>
 
     /**
      * Constructor.
@@ -1568,8 +1569,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1571">        super(measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1572">    }</span>
+<span class="fc" id="L1572">        super(measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1573">    }</span>
 
     /**
      * Constructor.
@@ -1578,8 +1579,8 @@ public class KnownPositionAccelerometerCalibrator extends
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
     public KnownPositionAccelerometerCalibrator(final Matrix initialBias) {
-<span class="fc" id="L1581">        super(initialBias);</span>
-<span class="fc" id="L1582">    }</span>
+<span class="fc" id="L1582">        super(initialBias);</span>
+<span class="fc" id="L1583">    }</span>
 
     /**
      * Constructor.
@@ -1591,8 +1592,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1594">        super(initialBias, listener);</span>
-<span class="fc" id="L1595">    }</span>
+<span class="fc" id="L1595">        super(initialBias, listener);</span>
+<span class="fc" id="L1596">    }</span>
 
     /**
      * Constructor.
@@ -1606,8 +1607,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L1609">        super(measurements, initialBias);</span>
-<span class="fc" id="L1610">    }</span>
+<span class="fc" id="L1610">        super(measurements, initialBias);</span>
+<span class="fc" id="L1611">    }</span>
 
     /**
      * Constructor.
@@ -1623,8 +1624,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1626">        super(measurements, initialBias, listener);</span>
-<span class="fc" id="L1627">    }</span>
+<span class="fc" id="L1627">        super(measurements, initialBias, listener);</span>
+<span class="fc" id="L1628">    }</span>
 
     /**
      * Constructor.
@@ -1636,8 +1637,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L1639">        super(commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1640">    }</span>
+<span class="fc" id="L1640">        super(commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1641">    }</span>
 
     /**
      * Constructor.
@@ -1651,8 +1652,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1654">        super(commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1655">    }</span>
+<span class="fc" id="L1655">        super(commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1656">    }</span>
 
     /**
      * Constructor.
@@ -1668,8 +1669,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L1671">        super(measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1672">    }</span>
+<span class="fc" id="L1672">        super(measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1673">    }</span>
 
     /**
      * Constructor.
@@ -1687,8 +1688,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1690">        super(measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1691">    }</span>
+<span class="fc" id="L1691">        super(measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1692">    }</span>
 
     /**
      * Constructor.
@@ -1700,8 +1701,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L1703">        super(initialBias, initialMa);</span>
-<span class="fc" id="L1704">    }</span>
+<span class="fc" id="L1704">        super(initialBias, initialMa);</span>
+<span class="fc" id="L1705">    }</span>
 
     /**
      * Constructor.
@@ -1715,8 +1716,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1718">        super(initialBias, initialMa, listener);</span>
-<span class="fc" id="L1719">    }</span>
+<span class="fc" id="L1719">        super(initialBias, initialMa, listener);</span>
+<span class="fc" id="L1720">    }</span>
 
     /**
      * Constructor.
@@ -1732,8 +1733,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L1735">        super(measurements, initialBias, initialMa);</span>
-<span class="fc" id="L1736">    }</span>
+<span class="fc" id="L1736">        super(measurements, initialBias, initialMa);</span>
+<span class="fc" id="L1737">    }</span>
 
     /**
      * Constructor.
@@ -1751,8 +1752,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1754">        super(measurements, initialBias, initialMa, listener);</span>
-<span class="fc" id="L1755">    }</span>
+<span class="fc" id="L1755">        super(measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L1756">    }</span>
 
     /**
      * Constructor.
@@ -1767,8 +1768,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L1770">        super(commonAxisUsed, initialBias, initialMa);</span>
-<span class="fc" id="L1771">    }</span>
+<span class="fc" id="L1771">        super(commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L1772">    }</span>
 
     /**
      * Constructor.
@@ -1785,8 +1786,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1788">        super(commonAxisUsed, initialBias, initialMa, listener);</span>
-<span class="fc" id="L1789">    }</span>
+<span class="fc" id="L1789">        super(commonAxisUsed, initialBias, initialMa, listener);</span>
+<span class="fc" id="L1790">    }</span>
 
     /**
      * Constructor.
@@ -1805,8 +1806,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L1808">        super(measurements, commonAxisUsed, initialBias, initialMa);</span>
-<span class="fc" id="L1809">    }</span>
+<span class="fc" id="L1809">        super(measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L1810">    }</span>
 
     /**
      * Constructor.
@@ -1827,21 +1828,21 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1830">        super(measurements, commonAxisUsed, initialBias, initialMa, listener);</span>
-<span class="fc" id="L1831">    }</span>
+<span class="fc" id="L1831">        super(measurements, commonAxisUsed, initialBias, initialMa, listener);</span>
+<span class="fc" id="L1832">    }</span>
 
     /**
      * Constructor.
      *
      * @param position position where body kinematics measures have been taken.
      */
-<span class="fc" id="L1838">    public KnownPositionAccelerometerCalibrator(final ECEFPosition position) {</span>
+<span class="fc" id="L1839">    public KnownPositionAccelerometerCalibrator(final ECEFPosition position) {</span>
         try {
-<span class="fc" id="L1840">            setPosition(position);</span>
-<span class="nc" id="L1841">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1841">            setPosition(position);</span>
+<span class="nc" id="L1842">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1843">        }</span>
-<span class="fc" id="L1844">    }</span>
+<span class="fc" id="L1844">        }</span>
+<span class="fc" id="L1845">    }</span>
 
     /**
      * Constructor.
@@ -1852,13 +1853,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1855">        this(position);</span>
+<span class="fc" id="L1856">        this(position);</span>
         try {
-<span class="fc" id="L1857">            setListener(listener);</span>
-<span class="nc" id="L1858">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1858">            setListener(listener);</span>
+<span class="nc" id="L1859">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1860">        }</span>
-<span class="fc" id="L1861">    }</span>
+<span class="fc" id="L1861">        }</span>
+<span class="fc" id="L1862">    }</span>
 
     /**
      * Constructor.
@@ -1871,13 +1872,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L1874">        this(position);</span>
+<span class="fc" id="L1875">        this(position);</span>
         try {
-<span class="fc" id="L1876">            setMeasurements(measurements);</span>
-<span class="nc" id="L1877">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1877">            setMeasurements(measurements);</span>
+<span class="nc" id="L1878">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1879">        }</span>
-<span class="fc" id="L1880">    }</span>
+<span class="fc" id="L1880">        }</span>
+<span class="fc" id="L1881">    }</span>
 
     /**
      * Constructor.
@@ -1892,13 +1893,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1895">        this(measurements, listener);</span>
+<span class="fc" id="L1896">        this(measurements, listener);</span>
         try {
-<span class="fc" id="L1897">            setPosition(position);</span>
-<span class="nc" id="L1898">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1898">            setPosition(position);</span>
+<span class="nc" id="L1899">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1900">        }</span>
-<span class="fc" id="L1901">    }</span>
+<span class="fc" id="L1901">        }</span>
+<span class="fc" id="L1902">    }</span>
 
     /**
      * Constructor.
@@ -1909,13 +1910,13 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position, final boolean commonAxisUsed) {
-<span class="fc" id="L1912">        this(commonAxisUsed);</span>
+<span class="fc" id="L1913">        this(commonAxisUsed);</span>
         try {
-<span class="fc" id="L1914">            setPosition(position);</span>
-<span class="nc" id="L1915">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1915">            setPosition(position);</span>
+<span class="nc" id="L1916">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1917">        }</span>
-<span class="fc" id="L1918">    }</span>
+<span class="fc" id="L1918">        }</span>
+<span class="fc" id="L1919">    }</span>
 
     /**
      * Constructor.
@@ -1928,13 +1929,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position, final boolean commonAxisUsed,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1931">        this(commonAxisUsed, listener);</span>
+<span class="fc" id="L1932">        this(commonAxisUsed, listener);</span>
         try {
-<span class="fc" id="L1933">            setPosition(position);</span>
-<span class="nc" id="L1934">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1934">            setPosition(position);</span>
+<span class="nc" id="L1935">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1936">        }</span>
-<span class="fc" id="L1937">    }</span>
+<span class="fc" id="L1937">        }</span>
+<span class="fc" id="L1938">    }</span>
 
     /**
      * Constructor.
@@ -1950,13 +1951,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1953">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L1954">        this(measurements, commonAxisUsed);</span>
         try {
-<span class="fc" id="L1955">            setPosition(position);</span>
-<span class="nc" id="L1956">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1956">            setPosition(position);</span>
+<span class="nc" id="L1957">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1958">        }</span>
-<span class="fc" id="L1959">    }</span>
+<span class="fc" id="L1959">        }</span>
+<span class="fc" id="L1960">    }</span>
 
     /**
      * Constructor.
@@ -1974,13 +1975,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1977">        this(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1978">        this(measurements, commonAxisUsed, listener);</span>
         try {
-<span class="fc" id="L1979">            setPosition(position);</span>
-<span class="nc" id="L1980">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L1980">            setPosition(position);</span>
+<span class="nc" id="L1981">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1982">        }</span>
-<span class="fc" id="L1983">    }</span>
+<span class="fc" id="L1983">        }</span>
+<span class="fc" id="L1984">    }</span>
 
     /**
      * Constructor.
@@ -2000,13 +2001,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L2003">        this(initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L2004">        this(initialBiasX, initialBiasY, initialBiasZ);</span>
         try {
-<span class="fc" id="L2005">            setPosition(position);</span>
-<span class="nc" id="L2006">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2006">            setPosition(position);</span>
+<span class="nc" id="L2007">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2008">        }</span>
-<span class="fc" id="L2009">    }</span>
+<span class="fc" id="L2009">        }</span>
+<span class="fc" id="L2010">    }</span>
 
     /**
      * Constructor.
@@ -2028,13 +2029,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2031">        this(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L2032">        this(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
         try {
-<span class="fc" id="L2033">            setPosition(position);</span>
-<span class="nc" id="L2034">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2034">            setPosition(position);</span>
+<span class="nc" id="L2035">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2036">        }</span>
-<span class="fc" id="L2037">    }</span>
+<span class="fc" id="L2037">        }</span>
+<span class="fc" id="L2038">    }</span>
 
     /**
      * Constructor.
@@ -2058,13 +2059,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L2061">        this(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L2062">        this(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
         try {
-<span class="fc" id="L2063">            setPosition(position);</span>
-<span class="nc" id="L2064">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2064">            setPosition(position);</span>
+<span class="nc" id="L2065">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2066">        }</span>
-<span class="fc" id="L2067">    }</span>
+<span class="fc" id="L2067">        }</span>
+<span class="fc" id="L2068">    }</span>
 
     /**
      * Constructor.
@@ -2090,14 +2091,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2093">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2094">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 listener);
         try {
-<span class="fc" id="L2096">            setPosition(position);</span>
-<span class="nc" id="L2097">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2097">            setPosition(position);</span>
+<span class="nc" id="L2098">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2099">        }</span>
-<span class="fc" id="L2100">    }</span>
+<span class="fc" id="L2100">        }</span>
+<span class="fc" id="L2101">    }</span>
 
     /**
      * Constructor.
@@ -2120,13 +2121,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L2123">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L2124">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
         try {
-<span class="fc" id="L2125">            setPosition(position);</span>
-<span class="nc" id="L2126">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2126">            setPosition(position);</span>
+<span class="nc" id="L2127">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2128">        }</span>
-<span class="fc" id="L2129">    }</span>
+<span class="fc" id="L2129">        }</span>
+<span class="fc" id="L2130">    }</span>
 
     /**
      * Constructor.
@@ -2151,14 +2152,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2154">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2155">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 listener);
         try {
-<span class="fc" id="L2157">            setPosition(position);</span>
-<span class="nc" id="L2158">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2158">            setPosition(position);</span>
+<span class="nc" id="L2159">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2160">        }</span>
-<span class="fc" id="L2161">    }</span>
+<span class="fc" id="L2161">        }</span>
+<span class="fc" id="L2162">    }</span>
 
     /**
      * Constructor.
@@ -2185,14 +2186,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L2188">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY,</span>
+<span class="fc" id="L2189">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY,</span>
                 initialBiasZ);
         try {
-<span class="fc" id="L2191">            setPosition(position);</span>
-<span class="nc" id="L2192">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2192">            setPosition(position);</span>
+<span class="nc" id="L2193">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2194">        }</span>
-<span class="fc" id="L2195">    }</span>
+<span class="fc" id="L2195">        }</span>
+<span class="fc" id="L2196">    }</span>
 
     /**
      * Constructor.
@@ -2221,14 +2222,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2224">        this(measurements, commonAxisUsed,</span>
+<span class="fc" id="L2225">        this(measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ, listener);
         try {
-<span class="fc" id="L2227">            setPosition(position);</span>
-<span class="nc" id="L2228">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2228">            setPosition(position);</span>
+<span class="nc" id="L2229">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2230">        }</span>
-<span class="fc" id="L2231">    }</span>
+<span class="fc" id="L2231">        }</span>
+<span class="fc" id="L2232">    }</span>
 
     /**
      * Constructor.
@@ -2244,13 +2245,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L2247">        this(initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L2248">        this(initialBiasX, initialBiasY, initialBiasZ);</span>
         try {
-<span class="fc" id="L2249">            setPosition(position);</span>
-<span class="nc" id="L2250">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2250">            setPosition(position);</span>
+<span class="nc" id="L2251">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2252">        }</span>
-<span class="fc" id="L2253">    }</span>
+<span class="fc" id="L2253">        }</span>
+<span class="fc" id="L2254">    }</span>
 
     /**
      * Constructor.
@@ -2268,13 +2269,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2271">        this(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
+<span class="fc" id="L2272">        this(initialBiasX, initialBiasY, initialBiasZ, listener);</span>
         try {
-<span class="fc" id="L2273">            setPosition(position);</span>
-<span class="nc" id="L2274">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2274">            setPosition(position);</span>
+<span class="nc" id="L2275">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2276">        }</span>
-<span class="fc" id="L2277">    }</span>
+<span class="fc" id="L2277">        }</span>
+<span class="fc" id="L2278">    }</span>
 
     /**
      * Constructor.
@@ -2295,13 +2296,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
-<span class="fc" id="L2298">        this(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L2299">        this(measurements, initialBiasX, initialBiasY, initialBiasZ);</span>
         try {
-<span class="fc" id="L2300">            setPosition(position);</span>
-<span class="nc" id="L2301">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2301">            setPosition(position);</span>
+<span class="nc" id="L2302">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2303">        }</span>
-<span class="fc" id="L2304">    }</span>
+<span class="fc" id="L2304">        }</span>
+<span class="fc" id="L2305">    }</span>
 
     /**
      * Constructor.
@@ -2324,14 +2325,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2327">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2328">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 listener);
         try {
-<span class="fc" id="L2330">            setPosition(position);</span>
-<span class="nc" id="L2331">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2331">            setPosition(position);</span>
+<span class="nc" id="L2332">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2333">        }</span>
-<span class="fc" id="L2334">    }</span>
+<span class="fc" id="L2334">        }</span>
+<span class="fc" id="L2335">    }</span>
 
     /**
      * Constructor.
@@ -2350,13 +2351,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L2353">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
+<span class="fc" id="L2354">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);</span>
         try {
-<span class="fc" id="L2355">            setPosition(position);</span>
-<span class="nc" id="L2356">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2356">            setPosition(position);</span>
+<span class="nc" id="L2357">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2358">        }</span>
-<span class="fc" id="L2359">    }</span>
+<span class="fc" id="L2359">        }</span>
+<span class="fc" id="L2360">    }</span>
 
     /**
      * Constructor.
@@ -2377,14 +2378,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2380">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2381">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 listener);
         try {
-<span class="fc" id="L2383">            setPosition(position);</span>
-<span class="nc" id="L2384">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2384">            setPosition(position);</span>
+<span class="nc" id="L2385">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2386">        }</span>
-<span class="fc" id="L2387">    }</span>
+<span class="fc" id="L2387">        }</span>
+<span class="fc" id="L2388">    }</span>
 
     /**
      * Constructor.
@@ -2407,14 +2408,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L2410">        this(measurements, commonAxisUsed,</span>
+<span class="fc" id="L2411">        this(measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ);
         try {
-<span class="fc" id="L2413">            setPosition(position);</span>
-<span class="nc" id="L2414">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2414">            setPosition(position);</span>
+<span class="nc" id="L2415">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2416">        }</span>
-<span class="fc" id="L2417">    }</span>
+<span class="fc" id="L2417">        }</span>
+<span class="fc" id="L2418">    }</span>
 
     /**
      * Constructor.
@@ -2439,14 +2440,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2442">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2443">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 listener);
         try {
-<span class="fc" id="L2445">            setPosition(position);</span>
-<span class="nc" id="L2446">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2446">            setPosition(position);</span>
+<span class="nc" id="L2447">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2448">        }</span>
-<span class="fc" id="L2449">    }</span>
+<span class="fc" id="L2449">        }</span>
+<span class="fc" id="L2450">    }</span>
 
     /**
      * Constructor.
@@ -2470,14 +2471,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L2473">        this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy,</span>
+<span class="fc" id="L2474">        this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy,</span>
                 initialSz);
         try {
-<span class="fc" id="L2476">            setPosition(position);</span>
-<span class="nc" id="L2477">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2477">            setPosition(position);</span>
+<span class="nc" id="L2478">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2479">        }</span>
-<span class="fc" id="L2480">    }</span>
+<span class="fc" id="L2480">        }</span>
+<span class="fc" id="L2481">    }</span>
 
     /**
      * Constructor.
@@ -2505,14 +2506,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L2508">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2509">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2511">            setPosition(position);</span>
-<span class="nc" id="L2512">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2512">            setPosition(position);</span>
+<span class="nc" id="L2513">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2514">        }</span>
-<span class="fc" id="L2515">    }</span>
+<span class="fc" id="L2515">        }</span>
+<span class="fc" id="L2516">    }</span>
 
     /**
      * Constructor.
@@ -2542,14 +2543,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2545">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2546">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2548">            setPosition(position);</span>
-<span class="nc" id="L2549">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2549">            setPosition(position);</span>
+<span class="nc" id="L2550">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2551">        }</span>
-<span class="fc" id="L2552">    }</span>
+<span class="fc" id="L2552">        }</span>
+<span class="fc" id="L2553">    }</span>
 
     /**
      * Constructor.
@@ -2575,14 +2576,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L2578">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2579">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2581">            setPosition(position);</span>
-<span class="nc" id="L2582">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2582">            setPosition(position);</span>
+<span class="nc" id="L2583">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2584">        }</span>
-<span class="fc" id="L2585">    }</span>
+<span class="fc" id="L2585">        }</span>
+<span class="fc" id="L2586">    }</span>
 
     /**
      * Constructor.
@@ -2610,14 +2611,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2613">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2614">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2616">            setPosition(position);</span>
-<span class="nc" id="L2617">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2617">            setPosition(position);</span>
+<span class="nc" id="L2618">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2619">        }</span>
-<span class="fc" id="L2620">    }</span>
+<span class="fc" id="L2620">        }</span>
+<span class="fc" id="L2621">    }</span>
 
     /**
      * Constructor.
@@ -2647,14 +2648,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final double initialBiasX,
             final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L2650">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2651">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2653">            setPosition(position);</span>
-<span class="nc" id="L2654">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2654">            setPosition(position);</span>
+<span class="nc" id="L2655">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2656">        }</span>
-<span class="fc" id="L2657">    }</span>
+<span class="fc" id="L2657">        }</span>
+<span class="fc" id="L2658">    }</span>
 
     /**
      * Constructor.
@@ -2686,14 +2687,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2689">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2690">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2692">            setPosition(position);</span>
-<span class="nc" id="L2693">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2693">            setPosition(position);</span>
+<span class="nc" id="L2694">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2695">        }</span>
-<span class="fc" id="L2696">    }</span>
+<span class="fc" id="L2696">        }</span>
+<span class="fc" id="L2697">    }</span>
 
     /**
      * Constructor.
@@ -2714,14 +2715,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L2717">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2718">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2720">            setPosition(position);</span>
-<span class="nc" id="L2721">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2721">            setPosition(position);</span>
+<span class="nc" id="L2722">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2723">        }</span>
-<span class="fc" id="L2724">    }</span>
+<span class="fc" id="L2724">        }</span>
+<span class="fc" id="L2725">    }</span>
 
     /**
      * Constructor.
@@ -2744,14 +2745,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2747">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2748">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2750">            setPosition(position);</span>
-<span class="nc" id="L2751">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2751">            setPosition(position);</span>
+<span class="nc" id="L2752">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2753">        }</span>
-<span class="fc" id="L2754">    }</span>
+<span class="fc" id="L2754">        }</span>
+<span class="fc" id="L2755">    }</span>
 
     /**
      * Constructor.
@@ -2776,14 +2777,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L2779">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2780">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2782">            setPosition(position);</span>
-<span class="nc" id="L2783">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2783">            setPosition(position);</span>
+<span class="nc" id="L2784">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2785">        }</span>
-<span class="fc" id="L2786">    }</span>
+<span class="fc" id="L2786">        }</span>
+<span class="fc" id="L2787">    }</span>
 
     /**
      * Constructor.
@@ -2810,14 +2811,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2813">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2814">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2816">            setPosition(position);</span>
-<span class="nc" id="L2817">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2817">            setPosition(position);</span>
+<span class="nc" id="L2818">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2819">        }</span>
-<span class="fc" id="L2820">    }</span>
+<span class="fc" id="L2820">        }</span>
+<span class="fc" id="L2821">    }</span>
 
     /**
      * Constructor.
@@ -2840,14 +2841,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-<span class="fc" id="L2843">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2844">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2846">            setPosition(position);</span>
-<span class="nc" id="L2847">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2847">            setPosition(position);</span>
+<span class="nc" id="L2848">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2849">        }</span>
-<span class="fc" id="L2850">    }</span>
+<span class="fc" id="L2850">        }</span>
+<span class="fc" id="L2851">    }</span>
 
     /**
      * Constructor.
@@ -2872,14 +2873,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2875">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2876">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2878">            setPosition(position);</span>
-<span class="nc" id="L2879">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2879">            setPosition(position);</span>
+<span class="nc" id="L2880">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2881">        }</span>
-<span class="fc" id="L2882">    }</span>
+<span class="fc" id="L2882">        }</span>
+<span class="fc" id="L2883">    }</span>
 
     /**
      * Constructor.
@@ -2906,14 +2907,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-<span class="fc" id="L2909">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2910">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
         try {
-<span class="fc" id="L2912">            setPosition(position);</span>
-<span class="nc" id="L2913">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2913">            setPosition(position);</span>
+<span class="nc" id="L2914">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2915">        }</span>
-<span class="fc" id="L2916">    }</span>
+<span class="fc" id="L2916">        }</span>
+<span class="fc" id="L2917">    }</span>
 
     /**
      * Constructor.
@@ -2942,14 +2943,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2945">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L2946">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
         try {
-<span class="fc" id="L2948">            setPosition(position);</span>
-<span class="nc" id="L2949">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2949">            setPosition(position);</span>
+<span class="nc" id="L2950">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2951">        }</span>
-<span class="fc" id="L2952">    }</span>
+<span class="fc" id="L2952">        }</span>
+<span class="fc" id="L2953">    }</span>
 
     /**
      * Constructor.
@@ -2981,14 +2982,14 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L2984">        this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
+<span class="fc" id="L2985">        this(initialBiasX, initialBiasY, initialBiasZ, initialSx, initialSy, initialSz,</span>
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L2987">            setPosition(position);</span>
-<span class="nc" id="L2988">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L2988">            setPosition(position);</span>
+<span class="nc" id="L2989">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L2990">        }</span>
-<span class="fc" id="L2991">    }</span>
+<span class="fc" id="L2991">        }</span>
+<span class="fc" id="L2992">    }</span>
 
     /**
      * Constructor.
@@ -3024,15 +3025,15 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L3027">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3028">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3031">            setPosition(position);</span>
-<span class="nc" id="L3032">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3032">            setPosition(position);</span>
+<span class="nc" id="L3033">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3034">        }</span>
-<span class="fc" id="L3035">    }</span>
+<span class="fc" id="L3035">        }</span>
+<span class="fc" id="L3036">    }</span>
 
     /**
      * Constructor.
@@ -3070,15 +3071,15 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3073">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3074">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3077">            setPosition(position);</span>
-<span class="nc" id="L3078">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3078">            setPosition(position);</span>
+<span class="nc" id="L3079">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3080">        }</span>
-<span class="fc" id="L3081">    }</span>
+<span class="fc" id="L3081">        }</span>
+<span class="fc" id="L3082">    }</span>
 
     /**
      * Constructor.
@@ -3113,16 +3114,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L3116">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3117">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3121">            setPosition(position);</span>
-<span class="nc" id="L3122">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3122">            setPosition(position);</span>
+<span class="nc" id="L3123">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3124">        }</span>
-<span class="fc" id="L3125">    }</span>
+<span class="fc" id="L3125">        }</span>
+<span class="fc" id="L3126">    }</span>
 
     /**
      * Constructor.
@@ -3159,16 +3160,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3162">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3163">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3167">            setPosition(position);</span>
-<span class="nc" id="L3168">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3168">            setPosition(position);</span>
+<span class="nc" id="L3169">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3170">        }</span>
-<span class="fc" id="L3171">    }</span>
+<span class="fc" id="L3171">        }</span>
+<span class="fc" id="L3172">    }</span>
 
     /**
      * Constructor.
@@ -3207,15 +3208,15 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L3210">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3211">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3214">            setPosition(position);</span>
-<span class="nc" id="L3215">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3215">            setPosition(position);</span>
+<span class="nc" id="L3216">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3217">        }</span>
-<span class="fc" id="L3218">    }</span>
+<span class="fc" id="L3218">        }</span>
+<span class="fc" id="L3219">    }</span>
 
     /**
      * Constructor.
@@ -3256,15 +3257,15 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3259">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3260">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3263">            setPosition(position);</span>
-<span class="nc" id="L3264">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3264">            setPosition(position);</span>
+<span class="nc" id="L3265">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3266">        }</span>
-<span class="fc" id="L3267">    }</span>
+<span class="fc" id="L3267">        }</span>
+<span class="fc" id="L3268">    }</span>
 
     /**
      * Constructor.
@@ -3293,16 +3294,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSy, final double initialSz, final double initialMxy,
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-<span class="fc" id="L3296">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3297">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3301">            setPosition(position);</span>
-<span class="nc" id="L3302">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3302">            setPosition(position);</span>
+<span class="nc" id="L3303">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3304">        }</span>
-<span class="fc" id="L3305">    }</span>
+<span class="fc" id="L3305">        }</span>
+<span class="fc" id="L3306">    }</span>
 
     /**
      * Constructor.
@@ -3333,16 +3334,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3336">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3337">        this(initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3341">            setPosition(position);</span>
-<span class="nc" id="L3342">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3342">            setPosition(position);</span>
+<span class="nc" id="L3343">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3344">        }</span>
-<span class="fc" id="L3345">    }</span>
+<span class="fc" id="L3345">        }</span>
+<span class="fc" id="L3346">    }</span>
 
     /**
      * Constructor.
@@ -3375,16 +3376,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSy, final double initialSz, final double initialMxy,
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-<span class="fc" id="L3378">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3379">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3383">            setPosition(position);</span>
-<span class="nc" id="L3384">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3384">            setPosition(position);</span>
+<span class="nc" id="L3385">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3386">        }</span>
-<span class="fc" id="L3387">    }</span>
+<span class="fc" id="L3387">        }</span>
+<span class="fc" id="L3388">    }</span>
 
     /**
      * Constructor.
@@ -3419,16 +3420,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3422">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3423">        this(measurements, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3427">            setPosition(position);</span>
-<span class="nc" id="L3428">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3428">            setPosition(position);</span>
+<span class="nc" id="L3429">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3430">        }</span>
-<span class="fc" id="L3431">    }</span>
+<span class="fc" id="L3431">        }</span>
+<span class="fc" id="L3432">    }</span>
 
     /**
      * Constructor.
@@ -3459,16 +3460,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-<span class="fc" id="L3462">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3463">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3467">            setPosition(position);</span>
-<span class="nc" id="L3468">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3468">            setPosition(position);</span>
+<span class="nc" id="L3469">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3470">        }</span>
-<span class="fc" id="L3471">    }</span>
+<span class="fc" id="L3471">        }</span>
+<span class="fc" id="L3472">    }</span>
 
     /**
      * Constructor.
@@ -3501,16 +3502,16 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3504">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3505">        this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3509">            setPosition(position);</span>
-<span class="nc" id="L3510">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3510">            setPosition(position);</span>
+<span class="nc" id="L3511">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3512">        }</span>
-<span class="fc" id="L3513">    }</span>
+<span class="fc" id="L3513">        }</span>
+<span class="fc" id="L3514">    }</span>
 
     /**
      * Constructor.
@@ -3545,15 +3546,15 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-<span class="fc" id="L3548">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3549">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
         try {
-<span class="fc" id="L3552">            setPosition(position);</span>
-<span class="nc" id="L3553">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3553">            setPosition(position);</span>
+<span class="nc" id="L3554">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3555">        }</span>
-<span class="fc" id="L3556">    }</span>
+<span class="fc" id="L3556">        }</span>
+<span class="fc" id="L3557">    }</span>
 
     /**
      * Constructor.
@@ -3590,15 +3591,15 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3593">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L3594">        this(measurements, commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
         try {
-<span class="fc" id="L3597">            setPosition(position);</span>
-<span class="nc" id="L3598">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3598">            setPosition(position);</span>
+<span class="nc" id="L3599">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3600">        }</span>
-<span class="fc" id="L3601">    }</span>
+<span class="fc" id="L3601">        }</span>
+<span class="fc" id="L3602">    }</span>
 
     /**
      * Constructor.
@@ -3611,13 +3612,13 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position, final double[] initialBias) {
-<span class="fc" id="L3614">        this(initialBias);</span>
+<span class="fc" id="L3615">        this(initialBias);</span>
         try {
-<span class="fc" id="L3616">            setPosition(position);</span>
-<span class="nc" id="L3617">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3617">            setPosition(position);</span>
+<span class="nc" id="L3618">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3619">        }</span>
-<span class="fc" id="L3620">    }</span>
+<span class="fc" id="L3620">        }</span>
+<span class="fc" id="L3621">    }</span>
 
     /**
      * Constructor.
@@ -3632,13 +3633,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position, final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3635">        this(initialBias, listener);</span>
+<span class="fc" id="L3636">        this(initialBias, listener);</span>
         try {
-<span class="fc" id="L3637">            setPosition(position);</span>
-<span class="nc" id="L3638">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3638">            setPosition(position);</span>
+<span class="nc" id="L3639">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3640">        }</span>
-<span class="fc" id="L3641">    }</span>
+<span class="fc" id="L3641">        }</span>
+<span class="fc" id="L3642">    }</span>
 
     /**
      * Constructor.
@@ -3656,13 +3657,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L3659">        this(measurements, initialBias);</span>
+<span class="fc" id="L3660">        this(measurements, initialBias);</span>
         try {
-<span class="fc" id="L3661">            setPosition(position);</span>
-<span class="nc" id="L3662">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3662">            setPosition(position);</span>
+<span class="nc" id="L3663">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3664">        }</span>
-<span class="fc" id="L3665">    }</span>
+<span class="fc" id="L3665">        }</span>
+<span class="fc" id="L3666">    }</span>
 
     /**
      * Constructor.
@@ -3682,13 +3683,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3685">        this(measurements, initialBias, listener);</span>
+<span class="fc" id="L3686">        this(measurements, initialBias, listener);</span>
         try {
-<span class="fc" id="L3687">            setPosition(position);</span>
-<span class="nc" id="L3688">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3688">            setPosition(position);</span>
+<span class="nc" id="L3689">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3690">        }</span>
-<span class="fc" id="L3691">    }</span>
+<span class="fc" id="L3691">        }</span>
+<span class="fc" id="L3692">    }</span>
 
     /**
      * Constructor.
@@ -3704,13 +3705,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position, final boolean commonAxisUsed,
             final double[] initialBias) {
-<span class="fc" id="L3707">        this(commonAxisUsed, initialBias);</span>
+<span class="fc" id="L3708">        this(commonAxisUsed, initialBias);</span>
         try {
-<span class="fc" id="L3709">            setPosition(position);</span>
-<span class="nc" id="L3710">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3710">            setPosition(position);</span>
+<span class="nc" id="L3711">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3712">        }</span>
-<span class="fc" id="L3713">    }</span>
+<span class="fc" id="L3713">        }</span>
+<span class="fc" id="L3714">    }</span>
 
     /**
      * Constructor.
@@ -3728,13 +3729,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position, final boolean commonAxisUsed,
             final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3731">        this(commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L3732">        this(commonAxisUsed, initialBias, listener);</span>
         try {
-<span class="fc" id="L3733">            setPosition(position);</span>
-<span class="nc" id="L3734">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3734">            setPosition(position);</span>
+<span class="nc" id="L3735">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3736">        }</span>
-<span class="fc" id="L3737">    }</span>
+<span class="fc" id="L3737">        }</span>
+<span class="fc" id="L3738">    }</span>
 
     /**
      * Constructor.
@@ -3754,13 +3755,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L3757">        this(measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L3758">        this(measurements, commonAxisUsed, initialBias);</span>
         try {
-<span class="fc" id="L3759">            setPosition(position);</span>
-<span class="nc" id="L3760">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3760">            setPosition(position);</span>
+<span class="nc" id="L3761">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3762">        }</span>
-<span class="fc" id="L3763">    }</span>
+<span class="fc" id="L3763">        }</span>
+<span class="fc" id="L3764">    }</span>
 
     /**
      * Constructor.
@@ -3782,13 +3783,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3785">        this(measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L3786">        this(measurements, commonAxisUsed, initialBias, listener);</span>
         try {
-<span class="fc" id="L3787">            setPosition(position);</span>
-<span class="nc" id="L3788">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3788">            setPosition(position);</span>
+<span class="nc" id="L3789">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3790">        }</span>
-<span class="fc" id="L3791">    }</span>
+<span class="fc" id="L3791">        }</span>
+<span class="fc" id="L3792">    }</span>
 
     /**
      * Constructor.
@@ -3800,13 +3801,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final Matrix initialBias) {
-<span class="fc" id="L3803">        this(initialBias);</span>
+<span class="fc" id="L3804">        this(initialBias);</span>
         try {
-<span class="fc" id="L3805">            setPosition(position);</span>
-<span class="nc" id="L3806">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3806">            setPosition(position);</span>
+<span class="nc" id="L3807">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3808">        }</span>
-<span class="fc" id="L3809">    }</span>
+<span class="fc" id="L3809">        }</span>
+<span class="fc" id="L3810">    }</span>
 
     /**
      * Constructor.
@@ -3820,13 +3821,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3823">        this(initialBias, listener);</span>
+<span class="fc" id="L3824">        this(initialBias, listener);</span>
         try {
-<span class="fc" id="L3825">            setPosition(position);</span>
-<span class="nc" id="L3826">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3826">            setPosition(position);</span>
+<span class="nc" id="L3827">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3828">        }</span>
-<span class="fc" id="L3829">    }</span>
+<span class="fc" id="L3829">        }</span>
+<span class="fc" id="L3830">    }</span>
 
     /**
      * Constructor.
@@ -3842,13 +3843,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L3845">        this(measurements, initialBias);</span>
+<span class="fc" id="L3846">        this(measurements, initialBias);</span>
         try {
-<span class="fc" id="L3847">            setPosition(position);</span>
-<span class="nc" id="L3848">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3848">            setPosition(position);</span>
+<span class="nc" id="L3849">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3850">        }</span>
-<span class="fc" id="L3851">    }</span>
+<span class="fc" id="L3851">        }</span>
+<span class="fc" id="L3852">    }</span>
 
     /**
      * Constructor.
@@ -3865,13 +3866,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3868">        this(measurements, initialBias, listener);</span>
+<span class="fc" id="L3869">        this(measurements, initialBias, listener);</span>
         try {
-<span class="fc" id="L3870">            setPosition(position);</span>
-<span class="nc" id="L3871">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3871">            setPosition(position);</span>
+<span class="nc" id="L3872">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3873">        }</span>
-<span class="fc" id="L3874">    }</span>
+<span class="fc" id="L3874">        }</span>
+<span class="fc" id="L3875">    }</span>
 
     /**
      * Constructor.
@@ -3885,13 +3886,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L3888">        this(commonAxisUsed, initialBias);</span>
+<span class="fc" id="L3889">        this(commonAxisUsed, initialBias);</span>
         try {
-<span class="fc" id="L3890">            setPosition(position);</span>
-<span class="nc" id="L3891">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3891">            setPosition(position);</span>
+<span class="nc" id="L3892">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3893">        }</span>
-<span class="fc" id="L3894">    }</span>
+<span class="fc" id="L3894">        }</span>
+<span class="fc" id="L3895">    }</span>
 
     /**
      * Constructor.
@@ -3907,13 +3908,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3910">        this(commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L3911">        this(commonAxisUsed, initialBias, listener);</span>
         try {
-<span class="fc" id="L3912">            setPosition(position);</span>
-<span class="nc" id="L3913">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3913">            setPosition(position);</span>
+<span class="nc" id="L3914">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3915">        }</span>
-<span class="fc" id="L3916">    }</span>
+<span class="fc" id="L3916">        }</span>
+<span class="fc" id="L3917">    }</span>
 
     /**
      * Constructor.
@@ -3931,13 +3932,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L3934">        this(measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L3935">        this(measurements, commonAxisUsed, initialBias);</span>
         try {
-<span class="fc" id="L3936">            setPosition(position);</span>
-<span class="nc" id="L3937">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3937">            setPosition(position);</span>
+<span class="nc" id="L3938">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3939">        }</span>
-<span class="fc" id="L3940">    }</span>
+<span class="fc" id="L3940">        }</span>
+<span class="fc" id="L3941">    }</span>
 
     /**
      * Constructor.
@@ -3957,13 +3958,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3960">        this(measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L3961">        this(measurements, commonAxisUsed, initialBias, listener);</span>
         try {
-<span class="fc" id="L3962">            setPosition(position);</span>
-<span class="nc" id="L3963">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3963">            setPosition(position);</span>
+<span class="nc" id="L3964">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3965">        }</span>
-<span class="fc" id="L3966">    }</span>
+<span class="fc" id="L3966">        }</span>
+<span class="fc" id="L3967">    }</span>
 
     /**
      * Constructor.
@@ -3977,13 +3978,13 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L3980">        this(initialBias, initialMa);</span>
+<span class="fc" id="L3981">        this(initialBias, initialMa);</span>
         try {
-<span class="fc" id="L3982">            setPosition(position);</span>
-<span class="nc" id="L3983">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L3983">            setPosition(position);</span>
+<span class="nc" id="L3984">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L3985">        }</span>
-<span class="fc" id="L3986">    }</span>
+<span class="fc" id="L3986">        }</span>
+<span class="fc" id="L3987">    }</span>
 
     /**
      * Constructor.
@@ -3999,13 +4000,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Matrix initialBias, final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4002">        this(initialBias, initialMa, listener);</span>
+<span class="fc" id="L4003">        this(initialBias, initialMa, listener);</span>
         try {
-<span class="fc" id="L4004">            setPosition(position);</span>
-<span class="nc" id="L4005">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4005">            setPosition(position);</span>
+<span class="nc" id="L4006">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4007">        }</span>
-<span class="fc" id="L4008">    }</span>
+<span class="fc" id="L4008">        }</span>
+<span class="fc" id="L4009">    }</span>
 
     /**
      * Constructor.
@@ -4023,13 +4024,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L4026">        this(measurements, initialBias, initialMa);</span>
+<span class="fc" id="L4027">        this(measurements, initialBias, initialMa);</span>
         try {
-<span class="fc" id="L4028">            setPosition(position);</span>
-<span class="nc" id="L4029">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4029">            setPosition(position);</span>
+<span class="nc" id="L4030">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4031">        }</span>
-<span class="fc" id="L4032">    }</span>
+<span class="fc" id="L4032">        }</span>
+<span class="fc" id="L4033">    }</span>
 
     /**
      * Constructor.
@@ -4049,13 +4050,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4052">        this(measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L4053">        this(measurements, initialBias, initialMa, listener);</span>
         try {
-<span class="fc" id="L4054">            setPosition(position);</span>
-<span class="nc" id="L4055">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4055">            setPosition(position);</span>
+<span class="nc" id="L4056">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4057">        }</span>
-<span class="fc" id="L4058">    }</span>
+<span class="fc" id="L4058">        }</span>
+<span class="fc" id="L4059">    }</span>
 
     /**
      * Constructor.
@@ -4072,13 +4073,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L4075">        this(commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L4076">        this(commonAxisUsed, initialBias, initialMa);</span>
         try {
-<span class="fc" id="L4077">            setPosition(position);</span>
-<span class="nc" id="L4078">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4078">            setPosition(position);</span>
+<span class="nc" id="L4079">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4080">        }</span>
-<span class="fc" id="L4081">    }</span>
+<span class="fc" id="L4081">        }</span>
+<span class="fc" id="L4082">    }</span>
 
     /**
      * Constructor.
@@ -4097,13 +4098,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4100">        this(commonAxisUsed, initialBias, initialMa, listener);</span>
+<span class="fc" id="L4101">        this(commonAxisUsed, initialBias, initialMa, listener);</span>
         try {
-<span class="fc" id="L4102">            setPosition(position);</span>
-<span class="nc" id="L4103">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4103">            setPosition(position);</span>
+<span class="nc" id="L4104">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4105">        }</span>
-<span class="fc" id="L4106">    }</span>
+<span class="fc" id="L4106">        }</span>
+<span class="fc" id="L4107">    }</span>
 
     /**
      * Constructor.
@@ -4124,13 +4125,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L4127">        this(measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L4128">        this(measurements, commonAxisUsed, initialBias, initialMa);</span>
         try {
-<span class="fc" id="L4129">            setPosition(position);</span>
-<span class="nc" id="L4130">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4130">            setPosition(position);</span>
+<span class="nc" id="L4131">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4132">        }</span>
-<span class="fc" id="L4133">    }</span>
+<span class="fc" id="L4133">        }</span>
+<span class="fc" id="L4134">    }</span>
 
     /**
      * Constructor.
@@ -4153,13 +4154,13 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4156">        this(measurements, commonAxisUsed, initialBias, initialMa, listener);</span>
+<span class="fc" id="L4157">        this(measurements, commonAxisUsed, initialBias, initialMa, listener);</span>
         try {
-<span class="fc" id="L4158">            setPosition(position);</span>
-<span class="nc" id="L4159">        } catch (LockedException ignore) {</span>
+<span class="fc" id="L4159">            setPosition(position);</span>
+<span class="nc" id="L4160">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L4161">        }</span>
-<span class="fc" id="L4162">    }</span>
+<span class="fc" id="L4162">        }</span>
+<span class="fc" id="L4163">    }</span>
 
     /**
      * Constructor.
@@ -4167,8 +4168,8 @@ public class KnownPositionAccelerometerCalibrator extends
      * @param position position where body kinematics measures have been taken.
      */
     public KnownPositionAccelerometerCalibrator(final NEDPosition position) {
-<span class="fc" id="L4170">        this(convertPosition(position));</span>
-<span class="fc" id="L4171">    }</span>
+<span class="fc" id="L4171">        this(convertPosition(position));</span>
+<span class="fc" id="L4172">    }</span>
 
     /**
      * Constructor.
@@ -4179,8 +4180,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4182">        this(convertPosition(position), listener);</span>
-<span class="fc" id="L4183">    }</span>
+<span class="fc" id="L4183">        this(convertPosition(position), listener);</span>
+<span class="fc" id="L4184">    }</span>
 
     /**
      * Constructor.
@@ -4193,8 +4194,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L4196">        this(convertPosition(position), measurements);</span>
-<span class="fc" id="L4197">    }</span>
+<span class="fc" id="L4197">        this(convertPosition(position), measurements);</span>
+<span class="fc" id="L4198">    }</span>
 
     /**
      * Constructor.
@@ -4209,8 +4210,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4212">        this(convertPosition(position), measurements, listener);</span>
-<span class="fc" id="L4213">    }</span>
+<span class="fc" id="L4213">        this(convertPosition(position), measurements, listener);</span>
+<span class="fc" id="L4214">    }</span>
 
     /**
      * Constructor.
@@ -4221,8 +4222,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position, final boolean commonAxisUsed) {
-<span class="fc" id="L4224">        this(convertPosition(position), commonAxisUsed);</span>
-<span class="fc" id="L4225">    }</span>
+<span class="fc" id="L4225">        this(convertPosition(position), commonAxisUsed);</span>
+<span class="fc" id="L4226">    }</span>
 
     /**
      * Constructor.
@@ -4235,8 +4236,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position, final boolean commonAxisUsed,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4238">        this(convertPosition(position), commonAxisUsed, listener);</span>
-<span class="fc" id="L4239">    }</span>
+<span class="fc" id="L4239">        this(convertPosition(position), commonAxisUsed, listener);</span>
+<span class="fc" id="L4240">    }</span>
 
     /**
      * Constructor.
@@ -4252,8 +4253,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L4255">        this(convertPosition(position), measurements, commonAxisUsed);</span>
-<span class="fc" id="L4256">    }</span>
+<span class="fc" id="L4256">        this(convertPosition(position), measurements, commonAxisUsed);</span>
+<span class="fc" id="L4257">    }</span>
 
     /**
      * Constructor.
@@ -4271,9 +4272,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4274">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4275">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 listener);
-<span class="fc" id="L4276">    }</span>
+<span class="fc" id="L4277">    }</span>
 
     /**
      * Constructor.
@@ -4293,9 +4294,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L4296">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
+<span class="fc" id="L4297">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
                 initialBiasZ);
-<span class="fc" id="L4298">    }</span>
+<span class="fc" id="L4299">    }</span>
 
     /**
      * Constructor.
@@ -4317,9 +4318,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4320">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
+<span class="fc" id="L4321">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
                 initialBiasZ, listener);
-<span class="fc" id="L4322">    }</span>
+<span class="fc" id="L4323">    }</span>
 
     /**
      * Constructor.
@@ -4343,9 +4344,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L4346">        this(convertPosition(position), measurements, initialBiasX,</span>
+<span class="fc" id="L4347">        this(convertPosition(position), measurements, initialBiasX,</span>
                 initialBiasY, initialBiasZ);
-<span class="fc" id="L4348">    }</span>
+<span class="fc" id="L4349">    }</span>
 
     /**
      * Constructor.
@@ -4371,9 +4372,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4374">        this(convertPosition(position), measurements, initialBiasX,</span>
+<span class="fc" id="L4375">        this(convertPosition(position), measurements, initialBiasX,</span>
                 initialBiasY, initialBiasZ, listener);
-<span class="fc" id="L4376">    }</span>
+<span class="fc" id="L4377">    }</span>
 
     /**
      * Constructor.
@@ -4396,9 +4397,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L4399">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
+<span class="fc" id="L4400">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
                 initialBiasY, initialBiasZ);
-<span class="fc" id="L4401">    }</span>
+<span class="fc" id="L4402">    }</span>
 
     /**
      * Constructor.
@@ -4423,9 +4424,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4426">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
+<span class="fc" id="L4427">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
                 initialBiasY, initialBiasZ, listener);
-<span class="fc" id="L4428">    }</span>
+<span class="fc" id="L4429">    }</span>
 
     /**
      * Constructor.
@@ -4452,9 +4453,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
-<span class="fc" id="L4455">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4456">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ);
-<span class="fc" id="L4457">    }</span>
+<span class="fc" id="L4458">    }</span>
 
     /**
      * Constructor.
@@ -4483,9 +4484,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4486">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4487">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ, listener);
-<span class="fc" id="L4488">    }</span>
+<span class="fc" id="L4489">    }</span>
 
     /**
      * Constructor.
@@ -4501,9 +4502,9 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L4504">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
+<span class="fc" id="L4505">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
                 initialBiasZ);
-<span class="fc" id="L4506">    }</span>
+<span class="fc" id="L4507">    }</span>
 
     /**
      * Constructor.
@@ -4521,9 +4522,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4524">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
+<span class="fc" id="L4525">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
                 initialBiasZ, listener);
-<span class="fc" id="L4526">    }</span>
+<span class="fc" id="L4527">    }</span>
 
     /**
      * Constructor.
@@ -4544,9 +4545,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
-<span class="fc" id="L4547">        this(convertPosition(position), measurements, initialBiasX,</span>
+<span class="fc" id="L4548">        this(convertPosition(position), measurements, initialBiasX,</span>
                 initialBiasY, initialBiasZ);
-<span class="fc" id="L4549">    }</span>
+<span class="fc" id="L4550">    }</span>
 
     /**
      * Constructor.
@@ -4569,9 +4570,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4572">        this(convertPosition(position), measurements, initialBiasX,</span>
+<span class="fc" id="L4573">        this(convertPosition(position), measurements, initialBiasX,</span>
                 initialBiasY, initialBiasZ, listener);
-<span class="fc" id="L4574">    }</span>
+<span class="fc" id="L4575">    }</span>
 
     /**
      * Constructor.
@@ -4590,9 +4591,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L4593">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
+<span class="fc" id="L4594">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
                 initialBiasY, initialBiasZ);
-<span class="fc" id="L4595">    }</span>
+<span class="fc" id="L4596">    }</span>
 
     /**
      * Constructor.
@@ -4613,9 +4614,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4616">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
+<span class="fc" id="L4617">        this(convertPosition(position), commonAxisUsed, initialBiasX,</span>
                 initialBiasY, initialBiasZ, listener);
-<span class="fc" id="L4618">    }</span>
+<span class="fc" id="L4619">    }</span>
 
     /**
      * Constructor.
@@ -4638,9 +4639,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
-<span class="fc" id="L4641">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4642">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ);
-<span class="fc" id="L4643">    }</span>
+<span class="fc" id="L4644">    }</span>
 
     /**
      * Constructor.
@@ -4665,9 +4666,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4668">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4669">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ, listener);
-<span class="fc" id="L4670">    }</span>
+<span class="fc" id="L4671">    }</span>
 
     /**
      * Constructor.
@@ -4691,9 +4692,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L4694">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
+<span class="fc" id="L4695">        this(convertPosition(position), initialBiasX, initialBiasY,</span>
                 initialBiasZ, initialSx, initialSy, initialSz);
-<span class="fc" id="L4696">    }</span>
+<span class="fc" id="L4697">    }</span>
 
     /**
      * Constructor.
@@ -4721,10 +4722,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L4724">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L4725">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L4727">    }</span>
+<span class="fc" id="L4728">    }</span>
 
     /**
      * Constructor.
@@ -4754,10 +4755,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4757">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L4758">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L4760">    }</span>
+<span class="fc" id="L4761">    }</span>
 
     /**
      * Constructor.
@@ -4783,10 +4784,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
-<span class="fc" id="L4786">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L4787">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L4789">    }</span>
+<span class="fc" id="L4790">    }</span>
 
     /**
      * Constructor.
@@ -4814,10 +4815,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4817">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L4818">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L4820">    }</span>
+<span class="fc" id="L4821">    }</span>
 
     /**
      * Constructor.
@@ -4847,10 +4848,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final double initialBiasX,
             final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L4850">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4851">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L4853">    }</span>
+<span class="fc" id="L4854">    }</span>
 
     /**
      * Constructor.
@@ -4882,10 +4883,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialBiasY, final double initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4885">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L4886">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L4888">    }</span>
+<span class="fc" id="L4889">    }</span>
 
     /**
      * Constructor.
@@ -4906,9 +4907,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L4909">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L4910">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L4911">    }</span>
+<span class="fc" id="L4912">    }</span>
 
     /**
      * Constructor.
@@ -4931,9 +4932,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4934">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L4935">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L4936">    }</span>
+<span class="fc" id="L4937">    }</span>
 
     /**
      * Constructor.
@@ -4958,10 +4959,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
-<span class="fc" id="L4961">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L4962">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L4964">    }</span>
+<span class="fc" id="L4965">    }</span>
 
     /**
      * Constructor.
@@ -4988,10 +4989,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L4991">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L4992">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L4994">    }</span>
+<span class="fc" id="L4995">    }</span>
 
     /**
      * Constructor.
@@ -5014,10 +5015,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-<span class="fc" id="L5017">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L5018">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L5020">    }</span>
+<span class="fc" id="L5021">    }</span>
 
     /**
      * Constructor.
@@ -5042,10 +5043,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5045">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L5046">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L5048">    }</span>
+<span class="fc" id="L5049">    }</span>
 
     /**
      * Constructor.
@@ -5072,10 +5073,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
-<span class="fc" id="L5075">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5076">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz);
-<span class="fc" id="L5078">    }</span>
+<span class="fc" id="L5079">    }</span>
 
     /**
      * Constructor.
@@ -5104,10 +5105,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5107">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5108">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, listener);
-<span class="fc" id="L5110">    }</span>
+<span class="fc" id="L5111">    }</span>
 
     /**
      * Constructor.
@@ -5139,10 +5140,10 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L5142">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L5143">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5145">    }</span>
+<span class="fc" id="L5146">    }</span>
 
     /**
      * Constructor.
@@ -5178,11 +5179,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L5181">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L5182">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5185">    }</span>
+<span class="fc" id="L5186">    }</span>
 
     /**
      * Constructor.
@@ -5220,11 +5221,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5223">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L5224">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5227">    }</span>
+<span class="fc" id="L5228">    }</span>
 
     /**
      * Constructor.
@@ -5259,12 +5260,12 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L5262">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L5263">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5267">    }</span>
+<span class="fc" id="L5268">    }</span>
 
     /**
      * Constructor.
@@ -5301,12 +5302,12 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5304">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L5305">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5309">    }</span>
+<span class="fc" id="L5310">    }</span>
 
     /**
      * Constructor.
@@ -5345,11 +5346,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSz, final double initialMxy, final double initialMxz,
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy) {
-<span class="fc" id="L5348">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5349">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5352">    }</span>
+<span class="fc" id="L5353">    }</span>
 
     /**
      * Constructor.
@@ -5390,11 +5391,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMyx, final double initialMyz, final double initialMzx,
             final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5393">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5394">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz,
                 initialMyx, initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5397">    }</span>
+<span class="fc" id="L5398">    }</span>
 
     /**
      * Constructor.
@@ -5423,11 +5424,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSy, final double initialSz, final double initialMxy,
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-<span class="fc" id="L5426">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L5427">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5430">    }</span>
+<span class="fc" id="L5431">    }</span>
 
     /**
      * Constructor.
@@ -5458,11 +5459,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5461">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
+<span class="fc" id="L5462">        this(convertPosition(position), initialBiasX, initialBiasY, initialBiasZ,</span>
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5465">    }</span>
+<span class="fc" id="L5466">    }</span>
 
     /**
      * Constructor.
@@ -5495,12 +5496,12 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSy, final double initialSz, final double initialMxy,
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy) {
-<span class="fc" id="L5498">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L5499">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5503">    }</span>
+<span class="fc" id="L5504">    }</span>
 
     /**
      * Constructor.
@@ -5535,12 +5536,12 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxz, final double initialMyx, final double initialMyz,
             final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5538">        this(convertPosition(position), measurements,</span>
+<span class="fc" id="L5539">        this(convertPosition(position), measurements,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5543">    }</span>
+<span class="fc" id="L5544">    }</span>
 
     /**
      * Constructor.
@@ -5571,12 +5572,12 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-<span class="fc" id="L5574">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L5575">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5579">    }</span>
+<span class="fc" id="L5580">    }</span>
 
     /**
      * Constructor.
@@ -5609,12 +5610,12 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5612">        this(convertPosition(position), commonAxisUsed,</span>
+<span class="fc" id="L5613">        this(convertPosition(position), commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz,
                 initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5617">    }</span>
+<span class="fc" id="L5618">    }</span>
 
     /**
      * Constructor.
@@ -5649,11 +5650,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialSx, final double initialSy, final double initialSz,
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy) {
-<span class="fc" id="L5652">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5653">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L5656">    }</span>
+<span class="fc" id="L5657">    }</span>
 
     /**
      * Constructor.
@@ -5690,11 +5691,11 @@ public class KnownPositionAccelerometerCalibrator extends
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5693">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5694">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBiasX, initialBiasY, initialBiasZ,
                 initialSx, initialSy, initialSz, initialMxy, initialMxz, initialMyx,
                 initialMyz, initialMzx, initialMzy, listener);
-<span class="fc" id="L5697">    }</span>
+<span class="fc" id="L5698">    }</span>
 
     /**
      * Constructor.
@@ -5707,8 +5708,8 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position, final double[] initialBias) {
-<span class="fc" id="L5710">        this(convertPosition(position), initialBias);</span>
-<span class="fc" id="L5711">    }</span>
+<span class="fc" id="L5711">        this(convertPosition(position), initialBias);</span>
+<span class="fc" id="L5712">    }</span>
 
     /**
      * Constructor.
@@ -5723,8 +5724,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position, final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5726">        this(convertPosition(position), initialBias, listener);</span>
-<span class="fc" id="L5727">    }</span>
+<span class="fc" id="L5727">        this(convertPosition(position), initialBias, listener);</span>
+<span class="fc" id="L5728">    }</span>
 
     /**
      * Constructor.
@@ -5742,8 +5743,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L5745">        this(convertPosition(position), measurements, initialBias);</span>
-<span class="fc" id="L5746">    }</span>
+<span class="fc" id="L5746">        this(convertPosition(position), measurements, initialBias);</span>
+<span class="fc" id="L5747">    }</span>
 
     /**
      * Constructor.
@@ -5763,8 +5764,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5766">        this(convertPosition(position), measurements, initialBias, listener);</span>
-<span class="fc" id="L5767">    }</span>
+<span class="fc" id="L5767">        this(convertPosition(position), measurements, initialBias, listener);</span>
+<span class="fc" id="L5768">    }</span>
 
     /**
      * Constructor.
@@ -5780,8 +5781,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position, final boolean commonAxisUsed,
             final double[] initialBias) {
-<span class="fc" id="L5783">        this(convertPosition(position), commonAxisUsed, initialBias);</span>
-<span class="fc" id="L5784">    }</span>
+<span class="fc" id="L5784">        this(convertPosition(position), commonAxisUsed, initialBias);</span>
+<span class="fc" id="L5785">    }</span>
 
     /**
      * Constructor.
@@ -5799,9 +5800,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position, final boolean commonAxisUsed,
             final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5802">        this(convertPosition(position), commonAxisUsed, initialBias,</span>
+<span class="fc" id="L5803">        this(convertPosition(position), commonAxisUsed, initialBias,</span>
                 listener);
-<span class="fc" id="L5804">    }</span>
+<span class="fc" id="L5805">    }</span>
 
     /**
      * Constructor.
@@ -5821,9 +5822,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L5824">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5825">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBias);
-<span class="fc" id="L5826">    }</span>
+<span class="fc" id="L5827">    }</span>
 
     /**
      * Constructor.
@@ -5845,9 +5846,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5848">        this(convertPosition(position), measurements, commonAxisUsed, initialBias,</span>
+<span class="fc" id="L5849">        this(convertPosition(position), measurements, commonAxisUsed, initialBias,</span>
                 listener);
-<span class="fc" id="L5850">    }</span>
+<span class="fc" id="L5851">    }</span>
 
     /**
      * Constructor.
@@ -5859,8 +5860,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position,
             final Matrix initialBias) {
-<span class="fc" id="L5862">        this(convertPosition(position), initialBias);</span>
-<span class="fc" id="L5863">    }</span>
+<span class="fc" id="L5863">        this(convertPosition(position), initialBias);</span>
+<span class="fc" id="L5864">    }</span>
 
     /**
      * Constructor.
@@ -5874,8 +5875,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5877">        this(convertPosition(position), initialBias, listener);</span>
-<span class="fc" id="L5878">    }</span>
+<span class="fc" id="L5878">        this(convertPosition(position), initialBias, listener);</span>
+<span class="fc" id="L5879">    }</span>
 
     /**
      * Constructor.
@@ -5891,8 +5892,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L5894">        this(convertPosition(position), measurements, initialBias);</span>
-<span class="fc" id="L5895">    }</span>
+<span class="fc" id="L5895">        this(convertPosition(position), measurements, initialBias);</span>
+<span class="fc" id="L5896">    }</span>
 
     /**
      * Constructor.
@@ -5909,9 +5910,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5912">        this(convertPosition(position), measurements, initialBias,</span>
+<span class="fc" id="L5913">        this(convertPosition(position), measurements, initialBias,</span>
                 listener);
-<span class="fc" id="L5914">    }</span>
+<span class="fc" id="L5915">    }</span>
 
     /**
      * Constructor.
@@ -5925,8 +5926,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L5928">        this(convertPosition(position), commonAxisUsed, initialBias);</span>
-<span class="fc" id="L5929">    }</span>
+<span class="fc" id="L5929">        this(convertPosition(position), commonAxisUsed, initialBias);</span>
+<span class="fc" id="L5930">    }</span>
 
     /**
      * Constructor.
@@ -5942,8 +5943,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5945">        this(convertPosition(position), commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L5946">    }</span>
+<span class="fc" id="L5946">        this(convertPosition(position), commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L5947">    }</span>
 
     /**
      * Constructor.
@@ -5961,9 +5962,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L5964">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5965">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBias);
-<span class="fc" id="L5966">    }</span>
+<span class="fc" id="L5967">    }</span>
 
     /**
      * Constructor.
@@ -5983,9 +5984,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L5986">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L5987">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBias, listener);
-<span class="fc" id="L5988">    }</span>
+<span class="fc" id="L5989">    }</span>
 
     /**
      * Constructor.
@@ -5999,8 +6000,8 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(
             final NEDPosition position,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L6002">        this(convertPosition(position), initialBias, initialMa);</span>
-<span class="fc" id="L6003">    }</span>
+<span class="fc" id="L6003">        this(convertPosition(position), initialBias, initialMa);</span>
+<span class="fc" id="L6004">    }</span>
 
     /**
      * Constructor.
@@ -6016,8 +6017,8 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Matrix initialBias, final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L6019">        this(convertPosition(position), initialBias, initialMa, listener);</span>
-<span class="fc" id="L6020">    }</span>
+<span class="fc" id="L6020">        this(convertPosition(position), initialBias, initialMa, listener);</span>
+<span class="fc" id="L6021">    }</span>
 
     /**
      * Constructor.
@@ -6035,9 +6036,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L6038">        this(convertPosition(position), measurements, initialBias,</span>
+<span class="fc" id="L6039">        this(convertPosition(position), measurements, initialBias,</span>
                 initialMa);
-<span class="fc" id="L6040">    }</span>
+<span class="fc" id="L6041">    }</span>
 
     /**
      * Constructor.
@@ -6057,9 +6058,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L6060">        this(convertPosition(position), measurements, initialBias,</span>
+<span class="fc" id="L6061">        this(convertPosition(position), measurements, initialBias,</span>
                 initialMa, listener);
-<span class="fc" id="L6062">    }</span>
+<span class="fc" id="L6063">    }</span>
 
     /**
      * Constructor.
@@ -6076,9 +6077,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L6079">        this(convertPosition(position), commonAxisUsed, initialBias,</span>
+<span class="fc" id="L6080">        this(convertPosition(position), commonAxisUsed, initialBias,</span>
                 initialMa);
-<span class="fc" id="L6081">    }</span>
+<span class="fc" id="L6082">    }</span>
 
     /**
      * Constructor.
@@ -6097,9 +6098,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L6100">        this(convertPosition(position), commonAxisUsed, initialBias,</span>
+<span class="fc" id="L6101">        this(convertPosition(position), commonAxisUsed, initialBias,</span>
                 initialMa, listener);
-<span class="fc" id="L6102">    }</span>
+<span class="fc" id="L6103">    }</span>
 
     /**
      * Constructor.
@@ -6120,9 +6121,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L6123">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L6124">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBias, initialMa);
-<span class="fc" id="L6125">    }</span>
+<span class="fc" id="L6126">    }</span>
 
     /**
      * Constructor.
@@ -6145,9 +6146,9 @@ public class KnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final KnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L6148">        this(convertPosition(position), measurements, commonAxisUsed,</span>
+<span class="fc" id="L6149">        this(convertPosition(position), measurements, commonAxisUsed,</span>
                 initialBias, initialMa, listener);
-<span class="fc" id="L6150">    }</span>
+<span class="fc" id="L6151">    }</span>
 
     /**
      * Gets position where body kinematics measures have been taken expressed in
@@ -6156,7 +6157,7 @@ public class KnownPositionAccelerometerCalibrator extends
      * @return position where body kinematics measures have been taken.
      */
     public ECEFPosition getEcefPosition() {
-<span class="fc" id="L6159">        return mPosition;</span>
+<span class="fc" id="L6160">        return mPosition;</span>
     }
 
     /**
@@ -6167,19 +6168,19 @@ public class KnownPositionAccelerometerCalibrator extends
      * @throws LockedException if calibrator is currently running.
      */
     public void setPosition(final ECEFPosition position) throws LockedException {
-<span class="fc bfc" id="L6170" title="All 2 branches covered.">        if (isRunning()) {</span>
-<span class="fc" id="L6171">            throw new LockedException();</span>
+<span class="fc bfc" id="L6171" title="All 2 branches covered.">        if (isRunning()) {</span>
+<span class="fc" id="L6172">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L6174">        mPosition = position;</span>
-<span class="pc bpc" id="L6175" title="1 of 2 branches missed.">        if (position != null) {</span>
-<span class="fc" id="L6176">            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(</span>
-<span class="fc" id="L6177">                    mPosition.getX(), mPosition.getY(), mPosition.getZ());</span>
-<span class="fc" id="L6178">            mGroundTruthGravityNorm = gravity.getNorm();</span>
-<span class="fc" id="L6179">        } else {</span>
-<span class="nc" id="L6180">            mGroundTruthGravityNorm = null;</span>
+<span class="fc" id="L6175">        mPosition = position;</span>
+<span class="pc bpc" id="L6176" title="1 of 2 branches missed.">        if (position != null) {</span>
+<span class="fc" id="L6177">            final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(</span>
+<span class="fc" id="L6178">                    mPosition.getX(), mPosition.getY(), mPosition.getZ());</span>
+<span class="fc" id="L6179">            mGroundTruthGravityNorm = gravity.getNorm();</span>
+<span class="fc" id="L6180">        } else {</span>
+<span class="nc" id="L6181">            mGroundTruthGravityNorm = null;</span>
         }
-<span class="fc" id="L6182">    }</span>
+<span class="fc" id="L6183">    }</span>
 
     /**
      * Gets position where body kinematics measures have been taken expressed in
@@ -6189,8 +6190,8 @@ public class KnownPositionAccelerometerCalibrator extends
      * not available.
      */
     public NEDPosition getNedPosition() {
-<span class="fc" id="L6192">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc bfc" id="L6193" title="All 2 branches covered.">        return getNedPosition(result) ? result : null;</span>
+<span class="fc" id="L6193">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc bfc" id="L6194" title="All 2 branches covered.">        return getNedPosition(result) ? result : null;</span>
     }
 
     /**
@@ -6202,14 +6203,14 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     public boolean getNedPosition(final NEDPosition result) {
 
-<span class="fc bfc" id="L6205" title="All 2 branches covered.">        if (mPosition != null) {</span>
-<span class="fc" id="L6206">            final NEDVelocity velocity = new NEDVelocity();</span>
-<span class="fc" id="L6207">            ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(</span>
-<span class="fc" id="L6208">                    mPosition.getX(), mPosition.getY(), mPosition.getZ(),</span>
+<span class="fc bfc" id="L6206" title="All 2 branches covered.">        if (mPosition != null) {</span>
+<span class="fc" id="L6207">            final NEDVelocity velocity = new NEDVelocity();</span>
+<span class="fc" id="L6208">            ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(</span>
+<span class="fc" id="L6209">                    mPosition.getX(), mPosition.getY(), mPosition.getZ(),</span>
                     0.0, 0.0, 0.0, result, velocity);
-<span class="fc" id="L6210">            return true;</span>
+<span class="fc" id="L6211">            return true;</span>
         } else {
-<span class="fc" id="L6212">            return false;</span>
+<span class="fc" id="L6213">            return false;</span>
         }
     }
 
@@ -6221,8 +6222,8 @@ public class KnownPositionAccelerometerCalibrator extends
      * @throws LockedException if calibrator is currently running.
      */
     public void setPosition(final NEDPosition position) throws LockedException {
-<span class="fc bfc" id="L6224" title="All 2 branches covered.">        setPosition(position != null ? convertPosition(position) : null);</span>
-<span class="fc" id="L6225">    }</span>
+<span class="fc bfc" id="L6225" title="All 2 branches covered.">        setPosition(position != null ? convertPosition(position) : null);</span>
+<span class="fc" id="L6226">    }</span>
 
     /**
      * Indicates whether calibrator is ready to start.
@@ -6231,7 +6232,7 @@ public class KnownPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="pc bpc" id="L6234" title="1 of 4 branches missed.">        return super.isReady() &amp;&amp; mPosition != null;</span>
+<span class="pc bpc" id="L6235" title="1 of 4 branches missed.">        return super.isReady() &amp;&amp; mPosition != null;</span>
     }
 
     /**
@@ -6242,12 +6243,12 @@ public class KnownPositionAccelerometerCalibrator extends
      * @return converted position expressed in ECEF coordinates.
      */
     private static ECEFPosition convertPosition(final NEDPosition position) {
-<span class="fc" id="L6245">        final ECEFVelocity velocity = new ECEFVelocity();</span>
-<span class="fc" id="L6246">        final ECEFPosition result = new ECEFPosition();</span>
-<span class="fc" id="L6247">        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(</span>
-<span class="fc" id="L6248">                position.getLatitude(), position.getLongitude(), position.getHeight(),</span>
+<span class="fc" id="L6246">        final ECEFVelocity velocity = new ECEFVelocity();</span>
+<span class="fc" id="L6247">        final ECEFPosition result = new ECEFPosition();</span>
+<span class="fc" id="L6248">        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(</span>
+<span class="fc" id="L6249">                position.getLatitude(), position.getLongitude(), position.getHeight(),</span>
                 0.0, 0.0, 0.0, result, velocity);
-<span class="fc" id="L6250">        return result;</span>
+<span class="fc" id="L6251">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

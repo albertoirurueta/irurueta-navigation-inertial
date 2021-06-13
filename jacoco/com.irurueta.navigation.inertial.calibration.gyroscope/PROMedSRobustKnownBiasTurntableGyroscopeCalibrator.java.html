@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -108,7 +109,7 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L111">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L112">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -120,8 +121,8 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      * Constructor.
      */
     public PROMedSRobustKnownBiasTurntableGyroscopeCalibrator() {
-<span class="fc" id="L123">        super();</span>
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L124">        super();</span>
+<span class="fc" id="L125">    }</span>
 
     /**
      * Constructor.
@@ -161,9 +162,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L164">        super(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L165">        super(position, turntableRotationRate, timeInterval,</span>
                 measurements, bias, initialMg, initialGg);
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L167">    }</span>
 
     /**
      * Constructor.
@@ -206,9 +207,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L209">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L210">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L212">    }</span>
 
     /**
      * Constructor.
@@ -248,9 +249,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L251">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L252">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L253">    }</span>
+<span class="fc" id="L254">    }</span>
 
     /**
      * Constructor.
@@ -293,9 +294,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L296">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L297">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L298">    }</span>
+<span class="fc" id="L299">    }</span>
 
     /**
      * Constructor.
@@ -343,10 +344,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L346">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L347">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L349">    }</span>
+<span class="fc" id="L350">    }</span>
 
     /**
      * Constructor.
@@ -396,10 +397,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L399">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L400">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L402">    }</span>
+<span class="fc" id="L403">    }</span>
 
     /**
      * Constructor.
@@ -447,10 +448,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L450">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L451">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L453">    }</span>
+<span class="fc" id="L454">    }</span>
 
     /**
      * Constructor.
@@ -500,10 +501,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L503">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L504">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L506">    }</span>
+<span class="fc" id="L507">    }</span>
 
     /**
      * Constructor.
@@ -555,10 +556,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L558">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L559">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L561">    }</span>
+<span class="fc" id="L562">    }</span>
 
     /**
      * Constructor.
@@ -612,10 +613,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L615">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L616">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L618">    }</span>
+<span class="fc" id="L619">    }</span>
 
     /**
      * Constructor.
@@ -668,10 +669,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L671">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L672">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L674">    }</span>
+<span class="fc" id="L675">    }</span>
 
     /**
      * Constructor.
@@ -727,10 +728,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L730">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L731">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L733">    }</span>
+<span class="fc" id="L734">    }</span>
 
     /**
      * Constructor.
@@ -792,10 +793,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L795">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L796">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L798">    }</span>
+<span class="fc" id="L799">    }</span>
 
     /**
      * Constructor.
@@ -859,10 +860,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L862">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L863">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L865">    }</span>
+<span class="fc" id="L866">    }</span>
 
     /**
      * Constructor.
@@ -922,10 +923,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L925">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L926">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L928">    }</span>
+<span class="fc" id="L929">    }</span>
 
     /**
      * Constructor.
@@ -988,11 +989,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L991">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L992">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L995">    }</span>
+<span class="fc" id="L996">    }</span>
 
     /**
      * Constructor.
@@ -1032,9 +1033,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1035">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1036">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L1037">    }</span>
+<span class="fc" id="L1038">    }</span>
 
     /**
      * Constructor.
@@ -1077,9 +1078,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1080">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1081">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L1082">    }</span>
+<span class="fc" id="L1083">    }</span>
 
     /**
      * Constructor.
@@ -1119,9 +1120,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1122">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1123">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L1124">    }</span>
+<span class="fc" id="L1125">    }</span>
 
     /**
      * Constructor.
@@ -1164,9 +1165,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1167">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1168">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L1169">    }</span>
+<span class="fc" id="L1170">    }</span>
 
     /**
      * Constructor.
@@ -1214,10 +1215,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1217">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1218">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L1220">    }</span>
+<span class="fc" id="L1221">    }</span>
 
     /**
      * Constructor.
@@ -1267,10 +1268,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1270">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1271">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L1273">    }</span>
+<span class="fc" id="L1274">    }</span>
 
     /**
      * Constructor.
@@ -1318,10 +1319,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1321">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1322">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L1324">    }</span>
+<span class="fc" id="L1325">    }</span>
 
     /**
      * Constructor.
@@ -1371,10 +1372,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1374">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1375">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L1377">    }</span>
+<span class="fc" id="L1378">    }</span>
 
     /**
      * Constructor.
@@ -1426,10 +1427,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1429">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1430">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L1432">    }</span>
+<span class="fc" id="L1433">    }</span>
 
     /**
      * Constructor.
@@ -1483,10 +1484,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1486">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1487">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L1489">    }</span>
+<span class="fc" id="L1490">    }</span>
 
     /**
      * Constructor.
@@ -1539,10 +1540,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1542">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1543">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L1545">    }</span>
+<span class="fc" id="L1546">    }</span>
 
     /**
      * Constructor.
@@ -1598,10 +1599,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1601">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1602">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L1604">    }</span>
+<span class="fc" id="L1605">    }</span>
 
     /**
      * Constructor.
@@ -1663,10 +1664,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1666">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1667">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L1669">    }</span>
+<span class="fc" id="L1670">    }</span>
 
     /**
      * Constructor.
@@ -1730,11 +1731,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1733">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1734">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L1737">    }</span>
+<span class="fc" id="L1738">    }</span>
 
     /**
      * Constructor.
@@ -1794,10 +1795,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1797">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1798">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L1800">    }</span>
+<span class="fc" id="L1801">    }</span>
 
     /**
      * Constructor.
@@ -1860,11 +1861,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1863">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1864">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L1867">    }</span>
+<span class="fc" id="L1868">    }</span>
 
     /**
      * Constructor.
@@ -1877,9 +1878,9 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasTurntableGyroscopeCalibrator(
             final double[] qualityScores) {
-<span class="fc" id="L1880">        super();</span>
-<span class="fc" id="L1881">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1882">    }</span>
+<span class="fc" id="L1881">        super();</span>
+<span class="fc" id="L1882">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1883">    }</span>
 
     /**
      * Constructor.
@@ -1925,10 +1926,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1928">        super(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L1929">        super(position, turntableRotationRate, timeInterval,</span>
                 measurements, bias, initialMg, initialGg);
-<span class="fc" id="L1930">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1931">    }</span>
+<span class="fc" id="L1931">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1932">    }</span>
 
     /**
      * Constructor.
@@ -1977,10 +1978,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1980">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1981">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L1982">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1983">    }</span>
+<span class="fc" id="L1983">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1984">    }</span>
 
     /**
      * Constructor.
@@ -2026,10 +2027,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L2029">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2030">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L2031">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2032">    }</span>
+<span class="fc" id="L2032">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2033">    }</span>
 
     /**
      * Constructor.
@@ -2078,10 +2079,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2081">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2082">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L2083">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2084">    }</span>
+<span class="fc" id="L2084">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2085">    }</span>
 
     /**
      * Constructor.
@@ -2135,11 +2136,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L2138">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2139">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L2141">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2142">    }</span>
+<span class="fc" id="L2142">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2143">    }</span>
 
     /**
      * Constructor.
@@ -2195,11 +2196,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2198">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2199">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L2201">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2202">    }</span>
+<span class="fc" id="L2202">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2203">    }</span>
 
     /**
      * Constructor.
@@ -2253,11 +2254,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L2256">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2257">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L2259">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2260">    }</span>
+<span class="fc" id="L2260">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2261">    }</span>
 
     /**
      * Constructor.
@@ -2313,11 +2314,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2316">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2317">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L2319">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2320">    }</span>
+<span class="fc" id="L2320">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2321">    }</span>
 
     /**
      * Constructor.
@@ -2375,11 +2376,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L2378">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2379">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L2381">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2382">    }</span>
+<span class="fc" id="L2382">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2383">    }</span>
 
     /**
      * Constructor.
@@ -2439,11 +2440,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2442">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2443">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L2445">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2446">    }</span>
+<span class="fc" id="L2446">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2447">    }</span>
 
     /**
      * Constructor.
@@ -2502,11 +2503,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L2505">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2506">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L2508">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2509">    }</span>
+<span class="fc" id="L2509">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2510">    }</span>
 
     /**
      * Constructor.
@@ -2568,11 +2569,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2571">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2572">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L2574">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2575">    }</span>
+<span class="fc" id="L2575">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2576">    }</span>
 
     /**
      * Constructor.
@@ -2640,11 +2641,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L2643">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2644">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L2646">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2647">    }</span>
+<span class="fc" id="L2647">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2648">    }</span>
 
     /**
      * Constructor.
@@ -2714,11 +2715,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2717">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2718">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L2720">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2721">    }</span>
+<span class="fc" id="L2721">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2722">    }</span>
 
     /**
      * Constructor.
@@ -2784,11 +2785,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L2787">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2788">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L2790">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2791">    }</span>
+<span class="fc" id="L2791">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2792">    }</span>
 
     /**
      * Constructor.
@@ -2857,12 +2858,12 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2860">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2861">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L2864">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2865">    }</span>
+<span class="fc" id="L2865">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2866">    }</span>
 
     /**
      * Constructor.
@@ -2908,10 +2909,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L2911">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2912">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L2913">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2914">    }</span>
+<span class="fc" id="L2914">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2915">    }</span>
 
     /**
      * Constructor.
@@ -2960,10 +2961,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L2963">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L2964">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L2965">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L2966">    }</span>
+<span class="fc" id="L2966">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L2967">    }</span>
 
     /**
      * Constructor.
@@ -3009,10 +3010,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L3012">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3013">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L3014">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3015">    }</span>
+<span class="fc" id="L3015">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3016">    }</span>
 
     /**
      * Constructor.
@@ -3061,10 +3062,10 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3064">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3065">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L3066">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3067">    }</span>
+<span class="fc" id="L3067">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3068">    }</span>
 
     /**
      * Constructor.
@@ -3118,11 +3119,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L3121">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3122">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L3124">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3125">    }</span>
+<span class="fc" id="L3125">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3126">    }</span>
 
     /**
      * Constructor.
@@ -3178,11 +3179,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3181">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3182">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L3184">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3185">    }</span>
+<span class="fc" id="L3185">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3186">    }</span>
 
     /**
      * Constructor.
@@ -3236,11 +3237,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L3239">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3240">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L3242">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3243">    }</span>
+<span class="fc" id="L3243">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3244">    }</span>
 
     /**
      * Constructor.
@@ -3296,11 +3297,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3299">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3300">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 bias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L3302">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3303">    }</span>
+<span class="fc" id="L3303">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3304">    }</span>
 
     /**
      * Constructor.
@@ -3358,11 +3359,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L3361">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3362">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L3364">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3365">    }</span>
+<span class="fc" id="L3365">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3366">    }</span>
 
     /**
      * Constructor.
@@ -3422,11 +3423,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3425">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3426">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L3428">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3429">    }</span>
+<span class="fc" id="L3429">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3430">    }</span>
 
     /**
      * Constructor.
@@ -3485,11 +3486,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L3488">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3489">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg);
-<span class="fc" id="L3491">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3492">    }</span>
+<span class="fc" id="L3492">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3493">    }</span>
 
     /**
      * Constructor.
@@ -3551,11 +3552,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3554">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3555">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L3557">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3558">    }</span>
+<span class="fc" id="L3558">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3559">    }</span>
 
     /**
      * Constructor.
@@ -3623,11 +3624,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L3626">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3627">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L3629">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3630">    }</span>
+<span class="fc" id="L3630">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3631">    }</span>
 
     /**
      * Constructor.
@@ -3697,12 +3698,12 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3700">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3701">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L3704">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3705">    }</span>
+<span class="fc" id="L3705">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3706">    }</span>
 
     /**
      * Constructor.
@@ -3768,11 +3769,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L3771">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3772">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L3774">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3775">    }</span>
+<span class="fc" id="L3775">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3776">    }</span>
 
     /**
      * Constructor.
@@ -3841,12 +3842,12 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L3844">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L3845">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, bias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L3848">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3849">    }</span>
+<span class="fc" id="L3849">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3850">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -3868,7 +3869,7 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L3871">        return mStopThreshold;</span>
+<span class="fc" id="L3872">        return mStopThreshold;</span>
     }
 
     /**
@@ -3893,15 +3894,15 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L3896" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L3897">            throw new LockedException();</span>
+<span class="fc bfc" id="L3897" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L3898">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L3899" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L3900">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L3900" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L3901">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L3903">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L3904">    }</span>
+<span class="fc" id="L3904">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L3905">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -3911,7 +3912,7 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L3914">        return mQualityScores;</span>
+<span class="fc" id="L3915">        return mQualityScores;</span>
     }
 
     /**
@@ -3926,11 +3927,11 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc bfc" id="L3929" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L3930">            throw new LockedException();</span>
+<span class="fc bfc" id="L3930" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L3931">            throw new LockedException();</span>
         }
-<span class="fc" id="L3932">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L3933">    }</span>
+<span class="fc" id="L3933">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L3934">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -3939,8 +3940,8 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L3942" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="fc bfc" id="L3943" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="fc bfc" id="L3943" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L3944" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -3954,118 +3955,120 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L3957" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L3958">            throw new LockedException();</span>
+<span class="fc bfc" id="L3958" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L3959">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L3960" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L3961">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L3961" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L3962">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L3964">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L3965">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new PROMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L3966">                        new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
-                    @Override
-                    public double[] getQualityScores() {
-<span class="fc" id="L3969">                        return mQualityScores;</span>
-                    }
+<span class="fc" id="L3967">                        new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                            @Override
+                            public double[] getQualityScores() {
+<span class="fc" id="L3970">                                return mQualityScores;</span>
+                            }
 
-                    @Override
-                    public double getThreshold() {
-<span class="fc" id="L3974">                        return mStopThreshold;</span>
-                    }
+                            @Override
+                            public double getThreshold() {
+<span class="fc" id="L3975">                                return mStopThreshold;</span>
+                            }
 
-                    @Override
-                    public int getTotalSamples() {
-<span class="fc" id="L3979">                        return mMeasurements.size();</span>
-                    }
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L3980">                                return mMeasurements.size();</span>
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-<span class="fc" id="L3984">                        return mPreliminarySubsetSize;</span>
-                    }
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L3985">                                return mPreliminarySubsetSize;</span>
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L3991">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L3992">                    }</span>
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L3992">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L3993">                            }</span>
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L3997">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L3998">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
+                            }
 
-                    @Override
-                    public boolean isReady() {
-<span class="fc" id="L4002">                        return PROMedSRobustKnownBiasTurntableGyroscopeCalibrator.this.isReady();</span>
-                    }
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L4003">                                return PROMedSRobustKnownBiasTurntableGyroscopeCalibrator.this.isReady();</span>
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L4008">                    }</span>
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L4010">                            }</span>
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L4013">                    }</span>
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L4016">                            }</span>
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final int iteration) {
-<span class="pc bpc" id="L4019" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L4020">                            mListener.onCalibrateNextIteration(</span>
-                                    PROMedSRobustKnownBiasTurntableGyroscopeCalibrator.this,
-                                    iteration);
-                        }
-<span class="fc" id="L4024">                    }</span>
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final int iteration) {
+<span class="pc bpc" id="L4022" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L4023">                                    mListener.onCalibrateNextIteration(</span>
+                                            PROMedSRobustKnownBiasTurntableGyroscopeCalibrator.this,
+                                            iteration);
+                                }
+<span class="fc" id="L4027">                            }</span>
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final float progress) {
-<span class="nc bnc" id="L4030" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L4031">                            mListener.onCalibrateProgressChange(</span>
-                                    PROMedSRobustKnownBiasTurntableGyroscopeCalibrator.this,
-                                    progress);
-                        }
-<span class="nc" id="L4035">                    }</span>
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final float progress) {
+<span class="nc bnc" id="L4033" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L4034">                                    mListener.onCalibrateProgressChange(</span>
+                                            PROMedSRobustKnownBiasTurntableGyroscopeCalibrator.this,
+                                            progress);
+                                }
+<span class="nc" id="L4038">                            }</span>
+                        });
 
         try {
-<span class="fc" id="L4039">            mRunning = true;</span>
+<span class="fc" id="L4042">            mRunning = true;</span>
 
-<span class="pc bpc" id="L4041" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L4042">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L4044" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L4045">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L4045">            mInliersData = null;</span>
-<span class="fc" id="L4046">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L4047">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L4048">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L4049">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L4050">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L4051">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L4048">            mInliersData = null;</span>
+<span class="fc" id="L4049">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L4050">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L4051">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L4052">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L4053">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L4054">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L4053">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L4056">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L4055" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L4056">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L4058" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L4059">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L4059">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L4060">            throw new LockedException(e);</span>
-<span class="nc" id="L4061">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L4062">            throw new NotReadyException(e);</span>
-<span class="nc" id="L4063">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L4064">            throw new CalibrationException(e);</span>
+<span class="nc" id="L4062">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L4063">            throw new LockedException(e);</span>
+<span class="nc" id="L4064">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L4065">            throw new NotReadyException(e);</span>
+<span class="nc" id="L4066">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L4067">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L4066">            mRunning = false;</span>
+<span class="fc" id="L4069">            mRunning = false;</span>
         }
-<span class="fc" id="L4068">    }</span>
+<span class="fc" id="L4071">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -4074,7 +4077,7 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L4077">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L4080">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -4085,7 +4088,7 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L4088">        return true;</span>
+<span class="fc" id="L4091">        return true;</span>
     }
 
     /**
@@ -4098,12 +4101,12 @@ public class PROMedSRobustKnownBiasTurntableGyroscopeCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L4101" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L4104" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; TurntableGyroscopeCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS) {
-<span class="fc" id="L4103">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L4106">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L4106">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L4107">    }</span>
+<span class="fc" id="L4109">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L4110">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -24,6 +24,7 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -92,7 +93,7 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L95">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L96">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -103,8 +104,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     /**
      * Constructor.
      */
-<span class="fc" id="L106">    public PROMedSRobustKnownFrameAccelerometerCalibrator() {</span>
-<span class="fc" id="L107">    }</span>
+<span class="fc" id="L107">    public PROMedSRobustKnownFrameAccelerometerCalibrator() {</span>
+<span class="fc" id="L108">    }</span>
 
     /**
      * Constructor.
@@ -114,8 +115,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L117">        super(listener);</span>
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L118">        super(listener);</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Constructor.
@@ -126,8 +127,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L129">        super(measurements);</span>
-<span class="fc" id="L130">    }</span>
+<span class="fc" id="L130">        super(measurements);</span>
+<span class="fc" id="L131">    }</span>
 
     /**
      * Constructor.
@@ -140,8 +141,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L143">        super(measurements, listener);</span>
-<span class="fc" id="L144">    }</span>
+<span class="fc" id="L144">        super(measurements, listener);</span>
+<span class="fc" id="L145">    }</span>
 
     /**
      * Constructor.
@@ -150,8 +151,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public PROMedSRobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
-<span class="fc" id="L153">        super(commonAxisUsed);</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L154">        super(commonAxisUsed);</span>
+<span class="fc" id="L155">    }</span>
 
     /**
      * Constructor.
@@ -163,8 +164,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L166">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L167">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L168">    }</span>
 
     /**
      * Constructor.
@@ -178,8 +179,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L181">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L182">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * Constructor.
@@ -195,8 +196,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L198">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L199">    }</span>
+<span class="fc" id="L199">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L200">    }</span>
 
     /**
      * Constructor.
@@ -208,9 +209,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
-<span class="fc" id="L211">            final double[] qualityScores) {</span>
-<span class="fc" id="L212">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L212">            final double[] qualityScores) {</span>
+<span class="fc" id="L213">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L214">    }</span>
 
     /**
      * Constructor.
@@ -226,9 +227,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final double[] qualityScores,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L229">        super(listener);</span>
-<span class="fc" id="L230">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L231">    }</span>
+<span class="fc" id="L230">        super(listener);</span>
+<span class="fc" id="L231">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L232">    }</span>
 
     /**
      * Constructor.
@@ -245,9 +246,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L248">        super(measurements);</span>
-<span class="fc" id="L249">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L250">    }</span>
+<span class="fc" id="L249">        super(measurements);</span>
+<span class="fc" id="L250">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L251">    }</span>
 
     /**
      * Constructor.
@@ -266,9 +267,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L269">        super(measurements, listener);</span>
-<span class="fc" id="L270">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L271">    }</span>
+<span class="fc" id="L270">        super(measurements, listener);</span>
+<span class="fc" id="L271">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L272">    }</span>
 
     /**
      * Constructor.
@@ -283,9 +284,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownFrameAccelerometerCalibrator(
             final double[] qualityScores, final boolean commonAxisUsed) {
-<span class="fc" id="L286">        super(commonAxisUsed);</span>
-<span class="fc" id="L287">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L287">        super(commonAxisUsed);</span>
+<span class="fc" id="L288">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L289">    }</span>
 
     /**
      * Constructor.
@@ -303,9 +304,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
             final double[] qualityScores,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L306">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L307">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L308">    }</span>
+<span class="fc" id="L307">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L308">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L309">    }</span>
 
     /**
      * Constructor.
@@ -325,9 +326,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L328">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L329">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L330">    }</span>
+<span class="fc" id="L329">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L330">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L331">    }</span>
 
     /**
      * Constructor.
@@ -349,9 +350,9 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L352">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L353">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L354">    }</span>
+<span class="fc" id="L353">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L354">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L355">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -373,7 +374,7 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L376">        return mStopThreshold;</span>
+<span class="fc" id="L377">        return mStopThreshold;</span>
     }
 
     /**
@@ -398,15 +399,15 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L401" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L402">            throw new LockedException();</span>
+<span class="fc bfc" id="L402" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L403">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L404" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L405">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L405" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L406">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L408">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L409">    }</span>
+<span class="fc" id="L409">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L410">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -416,7 +417,7 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L419">        return mQualityScores;</span>
+<span class="fc" id="L420">        return mQualityScores;</span>
     }
 
     /**
@@ -431,11 +432,11 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc bfc" id="L434" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L435">            throw new LockedException();</span>
+<span class="fc bfc" id="L435" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L436">            throw new LockedException();</span>
         }
-<span class="fc" id="L437">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L438">    }</span>
+<span class="fc" id="L438">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L439">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -444,8 +445,8 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="pc bpc" id="L447" title="1 of 4 branches missed.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="pc bpc" id="L448" title="1 of 2 branches missed.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="pc bpc" id="L448" title="1 of 4 branches missed.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="pc bpc" id="L449" title="1 of 2 branches missed.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -459,117 +460,119 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L462" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L463">            throw new LockedException();</span>
+<span class="fc bfc" id="L463" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L464">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L465" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L466">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L467">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L469">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
-<span class="fc" id="L470">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L470">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L471">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L473">                        return mQualityScores;</span>
+<span class="fc" id="L474">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L478">                        return mStopThreshold;</span>
+<span class="fc" id="L479">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L483">                        return mMeasurements.size();</span>
+<span class="fc" id="L484">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L488">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L489">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L495">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L496">                    }</span>
+<span class="fc" id="L496">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L497">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L501">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L502">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L506">                        return PROMedSRobustKnownFrameAccelerometerCalibrator.this.isReady();</span>
+<span class="fc" id="L507">                        return PROMedSRobustKnownFrameAccelerometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L512">                    }</span>
+                        // no action needed
+<span class="fc" id="L514">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L517">                    }</span>
+                        // no action needed
+<span class="fc" id="L520">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L523" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L524">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L526" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L527">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustKnownFrameAccelerometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L528">                    }</span>
+<span class="fc" id="L531">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L534" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L535">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L537" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L538">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustKnownFrameAccelerometerCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L539">                    }</span>
+<span class="nc" id="L542">                    }</span>
                 });
 
         try {
-<span class="fc" id="L543">            mRunning = true;</span>
+<span class="fc" id="L546">            mRunning = true;</span>
 
-<span class="pc bpc" id="L545" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L546">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L548" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L549">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L549">            mInliersData = null;</span>
-<span class="fc" id="L550">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L551">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L552">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L553">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L554">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L555">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L552">            mInliersData = null;</span>
+<span class="fc" id="L553">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L554">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L555">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L556">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L557">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L558">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L557">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L560">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L559" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L560">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L562" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L563">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L563">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L564">            throw new LockedException(e);</span>
-<span class="nc" id="L565">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L566">            throw new NotReadyException(e);</span>
-<span class="nc" id="L567">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L568">            throw new CalibrationException(e);</span>
+<span class="nc" id="L566">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L567">            throw new LockedException(e);</span>
+<span class="nc" id="L568">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L569">            throw new NotReadyException(e);</span>
+<span class="nc" id="L570">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L571">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L570">            mRunning = false;</span>
+<span class="fc" id="L573">            mRunning = false;</span>
         }
-<span class="fc" id="L572">    }</span>
+<span class="fc" id="L575">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -578,7 +581,7 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L581">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L584">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -589,7 +592,7 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L592">        return true;</span>
+<span class="fc" id="L595">        return true;</span>
     }
 
     /**
@@ -602,12 +605,12 @@ public class PROMedSRobustKnownFrameAccelerometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L605" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L608" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; MINIMUM_MEASUREMENTS) {
-<span class="fc" id="L607">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L610">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L610">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L611">    }</span>
+<span class="fc" id="L613">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L614">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

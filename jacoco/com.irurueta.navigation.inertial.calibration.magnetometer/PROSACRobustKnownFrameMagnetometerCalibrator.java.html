@@ -24,6 +24,7 @@ import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -80,17 +81,17 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      * The threshold refers to the amount of error on distance between estimated position and
      * distances provided for each sample.
      */
-<span class="fc" id="L83">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+<span class="fc" id="L84">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-<span class="fc" id="L88">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+<span class="fc" id="L89">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-<span class="fc" id="L93">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+<span class="fc" id="L94">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -102,8 +103,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      * Constructor.
      */
     public PROSACRobustKnownFrameMagnetometerCalibrator() {
-<span class="fc" id="L105">        super();</span>
-<span class="fc" id="L106">    }</span>
+<span class="fc" id="L106">        super();</span>
+<span class="fc" id="L107">    }</span>
 
     /**
      * Constructor.
@@ -113,8 +114,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L116">        super(listener);</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L117">        super(listener);</span>
+<span class="fc" id="L118">    }</span>
 
     /**
      * Constructor.
@@ -125,8 +126,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L128">        super(measurements);</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L129">        super(measurements);</span>
+<span class="fc" id="L130">    }</span>
 
     /**
      * Constructor.
@@ -139,8 +140,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L142">        super(measurements, listener);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L143">        super(measurements, listener);</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -149,8 +150,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      *                       for the accelerometer, gyroscope and magnetometer.
      */
     public PROSACRobustKnownFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
-<span class="fc" id="L152">        super(commonAxisUsed);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L153">        super(commonAxisUsed);</span>
+<span class="fc" id="L154">    }</span>
 
     /**
      * Constructor.
@@ -162,8 +163,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L165">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L166">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L167">    }</span>
 
     /**
      * Constructor.
@@ -177,8 +178,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L180">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L181">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L182">    }</span>
 
     /**
      * Constructor.
@@ -194,8 +195,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L197">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L198">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L199">    }</span>
 
     /**
      * Constructor.
@@ -208,9 +209,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final double[] qualityScores) {
-<span class="fc" id="L211">        super();</span>
-<span class="fc" id="L212">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L212">        super();</span>
+<span class="fc" id="L213">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L214">    }</span>
 
     /**
      * Constructor.
@@ -226,9 +227,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final double[] qualityScores,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L229">        super(listener);</span>
-<span class="fc" id="L230">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L231">    }</span>
+<span class="fc" id="L230">        super(listener);</span>
+<span class="fc" id="L231">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L232">    }</span>
 
     /**
      * Constructor.
@@ -245,9 +246,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L248">        super(measurements);</span>
-<span class="fc" id="L249">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L250">    }</span>
+<span class="fc" id="L249">        super(measurements);</span>
+<span class="fc" id="L250">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L251">    }</span>
 
     /**
      * Constructor.
@@ -266,9 +267,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L269">        super(measurements, listener);</span>
-<span class="fc" id="L270">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L271">    }</span>
+<span class="fc" id="L270">        super(measurements, listener);</span>
+<span class="fc" id="L271">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L272">    }</span>
 
     /**
      * Constructor.
@@ -284,9 +285,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     public PROSACRobustKnownFrameMagnetometerCalibrator(
             final double[] qualityScores,
             final boolean commonAxisUsed) {
-<span class="fc" id="L287">        super(commonAxisUsed);</span>
-<span class="fc" id="L288">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L289">    }</span>
+<span class="fc" id="L288">        super(commonAxisUsed);</span>
+<span class="fc" id="L289">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L290">    }</span>
 
     /**
      * Constructor.
@@ -304,9 +305,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
             final double[] qualityScores,
             final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L307">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L308">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L309">    }</span>
+<span class="fc" id="L308">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L309">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L310">    }</span>
 
     /**
      * Constructor.
@@ -326,9 +327,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L329">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L330">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L331">    }</span>
+<span class="fc" id="L330">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L331">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L332">    }</span>
 
     /**
      * Constructor.
@@ -350,9 +351,9 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L353">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L354">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L355">    }</span>
+<span class="fc" id="L354">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L355">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L356">    }</span>
 
     /**
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
@@ -362,7 +363,7 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L365">        return mThreshold;</span>
+<span class="fc" id="L366">        return mThreshold;</span>
     }
 
     /**
@@ -375,14 +376,14 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc bfc" id="L378" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L379">            throw new LockedException();</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L380">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L381" title="1 of 2 branches missed.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
-<span class="nc" id="L382">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L382" title="1 of 2 branches missed.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="nc" id="L383">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L384">        mThreshold = threshold;</span>
-<span class="fc" id="L385">    }</span>
+<span class="fc" id="L385">        mThreshold = threshold;</span>
+<span class="fc" id="L386">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -392,7 +393,7 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L395">        return mQualityScores;</span>
+<span class="fc" id="L396">        return mQualityScores;</span>
     }
 
     /**
@@ -407,11 +408,11 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (mRunning) {</span>
-<span class="nc" id="L411">            throw new LockedException();</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">        if (mRunning) {</span>
+<span class="nc" id="L412">            throw new LockedException();</span>
         }
-<span class="fc" id="L413">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L414">    }</span>
+<span class="fc" id="L414">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L415">    }</span>
 
     /**
      * Indicates whether calibrator is ready to find a solution.
@@ -420,8 +421,8 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L423" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="fc bfc" id="L424" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="fc bfc" id="L424" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L425" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -431,7 +432,7 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-<span class="fc" id="L434">        return mComputeAndKeepInliers;</span>
+<span class="fc" id="L435">        return mComputeAndKeepInliers;</span>
     }
 
     /**
@@ -443,11 +444,11 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
             throws LockedException {
-<span class="fc bfc" id="L446" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L447">            throw new LockedException();</span>
+<span class="fc bfc" id="L447" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L448">            throw new LockedException();</span>
         }
-<span class="fc" id="L449">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
-<span class="fc" id="L450">    }</span>
+<span class="fc" id="L450">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L451">    }</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
@@ -456,7 +457,7 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-<span class="fc" id="L459">        return mComputeAndKeepResiduals;</span>
+<span class="fc" id="L460">        return mComputeAndKeepResiduals;</span>
     }
 
     /**
@@ -468,11 +469,11 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
             throws LockedException {
-<span class="fc bfc" id="L471" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L472">            throw new LockedException();</span>
+<span class="fc bfc" id="L472" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L473">            throw new LockedException();</span>
         }
-<span class="fc" id="L474">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
-<span class="fc" id="L475">    }</span>
+<span class="fc" id="L475">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L476">    }</span>
 
     /**
      * Estimates magnetometer calibration parameters containing hard-iron
@@ -486,125 +487,127 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L489" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L490">            throw new LockedException();</span>
+<span class="fc bfc" id="L490" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L491">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L492" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L493">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L493" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L494">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L496">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L497">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new PROSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L498">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L499">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                             @Override
                             public double[] getQualityScores() {
-<span class="fc" id="L501">                                return mQualityScores;</span>
+<span class="fc" id="L502">                                return mQualityScores;</span>
                             }
 
                             @Override
                             public double getThreshold() {
-<span class="fc" id="L506">                                return mThreshold;</span>
+<span class="fc" id="L507">                                return mThreshold;</span>
                             }
 
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L511">                                return mMeasurements.size();</span>
+<span class="fc" id="L512">                                return mMeasurements.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L516">                                return mPreliminarySubsetSize;</span>
+<span class="fc" id="L517">                                return mPreliminarySubsetSize;</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L523">                                computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L524">                            }</span>
+<span class="fc" id="L524">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L525">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final PreliminaryResult currentEstimation,
                                     final int i) {
-<span class="fc" id="L530">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L531">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L535">                                return PROSACRobustKnownFrameMagnetometerCalibrator.this.isReady();</span>
+<span class="fc" id="L536">                                return PROSACRobustKnownFrameMagnetometerCalibrator.this.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L541">                            }</span>
+                                // no action needed
+<span class="fc" id="L543">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L546">                            }</span>
+                                // no action needed
+<span class="fc" id="L549">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                                     final int iteration) {
-<span class="pc bpc" id="L552" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
-<span class="fc" id="L553">                                    mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L555" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L556">                                    mListener.onCalibrateNextIteration(</span>
                                             PROSACRobustKnownFrameMagnetometerCalibrator.this,
                                             iteration);
                                 }
-<span class="fc" id="L557">                            }</span>
+<span class="fc" id="L560">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                                     final float progress) {
-<span class="pc bpc" id="L563" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
-<span class="fc" id="L564">                                    mListener.onCalibrateProgressChange(</span>
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L567">                                    mListener.onCalibrateProgressChange(</span>
                                             PROSACRobustKnownFrameMagnetometerCalibrator.this,
                                             progress);
                                 }
-<span class="fc" id="L568">                            }</span>
+<span class="fc" id="L571">                            }</span>
                         });
 
         try {
-<span class="fc" id="L572">            mRunning = true;</span>
+<span class="fc" id="L575">            mRunning = true;</span>
 
-<span class="pc bpc" id="L574" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L575">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L577" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L578">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L578">            mInliersData = null;</span>
+<span class="fc" id="L581">            mInliersData = null;</span>
 
-<span class="fc" id="L580">            setupWmmEstimator();</span>
+<span class="fc" id="L583">            setupWmmEstimator();</span>
 
-<span class="pc bpc" id="L582" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="pc bpc" id="L585" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="pc bpc" id="L584" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="pc bpc" id="L587" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L586">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L587">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L588">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L589">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L590">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L589">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L590">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L591">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L592">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L593">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L592">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L595">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L594" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L595">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L597" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L598">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L598">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L599">            throw new LockedException(e);</span>
-<span class="nc" id="L600">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L601">            throw new NotReadyException(e);</span>
-<span class="nc" id="L602">        } catch (final RobustEstimatorException | IOException e) {</span>
-<span class="nc" id="L603">            throw new CalibrationException(e);</span>
+<span class="nc" id="L601">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L602">            throw new LockedException(e);</span>
+<span class="nc" id="L603">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L604">            throw new NotReadyException(e);</span>
+<span class="nc" id="L605">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L606">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L605">            mRunning = false;</span>
+<span class="fc" id="L608">            mRunning = false;</span>
         }
-<span class="fc" id="L607">    }</span>
+<span class="fc" id="L610">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -613,7 +616,7 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L616">        return RobustEstimatorMethod.PROSAC;</span>
+<span class="fc" id="L619">        return RobustEstimatorMethod.PROSAC;</span>
     }
 
     /**
@@ -624,7 +627,7 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L627">        return true;</span>
+<span class="fc" id="L630">        return true;</span>
     }
 
     /**
@@ -637,12 +640,12 @@ public class PROSACRobustKnownFrameMagnetometerCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L640" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L643" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; MINIMUM_MEASUREMENTS) {
-<span class="fc" id="L642">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L645">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L645">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L646">    }</span>
+<span class="fc" id="L648">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L649">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

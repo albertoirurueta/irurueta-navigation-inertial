@@ -26,18 +26,7 @@ import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.NEDGravity;
 import com.irurueta.navigation.inertial.RadiiOfCurvature;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleConverter;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeConverter;
-import com.irurueta.units.TimeUnit;
+import com.irurueta.units.*;
 
 /**
  * Estimates body kinematics (specific force applied to a body and its angular rate) with respect and resolved
@@ -46,7 +35,7 @@ import com.irurueta.units.TimeUnit;
  * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Kinematics_NED.m
  */
-<span class="fc" id="L49">public class NEDKinematicsEstimator {</span>
+<span class="fc" id="L38">public class NEDKinematicsEstimator {</span>
 
     /**
      * Earth rotation rate expressed in radians per second (rad/s).
@@ -103,9 +92,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final double height,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L106">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L95">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L108">    }</span>
+<span class="fc" id="L97">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -141,9 +130,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final double height,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L144">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L133">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L135">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -171,9 +160,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final double height,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L174">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L163">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L165">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -201,9 +190,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final double height,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L204">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L193">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L195">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -231,9 +220,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final Distance height,
                          final Angle oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L234">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L223">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L225">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -261,9 +250,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final Distance height,
                          final Angle oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L264">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L253">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L266">    }</span>
+<span class="fc" id="L255">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -297,9 +286,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final NEDPosition position, final NEDPosition oldPosition,
                          final BodyKinematics result) {
-<span class="fc" id="L300">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L289">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L302">    }</span>
+<span class="fc" id="L291">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -333,9 +322,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final NEDPosition position, final NEDPosition oldPosition,
                          final BodyKinematics result) {
-<span class="fc" id="L336">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L325">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L327">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -369,9 +358,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final NEDPosition position, final NEDPosition oldPosition,
                          final BodyKinematics result) {
-<span class="fc" id="L372">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L361">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L374">    }</span>
+<span class="fc" id="L363">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -405,9 +394,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final NEDPosition position, final NEDPosition oldPosition,
                          final BodyKinematics result) {
-<span class="fc" id="L408">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L397">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L410">    }</span>
+<span class="fc" id="L399">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -433,9 +422,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDPosition position,
                          final NEDPosition oldPosition,
                          final BodyKinematics result) {
-<span class="fc" id="L436">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L425">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 position, oldPosition, result);
-<span class="fc" id="L438">    }</span>
+<span class="fc" id="L427">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -461,9 +450,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDPosition position,
                          final NEDPosition oldPosition,
                          final BodyKinematics result) {
-<span class="fc" id="L464">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L453">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 position, oldPosition, result);
-<span class="fc" id="L466">    }</span>
+<span class="fc" id="L455">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -490,9 +479,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L493">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L482">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L495">    }</span>
+<span class="fc" id="L484">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -519,9 +508,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L522">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L511">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L524">    }</span>
+<span class="fc" id="L513">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -544,9 +533,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity oldVelocity,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L547">        estimateKinematics(timeInterval, frame, oldC,</span>
+<span class="fc" id="L536">        estimateKinematics(timeInterval, frame, oldC,</span>
                 oldVelocity, oldLatitude, oldHeight, result);
-<span class="fc" id="L549">    }</span>
+<span class="fc" id="L538">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -569,9 +558,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity oldVelocity,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L572">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L561">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L574">    }</span>
+<span class="fc" id="L563">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -594,9 +583,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity oldVelocity,
                          final Angle oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L597">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L586">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L599">    }</span>
+<span class="fc" id="L588">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -619,9 +608,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity oldVelocity,
                          final Angle oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L622">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L611">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L624">    }</span>
+<span class="fc" id="L613">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -646,9 +635,9 @@ import com.irurueta.units.TimeUnit;
                          final CoordinateTransformation oldC,
                          final double oldVn, final double oldVe, final double oldVd,
                          final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L649">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L638">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L651">    }</span>
+<span class="fc" id="L640">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -673,9 +662,9 @@ import com.irurueta.units.TimeUnit;
                          final CoordinateTransformation oldC,
                          final double oldVn, final double oldVe, final double oldVd,
                          final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L676">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L665">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L678">    }</span>
+<span class="fc" id="L667">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -700,9 +689,9 @@ import com.irurueta.units.TimeUnit;
                          final CoordinateTransformation oldC,
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L703">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L692">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L705">    }</span>
+<span class="fc" id="L694">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -727,9 +716,9 @@ import com.irurueta.units.TimeUnit;
                          final CoordinateTransformation oldC,
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L730">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L719">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L732">    }</span>
+<span class="fc" id="L721">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -750,9 +739,9 @@ import com.irurueta.units.TimeUnit;
                          final CoordinateTransformation oldC,
                          final NEDVelocity oldVelocity,
                          final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L753">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
+<span class="fc" id="L742">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
                 result);
-<span class="fc" id="L755">    }</span>
+<span class="fc" id="L744">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -773,9 +762,9 @@ import com.irurueta.units.TimeUnit;
                          final CoordinateTransformation oldC,
                          final NEDVelocity oldVelocity,
                          final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L776">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
+<span class="fc" id="L765">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
                 result);
-<span class="fc" id="L778">    }</span>
+<span class="fc" id="L767">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -801,9 +790,9 @@ import com.irurueta.units.TimeUnit;
                          final double vn, final double ve, final double vd,
                          final double latitude, final double height,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L804">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,</span>
+<span class="fc" id="L793">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L806">    }</span>
+<span class="fc" id="L795">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -829,9 +818,9 @@ import com.irurueta.units.TimeUnit;
                          final double vn, final double ve, final double vd,
                          final double latitude, final double height,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L832">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,</span>
+<span class="fc" id="L821">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L834">    }</span>
+<span class="fc" id="L823">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -852,9 +841,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity velocity,
                          final double latitude, final double height,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L855">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
+<span class="fc" id="L844">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L857">    }</span>
+<span class="fc" id="L846">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -875,9 +864,9 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity velocity,
                          final double latitude, final double height,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L878">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
+<span class="fc" id="L867">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L880">    }</span>
+<span class="fc" id="L869">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -899,9 +888,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final Distance height,
                          final NEDFrame oldFrame,
                          final BodyKinematics result) {
-<span class="fc" id="L902">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
+<span class="fc" id="L891">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L904">    }</span>
+<span class="fc" id="L893">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -923,9 +912,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final Distance height,
                          final NEDFrame oldFrame,
                          final BodyKinematics result) {
-<span class="fc" id="L926">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
+<span class="fc" id="L915">        estimateKinematics(timeInterval, c, velocity, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L928">    }</span>
+<span class="fc" id="L917">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -950,8 +939,8 @@ import com.irurueta.units.TimeUnit;
                          final double vn, final double ve, final double vd,
                          final NEDPosition position,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L953">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
-<span class="fc" id="L954">    }</span>
+<span class="fc" id="L942">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
+<span class="fc" id="L943">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -976,8 +965,8 @@ import com.irurueta.units.TimeUnit;
                          final double vn, final double ve, final double vd,
                          final NEDPosition position,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L979">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
-<span class="fc" id="L980">    }</span>
+<span class="fc" id="L968">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
+<span class="fc" id="L969">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1002,8 +991,8 @@ import com.irurueta.units.TimeUnit;
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition position,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L1005">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
-<span class="fc" id="L1006">    }</span>
+<span class="fc" id="L994">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
+<span class="fc" id="L995">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1028,8 +1017,8 @@ import com.irurueta.units.TimeUnit;
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition position,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L1031">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
-<span class="fc" id="L1032">    }</span>
+<span class="fc" id="L1020">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame, result);</span>
+<span class="fc" id="L1021">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1049,8 +1038,8 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity velocity,
                          final NEDPosition position,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L1052">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
-<span class="fc" id="L1053">    }</span>
+<span class="fc" id="L1041">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
+<span class="fc" id="L1042">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1070,8 +1059,8 @@ import com.irurueta.units.TimeUnit;
                          final NEDVelocity velocity,
                          final NEDPosition position,
                          final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L1073">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
-<span class="fc" id="L1074">    }</span>
+<span class="fc" id="L1062">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
+<span class="fc" id="L1063">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1086,8 +1075,8 @@ import com.irurueta.units.TimeUnit;
     public void estimate(final double timeInterval,
                          final NEDFrame frame, final NEDFrame oldFrame,
                          final BodyKinematics result) {
-<span class="fc" id="L1089">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
-<span class="fc" id="L1090">    }</span>
+<span class="fc" id="L1078">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L1079">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1102,8 +1091,8 @@ import com.irurueta.units.TimeUnit;
     public void estimate(final Time timeInterval,
                          final NEDFrame frame, final NEDFrame oldFrame,
                          final BodyKinematics result) {
-<span class="fc" id="L1105">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
-<span class="fc" id="L1106">    }</span>
+<span class="fc" id="L1094">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L1095">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1140,9 +1129,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final double height,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1143">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1132">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1145">    }</span>
+<span class="fc" id="L1134">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1179,9 +1168,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final double height,
                          final double oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1182">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1171">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1184">    }</span>
+<span class="fc" id="L1173">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1218,9 +1207,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final double height,
                          final Angle oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1221">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1210">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1223">    }</span>
+<span class="fc" id="L1212">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1257,9 +1246,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final double height,
                          final Angle oldLatitude, final double oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1260">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1249">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1262">    }</span>
+<span class="fc" id="L1251">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1296,9 +1285,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final Distance height,
                          final double oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1299">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1288">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1301">    }</span>
+<span class="fc" id="L1290">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1335,9 +1324,9 @@ import com.irurueta.units.TimeUnit;
                          final double latitude, final Distance height,
                          final double oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1338">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1327">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1340">    }</span>
+<span class="fc" id="L1329">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1374,9 +1363,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final Distance height,
                          final Angle oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1377">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1366">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1379">    }</span>
+<span class="fc" id="L1368">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1413,9 +1402,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle latitude, final Distance height,
                          final Angle oldLatitude, final Distance oldHeight,
                          final BodyKinematics result) {
-<span class="fc" id="L1416">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1405">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L1418">    }</span>
+<span class="fc" id="L1407">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -1451,7 +1440,7 @@ import com.irurueta.units.TimeUnit;
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final double latitude, final double height,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L1454">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L1443">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -1489,7 +1478,7 @@ import com.irurueta.units.TimeUnit;
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final double latitude, final double height,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L1492">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L1481">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -1520,7 +1509,7 @@ import com.irurueta.units.TimeUnit;
                                                final double height,
                                                final double oldLatitude,
                                                final double oldHeight) {
-<span class="fc" id="L1523">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
+<span class="fc" id="L1512">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
                 velocity, oldVelocity, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -1551,7 +1540,7 @@ import com.irurueta.units.TimeUnit;
                                                final double height,
                                                final double oldLatitude,
                                                final double oldHeight) {
-<span class="fc" id="L1554">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity,</span>
+<span class="fc" id="L1543">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, velocity,</span>
                 oldVelocity, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -1582,7 +1571,7 @@ import com.irurueta.units.TimeUnit;
                                                final Distance height,
                                                final Angle oldLatitude,
                                                final Distance oldHeight) {
-<span class="fc" id="L1585">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
+<span class="fc" id="L1574">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
                 velocity, oldVelocity, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -1613,7 +1602,7 @@ import com.irurueta.units.TimeUnit;
                                                final Distance height,
                                                final Angle oldLatitude,
                                                final Distance oldHeight) {
-<span class="fc" id="L1616">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
+<span class="fc" id="L1605">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
                 velocity, oldVelocity, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -1648,7 +1637,7 @@ import com.irurueta.units.TimeUnit;
                                                final double vn, final double ve, final double vd,
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L1651">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L1640">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, position, oldPosition);
     }
 
@@ -1683,7 +1672,7 @@ import com.irurueta.units.TimeUnit;
                                                final double vn, final double ve, final double vd,
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L1686">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L1675">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, position, oldPosition);
     }
 
@@ -1718,7 +1707,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed vn, final Speed ve, final Speed vd,
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L1721">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L1710">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, position, oldPosition);
     }
 
@@ -1753,7 +1742,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed vn, final Speed ve, final Speed vd,
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L1756">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L1745">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, position, oldPosition);
     }
 
@@ -1780,7 +1769,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity oldVelocity,
                                                final NEDPosition position,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L1783">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
+<span class="fc" id="L1772">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
                 velocity, oldVelocity, position, oldPosition);
     }
 
@@ -1807,7 +1796,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity oldVelocity,
                                                final NEDPosition position,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L1810">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
+<span class="fc" id="L1799">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC,</span>
                 velocity, oldVelocity, position, oldPosition);
     }
 
@@ -1835,7 +1824,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L1838">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1827">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight);
     }
 
@@ -1863,7 +1852,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L1866">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1855">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight);
     }
 
@@ -1887,7 +1876,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final NEDVelocity oldVelocity,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L1890">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L1879">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVelocity, oldLatitude, oldHeight);
     }
 
@@ -1911,7 +1900,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final NEDVelocity oldVelocity,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L1914">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L1903">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight);
     }
 
@@ -1935,7 +1924,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final NEDVelocity oldVelocity,
                                                final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L1938">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L1927">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight);
     }
 
@@ -1959,7 +1948,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final NEDVelocity oldVelocity,
                                                final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L1962">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L1951">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight);
     }
 
@@ -1986,7 +1975,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L1989">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L1978">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVn, oldVe, oldVd, oldPosition);
     }
 
@@ -2013,7 +2002,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L2016">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2005">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVn, oldVe, oldVd, oldPosition);
     }
 
@@ -2040,7 +2029,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L2043">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2032">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVn, oldVe, oldVd, oldPosition);
     }
 
@@ -2067,7 +2056,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L2070">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2059">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVn, oldVe, oldVd, oldPosition);
     }
 
@@ -2090,7 +2079,7 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final NEDVelocity oldVelocity,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L2093">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2082">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVelocity, oldPosition);
     }
 
@@ -2113,10 +2102,9 @@ import com.irurueta.units.TimeUnit;
                                                final CoordinateTransformation oldC,
                                                final NEDVelocity oldVelocity,
                                                final NEDPosition oldPosition) {
-<span class="fc" id="L2116">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2105">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldC,</span>
                 oldVelocity, oldPosition);
     }
-
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -2142,7 +2130,7 @@ import com.irurueta.units.TimeUnit;
                                                final double vn, final double ve, final double vd,
                                                final double latitude, final double height,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2145">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height,</span>
+<span class="fc" id="L2133">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height,</span>
                 oldFrame);
     }
 
@@ -2170,7 +2158,7 @@ import com.irurueta.units.TimeUnit;
                                                final double vn, final double ve, final double vd,
                                                final double latitude, final double height,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2173">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height,</span>
+<span class="fc" id="L2161">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd, latitude, height,</span>
                 oldFrame);
     }
 
@@ -2193,7 +2181,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity velocity,
                                                final double latitude, final double height,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2196">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
+<span class="fc" id="L2184">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
                 latitude, height, oldFrame);
     }
 
@@ -2216,7 +2204,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity velocity,
                                                final double latitude, final double height,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2219">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
+<span class="fc" id="L2207">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
                 latitude, height, oldFrame);
     }
 
@@ -2239,7 +2227,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity velocity,
                                                final Angle latitude, final Distance height,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2242">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
+<span class="fc" id="L2230">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
                 latitude, height, oldFrame);
     }
 
@@ -2262,7 +2250,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity velocity,
                                                final Angle latitude, final Distance height,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2265">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
+<span class="fc" id="L2253">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
                 latitude, height, oldFrame);
     }
 
@@ -2289,7 +2277,7 @@ import com.irurueta.units.TimeUnit;
                                                final double vn, final double ve, final double vd,
                                                final NEDPosition position,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2292">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
+<span class="fc" id="L2280">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
                 position, oldFrame);
     }
 
@@ -2316,7 +2304,7 @@ import com.irurueta.units.TimeUnit;
                                                final double vn, final double ve, final double vd,
                                                final NEDPosition position,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2319">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
+<span class="fc" id="L2307">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
                 position, oldFrame);
     }
 
@@ -2343,7 +2331,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed vn, final Speed ve, final Speed vd,
                                                final NEDPosition position,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2346">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
+<span class="fc" id="L2334">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
                 position, oldFrame);
     }
 
@@ -2370,7 +2358,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed vn, final Speed ve, final Speed vd,
                                                final NEDPosition position,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2373">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
+<span class="fc" id="L2361">        return estimateKinematicsAndReturnNew(timeInterval, c, vn, ve, vd,</span>
                 position, oldFrame);
     }
 
@@ -2392,7 +2380,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity velocity,
                                                final NEDPosition position,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2395">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
+<span class="fc" id="L2383">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
                 position, oldFrame);
     }
 
@@ -2414,7 +2402,7 @@ import com.irurueta.units.TimeUnit;
                                                final NEDVelocity velocity,
                                                final NEDPosition position,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2417">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
+<span class="fc" id="L2405">        return estimateKinematicsAndReturnNew(timeInterval, c, velocity,</span>
                 position, oldFrame);
     }
 
@@ -2431,7 +2419,7 @@ import com.irurueta.units.TimeUnit;
     public BodyKinematics estimateAndReturnNew(final double timeInterval,
                                                final NEDFrame frame,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2434">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);</span>
+<span class="fc" id="L2422">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);</span>
     }
 
     /**
@@ -2447,7 +2435,7 @@ import com.irurueta.units.TimeUnit;
     public BodyKinematics estimateAndReturnNew(final Time timeInterval,
                                                final NEDFrame frame,
                                                final NEDFrame oldFrame) {
-<span class="fc" id="L2450">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);</span>
+<span class="fc" id="L2438">        return estimateKinematicsAndReturnNew(timeInterval, frame, oldFrame);</span>
     }
 
     /**
@@ -2484,7 +2472,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final double latitude, final double height,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L2487">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2475">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2522,7 +2510,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final double latitude, final double height,
                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L2525">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2513">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2560,7 +2548,7 @@ import com.irurueta.units.TimeUnit;
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final Angle latitude, final double height,
                                                final Angle oldLatitude, final double oldHeight) {
-<span class="fc" id="L2563">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2551">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2598,7 +2586,7 @@ import com.irurueta.units.TimeUnit;
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final Angle latitude, final double height,
                                                final Angle oldLatitude, final double oldHeight) {
-<span class="fc" id="L2601">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2589">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2636,7 +2624,7 @@ import com.irurueta.units.TimeUnit;
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final double latitude, final Distance height,
                                                final double oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L2639">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2627">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2674,7 +2662,7 @@ import com.irurueta.units.TimeUnit;
                                                final double oldVn, final double oldVe, final double oldVd,
                                                final double latitude, final Distance height,
                                                final double oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L2677">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2665">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2712,7 +2700,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final Angle latitude, final Distance height,
                                                final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L2715">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2703">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2750,7 +2738,7 @@ import com.irurueta.units.TimeUnit;
                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                final Angle latitude, final Distance height,
                                                final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L2753">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2741">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight);
     }
 
@@ -2790,165 +2778,165 @@ import com.irurueta.units.TimeUnit;
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
 
-<span class="fc bfc" id="L2793" title="All 2 branches covered.">        if (timeInterval &lt; 0.0</span>
-<span class="fc bfc" id="L2794" title="All 2 branches covered.">                || !NEDFrame.isValidCoordinateTransformation(c)</span>
-<span class="fc bfc" id="L2795" title="All 2 branches covered.">                || !NEDFrame.isValidCoordinateTransformation(oldC)) {</span>
-<span class="fc" id="L2796">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L2781" title="All 2 branches covered.">        if (timeInterval &lt; 0.0</span>
+<span class="fc bfc" id="L2782" title="All 2 branches covered.">                || !NEDFrame.isValidCoordinateTransformation(c)</span>
+<span class="fc bfc" id="L2783" title="All 2 branches covered.">                || !NEDFrame.isValidCoordinateTransformation(oldC)) {</span>
+<span class="fc" id="L2784">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L2799" title="All 2 branches covered.">        if (timeInterval &gt; 0.0) {</span>
+<span class="fc bfc" id="L2787" title="All 2 branches covered.">        if (timeInterval &gt; 0.0) {</span>
             try {
                 // From (2.123), determine the angular rate of the NED frame
                 // with respect the ECI frame, resolved about NED
-<span class="fc" id="L2803">                final Matrix omegaIen = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L2804">                omegaIen.setElementAtIndex(0,</span>
-<span class="fc" id="L2805">                        EARTH_ROTATION_RATE * Math.cos(oldLatitude));</span>
-<span class="fc" id="L2806">                omegaIen.setElementAtIndex(2,</span>
-<span class="fc" id="L2807">                        -EARTH_ROTATION_RATE * Math.sin(oldLatitude));</span>
+<span class="fc" id="L2791">                final Matrix omegaIen = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L2792">                omegaIen.setElementAtIndex(0,</span>
+<span class="fc" id="L2793">                        EARTH_ROTATION_RATE * Math.cos(oldLatitude));</span>
+<span class="fc" id="L2794">                omegaIen.setElementAtIndex(2,</span>
+<span class="fc" id="L2795">                        -EARTH_ROTATION_RATE * Math.sin(oldLatitude));</span>
 
                 // From (5.44), determine the angular rate of the NED frame
                 // with respect the NED frame, resolved about NED
-<span class="fc" id="L2811">                final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator</span>
-<span class="fc" id="L2812">                        .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);</span>
-<span class="fc" id="L2813">                final double oldRn = oldRadiiOfCurvature.getRn();</span>
-<span class="fc" id="L2814">                final double oldRe = oldRadiiOfCurvature.getRe();</span>
+<span class="fc" id="L2799">                final RadiiOfCurvature oldRadiiOfCurvature = RadiiOfCurvatureEstimator</span>
+<span class="fc" id="L2800">                        .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);</span>
+<span class="fc" id="L2801">                final double oldRn = oldRadiiOfCurvature.getRn();</span>
+<span class="fc" id="L2802">                final double oldRe = oldRadiiOfCurvature.getRe();</span>
 
-<span class="fc" id="L2816">                final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator</span>
-<span class="fc" id="L2817">                        .estimateRadiiOfCurvatureAndReturnNew(latitude);</span>
-<span class="fc" id="L2818">                final double rn = radiiOfCurvature.getRn();</span>
-<span class="fc" id="L2819">                final double re = radiiOfCurvature.getRe();</span>
+<span class="fc" id="L2804">                final RadiiOfCurvature radiiOfCurvature = RadiiOfCurvatureEstimator</span>
+<span class="fc" id="L2805">                        .estimateRadiiOfCurvatureAndReturnNew(latitude);</span>
+<span class="fc" id="L2806">                final double rn = radiiOfCurvature.getRn();</span>
+<span class="fc" id="L2807">                final double re = radiiOfCurvature.getRe();</span>
 
-<span class="fc" id="L2821">                final Matrix oldOmegaEnN = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L2822">                oldOmegaEnN.setElementAtIndex(0,</span>
+<span class="fc" id="L2809">                final Matrix oldOmegaEnN = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L2810">                oldOmegaEnN.setElementAtIndex(0,</span>
                         oldVe / (oldRe + oldHeight));
-<span class="fc" id="L2824">                oldOmegaEnN.setElementAtIndex(1,</span>
+<span class="fc" id="L2812">                oldOmegaEnN.setElementAtIndex(1,</span>
                         -oldVn / (oldRn + oldHeight));
-<span class="fc" id="L2826">                oldOmegaEnN.setElementAtIndex(2,</span>
-<span class="fc" id="L2827">                        -oldVe * Math.tan(oldLatitude) /</span>
+<span class="fc" id="L2814">                oldOmegaEnN.setElementAtIndex(2,</span>
+<span class="fc" id="L2815">                        -oldVe * Math.tan(oldLatitude) /</span>
                                 (oldRe + oldHeight));
 
-<span class="fc" id="L2830">                final Matrix omegaEnN = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L2831">                omegaEnN.setElementAtIndex(0, ve / (re + height));</span>
-<span class="fc" id="L2832">                omegaEnN.setElementAtIndex(1, -vn / (rn + height));</span>
-<span class="fc" id="L2833">                omegaEnN.setElementAtIndex(2,</span>
-<span class="fc" id="L2834">                        -ve * Math.tan(latitude) / (re + height));</span>
+<span class="fc" id="L2818">                final Matrix omegaEnN = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L2819">                omegaEnN.setElementAtIndex(0, ve / (re + height));</span>
+<span class="fc" id="L2820">                omegaEnN.setElementAtIndex(1, -vn / (rn + height));</span>
+<span class="fc" id="L2821">                omegaEnN.setElementAtIndex(2,</span>
+<span class="fc" id="L2822">                        -ve * Math.tan(latitude) / (re + height));</span>
 
                 // Obtain coordinate transformation matrix from the old attitude (with
                 // respect the inertial frame) to the new using (5.77)
-<span class="fc" id="L2838">                final Matrix cbn = c.getMatrix();</span>
-<span class="fc" id="L2839">                cbn.transpose();</span>
+<span class="fc" id="L2826">                final Matrix cbn = c.getMatrix();</span>
+<span class="fc" id="L2827">                cbn.transpose();</span>
 
-<span class="fc" id="L2841">                final Matrix omega = omegaIen.addAndReturnNew(</span>
-<span class="fc" id="L2842">                        omegaEnN.multiplyByScalarAndReturnNew(0.5));</span>
-<span class="fc" id="L2843">                omega.add(oldOmegaEnN.multiplyByScalarAndReturnNew(0.5));</span>
-<span class="fc" id="L2844">                final Matrix skew1 = Utils.skewMatrix(omega);</span>
-<span class="fc" id="L2845">                skew1.multiplyByScalar(timeInterval);</span>
+<span class="fc" id="L2829">                final Matrix omega = omegaIen.addAndReturnNew(</span>
+<span class="fc" id="L2830">                        omegaEnN.multiplyByScalarAndReturnNew(0.5));</span>
+<span class="fc" id="L2831">                omega.add(oldOmegaEnN.multiplyByScalarAndReturnNew(0.5));</span>
+<span class="fc" id="L2832">                final Matrix skew1 = Utils.skewMatrix(omega);</span>
+<span class="fc" id="L2833">                skew1.multiplyByScalar(timeInterval);</span>
 
-<span class="fc" id="L2847">                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);</span>
-<span class="fc" id="L2848">                tmp1.subtract(skew1);</span>
+<span class="fc" id="L2835">                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);</span>
+<span class="fc" id="L2836">                tmp1.subtract(skew1);</span>
 
-<span class="fc" id="L2850">                final Matrix oldCbn = oldC.getMatrix();</span>
-<span class="fc" id="L2851">                cbn.multiply(tmp1);</span>
-<span class="fc" id="L2852">                cbn.multiply(oldCbn);</span>
+<span class="fc" id="L2838">                final Matrix oldCbn = oldC.getMatrix();</span>
+<span class="fc" id="L2839">                cbn.multiply(tmp1);</span>
+<span class="fc" id="L2840">                cbn.multiply(oldCbn);</span>
                 // cbn contains transformation matrix from the old to the new attitude (cOldNew)
 
                 // Calculate the approximate angular rate with respect an inertial frame
-<span class="fc" id="L2856">                final Matrix alphaIbb = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L2857">                alphaIbb.setElementAtIndex(0,</span>
-<span class="fc" id="L2858">                        0.5 * (cbn.getElementAt(1, 2) - cbn.getElementAt(2, 1)));</span>
-<span class="fc" id="L2859">                alphaIbb.setElementAtIndex(1,</span>
-<span class="fc" id="L2860">                        0.5 * (cbn.getElementAt(2, 0) - cbn.getElementAt(0, 2)));</span>
-<span class="fc" id="L2861">                alphaIbb.setElementAtIndex(2,</span>
-<span class="fc" id="L2862">                        0.5 * (cbn.getElementAt(0, 1) - cbn.getElementAt(1, 0)));</span>
+<span class="fc" id="L2844">                final Matrix alphaIbb = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L2845">                alphaIbb.setElementAtIndex(0,</span>
+<span class="fc" id="L2846">                        0.5 * (cbn.getElementAt(1, 2) - cbn.getElementAt(2, 1)));</span>
+<span class="fc" id="L2847">                alphaIbb.setElementAtIndex(1,</span>
+<span class="fc" id="L2848">                        0.5 * (cbn.getElementAt(2, 0) - cbn.getElementAt(0, 2)));</span>
+<span class="fc" id="L2849">                alphaIbb.setElementAtIndex(2,</span>
+<span class="fc" id="L2850">                        0.5 * (cbn.getElementAt(0, 1) - cbn.getElementAt(1, 0)));</span>
 
                 // Calculate and apply the scaling factor
-<span class="fc" id="L2865">                final double temp = Math.acos(0.5 * (Utils.trace(cbn) - 1.0));</span>
-<span class="fc bfc" id="L2866" title="All 2 branches covered.">                if (temp &gt; SCALING_THRESHOLD) {</span>
+<span class="fc" id="L2853">                final double temp = Math.acos(0.5 * (Utils.trace(cbn) - 1.0));</span>
+<span class="fc bfc" id="L2854" title="All 2 branches covered.">                if (temp &gt; SCALING_THRESHOLD) {</span>
                     // Scaling is 1 if temp is less than this
-<span class="fc" id="L2868">                    alphaIbb.multiplyByScalar(temp / Math.sin(temp));</span>
+<span class="fc" id="L2856">                    alphaIbb.multiplyByScalar(temp / Math.sin(temp));</span>
                 }
 
                 // Calculate the angular rate
-<span class="fc" id="L2872">                final double angularRateX = alphaIbb.getElementAtIndex(0) / timeInterval;</span>
-<span class="fc" id="L2873">                final double angularRateY = alphaIbb.getElementAtIndex(1) / timeInterval;</span>
-<span class="fc" id="L2874">                final double angularRateZ = alphaIbb.getElementAtIndex(2) / timeInterval;</span>
+<span class="fc" id="L2860">                final double angularRateX = alphaIbb.getElementAtIndex(0) / timeInterval;</span>
+<span class="fc" id="L2861">                final double angularRateY = alphaIbb.getElementAtIndex(1) / timeInterval;</span>
+<span class="fc" id="L2862">                final double angularRateZ = alphaIbb.getElementAtIndex(2) / timeInterval;</span>
 
                 // Calculate the specific force resolved about NED-frame axes
                 // From (5.54)
-<span class="fc" id="L2878">                final Matrix tmp2 = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L2879">                tmp2.setElementAtIndex(0, (vn - oldVn) / timeInterval);</span>
-<span class="fc" id="L2880">                tmp2.setElementAtIndex(1, (ve - oldVe) / timeInterval);</span>
-<span class="fc" id="L2881">                tmp2.setElementAtIndex(2, (vd - oldVd) / timeInterval);</span>
+<span class="fc" id="L2866">                final Matrix tmp2 = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L2867">                tmp2.setElementAtIndex(0, (vn - oldVn) / timeInterval);</span>
+<span class="fc" id="L2868">                tmp2.setElementAtIndex(1, (ve - oldVe) / timeInterval);</span>
+<span class="fc" id="L2869">                tmp2.setElementAtIndex(2, (vd - oldVd) / timeInterval);</span>
 
-<span class="fc" id="L2883">                final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(</span>
+<span class="fc" id="L2871">                final NEDGravity gravity = NEDGravityEstimator.estimateGravityAndReturnNew(</span>
                         oldLatitude, oldHeight);
-<span class="fc" id="L2885">                final Matrix g = gravity.asMatrix();</span>
+<span class="fc" id="L2873">                final Matrix g = gravity.asMatrix();</span>
 
-<span class="fc" id="L2887">                final Matrix oldVebn = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L2888">                oldVebn.setElementAtIndex(0, oldVn);</span>
-<span class="fc" id="L2889">                oldVebn.setElementAtIndex(1, oldVe);</span>
-<span class="fc" id="L2890">                oldVebn.setElementAtIndex(2, oldVd);</span>
+<span class="fc" id="L2875">                final Matrix oldVebn = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L2876">                oldVebn.setElementAtIndex(0, oldVn);</span>
+<span class="fc" id="L2877">                oldVebn.setElementAtIndex(1, oldVe);</span>
+<span class="fc" id="L2878">                oldVebn.setElementAtIndex(2, oldVd);</span>
 
-<span class="fc" id="L2892">                final Matrix skew2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(</span>
-<span class="fc" id="L2893">                        omegaIen.multiplyByScalarAndReturnNew(2.0)));</span>
-<span class="fc" id="L2894">                skew2.multiply(oldVebn);</span>
+<span class="fc" id="L2880">                final Matrix skew2 = Utils.skewMatrix(oldOmegaEnN.addAndReturnNew(</span>
+<span class="fc" id="L2881">                        omegaIen.multiplyByScalarAndReturnNew(2.0)));</span>
+<span class="fc" id="L2882">                skew2.multiply(oldVebn);</span>
 
-<span class="fc" id="L2896">                tmp2.subtract(g);</span>
-<span class="fc" id="L2897">                tmp2.add(skew2);</span>
+<span class="fc" id="L2884">                tmp2.subtract(g);</span>
+<span class="fc" id="L2885">                tmp2.add(skew2);</span>
                 // tmp2 now contains specific force resolved about NED (fIbn)
 
                 // Calculate the average body-to-NED coordinate transformation
                 // matrix over the update interval using (5.84) and (5.86)
-<span class="fc" id="L2902">                final double magAlpha = Utils.normF(alphaIbb);</span>
-<span class="fc" id="L2903">                final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);</span>
+<span class="fc" id="L2890">                final double magAlpha = Utils.normF(alphaIbb);</span>
+<span class="fc" id="L2891">                final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);</span>
 
-<span class="fc" id="L2905">                oldOmegaEnN.add(omegaIen);</span>
-<span class="fc" id="L2906">                final Matrix tmp3 = Utils.skewMatrix(oldOmegaEnN);</span>
-<span class="fc" id="L2907">                tmp3.multiplyByScalar(0.5);</span>
-<span class="fc" id="L2908">                tmp3.multiply(oldCbn);</span>
+<span class="fc" id="L2893">                oldOmegaEnN.add(omegaIen);</span>
+<span class="fc" id="L2894">                final Matrix tmp3 = Utils.skewMatrix(oldOmegaEnN);</span>
+<span class="fc" id="L2895">                tmp3.multiplyByScalar(0.5);</span>
+<span class="fc" id="L2896">                tmp3.multiply(oldCbn);</span>
 
-<span class="pc bpc" id="L2910" title="1 of 2 branches missed.">                if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
-<span class="fc" id="L2911">                    final double magAlpha2 = magAlpha * magAlpha;</span>
-<span class="fc" id="L2912">                    final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;</span>
-<span class="fc" id="L2913">                    final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;</span>
+<span class="pc bpc" id="L2898" title="1 of 2 branches missed.">                if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
+<span class="fc" id="L2899">                    final double magAlpha2 = magAlpha * magAlpha;</span>
+<span class="fc" id="L2900">                    final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;</span>
+<span class="fc" id="L2901">                    final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;</span>
 
-<span class="fc" id="L2915">                    final Matrix tmp4 = skewAlpha.multiplyByScalarAndReturnNew(value1);</span>
-<span class="fc" id="L2916">                    final Matrix tmp5 = skewAlpha.multiplyByScalarAndReturnNew(value2);</span>
-<span class="fc" id="L2917">                    tmp5.multiply(skewAlpha);</span>
+<span class="fc" id="L2903">                    final Matrix tmp4 = skewAlpha.multiplyByScalarAndReturnNew(value1);</span>
+<span class="fc" id="L2904">                    final Matrix tmp5 = skewAlpha.multiplyByScalarAndReturnNew(value2);</span>
+<span class="fc" id="L2905">                    tmp5.multiply(skewAlpha);</span>
 
-<span class="fc" id="L2919">                    final Matrix tmp6 = Matrix.identity(ROWS, ROWS);</span>
-<span class="fc" id="L2920">                    tmp6.add(tmp4);</span>
-<span class="fc" id="L2921">                    tmp6.add(tmp5);</span>
+<span class="fc" id="L2907">                    final Matrix tmp6 = Matrix.identity(ROWS, ROWS);</span>
+<span class="fc" id="L2908">                    tmp6.add(tmp4);</span>
+<span class="fc" id="L2909">                    tmp6.add(tmp5);</span>
 
-<span class="fc" id="L2923">                    oldCbn.multiply(tmp6);</span>
+<span class="fc" id="L2911">                    oldCbn.multiply(tmp6);</span>
                 }
 
-<span class="fc" id="L2926">                oldCbn.subtract(tmp3);</span>
+<span class="fc" id="L2914">                oldCbn.subtract(tmp3);</span>
                 // oldCbn now contains average body-to-NED (aveCbn)
 
                 // Transform specific force to body-frame resolving axes using (5.81)
-<span class="fc" id="L2930">                final Matrix fIbb = Utils.inverse(oldCbn);</span>
-<span class="fc" id="L2931">                fIbb.multiply(tmp2);</span>
+<span class="fc" id="L2918">                final Matrix fIbb = Utils.inverse(oldCbn);</span>
+<span class="fc" id="L2919">                fIbb.multiply(tmp2);</span>
 
-<span class="fc" id="L2933">                final double specificForceX = fIbb.getElementAtIndex(0);</span>
-<span class="fc" id="L2934">                final double specificForceY = fIbb.getElementAtIndex(1);</span>
-<span class="fc" id="L2935">                final double specificForceZ = fIbb.getElementAtIndex(2);</span>
+<span class="fc" id="L2921">                final double specificForceX = fIbb.getElementAtIndex(0);</span>
+<span class="fc" id="L2922">                final double specificForceY = fIbb.getElementAtIndex(1);</span>
+<span class="fc" id="L2923">                final double specificForceZ = fIbb.getElementAtIndex(2);</span>
 
                 // save result data
-<span class="fc" id="L2938">                result.setSpecificForceCoordinates(specificForceX, specificForceY,</span>
+<span class="fc" id="L2926">                result.setSpecificForceCoordinates(specificForceX, specificForceY,</span>
                         specificForceZ);
-<span class="fc" id="L2940">                result.setAngularRateCoordinates(angularRateX, angularRateY,</span>
+<span class="fc" id="L2928">                result.setAngularRateCoordinates(angularRateX, angularRateY,</span>
                         angularRateZ);
 
-<span class="nc" id="L2943">            } catch (final AlgebraException ignore) {</span>
+<span class="nc" id="L2931">            } catch (final AlgebraException ignore) {</span>
                 // never happens
-<span class="pc" id="L2945">            }</span>
+<span class="pc" id="L2933">            }</span>
         } else {
             // If time interval is zero, set angular rate and specific force to zero
-<span class="fc" id="L2948">            result.setSpecificForceCoordinates(0.0, 0.0, 0.0);</span>
-<span class="fc" id="L2949">            result.setAngularRateCoordinates(0.0, 0.0, 0.0);</span>
+<span class="fc" id="L2936">            result.setSpecificForceCoordinates(0.0, 0.0, 0.0);</span>
+<span class="fc" id="L2937">            result.setAngularRateCoordinates(0.0, 0.0, 0.0);</span>
         }
-<span class="fc" id="L2951">    }</span>
+<span class="fc" id="L2939">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -2984,9 +2972,9 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final double height,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L2987">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L2975">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L2989">    }</span>
+<span class="fc" id="L2977">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3014,10 +3002,10 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final double height,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3017">        estimateKinematics(timeInterval, c, oldC, velocity.getVn(), velocity.getVe(), velocity.getVd(),</span>
-<span class="fc" id="L3018">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+<span class="fc" id="L3005">        estimateKinematics(timeInterval, c, oldC, velocity.getVn(), velocity.getVe(), velocity.getVd(),</span>
+<span class="fc" id="L3006">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L3020">    }</span>
+<span class="fc" id="L3008">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3045,9 +3033,9 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final double height,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3048">        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity, latitude,</span>
+<span class="fc" id="L3036">        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity, latitude,</span>
                 height, oldLatitude, oldHeight, result);
-<span class="fc" id="L3050">    }</span>
+<span class="fc" id="L3038">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3075,11 +3063,11 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final Distance height,
                                           final Angle oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3078">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
-<span class="fc" id="L3079">                convertAngle(latitude), convertDistance(height),</span>
-<span class="fc" id="L3080">                convertAngle(oldLatitude), convertDistance(oldHeight),</span>
+<span class="fc" id="L3066">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L3067">                convertAngle(latitude), convertDistance(height),</span>
+<span class="fc" id="L3068">                convertAngle(oldLatitude), convertDistance(oldHeight),</span>
                 result);
-<span class="fc" id="L3082">    }</span>
+<span class="fc" id="L3070">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3107,9 +3095,9 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final Distance height,
                                           final Angle oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3110">        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L3098">        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L3112">    }</span>
+<span class="fc" id="L3100">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3143,11 +3131,11 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVn, final double oldVe, final double oldVd,
                                           final NEDPosition position, final NEDPosition oldPosition,
                                           final BodyKinematics result) {
-<span class="fc" id="L3146">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
-<span class="fc" id="L3147">                position.getLatitude(), position.getHeight(),</span>
-<span class="fc" id="L3148">                oldPosition.getLatitude(), oldPosition.getHeight(),</span>
+<span class="fc" id="L3134">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L3135">                position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L3136">                oldPosition.getLatitude(), oldPosition.getHeight(),</span>
                 result);
-<span class="fc" id="L3150">    }</span>
+<span class="fc" id="L3138">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3181,9 +3169,9 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVn, final double oldVe, final double oldVd,
                                           final NEDPosition position, final NEDPosition oldPosition,
                                           final BodyKinematics result) {
-<span class="fc" id="L3184">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L3172">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L3186">    }</span>
+<span class="fc" id="L3174">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3217,10 +3205,10 @@ import com.irurueta.units.TimeUnit;
                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                           final NEDPosition position, final NEDPosition oldPosition,
                                           final BodyKinematics result) {
-<span class="fc" id="L3220">        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn),</span>
-<span class="fc" id="L3221">                convertSpeed(ve), convertSpeed(vd), convertSpeed(oldVn),</span>
-<span class="fc" id="L3222">                convertSpeed(oldVe), convertSpeed(oldVd), position, oldPosition, result);</span>
-<span class="fc" id="L3223">    }</span>
+<span class="fc" id="L3208">        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn),</span>
+<span class="fc" id="L3209">                convertSpeed(ve), convertSpeed(vd), convertSpeed(oldVn),</span>
+<span class="fc" id="L3210">                convertSpeed(oldVe), convertSpeed(oldVd), position, oldPosition, result);</span>
+<span class="fc" id="L3211">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3254,9 +3242,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                           final NEDPosition position, final NEDPosition oldPosition,
                                           final BodyKinematics result) {
-<span class="fc" id="L3257">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd,</span>
+<span class="fc" id="L3245">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd,</span>
                 oldVn, oldVe, oldVd, position, oldPosition, result);
-<span class="fc" id="L3259">    }</span>
+<span class="fc" id="L3247">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3282,11 +3270,11 @@ import com.irurueta.units.TimeUnit;
                                           final NEDPosition position,
                                           final NEDPosition oldPosition,
                                           final BodyKinematics result) {
-<span class="fc" id="L3285">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
-<span class="fc" id="L3286">                position.getLatitude(), position.getHeight(),</span>
-<span class="fc" id="L3287">                oldPosition.getLatitude(), oldPosition.getHeight(),</span>
+<span class="fc" id="L3273">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L3274">                position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L3275">                oldPosition.getLatitude(), oldPosition.getHeight(),</span>
                 result);
-<span class="fc" id="L3289">    }</span>
+<span class="fc" id="L3277">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3312,9 +3300,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDPosition position,
                                           final NEDPosition oldPosition,
                                           final BodyKinematics result) {
-<span class="fc" id="L3315">        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L3303">        estimateKinematics(convertTime(timeInterval), c, oldC, velocity, oldVelocity,</span>
                 position, oldPosition, result);
-<span class="fc" id="L3317">    }</span>
+<span class="fc" id="L3305">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3341,10 +3329,10 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVn, final double oldVe, final double oldVd,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3344">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(), oldC,</span>
-<span class="fc" id="L3345">                frame.getVn(), frame.getVe(), frame.getVd(), oldVn, oldVe, oldVd,</span>
-<span class="fc" id="L3346">                frame.getLatitude(), frame.getHeight(), oldLatitude, oldHeight, result);</span>
-<span class="fc" id="L3347">    }</span>
+<span class="fc" id="L3332">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(), oldC,</span>
+<span class="fc" id="L3333">                frame.getVn(), frame.getVe(), frame.getVd(), oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L3334">                frame.getLatitude(), frame.getHeight(), oldLatitude, oldHeight, result);</span>
+<span class="fc" id="L3335">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3371,9 +3359,9 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVn, final double oldVe, final double oldVd,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3374">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L3362">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L3376">    }</span>
+<span class="fc" id="L3364">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3396,9 +3384,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity oldVelocity,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3399">        estimateKinematics(timeInterval, frame, oldC, oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+<span class="fc" id="L3387">        estimateKinematics(timeInterval, frame, oldC, oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L3401">    }</span>
+<span class="fc" id="L3389">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3421,9 +3409,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity oldVelocity,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3424">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldLatitude, oldHeight,</span>
+<span class="fc" id="L3412">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldLatitude, oldHeight,</span>
                 result);
-<span class="fc" id="L3426">    }</span>
+<span class="fc" id="L3414">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3446,9 +3434,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity oldVelocity,
                                           final Angle oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3449">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
-<span class="fc" id="L3450">                convertAngle(oldLatitude), convertDistance(oldHeight), result);</span>
-<span class="fc" id="L3451">    }</span>
+<span class="fc" id="L3437">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L3438">                convertAngle(oldLatitude), convertDistance(oldHeight), result);</span>
+<span class="fc" id="L3439">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3471,9 +3459,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity oldVelocity,
                                           final Angle oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L3474">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity,</span>
+<span class="fc" id="L3462">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L3476">    }</span>
+<span class="fc" id="L3464">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3498,9 +3486,9 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final double oldVn, final double oldVe, final double oldVd,
                                           final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L3501">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
-<span class="fc" id="L3502">                oldPosition.getLatitude(), oldPosition.getHeight(), result);</span>
-<span class="fc" id="L3503">    }</span>
+<span class="fc" id="L3489">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L3490">                oldPosition.getLatitude(), oldPosition.getHeight(), result);</span>
+<span class="fc" id="L3491">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3525,9 +3513,9 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final double oldVn, final double oldVe, final double oldVd,
                                           final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L3528">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L3516">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L3530">    }</span>
+<span class="fc" id="L3518">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3552,10 +3540,10 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                           final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L3555">        estimateKinematics(timeInterval, frame, oldC, convertSpeed(oldVn),</span>
-<span class="fc" id="L3556">                convertSpeed(oldVe), convertSpeed(oldVd), oldPosition,</span>
+<span class="fc" id="L3543">        estimateKinematics(timeInterval, frame, oldC, convertSpeed(oldVn),</span>
+<span class="fc" id="L3544">                convertSpeed(oldVe), convertSpeed(oldVd), oldPosition,</span>
                 result);
-<span class="fc" id="L3558">    }</span>
+<span class="fc" id="L3546">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3580,9 +3568,9 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                           final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L3583">        estimateKinematics(convertTime(timeInterval), frame, oldC,</span>
+<span class="fc" id="L3571">        estimateKinematics(convertTime(timeInterval), frame, oldC,</span>
                 oldVn, oldVe, oldVd, oldPosition, result);
-<span class="fc" id="L3585">    }</span>
+<span class="fc" id="L3573">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3603,9 +3591,9 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final NEDVelocity oldVelocity,
                                           final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L3606">        estimateKinematics(timeInterval, frame, oldC, oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+<span class="fc" id="L3594">        estimateKinematics(timeInterval, frame, oldC, oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
                 oldPosition, result);
-<span class="fc" id="L3608">    }</span>
+<span class="fc" id="L3596">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3626,8 +3614,8 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final NEDVelocity oldVelocity,
                                           final NEDPosition oldPosition, final BodyKinematics result) {
-<span class="fc" id="L3629">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldPosition, result);</span>
-<span class="fc" id="L3630">    }</span>
+<span class="fc" id="L3617">        estimateKinematics(convertTime(timeInterval), frame, oldC, oldVelocity, oldPosition, result);</span>
+<span class="fc" id="L3618">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3653,10 +3641,10 @@ import com.irurueta.units.TimeUnit;
                                           final double vn, final double ve, final double vd,
                                           final double latitude, final double height,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3656">        estimateKinematics(timeInterval, c, oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L3657">                vn, ve, vd, oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(),</span>
-<span class="fc" id="L3658">                latitude, height, oldFrame.getLatitude(), oldFrame.getHeight(), result);</span>
-<span class="fc" id="L3659">    }</span>
+<span class="fc" id="L3644">        estimateKinematics(timeInterval, c, oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L3645">                vn, ve, vd, oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(),</span>
+<span class="fc" id="L3646">                latitude, height, oldFrame.getLatitude(), oldFrame.getHeight(), result);</span>
+<span class="fc" id="L3647">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3682,9 +3670,9 @@ import com.irurueta.units.TimeUnit;
                                           final double vn, final double ve, final double vd,
                                           final double latitude, final double height,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3685">        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, latitude, height,</span>
+<span class="fc" id="L3673">        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, latitude, height,</span>
                 oldFrame, result);
-<span class="fc" id="L3687">    }</span>
+<span class="fc" id="L3675">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3705,9 +3693,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity velocity,
                                           final double latitude, final double height,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3708">        estimateKinematics(timeInterval, c, velocity.getVn(), velocity.getVe(), velocity.getVd(),</span>
+<span class="fc" id="L3696">        estimateKinematics(timeInterval, c, velocity.getVn(), velocity.getVe(), velocity.getVd(),</span>
                 latitude, height, oldFrame, result);
-<span class="fc" id="L3710">    }</span>
+<span class="fc" id="L3698">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3728,8 +3716,8 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity velocity,
                                           final double latitude, final double height,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3731">        estimateKinematics(convertTime(timeInterval), c, velocity, latitude, height, oldFrame, result);</span>
-<span class="fc" id="L3732">    }</span>
+<span class="fc" id="L3719">        estimateKinematics(convertTime(timeInterval), c, velocity, latitude, height, oldFrame, result);</span>
+<span class="fc" id="L3720">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3751,9 +3739,9 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final Distance height,
                                           final NEDFrame oldFrame,
                                           final BodyKinematics result) {
-<span class="fc" id="L3754">        estimateKinematics(timeInterval, c, velocity, convertAngle(latitude),</span>
-<span class="fc" id="L3755">                convertDistance(height), oldFrame, result);</span>
-<span class="fc" id="L3756">    }</span>
+<span class="fc" id="L3742">        estimateKinematics(timeInterval, c, velocity, convertAngle(latitude),</span>
+<span class="fc" id="L3743">                convertDistance(height), oldFrame, result);</span>
+<span class="fc" id="L3744">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3775,9 +3763,9 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final Distance height,
                                           final NEDFrame oldFrame,
                                           final BodyKinematics result) {
-<span class="fc" id="L3778">        estimateKinematics(convertTime(timeInterval), c, velocity, latitude,</span>
+<span class="fc" id="L3766">        estimateKinematics(convertTime(timeInterval), c, velocity, latitude,</span>
                 height, oldFrame, result);
-<span class="fc" id="L3780">    }</span>
+<span class="fc" id="L3768">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3802,9 +3790,9 @@ import com.irurueta.units.TimeUnit;
                                           final double vn, final double ve, final double vd,
                                           final NEDPosition position,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3805">        estimateKinematics(timeInterval, c, vn, ve, vd, position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L3793">        estimateKinematics(timeInterval, c, vn, ve, vd, position.getLatitude(), position.getHeight(),</span>
                 oldFrame, result);
-<span class="fc" id="L3807">    }</span>
+<span class="fc" id="L3795">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3829,8 +3817,8 @@ import com.irurueta.units.TimeUnit;
                                           final double vn, final double ve, final double vd,
                                           final NEDPosition position,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3832">        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, position, oldFrame, result);</span>
-<span class="fc" id="L3833">    }</span>
+<span class="fc" id="L3820">        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd, position, oldFrame, result);</span>
+<span class="fc" id="L3821">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3855,9 +3843,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed vn, final Speed ve, final Speed vd,
                                           final NEDPosition position,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3858">        estimateKinematics(timeInterval, c, convertSpeed(vn), convertSpeed(ve),</span>
-<span class="fc" id="L3859">                convertSpeed(vd), position, oldFrame, result);</span>
-<span class="fc" id="L3860">    }</span>
+<span class="fc" id="L3846">        estimateKinematics(timeInterval, c, convertSpeed(vn), convertSpeed(ve),</span>
+<span class="fc" id="L3847">                convertSpeed(vd), position, oldFrame, result);</span>
+<span class="fc" id="L3848">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3882,9 +3870,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed vn, final Speed ve, final Speed vd,
                                           final NEDPosition position,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3885">        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd,</span>
+<span class="fc" id="L3873">        estimateKinematics(convertTime(timeInterval), c, vn, ve, vd,</span>
                 position, oldFrame, result);
-<span class="fc" id="L3887">    }</span>
+<span class="fc" id="L3875">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3904,9 +3892,9 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity velocity,
                                           final NEDPosition position,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3907">        estimateKinematics(timeInterval, c, velocity, position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L3895">        estimateKinematics(timeInterval, c, velocity, position.getLatitude(), position.getHeight(),</span>
                 oldFrame, result);
-<span class="fc" id="L3909">    }</span>
+<span class="fc" id="L3897">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3926,8 +3914,8 @@ import com.irurueta.units.TimeUnit;
                                           final NEDVelocity velocity,
                                           final NEDPosition position,
                                           final NEDFrame oldFrame, final BodyKinematics result) {
-<span class="fc" id="L3929">        estimateKinematics(convertTime(timeInterval), c, velocity, position, oldFrame, result);</span>
-<span class="fc" id="L3930">    }</span>
+<span class="fc" id="L3917">        estimateKinematics(convertTime(timeInterval), c, velocity, position, oldFrame, result);</span>
+<span class="fc" id="L3918">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3942,10 +3930,10 @@ import com.irurueta.units.TimeUnit;
     public static void estimateKinematics(final double timeInterval,
                                           final NEDFrame frame, final NEDFrame oldFrame,
                                           final BodyKinematics result) {
-<span class="fc" id="L3945">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(),</span>
-<span class="fc" id="L3946">                frame.getVn(), frame.getVe(), frame.getVd(),</span>
-<span class="fc" id="L3947">                frame.getLatitude(), frame.getHeight(), oldFrame, result);</span>
-<span class="fc" id="L3948">    }</span>
+<span class="fc" id="L3933">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(),</span>
+<span class="fc" id="L3934">                frame.getVn(), frame.getVe(), frame.getVd(),</span>
+<span class="fc" id="L3935">                frame.getLatitude(), frame.getHeight(), oldFrame, result);</span>
+<span class="fc" id="L3936">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3960,8 +3948,8 @@ import com.irurueta.units.TimeUnit;
     public static void estimateKinematics(final Time timeInterval,
                                           final NEDFrame frame, final NEDFrame oldFrame,
                                           final BodyKinematics result) {
-<span class="fc" id="L3963">        estimateKinematics(convertTime(timeInterval), frame, oldFrame, result);</span>
-<span class="fc" id="L3964">    }</span>
+<span class="fc" id="L3951">        estimateKinematics(convertTime(timeInterval), frame, oldFrame, result);</span>
+<span class="fc" id="L3952">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -3998,10 +3986,10 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final double height,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4001">        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve),</span>
-<span class="fc" id="L4002">                convertSpeed(vd), convertSpeed(oldVn), convertSpeed(oldVe),</span>
-<span class="fc" id="L4003">                convertSpeed(oldVd), latitude, height, oldLatitude, oldHeight, result);</span>
-<span class="fc" id="L4004">    }</span>
+<span class="fc" id="L3989">        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve),</span>
+<span class="fc" id="L3990">                convertSpeed(vd), convertSpeed(oldVn), convertSpeed(oldVe),</span>
+<span class="fc" id="L3991">                convertSpeed(oldVd), latitude, height, oldLatitude, oldHeight, result);</span>
+<span class="fc" id="L3992">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4038,9 +4026,9 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final double height,
                                           final double oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4041">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L4029">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4043">    }</span>
+<span class="fc" id="L4031">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4077,10 +4065,10 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final double height,
                                           final Angle oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4080">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
-<span class="fc" id="L4081">                convertAngle(latitude), height, convertAngle(oldLatitude), oldHeight,</span>
+<span class="fc" id="L4068">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L4069">                convertAngle(latitude), height, convertAngle(oldLatitude), oldHeight,</span>
                 result);
-<span class="fc" id="L4083">    }</span>
+<span class="fc" id="L4071">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4117,9 +4105,9 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final double height,
                                           final Angle oldLatitude, final double oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4120">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L4108">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4122">    }</span>
+<span class="fc" id="L4110">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4156,10 +4144,10 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final Distance height,
                                           final double oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4159">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
-<span class="fc" id="L4160">                latitude, convertDistance(height), oldLatitude,</span>
-<span class="fc" id="L4161">                convertDistance(oldHeight), result);</span>
-<span class="fc" id="L4162">    }</span>
+<span class="fc" id="L4147">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L4148">                latitude, convertDistance(height), oldLatitude,</span>
+<span class="fc" id="L4149">                convertDistance(oldHeight), result);</span>
+<span class="fc" id="L4150">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4196,9 +4184,9 @@ import com.irurueta.units.TimeUnit;
                                           final double latitude, final Distance height,
                                           final double oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4199">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn,</span>
+<span class="fc" id="L4187">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn,</span>
                 oldVe, oldVd, latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4201">    }</span>
+<span class="fc" id="L4189">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4235,11 +4223,11 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final Distance height,
                                           final Angle oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4238">        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve),</span>
-<span class="fc" id="L4239">                convertSpeed(vd), convertSpeed(oldVn), convertSpeed(oldVe),</span>
-<span class="fc" id="L4240">                convertSpeed(oldVd), convertAngle(latitude), convertDistance(height),</span>
-<span class="fc" id="L4241">                convertAngle(oldLatitude), convertDistance(oldHeight), result);</span>
-<span class="fc" id="L4242">    }</span>
+<span class="fc" id="L4226">        estimateKinematics(timeInterval, c, oldC, convertSpeed(vn), convertSpeed(ve),</span>
+<span class="fc" id="L4227">                convertSpeed(vd), convertSpeed(oldVn), convertSpeed(oldVe),</span>
+<span class="fc" id="L4228">                convertSpeed(oldVd), convertAngle(latitude), convertDistance(height),</span>
+<span class="fc" id="L4229">                convertAngle(oldLatitude), convertDistance(oldHeight), result);</span>
+<span class="fc" id="L4230">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4276,9 +4264,9 @@ import com.irurueta.units.TimeUnit;
                                           final Angle latitude, final Distance height,
                                           final Angle oldLatitude, final Distance oldHeight,
                                           final BodyKinematics result) {
-<span class="fc" id="L4279">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe,</span>
+<span class="fc" id="L4267">        estimateKinematics(convertTime(timeInterval), c, oldC, vn, ve, vd, oldVn, oldVe,</span>
                 oldVd, latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4281">    }</span>
+<span class="fc" id="L4269">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)
@@ -4307,17 +4295,16 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final double latitude, final double height,
-                                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L4317">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4318">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
+<span class="fc" id="L4304">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4305">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4320">        return result;</span>
+<span class="fc" id="L4307">        return result;</span>
     }
 
     /**
@@ -4347,17 +4334,18 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final double latitude, final double height,
-                                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L4357">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4358">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval,
+            final CoordinateTransformation c,
+            final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double latitude, final double height,
+            final double oldLatitude, final double oldHeight) {
+<span class="fc" id="L4345">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4346">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4360">        return result;</span>
+<span class="fc" id="L4348">        return result;</span>
     }
 
     /**
@@ -4387,10 +4375,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final double height,
                                                                 final double oldLatitude,
                                                                 final double oldHeight) {
-<span class="fc" id="L4390">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4391">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L4378">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4379">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4393">        return result;</span>
+<span class="fc" id="L4381">        return result;</span>
     }
 
     /**
@@ -4420,10 +4408,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final double height,
                                                                 final double oldLatitude,
                                                                 final double oldHeight) {
-<span class="fc" id="L4423">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4424">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L4411">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4412">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4426">        return result;</span>
+<span class="fc" id="L4414">        return result;</span>
     }
 
     /**
@@ -4453,10 +4441,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Distance height,
                                                                 final Angle oldLatitude,
                                                                 final Distance oldHeight) {
-<span class="fc" id="L4456">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4457">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude,</span>
+<span class="fc" id="L4444">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4445">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude,</span>
                 height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4459">        return result;</span>
+<span class="fc" id="L4447">        return result;</span>
     }
 
     /**
@@ -4486,10 +4474,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Distance height,
                                                                 final Angle oldLatitude,
                                                                 final Distance oldHeight) {
-<span class="fc" id="L4489">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4490">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude,</span>
+<span class="fc" id="L4477">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4478">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, latitude,</span>
                 height, oldLatitude, oldHeight, result);
-<span class="fc" id="L4492">        return result;</span>
+<span class="fc" id="L4480">        return result;</span>
     }
 
     /**
@@ -4517,16 +4505,15 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L4526">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4527">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final NEDPosition position, final NEDPosition oldPosition) {
+<span class="fc" id="L4513">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4514">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L4529">        return result;</span>
+<span class="fc" id="L4516">        return result;</span>
     }
 
     /**
@@ -4554,16 +4541,15 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L4563">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4564">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final NEDPosition position, final NEDPosition oldPosition) {
+<span class="fc" id="L4549">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4550">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L4566">        return result;</span>
+<span class="fc" id="L4552">        return result;</span>
     }
 
     /**
@@ -4591,16 +4577,15 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L4600">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4601">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition) {
+<span class="fc" id="L4585">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4586">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L4603">        return result;</span>
+<span class="fc" id="L4588">        return result;</span>
     }
 
     /**
@@ -4628,16 +4613,15 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed vn, final Speed ve, final Speed vd,
-                                                                final Speed oldVn, final Speed oldVe, final Speed oldVd,
-                                                                final NEDPosition position, final NEDPosition oldPosition) {
-<span class="fc" id="L4637">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4638">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final Speed vn, final Speed ve, final Speed vd,
+            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+            final NEDPosition position, final NEDPosition oldPosition) {
+<span class="fc" id="L4621">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4622">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 position, oldPosition, result);
-<span class="fc" id="L4640">        return result;</span>
+<span class="fc" id="L4624">        return result;</span>
     }
 
     /**
@@ -4663,10 +4647,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity oldVelocity,
                                                                 final NEDPosition position,
                                                                 final NEDPosition oldPosition) {
-<span class="fc" id="L4666">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4667">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L4650">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4651">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 position, oldPosition, result);
-<span class="fc" id="L4669">        return result;</span>
+<span class="fc" id="L4653">        return result;</span>
     }
 
     /**
@@ -4692,10 +4676,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity oldVelocity,
                                                                 final NEDPosition position,
                                                                 final NEDPosition oldPosition) {
-<span class="fc" id="L4695">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4696">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L4679">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4680">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
                 position, oldPosition, result);
-<span class="fc" id="L4698">        return result;</span>
+<span class="fc" id="L4682">        return result;</span>
     }
 
     /**
@@ -4717,15 +4701,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L4725">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4726">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight) {
+<span class="fc" id="L4708">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4709">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L4728">        return result;</span>
+<span class="fc" id="L4711">        return result;</span>
     }
 
     /**
@@ -4747,15 +4730,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L4755">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4756">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double oldLatitude, final double oldHeight) {
+<span class="fc" id="L4737">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4738">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L4758">        return result;</span>
+<span class="fc" id="L4740">        return result;</span>
     }
 
     /**
@@ -4778,10 +4760,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final NEDVelocity oldVelocity,
                                                                 final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L4781">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4782">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L4763">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4764">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L4784">        return result;</span>
+<span class="fc" id="L4766">        return result;</span>
     }
 
     /**
@@ -4804,10 +4786,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final NEDVelocity oldVelocity,
                                                                 final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L4807">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4808">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L4789">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4790">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L4810">        return result;</span>
+<span class="fc" id="L4792">        return result;</span>
     }
 
     /**
@@ -4830,10 +4812,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final NEDVelocity oldVelocity,
                                                                 final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L4833">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4834">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L4815">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4816">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L4836">        return result;</span>
+<span class="fc" id="L4818">        return result;</span>
     }
 
     /**
@@ -4856,10 +4838,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final NEDVelocity oldVelocity,
                                                                 final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L4859">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4860">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
+<span class="fc" id="L4841">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4842">        estimateKinematics(timeInterval, frame, oldC, oldVelocity,</span>
                 oldLatitude, oldHeight, result);
-<span class="fc" id="L4862">        return result;</span>
+<span class="fc" id="L4844">        return result;</span>
     }
 
     /**
@@ -4880,15 +4862,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final NEDPosition oldPosition) {
-<span class="fc" id="L4888">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4889">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final NEDPosition oldPosition) {
+<span class="fc" id="L4869">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4870">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L4891">        return result;</span>
+<span class="fc" id="L4872">        return result;</span>
     }
 
     /**
@@ -4909,15 +4890,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final NEDFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final NEDPosition oldPosition) {
-<span class="fc" id="L4917">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4918">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final NEDFrame frame, final CoordinateTransformation oldC,
+            final double oldVn, final double oldVe, final double oldVd,
+            final NEDPosition oldPosition) {
+<span class="fc" id="L4897">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4898">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L4920">        return result;</span>
+<span class="fc" id="L4900">        return result;</span>
     }
 
     /**
@@ -4943,10 +4923,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                                 final NEDPosition oldPosition) {
-<span class="fc" id="L4946">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4947">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L4926">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4927">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L4949">        return result;</span>
+<span class="fc" id="L4929">        return result;</span>
     }
 
     /**
@@ -4972,10 +4952,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                                 final NEDPosition oldPosition) {
-<span class="fc" id="L4975">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L4976">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L4955">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4956">        estimateKinematics(timeInterval, frame, oldC, oldVn, oldVe, oldVd,</span>
                 oldPosition, result);
-<span class="fc" id="L4978">        return result;</span>
+<span class="fc" id="L4958">        return result;</span>
     }
 
     /**
@@ -4997,10 +4977,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final NEDVelocity oldVelocity,
                                                                 final NEDPosition oldPosition) {
-<span class="fc" id="L5000">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5001">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
+<span class="fc" id="L4980">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L4981">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
                 result);
-<span class="fc" id="L5003">        return result;</span>
+<span class="fc" id="L4983">        return result;</span>
     }
 
     /**
@@ -5022,10 +5002,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final NEDVelocity oldVelocity,
                                                                 final NEDPosition oldPosition) {
-<span class="fc" id="L5025">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5026">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
+<span class="fc" id="L5005">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5006">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, oldPosition,</span>
                 result);
-<span class="fc" id="L5028">        return result;</span>
+<span class="fc" id="L5008">        return result;</span>
     }
 
     /**
@@ -5052,9 +5032,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final double vn, final double ve, final double vd,
                                                                 final double latitude, final double height,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5055">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5056">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);</span>
-<span class="fc" id="L5057">        return result;</span>
+<span class="fc" id="L5035">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5036">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame, result);</span>
+<span class="fc" id="L5037">        return result;</span>
     }
 
     /**
@@ -5081,10 +5061,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final double vn, final double ve, final double vd,
                                                                 final double latitude, final double height,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5084">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5085">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,</span>
+<span class="fc" id="L5064">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5065">        estimateKinematics(timeInterval, c, vn, ve, vd, latitude, height, oldFrame,</span>
                 result);
-<span class="fc" id="L5087">        return result;</span>
+<span class="fc" id="L5067">        return result;</span>
     }
 
     /**
@@ -5106,10 +5086,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity velocity,
                                                                 final double latitude, final double height,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5109">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5110">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
+<span class="fc" id="L5089">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5090">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
                 oldFrame, result);
-<span class="fc" id="L5112">        return result;</span>
+<span class="fc" id="L5092">        return result;</span>
     }
 
     /**
@@ -5131,10 +5111,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity velocity,
                                                                 final double latitude, final double height,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5134">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5135">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
+<span class="fc" id="L5114">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5115">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
                 oldFrame, result);
-<span class="fc" id="L5137">        return result;</span>
+<span class="fc" id="L5117">        return result;</span>
     }
 
     /**
@@ -5156,10 +5136,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity velocity,
                                                                 final Angle latitude, final Distance height,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5159">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5160">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
+<span class="fc" id="L5139">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5140">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
                 oldFrame, result);
-<span class="fc" id="L5162">        return result;</span>
+<span class="fc" id="L5142">        return result;</span>
     }
 
     /**
@@ -5181,10 +5161,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity velocity,
                                                                 final Angle latitude, final Distance height,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5184">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5185">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
+<span class="fc" id="L5164">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5165">        estimateKinematics(timeInterval, c, velocity, latitude, height,</span>
                 oldFrame, result);
-<span class="fc" id="L5187">        return result;</span>
+<span class="fc" id="L5167">        return result;</span>
     }
 
     /**
@@ -5210,10 +5190,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final double vn, final double ve, final double vd,
                                                                 final NEDPosition position,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5213">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5214">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame,</span>
+<span class="fc" id="L5193">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5194">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame,</span>
                 result);
-<span class="fc" id="L5216">        return result;</span>
+<span class="fc" id="L5196">        return result;</span>
     }
 
     /**
@@ -5239,10 +5219,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final double vn, final double ve, final double vd,
                                                                 final NEDPosition position,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5242">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5243">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame,</span>
+<span class="fc" id="L5222">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5223">        estimateKinematics(timeInterval, c, vn, ve, vd, position, oldFrame,</span>
                 result);
-<span class="fc" id="L5245">        return result;</span>
+<span class="fc" id="L5225">        return result;</span>
     }
 
     /**
@@ -5268,10 +5248,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed vn, final Speed ve, final Speed vd,
                                                                 final NEDPosition position,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5271">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5272">        estimateKinematics(timeInterval, c, vn, ve, vd, position,</span>
+<span class="fc" id="L5251">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5252">        estimateKinematics(timeInterval, c, vn, ve, vd, position,</span>
                 oldFrame, result);
-<span class="fc" id="L5274">        return result;</span>
+<span class="fc" id="L5254">        return result;</span>
     }
 
     /**
@@ -5297,10 +5277,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed vn, final Speed ve, final Speed vd,
                                                                 final NEDPosition position,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5300">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5301">        estimateKinematics(timeInterval, c, vn, ve, vd, position,</span>
+<span class="fc" id="L5280">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5281">        estimateKinematics(timeInterval, c, vn, ve, vd, position,</span>
                 oldFrame, result);
-<span class="fc" id="L5303">        return result;</span>
+<span class="fc" id="L5283">        return result;</span>
     }
 
     /**
@@ -5321,9 +5301,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity velocity,
                                                                 final NEDPosition position,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5324">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5325">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
-<span class="fc" id="L5326">        return result;</span>
+<span class="fc" id="L5304">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5305">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
+<span class="fc" id="L5306">        return result;</span>
     }
 
     /**
@@ -5344,9 +5324,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final NEDVelocity velocity,
                                                                 final NEDPosition position,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5347">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5348">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
-<span class="fc" id="L5349">        return result;</span>
+<span class="fc" id="L5327">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5328">        estimateKinematics(timeInterval, c, velocity, position, oldFrame, result);</span>
+<span class="fc" id="L5329">        return result;</span>
     }
 
     /**
@@ -5362,9 +5342,9 @@ import com.irurueta.units.TimeUnit;
     public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
                                                                 final NEDFrame frame,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5365">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5366">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
-<span class="fc" id="L5367">        return result;</span>
+<span class="fc" id="L5345">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5346">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L5347">        return result;</span>
     }
 
     /**
@@ -5380,9 +5360,9 @@ import com.irurueta.units.TimeUnit;
     public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
                                                                 final NEDFrame frame,
                                                                 final NEDFrame oldFrame) {
-<span class="fc" id="L5383">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5384">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
-<span class="fc" id="L5385">        return result;</span>
+<span class="fc" id="L5363">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5364">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L5365">        return result;</span>
     }
 
     /**
@@ -5419,10 +5399,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                                 final double latitude, final double height,
                                                                 final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L5422">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5423">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L5402">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5403">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5425">        return result;</span>
+<span class="fc" id="L5405">        return result;</span>
     }
 
     /**
@@ -5459,10 +5439,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                                 final double latitude, final double height,
                                                                 final double oldLatitude, final double oldHeight) {
-<span class="fc" id="L5462">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5463">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L5442">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5443">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5465">        return result;</span>
+<span class="fc" id="L5445">        return result;</span>
     }
 
     /**
@@ -5492,17 +5472,18 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final Angle latitude, final double height,
-                                                                final Angle oldLatitude, final double oldHeight) {
-<span class="fc" id="L5502">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5503">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval,
+            final CoordinateTransformation c,
+            final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight) {
+<span class="fc" id="L5483">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5484">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5505">        return result;</span>
+<span class="fc" id="L5486">        return result;</span>
     }
 
     /**
@@ -5532,17 +5513,18 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final Angle latitude, final double height,
-                                                                final Angle oldLatitude, final double oldHeight) {
-<span class="fc" id="L5542">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5543">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval,
+            final CoordinateTransformation c,
+            final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final Angle latitude, final double height,
+            final Angle oldLatitude, final double oldHeight) {
+<span class="fc" id="L5524">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5525">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5545">        return result;</span>
+<span class="fc" id="L5527">        return result;</span>
     }
 
     /**
@@ -5572,17 +5554,18 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final double latitude, final Distance height,
-                                                                final double oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L5582">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5583">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval,
+            final CoordinateTransformation c,
+            final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight) {
+<span class="fc" id="L5565">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5566">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5585">        return result;</span>
+<span class="fc" id="L5568">        return result;</span>
     }
 
     /**
@@ -5612,17 +5595,18 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinate transformation
      *                                  matrices are not NED frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vn, final double ve, final double vd,
-                                                                final double oldVn, final double oldVe, final double oldVd,
-                                                                final double latitude, final Distance height,
-                                                                final double oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L5622">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5623">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval,
+            final CoordinateTransformation c,
+            final CoordinateTransformation oldC,
+            final double vn, final double ve, final double vd,
+            final double oldVn, final double oldVe, final double oldVd,
+            final double latitude, final Distance height,
+            final double oldLatitude, final Distance oldHeight) {
+<span class="fc" id="L5606">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5607">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5625">        return result;</span>
+<span class="fc" id="L5609">        return result;</span>
     }
 
     /**
@@ -5659,10 +5643,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                                 final Angle latitude, final Distance height,
                                                                 final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L5662">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5663">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L5646">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5647">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5665">        return result;</span>
+<span class="fc" id="L5649">        return result;</span>
     }
 
     /**
@@ -5699,10 +5683,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                                                 final Angle latitude, final Distance height,
                                                                 final Angle oldLatitude, final Distance oldHeight) {
-<span class="fc" id="L5702">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L5703">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L5686">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L5687">        estimateKinematics(timeInterval, c, oldC, vn, ve, vd, oldVn, oldVe, oldVd,</span>
                 latitude, height, oldLatitude, oldHeight, result);
-<span class="fc" id="L5705">        return result;</span>
+<span class="fc" id="L5689">        return result;</span>
     }
 
     /**
@@ -5712,7 +5696,7 @@ import com.irurueta.units.TimeUnit;
      * @return time value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-<span class="fc" id="L5715">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),</span>
+<span class="fc" id="L5699">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),</span>
                 TimeUnit.SECOND);
     }
 
@@ -5723,7 +5707,7 @@ import com.irurueta.units.TimeUnit;
      * @return speed value expressed in meters per second.
      */
     private static double convertSpeed(final Speed speed) {
-<span class="fc" id="L5726">        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(),</span>
+<span class="fc" id="L5710">        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(),</span>
                 SpeedUnit.METERS_PER_SECOND);
     }
 
@@ -5734,7 +5718,7 @@ import com.irurueta.units.TimeUnit;
      * @return angle value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L5737">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(),</span>
+<span class="fc" id="L5721">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -5745,8 +5729,8 @@ import com.irurueta.units.TimeUnit;
      * @return distance value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-<span class="fc" id="L5748">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
-<span class="fc" id="L5749">                distance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L5732">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
+<span class="fc" id="L5733">                distance.getUnit(), DistanceUnit.METER);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

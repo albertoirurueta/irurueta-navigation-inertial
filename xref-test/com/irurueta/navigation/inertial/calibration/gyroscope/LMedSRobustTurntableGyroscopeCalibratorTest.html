@@ -33,17 +33,17 @@
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.NotReadyException;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.CoordinateTransformation;
 <a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.ECEFFrame;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.FrameType;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDFrame;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.geodesic.Constants;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.BodyKinematics;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.ECEFPosition;
-<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.ECEFVelocity;
-<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDPosition;
-<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDVelocity;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.ECEFPosition;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.ECEFVelocity;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.FrameType;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDFrame;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDPosition;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDVelocity;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+<a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
+<a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.geodesic.Constants;
+<a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.BodyKinematics;
 <a class="jxr_linenumber" name="L39" href="#L39">39</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 <a class="jxr_linenumber" name="L40" href="#L40">40</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 <a class="jxr_linenumber" name="L41" href="#L41">41</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -266,7 +266,7 @@
 <a class="jxr_linenumber" name="L258" href="#L258">258</a>         assertEquals(calibrator.getMinimumRequiredMeasurementsOrSequences(), 19);
 <a class="jxr_linenumber" name="L259" href="#L259">259</a>         assertFalse(calibrator.isReady());
 <a class="jxr_linenumber" name="L260" href="#L260">260</a>         assertFalse(calibrator.isRunning());
-<a class="jxr_linenumber" name="L261" href="#L261">261</a>         Assert.assertEquals(calibrator.getProgressDelta(),
+<a class="jxr_linenumber" name="L261" href="#L261">261</a>         assertEquals(calibrator.getProgressDelta(),
 <a class="jxr_linenumber" name="L262" href="#L262">262</a>                 RobustTurntableGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, 0.0);
 <a class="jxr_linenumber" name="L263" href="#L263">263</a>         assertEquals(calibrator.getConfidence(),
 <a class="jxr_linenumber" name="L264" href="#L264">264</a>                 RobustTurntableGyroscopeCalibrator.DEFAULT_CONFIDENCE, 0.0);

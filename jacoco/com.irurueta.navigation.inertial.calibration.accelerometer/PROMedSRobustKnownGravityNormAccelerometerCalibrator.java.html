@@ -26,6 +26,7 @@ import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
+
 import java.util.List;
 
 /**
@@ -94,7 +95,7 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L97">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L98">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -106,8 +107,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      * Constructor.
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator() {
-<span class="fc" id="L109">        super();</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L110">        super();</span>
+<span class="fc" id="L111">    }</span>
 
     /**
      * Constructor.
@@ -117,8 +118,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L120">        super(listener);</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L121">        super(listener);</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Constructor.
@@ -129,8 +130,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L132">        super(measurements);</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L133">        super(measurements);</span>
+<span class="fc" id="L134">    }</span>
 
 
     /**
@@ -141,8 +142,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L144">        super(commonAxisUsed);</span>
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L145">        super(commonAxisUsed);</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * Constructor.
@@ -154,8 +155,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final double[] initialBias) {
-<span class="fc" id="L157">        super(initialBias);</span>
-<span class="fc" id="L158">    }</span>
+<span class="fc" id="L158">        super(initialBias);</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Constructor.
@@ -165,8 +166,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final Matrix initialBias) {
-<span class="fc" id="L168">        super(initialBias);</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L169">        super(initialBias);</span>
+<span class="fc" id="L170">    }</span>
 
     /**
      * Constructor.
@@ -178,8 +179,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L181">        super(initialBias, initialMa);</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L182">        super(initialBias, initialMa);</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * Constructor.
@@ -190,8 +191,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm) {
-<span class="fc" id="L193">        super(groundTruthGravityNorm);</span>
-<span class="fc" id="L194">    }</span>
+<span class="fc" id="L194">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L195">    }</span>
 
     /**
      * Constructor.
@@ -206,8 +207,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L209">        super(groundTruthGravityNorm, measurements);</span>
-<span class="fc" id="L210">    }</span>
+<span class="fc" id="L210">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L211">    }</span>
 
     /**
      * Constructor.
@@ -225,8 +226,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L228">        super(groundTruthGravityNorm, measurements, listener);</span>
-<span class="fc" id="L229">    }</span>
+<span class="fc" id="L229">        super(groundTruthGravityNorm, measurements, listener);</span>
+<span class="fc" id="L230">    }</span>
 
     /**
      * Constructor.
@@ -244,8 +245,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L247">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
-<span class="fc" id="L248">    }</span>
+<span class="fc" id="L248">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L249">    }</span>
 
     /**
      * Constructor.
@@ -266,8 +267,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L269">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L270">    }</span>
+<span class="fc" id="L270">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L271">    }</span>
 
     /**
      * Constructor.
@@ -287,8 +288,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L290">        super(groundTruthGravityNorm, measurements, initialBias);</span>
-<span class="fc" id="L291">    }</span>
+<span class="fc" id="L291">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L292">    }</span>
 
     /**
      * Constructor.
@@ -310,8 +311,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L313">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc" id="L314">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L315">    }</span>
 
     /**
      * Constructor.
@@ -333,9 +334,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L336">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L337">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias);
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L339">    }</span>
 
     /**
      * Constructor.
@@ -359,9 +360,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L362">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L363">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, listener);
-<span class="fc" id="L364">    }</span>
+<span class="fc" id="L365">    }</span>
 
     /**
      * Constructor.
@@ -379,8 +380,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L382">        super(groundTruthGravityNorm, measurements, initialBias);</span>
-<span class="fc" id="L383">    }</span>
+<span class="fc" id="L383">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L384">    }</span>
 
     /**
      * Constructor.
@@ -400,8 +401,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L403">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
-<span class="fc" id="L404">    }</span>
+<span class="fc" id="L404">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L405">    }</span>
 
     /**
      * Constructor.
@@ -421,9 +422,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L424">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L425">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias);
-<span class="fc" id="L426">    }</span>
+<span class="fc" id="L427">    }</span>
 
     /**
      * Constructor.
@@ -445,9 +446,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L448">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L449">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, listener);
-<span class="fc" id="L450">    }</span>
+<span class="fc" id="L451">    }</span>
 
     /**
      * Constructor.
@@ -467,8 +468,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L470">        super(groundTruthGravityNorm, measurements, initialBias, initialMa);</span>
-<span class="fc" id="L471">    }</span>
+<span class="fc" id="L471">        super(groundTruthGravityNorm, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L472">    }</span>
 
     /**
      * Constructor.
@@ -490,9 +491,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L493">        super(groundTruthGravityNorm, measurements, initialBias, initialMa,</span>
+<span class="fc" id="L494">        super(groundTruthGravityNorm, measurements, initialBias, initialMa,</span>
                 listener);
-<span class="fc" id="L495">    }</span>
+<span class="fc" id="L496">    }</span>
 
     /**
      * Constructor.
@@ -515,9 +516,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L518">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L519">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, initialMa);
-<span class="fc" id="L520">    }</span>
+<span class="fc" id="L521">    }</span>
 
     /**
      * Constructor.
@@ -542,9 +543,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L545">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L546">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, initialMa, listener);
-<span class="fc" id="L547">    }</span>
+<span class="fc" id="L548">    }</span>
 
     /**
      * Constructor.
@@ -554,8 +555,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm) {
-<span class="fc" id="L557">        super(groundTruthGravityNorm);</span>
-<span class="fc" id="L558">    }</span>
+<span class="fc" id="L558">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L559">    }</span>
 
     /**
      * Constructor.
@@ -569,8 +570,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L572">        super(groundTruthGravityNorm, measurements);</span>
-<span class="fc" id="L573">    }</span>
+<span class="fc" id="L573">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L574">    }</span>
 
     /**
      * Constructor.
@@ -587,9 +588,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L590">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L591">        super(groundTruthGravityNorm, measurements,</span>
                 listener);
-<span class="fc" id="L592">    }</span>
+<span class="fc" id="L593">    }</span>
 
     /**
      * Constructor.
@@ -606,9 +607,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L609">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L610">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed);
-<span class="fc" id="L611">    }</span>
+<span class="fc" id="L612">    }</span>
 
     /**
      * Constructor.
@@ -628,9 +629,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L631">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L632">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, listener);
-<span class="fc" id="L633">    }</span>
+<span class="fc" id="L634">    }</span>
 
     /**
      * Constructor.
@@ -649,9 +650,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L652">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L653">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias);
-<span class="fc" id="L654">    }</span>
+<span class="fc" id="L655">    }</span>
 
     /**
      * Constructor.
@@ -672,9 +673,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L675">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L676">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, listener);
-<span class="fc" id="L677">    }</span>
+<span class="fc" id="L678">    }</span>
 
     /**
      * Constructor.
@@ -695,9 +696,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L698">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L699">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias);
-<span class="fc" id="L700">    }</span>
+<span class="fc" id="L701">    }</span>
 
     /**
      * Constructor.
@@ -720,9 +721,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L723">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L724">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, listener);
-<span class="fc" id="L725">    }</span>
+<span class="fc" id="L726">    }</span>
 
     /**
      * Constructor.
@@ -739,9 +740,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L742">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L743">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias);
-<span class="fc" id="L744">    }</span>
+<span class="fc" id="L745">    }</span>
 
     /**
      * Constructor.
@@ -760,9 +761,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L763">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L764">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, listener);
-<span class="fc" id="L765">    }</span>
+<span class="fc" id="L766">    }</span>
 
     /**
      * Constructor.
@@ -781,9 +782,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L784">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L785">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias);
-<span class="fc" id="L786">    }</span>
+<span class="fc" id="L787">    }</span>
 
     /**
      * Constructor.
@@ -804,9 +805,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L807">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L808">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, listener);
-<span class="fc" id="L809">    }</span>
+<span class="fc" id="L810">    }</span>
 
     /**
      * Constructor.
@@ -825,9 +826,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L828">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L829">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, initialMa);
-<span class="fc" id="L830">    }</span>
+<span class="fc" id="L831">    }</span>
 
     /**
      * Constructor.
@@ -848,9 +849,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L851">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L852">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, initialMa, listener);
-<span class="fc" id="L853">    }</span>
+<span class="fc" id="L854">    }</span>
 
     /**
      * Constructor.
@@ -872,9 +873,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L875">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L876">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, initialMa);
-<span class="fc" id="L877">    }</span>
+<span class="fc" id="L878">    }</span>
 
     /**
      * Constructor.
@@ -898,9 +899,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L901">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L902">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, initialMa, listener);
-<span class="fc" id="L903">    }</span>
+<span class="fc" id="L904">    }</span>
 
     /**
      * Constructor.
@@ -921,9 +922,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final double[] qualityScores,
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L924">        super(groundTruthGravityNorm, measurements);</span>
-<span class="fc" id="L925">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L926">    }</span>
+<span class="fc" id="L925">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L926">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L927">    }</span>
 
     /**
      * Constructor.
@@ -947,9 +948,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L950">        super(groundTruthGravityNorm, measurements, listener);</span>
-<span class="fc" id="L951">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L952">    }</span>
+<span class="fc" id="L951">        super(groundTruthGravityNorm, measurements, listener);</span>
+<span class="fc" id="L952">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L953">    }</span>
 
     /**
      * Constructor.
@@ -973,9 +974,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L976">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
-<span class="fc" id="L977">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L978">    }</span>
+<span class="fc" id="L977">        super(groundTruthGravityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L978">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L979">    }</span>
 
     /**
      * Constructor.
@@ -1002,9 +1003,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1005">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L1006">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1007">    }</span>
+<span class="fc" id="L1006">        super(groundTruthGravityNorm, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1007">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1008">    }</span>
 
     /**
      * Constructor.
@@ -1030,9 +1031,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L1033">        super(groundTruthGravityNorm, measurements, initialBias);</span>
-<span class="fc" id="L1034">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1035">    }</span>
+<span class="fc" id="L1034">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L1035">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1036">    }</span>
 
     /**
      * Constructor.
@@ -1060,9 +1061,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1063">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
-<span class="fc" id="L1064">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1065">    }</span>
+<span class="fc" id="L1064">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L1065">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1066">    }</span>
 
     /**
      * Constructor.
@@ -1090,10 +1091,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L1093">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L1094">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias);
-<span class="fc" id="L1095">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1096">    }</span>
+<span class="fc" id="L1096">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1097">    }</span>
 
     /**
      * Constructor.
@@ -1123,10 +1124,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1126">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L1127">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, listener);
-<span class="fc" id="L1128">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1129">    }</span>
+<span class="fc" id="L1129">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1130">    }</span>
 
     /**
      * Constructor.
@@ -1150,9 +1151,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L1153">        super(groundTruthGravityNorm, measurements, initialBias);</span>
-<span class="fc" id="L1154">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1155">    }</span>
+<span class="fc" id="L1154">        super(groundTruthGravityNorm, measurements, initialBias);</span>
+<span class="fc" id="L1155">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1156">    }</span>
 
     /**
      * Constructor.
@@ -1178,9 +1179,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1181">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
-<span class="fc" id="L1182">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1183">    }</span>
+<span class="fc" id="L1182">        super(groundTruthGravityNorm, measurements, initialBias, listener);</span>
+<span class="fc" id="L1183">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1184">    }</span>
 
     /**
      * Constructor.
@@ -1206,10 +1207,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L1209">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L1210">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias);
-<span class="fc" id="L1211">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1212">    }</span>
+<span class="fc" id="L1212">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1213">    }</span>
 
     /**
      * Constructor.
@@ -1237,10 +1238,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1240">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L1241">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, listener);
-<span class="fc" id="L1242">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1243">    }</span>
+<span class="fc" id="L1243">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1244">    }</span>
 
     /**
      * Constructor.
@@ -1266,9 +1267,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Double groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L1269">        super(groundTruthGravityNorm, measurements, initialBias, initialMa);</span>
-<span class="fc" id="L1270">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1271">    }</span>
+<span class="fc" id="L1270">        super(groundTruthGravityNorm, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L1271">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1272">    }</span>
 
     /**
      * Constructor.
@@ -1296,10 +1297,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1299">        super(groundTruthGravityNorm, measurements, initialBias, initialMa,</span>
+<span class="fc" id="L1300">        super(groundTruthGravityNorm, measurements, initialBias, initialMa,</span>
                 listener);
-<span class="fc" id="L1301">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1302">    }</span>
+<span class="fc" id="L1302">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1303">    }</span>
 
     /**
      * Constructor.
@@ -1328,10 +1329,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L1331">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L1332">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, initialMa);
-<span class="fc" id="L1333">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1334">    }</span>
+<span class="fc" id="L1334">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1335">    }</span>
 
     /**
      * Constructor.
@@ -1362,10 +1363,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1365">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
+<span class="fc" id="L1366">        super(groundTruthGravityNorm, measurements, commonAxisUsed,</span>
                 initialBias, initialMa, listener);
-<span class="fc" id="L1367">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1368">    }</span>
+<span class="fc" id="L1368">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1369">    }</span>
 
     /**
      * Constructor.
@@ -1381,9 +1382,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
     public PROMedSRobustKnownGravityNormAccelerometerCalibrator(
             final double[] qualityScores,
             final Acceleration groundTruthGravityNorm) {
-<span class="fc" id="L1384">        super(groundTruthGravityNorm);</span>
-<span class="fc" id="L1385">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1386">    }</span>
+<span class="fc" id="L1385">        super(groundTruthGravityNorm);</span>
+<span class="fc" id="L1386">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1387">    }</span>
 
     /**
      * Constructor.
@@ -1403,9 +1404,9 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final double[] qualityScores,
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L1406">        super(groundTruthGravityNorm, measurements);</span>
-<span class="fc" id="L1407">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1408">    }</span>
+<span class="fc" id="L1407">        super(groundTruthGravityNorm, measurements);</span>
+<span class="fc" id="L1408">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1409">    }</span>
 
     /**
      * Constructor.
@@ -1428,10 +1429,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1431">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1432">        super(groundTruthGravityNorm, measurements,</span>
                 listener);
-<span class="fc" id="L1433">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1434">    }</span>
+<span class="fc" id="L1434">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1435">    }</span>
 
     /**
      * Constructor.
@@ -1454,10 +1455,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1457">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1458">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed);
-<span class="fc" id="L1459">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1460">    }</span>
+<span class="fc" id="L1460">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1461">    }</span>
 
     /**
      * Constructor.
@@ -1483,10 +1484,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1486">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1487">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, listener);
-<span class="fc" id="L1488">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1489">    }</span>
+<span class="fc" id="L1489">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1490">    }</span>
 
     /**
      * Constructor.
@@ -1511,10 +1512,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L1514">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1515">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias);
-<span class="fc" id="L1516">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1517">    }</span>
+<span class="fc" id="L1517">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1518">    }</span>
 
     /**
      * Constructor.
@@ -1541,10 +1542,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1544">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1545">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, listener);
-<span class="fc" id="L1546">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1547">    }</span>
+<span class="fc" id="L1547">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1548">    }</span>
 
     /**
      * Constructor.
@@ -1571,10 +1572,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L1574">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1575">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias);
-<span class="fc" id="L1576">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1577">    }</span>
+<span class="fc" id="L1577">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1578">    }</span>
 
     /**
      * Constructor.
@@ -1603,10 +1604,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1606">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1607">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, listener);
-<span class="fc" id="L1608">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1609">    }</span>
+<span class="fc" id="L1609">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1610">    }</span>
 
     /**
      * Constructor.
@@ -1629,10 +1630,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L1632">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1633">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias);
-<span class="fc" id="L1634">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1635">    }</span>
+<span class="fc" id="L1635">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1636">    }</span>
 
     /**
      * Constructor.
@@ -1657,10 +1658,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1660">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1661">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, listener);
-<span class="fc" id="L1662">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1663">    }</span>
+<span class="fc" id="L1663">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1664">    }</span>
 
     /**
      * Constructor.
@@ -1685,10 +1686,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L1688">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1689">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias);
-<span class="fc" id="L1690">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1691">    }</span>
+<span class="fc" id="L1691">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1692">    }</span>
 
     /**
      * Constructor.
@@ -1715,10 +1716,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1718">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1719">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, listener);
-<span class="fc" id="L1720">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1721">    }</span>
+<span class="fc" id="L1721">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1722">    }</span>
 
     /**
      * Constructor.
@@ -1743,10 +1744,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final Acceleration groundTruthGravityNorm,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L1746">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1747">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, initialMa);
-<span class="fc" id="L1748">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1749">    }</span>
+<span class="fc" id="L1749">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1750">    }</span>
 
     /**
      * Constructor.
@@ -1773,10 +1774,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1776">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1777">        super(groundTruthGravityNorm, measurements,</span>
                 initialBias, initialMa, listener);
-<span class="fc" id="L1778">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1779">    }</span>
+<span class="fc" id="L1779">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1780">    }</span>
 
     /**
      * Constructor.
@@ -1804,10 +1805,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L1807">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1808">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, initialMa);
-<span class="fc" id="L1809">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1810">    }</span>
+<span class="fc" id="L1810">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1811">    }</span>
 
     /**
      * Constructor.
@@ -1837,10 +1838,10 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownGravityNormAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1840">        super(groundTruthGravityNorm, measurements,</span>
+<span class="fc" id="L1841">        super(groundTruthGravityNorm, measurements,</span>
                 commonAxisUsed, initialBias, initialMa, listener);
-<span class="fc" id="L1842">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1843">    }</span>
+<span class="fc" id="L1843">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1844">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -1862,7 +1863,7 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L1865">        return mStopThreshold;</span>
+<span class="fc" id="L1866">        return mStopThreshold;</span>
     }
 
     /**
@@ -1887,15 +1888,15 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L1890" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1891">            throw new LockedException();</span>
+<span class="fc bfc" id="L1891" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1892">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1893" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L1894">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1894" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1895">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1897">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L1898">    }</span>
+<span class="fc" id="L1898">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L1899">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -1905,7 +1906,7 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L1908">        return mQualityScores;</span>
+<span class="fc" id="L1909">        return mQualityScores;</span>
     }
 
     /**
@@ -1921,11 +1922,11 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="pc bpc" id="L1924" title="1 of 2 branches missed.">        if (mRunning) {</span>
-<span class="nc" id="L1925">            throw new LockedException();</span>
+<span class="pc bpc" id="L1925" title="1 of 2 branches missed.">        if (mRunning) {</span>
+<span class="nc" id="L1926">            throw new LockedException();</span>
         }
-<span class="fc" id="L1927">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1928">    }</span>
+<span class="fc" id="L1928">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1929">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -1934,8 +1935,8 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L1937" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="fc bfc" id="L1938" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="fc bfc" id="L1938" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L1939" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -1948,117 +1949,119 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L1951" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1952">            throw new LockedException();</span>
+<span class="fc bfc" id="L1952" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1953">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1954" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1955">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1955" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1956">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1958">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
-<span class="fc" id="L1959">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L1959">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1960">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L1962">                        return mQualityScores;</span>
+<span class="fc" id="L1963">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1967">                        return mStopThreshold;</span>
+<span class="fc" id="L1968">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1972">                        return mMeasurements.size();</span>
+<span class="fc" id="L1973">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1977">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1978">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1984">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1985">                    }</span>
+<span class="fc" id="L1985">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1986">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L1990">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L1991">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1995">                        return PROMedSRobustKnownGravityNormAccelerometerCalibrator.this.isReady();</span>
+<span class="fc" id="L1996">                        return PROMedSRobustKnownGravityNormAccelerometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L2001">                    }</span>
+                        // no action needed
+<span class="fc" id="L2003">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L2006">                    }</span>
+                        // no action needed
+<span class="fc" id="L2009">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L2012" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L2013">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L2015" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L2016">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustKnownGravityNormAccelerometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L2017">                    }</span>
+<span class="fc" id="L2020">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L2023" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L2024">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L2026" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L2027">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustKnownGravityNormAccelerometerCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L2028">                    }</span>
+<span class="nc" id="L2031">                    }</span>
                 });
 
         try {
-<span class="fc" id="L2032">            mRunning = true;</span>
+<span class="fc" id="L2035">            mRunning = true;</span>
 
-<span class="pc bpc" id="L2034" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L2035">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L2037" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L2038">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L2038">            mInliersData = null;</span>
-<span class="fc" id="L2039">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L2040">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L2041">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L2042">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L2043">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L2044">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L2041">            mInliersData = null;</span>
+<span class="fc" id="L2042">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L2043">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L2044">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L2045">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L2046">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L2047">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L2046">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L2049">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L2048" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L2049">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L2051" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L2052">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L2052">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L2053">            throw new LockedException(e);</span>
-<span class="nc" id="L2054">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L2055">            throw new NotReadyException(e);</span>
-<span class="nc" id="L2056">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L2057">            throw new CalibrationException(e);</span>
+<span class="nc" id="L2055">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L2056">            throw new LockedException(e);</span>
+<span class="nc" id="L2057">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L2058">            throw new NotReadyException(e);</span>
+<span class="nc" id="L2059">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L2060">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L2059">            mRunning = false;</span>
+<span class="fc" id="L2062">            mRunning = false;</span>
         }
-<span class="fc" id="L2061">    }</span>
+<span class="fc" id="L2064">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -2067,7 +2070,7 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L2070">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L2073">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -2078,7 +2081,7 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L2081">        return true;</span>
+<span class="fc" id="L2084">        return true;</span>
     }
 
     /**
@@ -2092,12 +2095,12 @@ public class PROMedSRobustKnownGravityNormAccelerometerCalibrator extends
      *                                  number of samples (10 or 13).
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L2095" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L2096" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
-<span class="fc" id="L2097">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L2098" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L2099" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
+<span class="fc" id="L2100">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L2100">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L2101">    }</span>
+<span class="fc" id="L2103">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L2104">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

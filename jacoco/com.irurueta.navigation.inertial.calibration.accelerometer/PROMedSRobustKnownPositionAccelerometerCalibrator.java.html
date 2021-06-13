@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -94,7 +95,7 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L97">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L98">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -105,8 +106,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
     /**
      * Constructor.
      */
-<span class="fc" id="L108">    public PROMedSRobustKnownPositionAccelerometerCalibrator() {</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L109">    public PROMedSRobustKnownPositionAccelerometerCalibrator() {</span>
+<span class="fc" id="L110">    }</span>
 
     /**
      * Constructor.
@@ -116,8 +117,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L119">        super(listener);</span>
-<span class="fc" id="L120">    }</span>
+<span class="fc" id="L120">        super(listener);</span>
+<span class="fc" id="L121">    }</span>
 
     /**
      * Constructor.
@@ -128,8 +129,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L131">        super(measurements);</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L132">        super(measurements);</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Constructor.
@@ -139,8 +140,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L142">        super(commonAxisUsed);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L143">        super(commonAxisUsed);</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -152,8 +153,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final double[] initialBias) {
-<span class="fc" id="L155">        super(initialBias);</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L156">        super(initialBias);</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Constructor.
@@ -163,8 +164,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final Matrix initialBias) {
-<span class="fc" id="L166">        super(initialBias);</span>
-<span class="fc" id="L167">    }</span>
+<span class="fc" id="L167">        super(initialBias);</span>
+<span class="fc" id="L168">    }</span>
 
     /**
      * Constructor.
@@ -176,8 +177,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L179">        super(initialBias, initialMa);</span>
-<span class="fc" id="L180">    }</span>
+<span class="fc" id="L180">        super(initialBias, initialMa);</span>
+<span class="fc" id="L181">    }</span>
 
     /**
      * Constructor.
@@ -186,8 +187,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final ECEFPosition position) {
-<span class="fc" id="L189">        super(position);</span>
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L190">        super(position);</span>
+<span class="fc" id="L191">    }</span>
 
     /**
      * Constructor.
@@ -200,8 +201,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L203">        super(position, measurements);</span>
-<span class="fc" id="L204">    }</span>
+<span class="fc" id="L204">        super(position, measurements);</span>
+<span class="fc" id="L205">    }</span>
 
     /**
      * Constructor.
@@ -217,8 +218,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L220">        super(position, measurements, listener);</span>
-<span class="fc" id="L221">    }</span>
+<span class="fc" id="L221">        super(position, measurements, listener);</span>
+<span class="fc" id="L222">    }</span>
 
     /**
      * Constructor.
@@ -234,8 +235,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L237">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L238">    }</span>
+<span class="fc" id="L238">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L239">    }</span>
 
     /**
      * Constructor.
@@ -254,8 +255,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L257">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L258">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L259">    }</span>
 
     /**
      * Constructor.
@@ -273,8 +274,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L276">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L277">    }</span>
+<span class="fc" id="L277">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L278">    }</span>
 
     /**
      * Constructor.
@@ -294,8 +295,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L297">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L298">    }</span>
+<span class="fc" id="L298">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L299">    }</span>
 
     /**
      * Constructor.
@@ -315,8 +316,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L318">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L319">    }</span>
+<span class="fc" id="L319">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L320">    }</span>
 
     /**
      * Constructor.
@@ -338,8 +339,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L341">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L342">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L343">    }</span>
 
     /**
      * Constructor.
@@ -355,8 +356,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L358">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L359">    }</span>
+<span class="fc" id="L359">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L360">    }</span>
 
     /**
      * Constructor.
@@ -374,8 +375,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L377">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L378">    }</span>
+<span class="fc" id="L378">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L379">    }</span>
 
     /**
      * Constructor.
@@ -393,8 +394,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L396">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L397">    }</span>
+<span class="fc" id="L397">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L398">    }</span>
 
     /**
      * Constructor.
@@ -414,8 +415,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L417">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L418">    }</span>
+<span class="fc" id="L418">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L419">    }</span>
 
     /**
      * Constructor.
@@ -433,8 +434,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L436">        super(position, measurements, initialBias, initialMa);</span>
-<span class="fc" id="L437">    }</span>
+<span class="fc" id="L437">        super(position, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L438">    }</span>
 
     /**
      * Constructor.
@@ -454,8 +455,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L457">        super(position, measurements, initialBias, initialMa, listener);</span>
-<span class="fc" id="L458">    }</span>
+<span class="fc" id="L458">        super(position, measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L459">    }</span>
 
     /**
      * Constructor.
@@ -476,8 +477,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L479">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
-<span class="fc" id="L480">    }</span>
+<span class="fc" id="L480">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L481">    }</span>
 
     /**
      * Constructor.
@@ -500,9 +501,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L503">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
+<span class="fc" id="L504">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
                 listener);
-<span class="fc" id="L505">    }</span>
+<span class="fc" id="L506">    }</span>
 
     /**
      * Constructor.
@@ -511,8 +512,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final NEDPosition position) {
-<span class="fc" id="L514">        super(position);</span>
-<span class="fc" id="L515">    }</span>
+<span class="fc" id="L515">        super(position);</span>
+<span class="fc" id="L516">    }</span>
 
     /**
      * Constructor.
@@ -525,8 +526,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
     public PROMedSRobustKnownPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L528">        super(position, measurements);</span>
-<span class="fc" id="L529">    }</span>
+<span class="fc" id="L529">        super(position, measurements);</span>
+<span class="fc" id="L530">    }</span>
 
     /**
      * Constructor.
@@ -542,8 +543,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L545">        super(position, measurements, listener);</span>
-<span class="fc" id="L546">    }</span>
+<span class="fc" id="L546">        super(position, measurements, listener);</span>
+<span class="fc" id="L547">    }</span>
 
     /**
      * Constructor.
@@ -559,8 +560,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L562">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L563">    }</span>
+<span class="fc" id="L563">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L564">    }</span>
 
     /**
      * Constructor.
@@ -579,8 +580,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L582">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L583">    }</span>
+<span class="fc" id="L583">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L584">    }</span>
 
     /**
      * Constructor.
@@ -598,8 +599,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L601">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L602">    }</span>
+<span class="fc" id="L602">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L603">    }</span>
 
     /**
      * Constructor.
@@ -619,8 +620,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L622">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L623">    }</span>
+<span class="fc" id="L623">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L624">    }</span>
 
     /**
      * Constructor.
@@ -640,8 +641,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L643">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L644">    }</span>
+<span class="fc" id="L644">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L645">    }</span>
 
     /**
      * Constructor.
@@ -663,8 +664,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L666">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L667">    }</span>
+<span class="fc" id="L667">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L668">    }</span>
 
     /**
      * Constructor.
@@ -680,8 +681,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L683">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L684">    }</span>
+<span class="fc" id="L684">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L685">    }</span>
 
     /**
      * Constructor.
@@ -698,8 +699,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L701">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L702">    }</span>
+<span class="fc" id="L702">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L703">    }</span>
 
     /**
      * Constructor.
@@ -717,8 +718,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L720">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L721">    }</span>
+<span class="fc" id="L721">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L722">    }</span>
 
     /**
      * Constructor.
@@ -738,8 +739,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L741">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L742">    }</span>
+<span class="fc" id="L742">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L743">    }</span>
 
     /**
      * Constructor.
@@ -757,8 +758,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L760">        super(position, measurements, initialBias, initialMa);</span>
-<span class="fc" id="L761">    }</span>
+<span class="fc" id="L761">        super(position, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L762">    }</span>
 
     /**
      * Constructor.
@@ -778,8 +779,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L781">        super(position, measurements, initialBias, initialMa, listener);</span>
-<span class="fc" id="L782">    }</span>
+<span class="fc" id="L782">        super(position, measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L783">    }</span>
 
     /**
      * Constructor.
@@ -800,8 +801,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L803">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
-<span class="fc" id="L804">    }</span>
+<span class="fc" id="L804">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L805">    }</span>
 
     /**
      * Constructor.
@@ -824,9 +825,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L827">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
+<span class="fc" id="L828">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
                 listener);
-<span class="fc" id="L829">    }</span>
+<span class="fc" id="L830">    }</span>
 
     /**
      * Constructor.
@@ -845,9 +846,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final double[] qualityScores,
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L848">        super(position, measurements);</span>
-<span class="fc" id="L849">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L850">    }</span>
+<span class="fc" id="L849">        super(position, measurements);</span>
+<span class="fc" id="L850">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L851">    }</span>
 
     /**
      * Constructor.
@@ -869,9 +870,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L872">        super(position, measurements, listener);</span>
-<span class="fc" id="L873">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L874">    }</span>
+<span class="fc" id="L873">        super(position, measurements, listener);</span>
+<span class="fc" id="L874">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L875">    }</span>
 
     /**
      * Constructor.
@@ -895,9 +896,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L898">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L899">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L900">    }</span>
+<span class="fc" id="L899">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L900">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L901">    }</span>
 
     /**
      * Constructor.
@@ -924,9 +925,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L927">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L928">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L929">    }</span>
+<span class="fc" id="L928">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L929">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L930">    }</span>
 
     /**
      * Constructor.
@@ -950,9 +951,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L953">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L954">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L955">    }</span>
+<span class="fc" id="L954">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L955">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L956">    }</span>
 
     /**
      * Constructor.
@@ -978,9 +979,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L981">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L982">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L983">    }</span>
+<span class="fc" id="L982">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L983">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L984">    }</span>
 
     /**
      * Constructor.
@@ -1007,9 +1008,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L1010">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1011">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1012">    }</span>
+<span class="fc" id="L1011">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1012">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1013">    }</span>
 
     /**
      * Constructor.
@@ -1038,9 +1039,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1041">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1042">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1043">    }</span>
+<span class="fc" id="L1042">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1043">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1044">    }</span>
 
     /**
      * Constructor.
@@ -1062,9 +1063,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L1065">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L1066">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1067">    }</span>
+<span class="fc" id="L1066">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L1067">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1068">    }</span>
 
     /**
      * Constructor.
@@ -1088,9 +1089,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1091">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L1092">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1093">    }</span>
+<span class="fc" id="L1092">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L1093">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1094">    }</span>
 
     /**
      * Constructor.
@@ -1115,9 +1116,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L1118">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1119">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1120">    }</span>
+<span class="fc" id="L1119">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1120">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1121">    }</span>
 
     /**
      * Constructor.
@@ -1144,9 +1145,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1147">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1148">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1149">    }</span>
+<span class="fc" id="L1148">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1149">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1150">    }</span>
 
     /**
      * Constructor.
@@ -1170,9 +1171,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L1173">        super(position, measurements, initialBias, initialMa);</span>
-<span class="fc" id="L1174">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1175">    }</span>
+<span class="fc" id="L1174">        super(position, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L1175">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1176">    }</span>
 
     /**
      * Constructor.
@@ -1198,9 +1199,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1201">        super(position, measurements, initialBias, initialMa, listener);</span>
-<span class="fc" id="L1202">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1203">    }</span>
+<span class="fc" id="L1202">        super(position, measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L1203">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1204">    }</span>
 
     /**
      * Constructor.
@@ -1228,9 +1229,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L1231">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
-<span class="fc" id="L1232">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1233">    }</span>
+<span class="fc" id="L1232">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L1233">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1234">    }</span>
 
     /**
      * Constructor.
@@ -1260,10 +1261,10 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1263">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
+<span class="fc" id="L1264">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
                 listener);
-<span class="fc" id="L1265">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1266">    }</span>
+<span class="fc" id="L1266">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1267">    }</span>
 
     /**
      * Constructor.
@@ -1282,9 +1283,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final double[] qualityScores,
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L1285">        super(position, measurements);</span>
-<span class="fc" id="L1286">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1287">    }</span>
+<span class="fc" id="L1286">        super(position, measurements);</span>
+<span class="fc" id="L1287">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1288">    }</span>
 
     /**
      * Constructor.
@@ -1306,9 +1307,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1309">        super(position, measurements, listener);</span>
-<span class="fc" id="L1310">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1311">    }</span>
+<span class="fc" id="L1310">        super(position, measurements, listener);</span>
+<span class="fc" id="L1311">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1312">    }</span>
 
     /**
      * Constructor.
@@ -1332,9 +1333,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1335">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L1336">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1337">    }</span>
+<span class="fc" id="L1336">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L1337">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1338">    }</span>
 
     /**
      * Constructor.
@@ -1361,9 +1362,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1364">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L1365">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1366">    }</span>
+<span class="fc" id="L1365">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L1366">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1367">    }</span>
 
     /**
      * Constructor.
@@ -1387,9 +1388,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
-<span class="fc" id="L1390">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L1391">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1392">    }</span>
+<span class="fc" id="L1391">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L1392">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1393">    }</span>
 
     /**
      * Constructor.
@@ -1415,9 +1416,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1418">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L1419">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1420">    }</span>
+<span class="fc" id="L1419">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L1420">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1421">    }</span>
 
     /**
      * Constructor.
@@ -1444,9 +1445,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
-<span class="fc" id="L1447">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1448">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1449">    }</span>
+<span class="fc" id="L1448">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1449">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1450">    }</span>
 
     /**
      * Constructor.
@@ -1475,9 +1476,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1478">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1479">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1480">    }</span>
+<span class="fc" id="L1479">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1480">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1481">    }</span>
 
     /**
      * Constructor.
@@ -1499,9 +1500,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
-<span class="fc" id="L1502">        super(position, measurements, initialBias);</span>
-<span class="fc" id="L1503">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1504">    }</span>
+<span class="fc" id="L1503">        super(position, measurements, initialBias);</span>
+<span class="fc" id="L1504">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1505">    }</span>
 
     /**
      * Constructor.
@@ -1525,9 +1526,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1528">        super(position, measurements, initialBias, listener);</span>
-<span class="fc" id="L1529">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1530">    }</span>
+<span class="fc" id="L1529">        super(position, measurements, initialBias, listener);</span>
+<span class="fc" id="L1530">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1531">    }</span>
 
     /**
      * Constructor.
@@ -1552,9 +1553,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
-<span class="fc" id="L1555">        super(position, measurements, commonAxisUsed, initialBias);</span>
-<span class="fc" id="L1556">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1557">    }</span>
+<span class="fc" id="L1556">        super(position, measurements, commonAxisUsed, initialBias);</span>
+<span class="fc" id="L1557">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1558">    }</span>
 
     /**
      * Constructor.
@@ -1581,9 +1582,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1584">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L1585">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1586">    }</span>
+<span class="fc" id="L1585">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L1586">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1587">    }</span>
 
     /**
      * Constructor.
@@ -1607,9 +1608,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
-<span class="fc" id="L1610">        super(position, measurements, initialBias, initialMa);</span>
-<span class="fc" id="L1611">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1612">    }</span>
+<span class="fc" id="L1611">        super(position, measurements, initialBias, initialMa);</span>
+<span class="fc" id="L1612">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1613">    }</span>
 
     /**
      * Constructor.
@@ -1635,9 +1636,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1638">        super(position, measurements, initialBias, initialMa, listener);</span>
-<span class="fc" id="L1639">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1640">    }</span>
+<span class="fc" id="L1639">        super(position, measurements, initialBias, initialMa, listener);</span>
+<span class="fc" id="L1640">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1641">    }</span>
 
     /**
      * Constructor.
@@ -1665,9 +1666,9 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
-<span class="fc" id="L1668">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
-<span class="fc" id="L1669">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1670">    }</span>
+<span class="fc" id="L1669">        super(position, measurements, commonAxisUsed, initialBias, initialMa);</span>
+<span class="fc" id="L1670">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1671">    }</span>
 
     /**
      * Constructor.
@@ -1697,10 +1698,10 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final RobustKnownPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L1700">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
+<span class="fc" id="L1701">        super(position, measurements, commonAxisUsed, initialBias, initialMa,</span>
                 listener);
-<span class="fc" id="L1702">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1703">    }</span>
+<span class="fc" id="L1703">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1704">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -1722,7 +1723,7 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L1725">        return mStopThreshold;</span>
+<span class="fc" id="L1726">        return mStopThreshold;</span>
     }
 
     /**
@@ -1747,15 +1748,15 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L1750" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1751">            throw new LockedException();</span>
+<span class="fc bfc" id="L1751" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1752">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1753" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L1754">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1754" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1755">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1757">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L1758">    }</span>
+<span class="fc" id="L1758">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L1759">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -1765,7 +1766,7 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L1768">        return mQualityScores;</span>
+<span class="fc" id="L1769">        return mQualityScores;</span>
     }
 
     /**
@@ -1781,11 +1782,11 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc bfc" id="L1784" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1785">            throw new LockedException();</span>
+<span class="fc bfc" id="L1785" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1786">            throw new LockedException();</span>
         }
-<span class="fc" id="L1787">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1788">    }</span>
+<span class="fc" id="L1788">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1789">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -1794,8 +1795,8 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L1797" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="fc bfc" id="L1798" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="fc bfc" id="L1798" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L1799" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -1809,119 +1810,121 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L1812" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1813">            throw new LockedException();</span>
+<span class="fc bfc" id="L1813" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1814">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1815" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1816">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1816" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1817">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1819">        mGravityNorm = computeGravityNorm();</span>
+<span class="fc" id="L1820">        mGravityNorm = computeGravityNorm();</span>
 
-<span class="fc" id="L1821">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
-<span class="fc" id="L1822">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L1822">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1823">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L1825">                        return mQualityScores;</span>
+<span class="fc" id="L1826">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L1830">                        return mStopThreshold;</span>
+<span class="fc" id="L1831">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1835">                        return mMeasurements.size();</span>
+<span class="fc" id="L1836">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1840">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1841">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1847">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1848">                    }</span>
+<span class="fc" id="L1848">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1849">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L1853">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L1854">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1858">                        return PROMedSRobustKnownPositionAccelerometerCalibrator.this.isReady();</span>
+<span class="fc" id="L1859">                        return PROMedSRobustKnownPositionAccelerometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1864">                    }</span>
+                        // no action needed
+<span class="fc" id="L1866">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1869">                    }</span>
+                        // no action needed
+<span class="fc" id="L1872">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1875" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1876">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1878" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1879">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustKnownPositionAccelerometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1880">                    }</span>
+<span class="fc" id="L1883">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L1886" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1887">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L1889" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L1890">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustKnownPositionAccelerometerCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L1891">                    }</span>
+<span class="nc" id="L1894">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1895">            mRunning = true;</span>
+<span class="fc" id="L1898">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1897" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1898">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1900" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1901">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1901">            mInliersData = null;</span>
-<span class="fc" id="L1902">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L1903">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1904">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1905">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1906">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1907">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1904">            mInliersData = null;</span>
+<span class="fc" id="L1905">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1906">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1907">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1908">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1909">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1910">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1909">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1912">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1911" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1912">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1914" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1915">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1915">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1916">            throw new LockedException(e);</span>
-<span class="nc" id="L1917">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1918">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1919">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L1920">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1918">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1919">            throw new LockedException(e);</span>
+<span class="nc" id="L1920">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1921">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1922">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1923">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1922">            mRunning = false;</span>
+<span class="fc" id="L1925">            mRunning = false;</span>
         }
-<span class="fc" id="L1924">    }</span>
+<span class="fc" id="L1927">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1930,7 +1933,7 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1933">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L1936">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -1941,7 +1944,7 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1944">        return true;</span>
+<span class="fc" id="L1947">        return true;</span>
     }
 
     /**
@@ -1955,12 +1958,12 @@ public class PROMedSRobustKnownPositionAccelerometerCalibrator extends
      *                                  number of samples (10 or 13).
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1958" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
-<span class="fc bfc" id="L1959" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
-<span class="fc" id="L1960">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L1961" title="1 of 2 branches missed.">        if (qualityScores == null ||</span>
+<span class="fc bfc" id="L1962" title="All 2 branches covered.">                qualityScores.length &lt; getMinimumRequiredMeasurements()) {</span>
+<span class="fc" id="L1963">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1963">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1964">    }</span>
+<span class="fc" id="L1966">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1967">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

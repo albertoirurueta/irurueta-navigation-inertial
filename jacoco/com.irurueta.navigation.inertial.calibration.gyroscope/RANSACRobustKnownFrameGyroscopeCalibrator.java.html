@@ -24,6 +24,7 @@ import com.irurueta.numerical.robust.RANSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -84,23 +85,23 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * The threshold refers to the amount of error on distance between estimated position and
      * distances provided for each sample.
      */
-<span class="fc" id="L87">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+<span class="fc" id="L88">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-<span class="fc" id="L92">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+<span class="fc" id="L93">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-<span class="fc" id="L97">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+<span class="fc" id="L98">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
 
     /**
      * Constructor.
      */
-<span class="fc" id="L102">    public RANSACRobustKnownFrameGyroscopeCalibrator() {</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">    public RANSACRobustKnownFrameGyroscopeCalibrator() {</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Constructor.
@@ -110,8 +111,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      */
     public RANSACRobustKnownFrameGyroscopeCalibrator(
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L113">        super(listener);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L114">        super(listener);</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Constructor.
@@ -122,8 +123,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      */
     public RANSACRobustKnownFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L125">        super(measurements);</span>
-<span class="fc" id="L126">    }</span>
+<span class="fc" id="L126">        super(measurements);</span>
+<span class="fc" id="L127">    }</span>
 
     /**
      * Constructor.
@@ -137,8 +138,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
     public RANSACRobustKnownFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L140">        super(measurements, listener);</span>
-<span class="fc" id="L141">    }</span>
+<span class="fc" id="L141">        super(measurements, listener);</span>
+<span class="fc" id="L142">    }</span>
 
     /**
      * Constructor.
@@ -147,8 +148,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      *                       accelerometer and gyroscope.
      */
     public RANSACRobustKnownFrameGyroscopeCalibrator(final boolean commonAxisUsed) {
-<span class="fc" id="L150">        super(commonAxisUsed);</span>
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L151">        super(commonAxisUsed);</span>
+<span class="fc" id="L152">    }</span>
 
     /**
      * Constructor.
@@ -160,8 +161,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
     public RANSACRobustKnownFrameGyroscopeCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L163">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L164">    }</span>
+<span class="fc" id="L164">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L165">    }</span>
 
     /**
      * Constructor.
@@ -175,8 +176,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
     public RANSACRobustKnownFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L178">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L179">    }</span>
+<span class="fc" id="L179">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L180">    }</span>
 
     /**
      * Constructor.
@@ -192,8 +193,8 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L195">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L196">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L197">    }</span>
 
     /**
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
@@ -203,7 +204,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L206">        return mThreshold;</span>
+<span class="fc" id="L207">        return mThreshold;</span>
     }
 
     /**
@@ -216,14 +217,14 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc bfc" id="L219" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L220">            throw new LockedException();</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L221">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L222" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
-<span class="fc" id="L223">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L223" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L224">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L225">        mThreshold = threshold;</span>
-<span class="fc" id="L226">    }</span>
+<span class="fc" id="L226">        mThreshold = threshold;</span>
+<span class="fc" id="L227">    }</span>
 
     /**
      * Indicates whether inliers must be computed and kept.
@@ -232,7 +233,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-<span class="fc" id="L235">        return mComputeAndKeepInliers;</span>
+<span class="fc" id="L236">        return mComputeAndKeepInliers;</span>
     }
 
     /**
@@ -245,11 +246,11 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
     public void setComputeAndKeepInliersEnabled(
             final boolean computeAndKeepInliers)
             throws LockedException {
-<span class="fc bfc" id="L248" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L249">            throw new LockedException();</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L250">            throw new LockedException();</span>
         }
-<span class="fc" id="L251">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
-<span class="fc" id="L252">    }</span>
+<span class="fc" id="L252">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L253">    }</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
@@ -258,7 +259,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-<span class="fc" id="L261">        return mComputeAndKeepResiduals;</span>
+<span class="fc" id="L262">        return mComputeAndKeepResiduals;</span>
     }
 
     /**
@@ -271,11 +272,11 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
     public void setComputeAndKeepResidualsEnabled(
             final boolean computeAndKeepResiduals)
             throws LockedException {
-<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L275">            throw new LockedException();</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L276">            throw new LockedException();</span>
         }
-<span class="fc" id="L277">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
-<span class="fc" id="L278">    }</span>
+<span class="fc" id="L278">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Estimates gyroscope calibration parameters containing bias, scale factors
@@ -289,116 +290,118 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L292" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L293">            throw new LockedException();</span>
+<span class="fc bfc" id="L293" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L294">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L295" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L296">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L296" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L297">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L299">        final RANSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L300">        final RANSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new RANSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L301">                        new RANSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L302">                        new RANSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                             @Override
                             public double getThreshold() {
-<span class="fc" id="L304">                                return mThreshold;</span>
+<span class="fc" id="L305">                                return mThreshold;</span>
                             }
 
                             @Override
                             public int getTotalSamples() {
-<span class="fc" id="L309">                                return mMeasurements.size();</span>
+<span class="fc" id="L310">                                return mMeasurements.size();</span>
                             }
 
                             @Override
                             public int getSubsetSize() {
-<span class="fc" id="L314">                                return mPreliminarySubsetSize;</span>
+<span class="fc" id="L315">                                return mPreliminarySubsetSize;</span>
                             }
 
                             @Override
                             public void estimatePreliminarSolutions(
                                     final int[] samplesIndices,
                                     final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L321">                                computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L322">                            }</span>
+<span class="fc" id="L322">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L323">                            }</span>
 
                             @Override
                             public double computeResidual(
                                     final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L327">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L328">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
                             }
 
                             @Override
                             public boolean isReady() {
-<span class="fc" id="L332">                                return RANSACRobustKnownFrameGyroscopeCalibrator.super.isReady();</span>
+<span class="fc" id="L333">                                return RANSACRobustKnownFrameGyroscopeCalibrator.super.isReady();</span>
                             }
 
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L338">                            }</span>
+                                // no action needed
+<span class="fc" id="L340">                            }</span>
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L343">                            }</span>
+                                // no action needed
+<span class="fc" id="L346">                            }</span>
 
                             @Override
                             public void onEstimateNextIteration(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                                     final int iteration) {
-<span class="pc bpc" id="L349" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
-<span class="fc" id="L350">                                    mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L352" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L353">                                    mListener.onCalibrateNextIteration(</span>
                                             RANSACRobustKnownFrameGyroscopeCalibrator.this,
                                             iteration);
                                 }
-<span class="fc" id="L354">                            }</span>
+<span class="fc" id="L357">                            }</span>
 
                             @Override
                             public void onEstimateProgressChange(
                                     final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                                     final float progress) {
-<span class="pc bpc" id="L360" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
-<span class="fc" id="L361">                                    mListener.onCalibrateProgressChange(</span>
+<span class="pc bpc" id="L363" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L364">                                    mListener.onCalibrateProgressChange(</span>
                                             RANSACRobustKnownFrameGyroscopeCalibrator.this,
                                             progress);
                                 }
-<span class="fc" id="L365">                            }</span>
+<span class="fc" id="L368">                            }</span>
                         });
 
         try {
-<span class="fc" id="L369">            mRunning = true;</span>
+<span class="fc" id="L372">            mRunning = true;</span>
 
-<span class="pc bpc" id="L371" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L372">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L375">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L375">            mInliersData = null;</span>
-<span class="pc bpc" id="L376" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L378">            mInliersData = null;</span>
+<span class="pc bpc" id="L379" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="pc bpc" id="L378" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="pc bpc" id="L381" title="1 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L380">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L381">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L382">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L383">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L384">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L383">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L384">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L385">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L386">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L387">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L386">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L389">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L388" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L389">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L391" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L392">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L392">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L393">            throw new LockedException(e);</span>
-<span class="nc" id="L394">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L395">            throw new NotReadyException(e);</span>
-<span class="nc" id="L396">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L397">            throw new CalibrationException(e);</span>
+<span class="nc" id="L395">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L396">            throw new LockedException(e);</span>
+<span class="nc" id="L397">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L398">            throw new NotReadyException(e);</span>
+<span class="nc" id="L399">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L400">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L399">            mRunning = false;</span>
+<span class="fc" id="L402">            mRunning = false;</span>
         }
-<span class="fc" id="L401">    }</span>
+<span class="fc" id="L404">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -407,7 +410,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L410">        return RobustEstimatorMethod.RANSAC;</span>
+<span class="fc" id="L413">        return RobustEstimatorMethod.RANSAC;</span>
     }
 
     /**
@@ -418,7 +421,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L421">        return false;</span>
+<span class="fc" id="L424">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

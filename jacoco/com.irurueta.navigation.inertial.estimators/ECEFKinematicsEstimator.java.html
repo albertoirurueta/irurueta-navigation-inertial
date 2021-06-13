@@ -1665,111 +1665,119 @@ import com.irurueta.units.TimeUnit;
 
                 // cOldNew = cBe' * cEarth * oldCbe
 <span class="fc" id="L1667">                cEarth.multiply(oldCbe);</span>
-<span class="fc" id="L1668">                cBe.multiply(cEarth); // here cBe is cOldNew</span>
+                // here cBe is cOldNew
+<span class="fc" id="L1669">                cBe.multiply(cEarth);</span>
 
                 // Calculate the approximate angular rate with respect an inertial frame
-<span class="fc" id="L1671">                double alphaX = 0.5 * (cBe.getElementAt(1, 2)</span>
-<span class="fc" id="L1672">                        - cBe.getElementAt(2, 1));</span>
-<span class="fc" id="L1673">                double alphaY = 0.5 * (cBe.getElementAt(2, 0)</span>
-<span class="fc" id="L1674">                        - cBe.getElementAt(0, 2));</span>
-<span class="fc" id="L1675">                double alphaZ = 0.5 * (cBe.getElementAt(0, 1)</span>
-<span class="fc" id="L1676">                        - cBe.getElementAt(1, 0));</span>
+<span class="fc" id="L1672">                double alphaX = 0.5 * (cBe.getElementAt(1, 2)</span>
+<span class="fc" id="L1673">                        - cBe.getElementAt(2, 1));</span>
+<span class="fc" id="L1674">                double alphaY = 0.5 * (cBe.getElementAt(2, 0)</span>
+<span class="fc" id="L1675">                        - cBe.getElementAt(0, 2));</span>
+<span class="fc" id="L1676">                double alphaZ = 0.5 * (cBe.getElementAt(0, 1)</span>
+<span class="fc" id="L1677">                        - cBe.getElementAt(1, 0));</span>
 
                 // Calculate and apply the scaling factor
-<span class="fc" id="L1679">                final double temp = Math.acos(0.5 * (Utils.trace(cBe) - 1.0));</span>
-<span class="fc bfc" id="L1680" title="All 2 branches covered.">                if (temp &gt; SCALING_THRESHOLD) {</span>
+<span class="fc" id="L1680">                final double temp = Math.acos(0.5 * (Utils.trace(cBe) - 1.0));</span>
+<span class="fc bfc" id="L1681" title="All 2 branches covered.">                if (temp &gt; SCALING_THRESHOLD) {</span>
                     // scaling is 1 if temp is less than this
-<span class="fc" id="L1682">                    final double scale = temp / Math.sin(temp);</span>
-<span class="fc" id="L1683">                    alphaX *= scale;</span>
-<span class="fc" id="L1684">                    alphaY *= scale;</span>
-<span class="fc" id="L1685">                    alphaZ *= scale;</span>
+<span class="fc" id="L1683">                    final double scale = temp / Math.sin(temp);</span>
+<span class="fc" id="L1684">                    alphaX *= scale;</span>
+<span class="fc" id="L1685">                    alphaY *= scale;</span>
+<span class="fc" id="L1686">                    alphaZ *= scale;</span>
                 }
 
                 // Calculate the angular rate
-<span class="fc" id="L1689">                final double angularRateX = alphaX / timeInterval;</span>
-<span class="fc" id="L1690">                final double angularRateY = alphaY / timeInterval;</span>
-<span class="fc" id="L1691">                final double angularRateZ = alphaZ / timeInterval;</span>
+<span class="fc" id="L1690">                final double angularRateX = alphaX / timeInterval;</span>
+<span class="fc" id="L1691">                final double angularRateY = alphaY / timeInterval;</span>
+<span class="fc" id="L1692">                final double angularRateZ = alphaZ / timeInterval;</span>
 
                 // Calculate the specific force resolved about ECEF-frame axes
                 // Frame (5.36)
-<span class="fc" id="L1695">                final Matrix vEbe = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L1696">                vEbe.setElementAtIndex(0, vx);</span>
-<span class="fc" id="L1697">                vEbe.setElementAtIndex(1, vy);</span>
-<span class="fc" id="L1698">                vEbe.setElementAtIndex(2, vz);</span>
+<span class="fc" id="L1696">                final Matrix vEbe = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L1697">                vEbe.setElementAtIndex(0, vx);</span>
+<span class="fc" id="L1698">                vEbe.setElementAtIndex(1, vy);</span>
+<span class="fc" id="L1699">                vEbe.setElementAtIndex(2, vz);</span>
 
-<span class="fc" id="L1700">                final Matrix oldVebe = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L1701">                oldVebe.setElementAtIndex(0, oldVx);</span>
-<span class="fc" id="L1702">                oldVebe.setElementAtIndex(1, oldVy);</span>
-<span class="fc" id="L1703">                oldVebe.setElementAtIndex(2, oldVz);</span>
+<span class="fc" id="L1701">                final Matrix oldVebe = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L1702">                oldVebe.setElementAtIndex(0, oldVx);</span>
+<span class="fc" id="L1703">                oldVebe.setElementAtIndex(1, oldVy);</span>
+<span class="fc" id="L1704">                oldVebe.setElementAtIndex(2, oldVz);</span>
 
-<span class="fc" id="L1705">                final ECEFGravity gravity = ECEFGravityEstimator</span>
-<span class="fc" id="L1706">                        .estimateGravityAndReturnNew(x, y, z);</span>
-<span class="fc" id="L1707">                final Matrix g = gravity.asMatrix();</span>
+<span class="fc" id="L1706">                final ECEFGravity gravity = ECEFGravityEstimator</span>
+<span class="fc" id="L1707">                        .estimateGravityAndReturnNew(x, y, z);</span>
+<span class="fc" id="L1708">                final Matrix g = gravity.asMatrix();</span>
 
-<span class="fc" id="L1709">                final Matrix earthRotationSkew = Utils.skewMatrix(</span>
+<span class="fc" id="L1710">                final Matrix earthRotationSkew = Utils.skewMatrix(</span>
                         new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
-<span class="fc" id="L1711">                earthRotationSkew.multiplyByScalar(2.0);</span>
-<span class="fc" id="L1712">                earthRotationSkew.multiply(oldVebe); // 2.0 * earthRotationSkew * oldVebe</span>
+<span class="fc" id="L1712">                earthRotationSkew.multiplyByScalar(2.0);</span>
+                // 2.0 * earthRotationSkew * oldVebe
+<span class="fc" id="L1714">                earthRotationSkew.multiply(oldVebe);</span>
 
-<span class="fc" id="L1714">                vEbe.subtract(oldVebe); // vEbe - oldVebe</span>
-<span class="fc" id="L1715">                vEbe.multiplyByScalar(1.0 / timeInterval); // (vEbe - oldVebe) / timeInterval</span>
-<span class="fc" id="L1716">                vEbe.subtract(g); // (vEbe - oldVebe) / timeInterval - g</span>
+                // vEbe - oldVebe
+<span class="fc" id="L1717">                vEbe.subtract(oldVebe);</span>
+                // (vEbe - oldVebe) / timeInterval
+<span class="fc" id="L1719">                vEbe.multiplyByScalar(1.0 / timeInterval);</span>
+                // (vEbe - oldVebe) / timeInterval - g
+<span class="fc" id="L1721">                vEbe.subtract(g);</span>
                 // fibe = (vEbe - oldVebe) / timeInterval - g + 2.0 * earthRotationSkew * oldVebe
-<span class="fc" id="L1718">                vEbe.add(earthRotationSkew); // vEbe contains specific force resolved about ECEF-frame axes</span>
+                // vEbe contains specific force resolved about ECEF-frame axes
+<span class="fc" id="L1724">                vEbe.add(earthRotationSkew);</span>
 
                 // Calculate the average body-to-ECEF-frame coordinate transformation
                 // matrix over the update interval using (5,84) and (5.85)
-<span class="fc" id="L1722">                final double alphaNorm = Math.sqrt(alphaX * alphaX</span>
+<span class="fc" id="L1728">                final double alphaNorm = Math.sqrt(alphaX * alphaX</span>
                         + alphaY * alphaY + alphaZ * alphaZ);
-<span class="fc" id="L1724">                final Matrix alphaSkew1 = Utils.skewMatrix(</span>
+<span class="fc" id="L1730">                final Matrix alphaSkew1 = Utils.skewMatrix(</span>
                         new double[]{alphaX, alphaY, alphaZ});
 
-<span class="pc bpc" id="L1727" title="1 of 2 branches missed.">                if (alphaNorm &gt; ALPHA_THRESHOLD) {</span>
-<span class="fc" id="L1728">                    final double alphaNorm2 = alphaNorm * alphaNorm;</span>
-<span class="fc" id="L1729">                    final double value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;</span>
-<span class="fc" id="L1730">                    final double value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;</span>
-<span class="fc" id="L1731">                    final Matrix tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);</span>
-<span class="fc" id="L1732">                    final Matrix tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);</span>
-<span class="fc" id="L1733">                    tmp2.multiply(alphaSkew1);</span>
+<span class="pc bpc" id="L1733" title="1 of 2 branches missed.">                if (alphaNorm &gt; ALPHA_THRESHOLD) {</span>
+<span class="fc" id="L1734">                    final double alphaNorm2 = alphaNorm * alphaNorm;</span>
+<span class="fc" id="L1735">                    final double value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;</span>
+<span class="fc" id="L1736">                    final double value2 = (1.0 - Math.sin(alphaNorm) / alphaNorm) / alphaNorm2;</span>
+<span class="fc" id="L1737">                    final Matrix tmp1 = alphaSkew1.multiplyByScalarAndReturnNew(value1);</span>
+<span class="fc" id="L1738">                    final Matrix tmp2 = alphaSkew1.multiplyByScalarAndReturnNew(value2);</span>
+<span class="fc" id="L1739">                    tmp2.multiply(alphaSkew1);</span>
 
-<span class="fc" id="L1735">                    final Matrix tmp3 = Matrix.identity(ROWS, ROWS);</span>
-<span class="fc" id="L1736">                    tmp3.add(tmp1);</span>
-<span class="fc" id="L1737">                    tmp3.add(tmp2);</span>
+<span class="fc" id="L1741">                    final Matrix tmp3 = Matrix.identity(ROWS, ROWS);</span>
+<span class="fc" id="L1742">                    tmp3.add(tmp1);</span>
+<span class="fc" id="L1743">                    tmp3.add(tmp2);</span>
 
-<span class="fc" id="L1739">                    oldCbe.multiply(tmp3);</span>
+<span class="fc" id="L1745">                    oldCbe.multiply(tmp3);</span>
                 }
 
-<span class="fc" id="L1742">                final Matrix alphaSkew2 = Utils.skewMatrix(</span>
+<span class="fc" id="L1748">                final Matrix alphaSkew2 = Utils.skewMatrix(</span>
                         new double[]{0.0, 0.0, alpha});
-<span class="fc" id="L1744">                alphaSkew2.multiplyByScalar(0.5);</span>
-<span class="fc" id="L1745">                alphaSkew2.multiply(oldCbe); // 0.5 * alphaSkew2 * oldCbe</span>
+<span class="fc" id="L1750">                alphaSkew2.multiplyByScalar(0.5);</span>
+                // 0.5 * alphaSkew2 * oldCbe
+<span class="fc" id="L1752">                alphaSkew2.multiply(oldCbe);</span>
 
-<span class="fc" id="L1747">                oldCbe.subtract(alphaSkew2); // oldCbe - 0.5 * alphaSkew2 * oldCbe</span>
+                // oldCbe - 0.5 * alphaSkew2 * oldCbe
+<span class="fc" id="L1755">                oldCbe.subtract(alphaSkew2);</span>
                 // oldCbe now contains the average body-to-ECEF-frame coordinate transformation
 
                 // Transform specific force to body-frame resolving axes using (5.81)
-<span class="fc" id="L1751">                Matrix invAveCbe = Utils.inverse(oldCbe);</span>
-<span class="fc" id="L1752">                invAveCbe.multiply(vEbe);</span>
+<span class="fc" id="L1759">                Matrix invAveCbe = Utils.inverse(oldCbe);</span>
+<span class="fc" id="L1760">                invAveCbe.multiply(vEbe);</span>
 
-<span class="fc" id="L1754">                final double specificForceX = invAveCbe.getElementAtIndex(0);</span>
-<span class="fc" id="L1755">                final double specificForceY = invAveCbe.getElementAtIndex(1);</span>
-<span class="fc" id="L1756">                final double specificForceZ = invAveCbe.getElementAtIndex(2);</span>
+<span class="fc" id="L1762">                final double specificForceX = invAveCbe.getElementAtIndex(0);</span>
+<span class="fc" id="L1763">                final double specificForceY = invAveCbe.getElementAtIndex(1);</span>
+<span class="fc" id="L1764">                final double specificForceZ = invAveCbe.getElementAtIndex(2);</span>
 
                 // save result data
-<span class="fc" id="L1759">                result.setSpecificForceCoordinates(specificForceX, specificForceY,</span>
+<span class="fc" id="L1767">                result.setSpecificForceCoordinates(specificForceX, specificForceY,</span>
                         specificForceZ);
-<span class="fc" id="L1761">                result.setAngularRateCoordinates(angularRateX, angularRateY,</span>
+<span class="fc" id="L1769">                result.setAngularRateCoordinates(angularRateX, angularRateY,</span>
                         angularRateZ);
 
-<span class="nc" id="L1764">            } catch (final AlgebraException ignore) {</span>
+<span class="nc" id="L1772">            } catch (final AlgebraException ignore) {</span>
                 // never happens
-<span class="pc" id="L1766">            }</span>
+<span class="pc" id="L1774">            }</span>
         } else {
             // If time interval is zero, set angular rate and specific force to zero
-<span class="fc" id="L1769">            result.setSpecificForceCoordinates(0.0, 0.0, 0.0);</span>
-<span class="fc" id="L1770">            result.setAngularRateCoordinates(0.0, 0.0, 0.0);</span>
+<span class="fc" id="L1777">            result.setSpecificForceCoordinates(0.0, 0.0, 0.0);</span>
+<span class="fc" id="L1778">            result.setAngularRateCoordinates(0.0, 0.0, 0.0);</span>
         }
-<span class="fc" id="L1772">    }</span>
+<span class="fc" id="L1780">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -1812,10 +1820,10 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final double x, final double y, final double z,
                                           final BodyKinematics result) {
-<span class="fc" id="L1815">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L1816">                timeInterval.getUnit(), TimeUnit.SECOND),</span>
+<span class="fc" id="L1823">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L1824">                timeInterval.getUnit(), TimeUnit.SECOND),</span>
                 c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, x, y, z, result);
-<span class="fc" id="L1818">    }</span>
+<span class="fc" id="L1826">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -1842,10 +1850,10 @@ import com.irurueta.units.TimeUnit;
                                           final ECEFVelocity oldVelocity,
                                           final double x, final double y, final double z,
                                           final BodyKinematics result) {
-<span class="fc" id="L1845">        estimateKinematics(timeInterval, c, oldC, velocity.getVx(), velocity.getVy(), velocity.getVz(),</span>
-<span class="fc" id="L1846">                oldVelocity.getVx(), oldVelocity.getVy(), oldVelocity.getVz(),</span>
+<span class="fc" id="L1853">        estimateKinematics(timeInterval, c, oldC, velocity.getVx(), velocity.getVy(), velocity.getVz(),</span>
+<span class="fc" id="L1854">                oldVelocity.getVx(), oldVelocity.getVy(), oldVelocity.getVz(),</span>
                 x, y, z, result);
-<span class="fc" id="L1848">    }</span>
+<span class="fc" id="L1856">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -1872,10 +1880,10 @@ import com.irurueta.units.TimeUnit;
                                           final ECEFVelocity oldVelocity,
                                           final double x, final double y, final double z,
                                           final BodyKinematics result) {
-<span class="fc" id="L1875">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L1876">                timeInterval.getUnit(), TimeUnit.SECOND), c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L1883">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L1884">                timeInterval.getUnit(), TimeUnit.SECOND), c, oldC, velocity, oldVelocity,</span>
                 x, y, z, result);
-<span class="fc" id="L1878">    }</span>
+<span class="fc" id="L1886">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates)..
@@ -1907,9 +1915,9 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final ECEFPosition position,
                                           final BodyKinematics result) {
-<span class="fc" id="L1910">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L1911">                position.getX(), position.getY(), position.getZ(), result);</span>
-<span class="fc" id="L1912">    }</span>
+<span class="fc" id="L1918">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1919">                position.getX(), position.getY(), position.getZ(), result);</span>
+<span class="fc" id="L1920">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -1941,10 +1949,10 @@ import com.irurueta.units.TimeUnit;
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final ECEFPosition position,
                                           final BodyKinematics result) {
-<span class="fc" id="L1944">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L1945">                timeInterval.getUnit(), TimeUnit.SECOND), c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1952">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L1953">                timeInterval.getUnit(), TimeUnit.SECOND), c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
                 position, result);
-<span class="fc" id="L1947">    }</span>
+<span class="fc" id="L1955">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -1966,10 +1974,10 @@ import com.irurueta.units.TimeUnit;
                                           final ECEFVelocity oldVelocity,
                                           final ECEFPosition position,
                                           final BodyKinematics result) {
-<span class="fc" id="L1969">        estimateKinematics(timeInterval, c, oldC, velocity.getVx(), velocity.getVy(), velocity.getVz(),</span>
-<span class="fc" id="L1970">                oldVelocity.getVx(), oldVelocity.getVy(), oldVelocity.getVz(),</span>
-<span class="fc" id="L1971">                position.getX(), position.getY(), position.getZ(), result);</span>
-<span class="fc" id="L1972">    }</span>
+<span class="fc" id="L1977">        estimateKinematics(timeInterval, c, oldC, velocity.getVx(), velocity.getVy(), velocity.getVz(),</span>
+<span class="fc" id="L1978">                oldVelocity.getVx(), oldVelocity.getVy(), oldVelocity.getVz(),</span>
+<span class="fc" id="L1979">                position.getX(), position.getY(), position.getZ(), result);</span>
+<span class="fc" id="L1980">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -1991,10 +1999,10 @@ import com.irurueta.units.TimeUnit;
                                           final ECEFVelocity oldVelocity,
                                           final ECEFPosition position,
                                           final BodyKinematics result) {
-<span class="fc" id="L1994">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L1995">                timeInterval.getUnit(), TimeUnit.SECOND), c, oldC, velocity,</span>
+<span class="fc" id="L2002">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L2003">                timeInterval.getUnit(), TimeUnit.SECOND), c, oldC, velocity,</span>
                 oldVelocity, position, result);
-<span class="fc" id="L1997">    }</span>
+<span class="fc" id="L2005">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2021,10 +2029,10 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final BodyKinematics result) {
-<span class="fc" id="L2024">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(),</span>
-<span class="fc" id="L2025">                oldC, frame.getVx(), frame.getVy(), frame.getVz(),</span>
-<span class="fc" id="L2026">                oldVx, oldVy, oldVz, frame.getX(), frame.getY(), frame.getZ(), result);</span>
-<span class="fc" id="L2027">    }</span>
+<span class="fc" id="L2032">        estimateKinematics(timeInterval, frame.getCoordinateTransformation(),</span>
+<span class="fc" id="L2033">                oldC, frame.getVx(), frame.getVy(), frame.getVz(),</span>
+<span class="fc" id="L2034">                oldVx, oldVy, oldVz, frame.getX(), frame.getY(), frame.getZ(), result);</span>
+<span class="fc" id="L2035">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2051,12 +2059,12 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final BodyKinematics result) {
-<span class="fc" id="L2054">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L2055">                timeInterval.getUnit(), TimeUnit.SECOND),</span>
-<span class="fc" id="L2056">                frame.getCoordinateTransformation(),</span>
-<span class="fc" id="L2057">                oldC, frame.getVx(), frame.getVy(), frame.getVz(),</span>
-<span class="fc" id="L2058">                oldVx, oldVy, oldVz, frame.getX(), frame.getY(), frame.getZ(), result);</span>
-<span class="fc" id="L2059">    }</span>
+<span class="fc" id="L2062">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L2063">                timeInterval.getUnit(), TimeUnit.SECOND),</span>
+<span class="fc" id="L2064">                frame.getCoordinateTransformation(),</span>
+<span class="fc" id="L2065">                oldC, frame.getVx(), frame.getVy(), frame.getVz(),</span>
+<span class="fc" id="L2066">                oldVx, oldVy, oldVz, frame.getX(), frame.getY(), frame.getZ(), result);</span>
+<span class="fc" id="L2067">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2075,9 +2083,9 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final ECEFVelocity oldVelocity,
                                           final BodyKinematics result) {
-<span class="fc" id="L2078">        estimateKinematics(timeInterval, frame, oldC,</span>
-<span class="fc" id="L2079">                oldVelocity.getVx(), oldVelocity.getVy(), oldVelocity.getVz(), result);</span>
-<span class="fc" id="L2080">    }</span>
+<span class="fc" id="L2086">        estimateKinematics(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2087">                oldVelocity.getVx(), oldVelocity.getVy(), oldVelocity.getVz(), result);</span>
+<span class="fc" id="L2088">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2096,9 +2104,9 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final ECEFVelocity oldVelocity,
                                           final BodyKinematics result) {
-<span class="fc" id="L2099">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L2100">                timeInterval.getUnit(), TimeUnit.SECOND), frame, oldC, oldVelocity, result);</span>
-<span class="fc" id="L2101">    }</span>
+<span class="fc" id="L2107">        estimateKinematics(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L2108">                timeInterval.getUnit(), TimeUnit.SECOND), frame, oldC, oldVelocity, result);</span>
+<span class="fc" id="L2109">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2115,10 +2123,10 @@ import com.irurueta.units.TimeUnit;
     public static void estimateKinematics(final double timeInterval,
                                           final ECEFFrame frame, final ECEFFrame oldFrame,
                                           final BodyKinematics result) {
-<span class="fc" id="L2118">        estimateKinematics(timeInterval, frame,</span>
-<span class="fc" id="L2119">                oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L2120">                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), result);</span>
-<span class="fc" id="L2121">    }</span>
+<span class="fc" id="L2126">        estimateKinematics(timeInterval, frame,</span>
+<span class="fc" id="L2127">                oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L2128">                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), result);</span>
+<span class="fc" id="L2129">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2135,10 +2143,10 @@ import com.irurueta.units.TimeUnit;
     public static void estimateKinematics(final Time timeInterval,
                                           final ECEFFrame frame, final ECEFFrame oldFrame,
                                           final BodyKinematics result) {
-<span class="fc" id="L2138">        estimateKinematics(timeInterval, frame,</span>
-<span class="fc" id="L2139">                oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L2140">                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), result);</span>
-<span class="fc" id="L2141">    }</span>
+<span class="fc" id="L2146">        estimateKinematics(timeInterval, frame,</span>
+<span class="fc" id="L2147">                oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L2148">                oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), result);</span>
+<span class="fc" id="L2149">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2175,15 +2183,15 @@ import com.irurueta.units.TimeUnit;
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final double x, final double y, final double z,
                                           final BodyKinematics result) {
-<span class="fc" id="L2178">        estimateKinematics(timeInterval, c, oldC,</span>
-<span class="fc" id="L2179">                SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2180">                SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2181">                SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2182">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2183">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2184">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2186">        estimateKinematics(timeInterval, c, oldC,</span>
+<span class="fc" id="L2187">                SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2188">                SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2189">                SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2190">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2191">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2192">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
                 x, y, z, result);
-<span class="fc" id="L2186">    }</span>
+<span class="fc" id="L2194">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2220,15 +2228,15 @@ import com.irurueta.units.TimeUnit;
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final double x, final double y, final double z,
                                           final BodyKinematics result) {
-<span class="fc" id="L2223">        estimateKinematics(timeInterval, c, oldC,</span>
-<span class="fc" id="L2224">                SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2225">                SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2226">                SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2227">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2228">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2229">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2231">        estimateKinematics(timeInterval, c, oldC,</span>
+<span class="fc" id="L2232">                SpeedConverter.convert(vx.getValue().doubleValue(), vx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2233">                SpeedConverter.convert(vy.getValue().doubleValue(), vy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2234">                SpeedConverter.convert(vz.getValue().doubleValue(), vz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2235">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2236">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2237">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
                 x, y, z, result);
-<span class="fc" id="L2231">    }</span>
+<span class="fc" id="L2239">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2260,9 +2268,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final ECEFPosition position,
                                           final BodyKinematics result) {
-<span class="fc" id="L2263">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L2264">                position.getX(), position.getY(), position.getZ(), result);</span>
-<span class="fc" id="L2265">    }</span>
+<span class="fc" id="L2271">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2272">                position.getX(), position.getY(), position.getZ(), result);</span>
+<span class="fc" id="L2273">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2294,9 +2302,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final ECEFPosition position,
                                           final BodyKinematics result) {
-<span class="fc" id="L2297">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L2298">                position.getX(), position.getY(), position.getZ(), result);</span>
-<span class="fc" id="L2299">    }</span>
+<span class="fc" id="L2305">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2306">                position.getX(), position.getY(), position.getZ(), result);</span>
+<span class="fc" id="L2307">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2320,12 +2328,12 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final BodyKinematics result) {
-<span class="fc" id="L2323">        estimateKinematics(timeInterval, frame, oldC,</span>
-<span class="fc" id="L2324">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2325">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2326">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2331">        estimateKinematics(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2332">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2333">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2334">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
                 result);
-<span class="fc" id="L2328">    }</span>
+<span class="fc" id="L2336">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2349,12 +2357,12 @@ import com.irurueta.units.TimeUnit;
                                           final CoordinateTransformation oldC,
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final BodyKinematics result) {
-<span class="fc" id="L2352">        estimateKinematics(timeInterval, frame, oldC,</span>
-<span class="fc" id="L2353">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2354">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
-<span class="fc" id="L2355">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2360">        estimateKinematics(timeInterval, frame, oldC,</span>
+<span class="fc" id="L2361">                SpeedConverter.convert(oldVx.getValue().doubleValue(), oldVx.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2362">                SpeedConverter.convert(oldVy.getValue().doubleValue(), oldVy.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
+<span class="fc" id="L2363">                SpeedConverter.convert(oldVz.getValue().doubleValue(), oldVz.getUnit(), SpeedUnit.METERS_PER_SECOND),</span>
                 result);
-<span class="fc" id="L2357">    }</span>
+<span class="fc" id="L2365">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2392,9 +2400,9 @@ import com.irurueta.units.TimeUnit;
                                           final double vx, final double vy, final double vz,
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final Point3D position, final BodyKinematics result) {
-<span class="fc" id="L2395">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L2396">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
-<span class="fc" id="L2397">    }</span>
+<span class="fc" id="L2403">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2404">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L2405">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2432,9 +2440,9 @@ import com.irurueta.units.TimeUnit;
                                           final double vx, final double vy, final double vz,
                                           final double oldVx, final double oldVy, final double oldVz,
                                           final Point3D position, final BodyKinematics result) {
-<span class="fc" id="L2435">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L2436">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
-<span class="fc" id="L2437">    }</span>
+<span class="fc" id="L2443">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2444">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L2445">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2456,9 +2464,9 @@ import com.irurueta.units.TimeUnit;
                                           final ECEFVelocity velocity,
                                           final ECEFVelocity oldVelocity,
                                           final Point3D position, final BodyKinematics result) {
-<span class="fc" id="L2459">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
-<span class="fc" id="L2460">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
-<span class="fc" id="L2461">    }</span>
+<span class="fc" id="L2467">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L2468">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L2469">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2480,9 +2488,9 @@ import com.irurueta.units.TimeUnit;
                                           final ECEFVelocity velocity,
                                           final ECEFVelocity oldVelocity,
                                           final Point3D position, final BodyKinematics result) {
-<span class="fc" id="L2483">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
-<span class="fc" id="L2484">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
-<span class="fc" id="L2485">    }</span>
+<span class="fc" id="L2491">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity,</span>
+<span class="fc" id="L2492">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L2493">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2514,9 +2522,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed vx, final Speed vy, final Speed vz,
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final Point3D position, final BodyKinematics result) {
-<span class="fc" id="L2517">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L2518">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
-<span class="fc" id="L2519">    }</span>
+<span class="fc" id="L2525">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2526">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L2527">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2548,9 +2556,9 @@ import com.irurueta.units.TimeUnit;
                                           final Speed vx, final Speed vy, final Speed vz,
                                           final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                           final Point3D position, final BodyKinematics result) {
-<span class="fc" id="L2551">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L2552">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
-<span class="fc" id="L2553">    }</span>
+<span class="fc" id="L2559">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2560">                position.getInhomX(), position.getInhomY(), position.getInhomZ(), result);</span>
+<span class="fc" id="L2561">    }</span>
 
     /**
      * Estimates body kinematics (specific force applied to a body and its angular rates).
@@ -2586,16 +2594,15 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final double x, final double y, final double z) {
-<span class="fc" id="L2595">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2596">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L2602">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2603">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
                 x, y, z, result);
-<span class="fc" id="L2598">        return result;</span>
+<span class="fc" id="L2605">        return result;</span>
     }
 
     /**
@@ -2632,16 +2639,15 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final double x, final double y, final double z) {
-<span class="fc" id="L2641">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2642">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
+<span class="fc" id="L2647">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2648">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
                 x, y, z, result);
-<span class="fc" id="L2644">        return result;</span>
+<span class="fc" id="L2650">        return result;</span>
     }
 
     /**
@@ -2668,9 +2674,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final ECEFVelocity velocity,
                                                                 final ECEFVelocity oldVelocity,
                                                                 final double x, final double y, final double z) {
-<span class="fc" id="L2671">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2672">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, x, y, z, result);</span>
-<span class="fc" id="L2673">        return result;</span>
+<span class="fc" id="L2677">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2678">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, x, y, z, result);</span>
+<span class="fc" id="L2679">        return result;</span>
     }
 
     /**
@@ -2697,9 +2703,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final ECEFVelocity velocity,
                                                                 final ECEFVelocity oldVelocity,
                                                                 final double x, final double y, final double z) {
-<span class="fc" id="L2700">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2701">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, x, y, z, result);</span>
-<span class="fc" id="L2702">        return result;</span>
+<span class="fc" id="L2706">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2707">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, x, y, z, result);</span>
+<span class="fc" id="L2708">        return result;</span>
     }
 
     /**
@@ -2725,15 +2731,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final ECEFPosition position) {
-<span class="fc" id="L2734">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2735">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
-<span class="fc" id="L2736">        return result;</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final ECEFPosition position) {
+<span class="fc" id="L2739">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2740">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L2741">        return result;</span>
     }
 
     /**
@@ -2759,15 +2764,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final ECEFPosition position) {
-<span class="fc" id="L2768">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2769">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
-<span class="fc" id="L2770">        return result;</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final ECEFPosition position) {
+<span class="fc" id="L2772">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2773">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L2774">        return result;</span>
     }
 
     /**
@@ -2789,9 +2793,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final ECEFVelocity velocity,
                                                                 final ECEFVelocity oldVelocity,
                                                                 final ECEFPosition position) {
-<span class="fc" id="L2792">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2793">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);</span>
-<span class="fc" id="L2794">        return result;</span>
+<span class="fc" id="L2796">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2797">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);</span>
+<span class="fc" id="L2798">        return result;</span>
     }
 
     /**
@@ -2813,9 +2817,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final ECEFVelocity velocity,
                                                                 final ECEFVelocity oldVelocity,
                                                                 final ECEFPosition position) {
-<span class="fc" id="L2816">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2817">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);</span>
-<span class="fc" id="L2818">        return result;</span>
+<span class="fc" id="L2820">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2821">        estimateKinematics(timeInterval, c, oldC, velocity, oldVelocity, position, result);</span>
+<span class="fc" id="L2822">        return result;</span>
     }
 
     /**
@@ -2843,9 +2847,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final double oldVx, final double oldVy,
                                                                 final double oldVz) {
-<span class="fc" id="L2846">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2847">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
-<span class="fc" id="L2848">        return result;</span>
+<span class="fc" id="L2850">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2851">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L2852">        return result;</span>
     }
 
     /**
@@ -2873,9 +2877,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final CoordinateTransformation oldC,
                                                                 final double oldVx, final double oldVy,
                                                                 final double oldVz) {
-<span class="fc" id="L2876">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2877">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
-<span class="fc" id="L2878">        return result;</span>
+<span class="fc" id="L2880">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2881">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L2882">        return result;</span>
     }
 
     /**
@@ -2894,9 +2898,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final ECEFFrame frame,
                                                                 final CoordinateTransformation oldC,
                                                                 final ECEFVelocity oldVelocity) {
-<span class="fc" id="L2897">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2898">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, result);</span>
-<span class="fc" id="L2899">        return result;</span>
+<span class="fc" id="L2901">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2902">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, result);</span>
+<span class="fc" id="L2903">        return result;</span>
     }
 
     /**
@@ -2915,9 +2919,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final ECEFFrame frame,
                                                                 final CoordinateTransformation oldC,
                                                                 final ECEFVelocity oldVelocity) {
-<span class="fc" id="L2918">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2919">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, result);</span>
-<span class="fc" id="L2920">        return result;</span>
+<span class="fc" id="L2922">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2923">        estimateKinematics(timeInterval, frame, oldC, oldVelocity, result);</span>
+<span class="fc" id="L2924">        return result;</span>
     }
 
     /**
@@ -2934,9 +2938,9 @@ import com.irurueta.units.TimeUnit;
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
                                                                 final ECEFFrame frame, final ECEFFrame oldFrame) {
-<span class="fc" id="L2937">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2938">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
-<span class="fc" id="L2939">        return result;</span>
+<span class="fc" id="L2941">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2942">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L2943">        return result;</span>
     }
 
     /**
@@ -2953,9 +2957,9 @@ import com.irurueta.units.TimeUnit;
      */
     public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
                                                                 final ECEFFrame frame, final ECEFFrame oldFrame) {
-<span class="fc" id="L2956">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2957">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
-<span class="fc" id="L2958">        return result;</span>
+<span class="fc" id="L2960">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L2961">        estimateKinematics(timeInterval, frame, oldFrame, result);</span>
+<span class="fc" id="L2962">        return result;</span>
     }
 
     /**
@@ -2992,10 +2996,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed vx, final Speed vy, final Speed vz,
                                                                 final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                                                 final double x, final double y, final double z) {
-<span class="fc" id="L2995">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L2996">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L2999">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L3000">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
                 x, y, z, result);
-<span class="fc" id="L2998">        return result;</span>
+<span class="fc" id="L3002">        return result;</span>
     }
 
     /**
@@ -3032,10 +3036,10 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed vx, final Speed vy, final Speed vz,
                                                                 final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                                                 final double x, final double y, final double z) {
-<span class="fc" id="L3035">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L3036">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L3039">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L3040">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
                 x, y, z, result);
-<span class="fc" id="L3038">        return result;</span>
+<span class="fc" id="L3042">        return result;</span>
     }
 
     /**
@@ -3067,9 +3071,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed vx, final Speed vy, final Speed vz,
                                                                 final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                                                 final ECEFPosition position) {
-<span class="fc" id="L3070">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L3071">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
-<span class="fc" id="L3072">        return result;</span>
+<span class="fc" id="L3074">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L3075">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L3076">        return result;</span>
     }
 
     /**
@@ -3101,9 +3105,9 @@ import com.irurueta.units.TimeUnit;
                                                                 final Speed vx, final Speed vy, final Speed vz,
                                                                 final Speed oldVx, final Speed oldVy, final Speed oldVz,
                                                                 final ECEFPosition position) {
-<span class="fc" id="L3104">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L3105">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
-<span class="fc" id="L3106">        return result;</span>
+<span class="fc" id="L3108">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L3109">        estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);</span>
+<span class="fc" id="L3110">        return result;</span>
     }
 
     /**
@@ -3123,13 +3127,12 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final ECEFFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed oldVx, final Speed oldVy, final Speed oldVz) {
-<span class="fc" id="L3130">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L3131">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
-<span class="fc" id="L3132">        return result;</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+<span class="fc" id="L3133">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L3134">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L3135">        return result;</span>
     }
 
     /**
@@ -3149,13 +3152,12 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final ECEFFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed oldVx, final Speed oldVy, final Speed oldVz) {
-<span class="fc" id="L3156">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L3157">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
-<span class="fc" id="L3158">        return result;</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+<span class="fc" id="L3158">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L3159">        estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);</span>
+<span class="fc" id="L3160">        return result;</span>
     }
 
     /**
@@ -3188,15 +3190,14 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final Point3D position) {
-<span class="fc" id="L3197">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz,</span>
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final Point3D position) {
+<span class="fc" id="L3198">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz,</span>
                 oldVx, oldVy, oldVz,
-<span class="fc" id="L3199">                position.getInhomX(), position.getInhomY(), position.getInhomZ());</span>
+<span class="fc" id="L3200">                position.getInhomX(), position.getInhomY(), position.getInhomZ());</span>
     }
 
     /**
@@ -3229,12 +3230,11 @@ import com.irurueta.units.TimeUnit;
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final Point3D position) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final Point3D position) {
 <span class="fc" id="L3238">        return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,</span>
 <span class="fc" id="L3239">                position.getInhomX(), position.getInhomY(), position.getInhomZ());</span>
     }

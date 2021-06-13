@@ -18,18 +18,7 @@ package com.irurueta.navigation.inertial.estimators;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.RadiiOfCurvature;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleConverter;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeConverter;
-import com.irurueta.units.TimeUnit;
+import com.irurueta.units.*;
 
 /**
  * Estimates curvilinear position by integrating the velocity.
@@ -37,8 +26,7 @@ import com.irurueta.units.TimeUnit;
  * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Update_curvilinear_position.m
  */
-@SuppressWarnings(&quot;WeakerAccess&quot;)
-<span class="fc" id="L41">public class NEDPositionEstimator {</span>
+<span class="fc" id="L29">public class NEDPositionEstimator {</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -67,9 +55,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double vn, final double ve, final double vd,
                          final NEDPosition result) {
-<span class="fc" id="L70">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L58">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -98,9 +86,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double vn, final double ve, final double vd,
                          final NEDPosition result) {
-<span class="fc" id="L101">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L89">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -129,9 +117,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition result) {
-<span class="fc" id="L132">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L120">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L134">    }</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -160,9 +148,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition result) {
-<span class="fc" id="L163">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L151">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L153">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -191,9 +179,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double vn, final double ve, final double vd,
                          final NEDPosition result) {
-<span class="fc" id="L194">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L182">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L184">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -222,9 +210,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double vn, final double ve, final double vd,
                          final NEDPosition result) {
-<span class="fc" id="L225">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L213">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L215">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -253,9 +241,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition result) {
-<span class="fc" id="L256">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L244">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L258">    }</span>
+<span class="fc" id="L246">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -284,9 +272,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition result) {
-<span class="fc" id="L287">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L275">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L289">    }</span>
+<span class="fc" id="L277">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -313,9 +301,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double vn, final double ve, final double vd,
                          final NEDPosition result) {
-<span class="fc" id="L316">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L304">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
                 vn, ve, vd, result);
-<span class="fc" id="L318">    }</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -342,9 +330,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldVn, final double oldVe, final double oldVd,
                          final double vn, final double ve, final double vd,
                          final NEDPosition result) {
-<span class="fc" id="L345">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L333">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
                 vn, ve, vd, result);
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L335">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -371,9 +359,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition result) {
-<span class="fc" id="L374">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L362">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
                 vn, ve, vd, result);
-<span class="fc" id="L376">    }</span>
+<span class="fc" id="L364">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -400,9 +388,9 @@ import com.irurueta.units.TimeUnit;
                          final Speed oldVn, final Speed oldVe, final Speed oldVd,
                          final Speed vn, final Speed ve, final Speed vd,
                          final NEDPosition result) {
-<span class="fc" id="L403">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L391">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
                 vn, ve, vd, result);
-<span class="fc" id="L405">    }</span>
+<span class="fc" id="L393">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -424,9 +412,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldLatitude, final double oldLongitude,
                          final double oldHeight, final NEDVelocity oldVelocity,
                          final NEDVelocity velocity, final NEDPosition result) {
-<span class="fc" id="L427">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L415">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L429">    }</span>
+<span class="fc" id="L417">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -448,9 +436,9 @@ import com.irurueta.units.TimeUnit;
                          final double oldLongitude, final double oldHeight,
                          final NEDVelocity oldVelocity, final NEDVelocity velocity,
                          final NEDPosition result) {
-<span class="fc" id="L451">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L439">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L453">    }</span>
+<span class="fc" id="L441">    }</span>
 
     /**
      * Estimates velocity from curvilinear position changes and taking into account previous
@@ -473,9 +461,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle oldLatitude, final Angle oldLongitude,
                          final Distance oldHeight, final NEDVelocity oldVelocity,
                          final NEDVelocity velocity, final NEDPosition result) {
-<span class="fc" id="L476">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L464">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L478">    }</span>
+<span class="fc" id="L466">    }</span>
 
     /**
      * Estimates velocity from curvilinear position changes and taking into account previous
@@ -498,9 +486,9 @@ import com.irurueta.units.TimeUnit;
                          final Angle oldLongitude, final Distance oldHeight,
                          final NEDVelocity oldVelocity, final NEDVelocity velocity,
                          final NEDPosition result) {
-<span class="fc" id="L501">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L489">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L503">    }</span>
+<span class="fc" id="L491">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -520,8 +508,8 @@ import com.irurueta.units.TimeUnit;
     public void estimate(final double timeInterval, final NEDPosition oldPosition,
                          final NEDVelocity oldVelocity, final NEDVelocity velocity,
                          final NEDPosition result) {
-<span class="fc" id="L523">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
-<span class="fc" id="L524">    }</span>
+<span class="fc" id="L511">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L512">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -541,8 +529,8 @@ import com.irurueta.units.TimeUnit;
     public void estimate(final Time timeInterval, final NEDPosition oldPosition,
                          final NEDVelocity oldVelocity, final NEDVelocity velocity,
                          final NEDPosition result) {
-<span class="fc" id="L544">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
-<span class="fc" id="L545">    }</span>
+<span class="fc" id="L532">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L533">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -576,7 +564,7 @@ import com.irurueta.units.TimeUnit;
                                             final double vn,
                                             final double ve,
                                             final double vd) {
-<span class="fc" id="L579">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L567">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -613,7 +601,7 @@ import com.irurueta.units.TimeUnit;
                                             final double vn,
                                             final double ve,
                                             final double vd) {
-<span class="fc" id="L616">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L604">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -650,7 +638,7 @@ import com.irurueta.units.TimeUnit;
                                             final Speed vn,
                                             final Speed ve,
                                             final Speed vd) {
-<span class="fc" id="L653">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L641">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -687,7 +675,7 @@ import com.irurueta.units.TimeUnit;
                                             final Speed vn,
                                             final Speed ve,
                                             final Speed vd) {
-<span class="fc" id="L690">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L678">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -724,7 +712,7 @@ import com.irurueta.units.TimeUnit;
                                             final double vn,
                                             final double ve,
                                             final double vd) {
-<span class="fc" id="L727">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L715">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -761,7 +749,7 @@ import com.irurueta.units.TimeUnit;
                                             final double vn,
                                             final double ve,
                                             final double vd) {
-<span class="fc" id="L764">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L752">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -798,7 +786,7 @@ import com.irurueta.units.TimeUnit;
                                             final Speed vn,
                                             final Speed ve,
                                             final Speed vd) {
-<span class="fc" id="L801">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L789">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -835,7 +823,7 @@ import com.irurueta.units.TimeUnit;
                                             final Speed vn,
                                             final Speed ve,
                                             final Speed vd) {
-<span class="fc" id="L838">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L826">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight,
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
@@ -869,7 +857,7 @@ import com.irurueta.units.TimeUnit;
                                             final double vn,
                                             final double ve,
                                             final double vd) {
-<span class="fc" id="L872">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L860">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldPosition, oldVn, oldVe, oldVd, vn, ve, vd);
     }
 
@@ -902,7 +890,7 @@ import com.irurueta.units.TimeUnit;
                                             final double vn,
                                             final double ve,
                                             final double vd) {
-<span class="fc" id="L905">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
+<span class="fc" id="L893">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
 
@@ -935,7 +923,7 @@ import com.irurueta.units.TimeUnit;
                                             final Speed vn,
                                             final Speed ve,
                                             final Speed vd) {
-<span class="fc" id="L938">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
+<span class="fc" id="L926">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
 
@@ -968,7 +956,7 @@ import com.irurueta.units.TimeUnit;
                                             final Speed vn,
                                             final Speed ve,
                                             final Speed vd) {
-<span class="fc" id="L971">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
+<span class="fc" id="L959">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd);
     }
 
@@ -994,7 +982,7 @@ import com.irurueta.units.TimeUnit;
                                             final double oldHeight,
                                             final NEDVelocity oldVelocity,
                                             final NEDVelocity velocity) {
-<span class="fc" id="L997">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L985">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
     }
 
@@ -1020,7 +1008,7 @@ import com.irurueta.units.TimeUnit;
                                             final double oldHeight,
                                             final NEDVelocity oldVelocity,
                                             final NEDVelocity velocity) {
-<span class="fc" id="L1023">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L1011">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
     }
 
@@ -1047,7 +1035,7 @@ import com.irurueta.units.TimeUnit;
                                             final Distance oldHeight,
                                             final NEDVelocity oldVelocity,
                                             final NEDVelocity velocity) {
-<span class="fc" id="L1050">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L1038">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
     }
 
@@ -1074,7 +1062,7 @@ import com.irurueta.units.TimeUnit;
                                             final Distance oldHeight,
                                             final NEDVelocity oldVelocity,
                                             final NEDVelocity velocity) {
-<span class="fc" id="L1077">        return estimatePositionAndReturnNew(timeInterval,</span>
+<span class="fc" id="L1065">        return estimatePositionAndReturnNew(timeInterval,</span>
                 oldLatitude, oldLongitude, oldHeight, oldVelocity, velocity);
     }
 
@@ -1097,7 +1085,7 @@ import com.irurueta.units.TimeUnit;
                                             final NEDPosition oldPosition,
                                             final NEDVelocity oldVelocity,
                                             final NEDVelocity velocity) {
-<span class="fc" id="L1100">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
+<span class="fc" id="L1088">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
                 oldVelocity, velocity);
     }
 
@@ -1120,7 +1108,7 @@ import com.irurueta.units.TimeUnit;
                                             final NEDPosition oldPosition,
                                             final NEDVelocity oldVelocity,
                                             final NEDVelocity velocity) {
-<span class="fc" id="L1123">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
+<span class="fc" id="L1111">        return estimatePositionAndReturnNew(timeInterval, oldPosition,</span>
                 oldVelocity, velocity);
     }
 
@@ -1152,36 +1140,36 @@ import com.irurueta.units.TimeUnit;
                                         final double vn, final double ve, final double vd,
                                         final NEDPosition result) {
 
-<span class="fc bfc" id="L1155" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
-<span class="fc" id="L1156">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1143" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L1144">            throw new IllegalArgumentException();</span>
         }
 
         // Calculate meridian and transverse radii of curvature
-<span class="fc" id="L1160">        final RadiiOfCurvature oldRadii = RadiiOfCurvatureEstimator</span>
-<span class="fc" id="L1161">                .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);</span>
-<span class="fc" id="L1162">        final double oldRn = oldRadii.getRn();</span>
-<span class="fc" id="L1163">        final double oldRe = oldRadii.getRe();</span>
+<span class="fc" id="L1148">        final RadiiOfCurvature oldRadii = RadiiOfCurvatureEstimator</span>
+<span class="fc" id="L1149">                .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);</span>
+<span class="fc" id="L1150">        final double oldRn = oldRadii.getRn();</span>
+<span class="fc" id="L1151">        final double oldRe = oldRadii.getRe();</span>
 
         // Update height using (5.56)
-<span class="fc" id="L1166">        final double height = oldHeight - 0.5 * timeInterval * (oldVd + vd);</span>
+<span class="fc" id="L1154">        final double height = oldHeight - 0.5 * timeInterval * (oldVd + vd);</span>
 
         // Update latitude using (5.56)
-<span class="fc" id="L1169">        final double latitude = oldLatitude</span>
+<span class="fc" id="L1157">        final double latitude = oldLatitude</span>
                 + 0.5 * timeInterval * (oldVn / (oldRn + oldHeight)
                 + vn / (oldRn + height));
 
         // Calculate meridian and transverse radii of curvature
-<span class="fc" id="L1174">        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator</span>
-<span class="fc" id="L1175">                .estimateRadiiOfCurvatureAndReturnNew(latitude);</span>
-<span class="fc" id="L1176">        final double re = radii.getRe();</span>
+<span class="fc" id="L1162">        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator</span>
+<span class="fc" id="L1163">                .estimateRadiiOfCurvatureAndReturnNew(latitude);</span>
+<span class="fc" id="L1164">        final double re = radii.getRe();</span>
 
         // Update longitude using (5.56)
-<span class="fc" id="L1179">        final double longitude = oldLongitude</span>
-<span class="fc" id="L1180">                + 0.5 * timeInterval * (oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude))</span>
-<span class="fc" id="L1181">                + ve / ((re + height) * Math.cos(latitude)));</span>
+<span class="fc" id="L1167">        final double longitude = oldLongitude</span>
+<span class="fc" id="L1168">                + 0.5 * timeInterval * (oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude))</span>
+<span class="fc" id="L1169">                + ve / ((re + height) * Math.cos(latitude)));</span>
 
-<span class="fc" id="L1183">        result.setCoordinates(latitude, longitude, height);</span>
-<span class="fc" id="L1184">    }</span>
+<span class="fc" id="L1171">        result.setCoordinates(latitude, longitude, height);</span>
+<span class="fc" id="L1172">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1210,9 +1198,9 @@ import com.irurueta.units.TimeUnit;
                                         final double oldVn, final double oldVe, final double oldVd,
                                         final double vn, final double ve, final double vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1213">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
+<span class="fc" id="L1201">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
                 oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1215">    }</span>
+<span class="fc" id="L1203">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1241,13 +1229,13 @@ import com.irurueta.units.TimeUnit;
                                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                         final Speed vn, final Speed ve, final Speed vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1244">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude),</span>
-<span class="fc" id="L1245">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
-<span class="fc" id="L1246">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe),</span>
-<span class="fc" id="L1247">                convertSpeedToDouble(oldVd), convertSpeedToDouble(vn),</span>
-<span class="fc" id="L1248">                convertSpeedToDouble(ve), convertSpeedToDouble(vd),</span>
+<span class="fc" id="L1232">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude),</span>
+<span class="fc" id="L1233">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
+<span class="fc" id="L1234">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe),</span>
+<span class="fc" id="L1235">                convertSpeedToDouble(oldVd), convertSpeedToDouble(vn),</span>
+<span class="fc" id="L1236">                convertSpeedToDouble(ve), convertSpeedToDouble(vd),</span>
                 result);
-<span class="fc" id="L1250">    }</span>
+<span class="fc" id="L1238">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1276,9 +1264,9 @@ import com.irurueta.units.TimeUnit;
                                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                         final Speed vn, final Speed ve, final Speed vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1279">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
+<span class="fc" id="L1267">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
                 oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1281">    }</span>
+<span class="fc" id="L1269">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1307,10 +1295,10 @@ import com.irurueta.units.TimeUnit;
                                         final double oldVn, final double oldVe, final double oldVd,
                                         final double vn, final double ve, final double vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1310">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude),</span>
-<span class="fc" id="L1311">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
+<span class="fc" id="L1298">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude),</span>
+<span class="fc" id="L1299">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1313">    }</span>
+<span class="fc" id="L1301">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1339,9 +1327,9 @@ import com.irurueta.units.TimeUnit;
                                         final double oldVn, final double oldVe, final double oldVd,
                                         final double vn, final double ve, final double vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1342">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
+<span class="fc" id="L1330">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
                 oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1344">    }</span>
+<span class="fc" id="L1332">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1370,11 +1358,11 @@ import com.irurueta.units.TimeUnit;
                                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                         final Speed vn, final Speed ve, final Speed vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1373">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
-<span class="fc" id="L1374">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe),</span>
-<span class="fc" id="L1375">                convertSpeedToDouble(oldVd), convertSpeedToDouble(vn),</span>
-<span class="fc" id="L1376">                convertSpeedToDouble(ve), convertSpeedToDouble(vd), result);</span>
-<span class="fc" id="L1377">    }</span>
+<span class="fc" id="L1361">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1362">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe),</span>
+<span class="fc" id="L1363">                convertSpeedToDouble(oldVd), convertSpeedToDouble(vn),</span>
+<span class="fc" id="L1364">                convertSpeedToDouble(ve), convertSpeedToDouble(vd), result);</span>
+<span class="fc" id="L1365">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1403,9 +1391,9 @@ import com.irurueta.units.TimeUnit;
                                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                         final Speed vn, final Speed ve, final Speed vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1406">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
+<span class="fc" id="L1394">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
                 oldHeight, oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1408">    }</span>
+<span class="fc" id="L1396">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1433,10 +1421,10 @@ import com.irurueta.units.TimeUnit;
                                         final double oldVn, final double oldVe, final double oldVd,
                                         final double vn, final double ve, final double vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1436">        estimatePosition(timeInterval, oldPosition.getLatitude(),</span>
-<span class="fc" id="L1437">                oldPosition.getLongitude(), oldPosition.getHeight(), oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L1424">        estimatePosition(timeInterval, oldPosition.getLatitude(),</span>
+<span class="fc" id="L1425">                oldPosition.getLongitude(), oldPosition.getHeight(), oldVn, oldVe, oldVd,</span>
                 vn, ve, vd, result);
-<span class="fc" id="L1439">    }</span>
+<span class="fc" id="L1427">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1464,9 +1452,9 @@ import com.irurueta.units.TimeUnit;
                                         final double oldVn, final double oldVe, final double oldVd,
                                         final double vn, final double ve, final double vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1467">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition,</span>
+<span class="fc" id="L1455">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1469">    }</span>
+<span class="fc" id="L1457">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1494,11 +1482,11 @@ import com.irurueta.units.TimeUnit;
                                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                         final Speed vn, final Speed ve, final Speed vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1497">        estimatePosition(timeInterval, oldPosition, convertSpeedToDouble(oldVn),</span>
-<span class="fc" id="L1498">                convertSpeedToDouble(oldVe), convertSpeedToDouble(oldVd),</span>
-<span class="fc" id="L1499">                convertSpeedToDouble(vn), convertSpeedToDouble(ve),</span>
-<span class="fc" id="L1500">                convertSpeedToDouble(vd), result);</span>
-<span class="fc" id="L1501">    }</span>
+<span class="fc" id="L1485">        estimatePosition(timeInterval, oldPosition, convertSpeedToDouble(oldVn),</span>
+<span class="fc" id="L1486">                convertSpeedToDouble(oldVe), convertSpeedToDouble(oldVd),</span>
+<span class="fc" id="L1487">                convertSpeedToDouble(vn), convertSpeedToDouble(ve),</span>
+<span class="fc" id="L1488">                convertSpeedToDouble(vd), result);</span>
+<span class="fc" id="L1489">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1526,9 +1514,9 @@ import com.irurueta.units.TimeUnit;
                                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
                                         final Speed vn, final Speed ve, final Speed vd,
                                         final NEDPosition result) {
-<span class="fc" id="L1529">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition,</span>
+<span class="fc" id="L1517">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1531">    }</span>
+<span class="fc" id="L1519">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1552,10 +1540,10 @@ import com.irurueta.units.TimeUnit;
                                         final NEDVelocity oldVelocity,
                                         final NEDVelocity velocity,
                                         final NEDPosition result) {
-<span class="fc" id="L1555">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
-<span class="fc" id="L1556">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
-<span class="fc" id="L1557">                velocity.getVn(), velocity.getVe(), velocity.getVd(), result);</span>
-<span class="fc" id="L1558">    }</span>
+<span class="fc" id="L1543">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1544">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+<span class="fc" id="L1545">                velocity.getVn(), velocity.getVe(), velocity.getVd(), result);</span>
+<span class="fc" id="L1546">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1579,9 +1567,9 @@ import com.irurueta.units.TimeUnit;
                                         final NEDVelocity oldVelocity,
                                         final NEDVelocity velocity,
                                         final NEDPosition result) {
-<span class="fc" id="L1582">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
+<span class="fc" id="L1570">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
                 oldHeight, oldVelocity, velocity, result);
-<span class="fc" id="L1584">    }</span>
+<span class="fc" id="L1572">    }</span>
 
     /**
      * Estimates velocity from curvilinear position changes and taking into account previous
@@ -1606,10 +1594,10 @@ import com.irurueta.units.TimeUnit;
                                         final NEDVelocity oldVelocity,
                                         final NEDVelocity velocity,
                                         final NEDPosition result) {
-<span class="fc" id="L1609">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude),</span>
-<span class="fc" id="L1610">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
+<span class="fc" id="L1597">        estimatePosition(timeInterval, convertAngleToDouble(oldLatitude),</span>
+<span class="fc" id="L1598">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L1612">    }</span>
+<span class="fc" id="L1600">    }</span>
 
     /**
      * Estimates velocity from curvilinear position changes and taking into account previous
@@ -1634,9 +1622,9 @@ import com.irurueta.units.TimeUnit;
                                         final NEDVelocity oldVelocity,
                                         final NEDVelocity velocity,
                                         final NEDPosition result) {
-<span class="fc" id="L1637">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
+<span class="fc" id="L1625">        estimatePosition(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude,</span>
                 oldHeight, oldVelocity, velocity, result);
-<span class="fc" id="L1639">    }</span>
+<span class="fc" id="L1627">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1658,10 +1646,10 @@ import com.irurueta.units.TimeUnit;
                                         final NEDVelocity oldVelocity,
                                         final NEDVelocity velocity,
                                         final NEDPosition result) {
-<span class="fc" id="L1661">        estimatePosition(timeInterval, oldPosition.getLatitude(),</span>
-<span class="fc" id="L1662">                oldPosition.getLongitude(), oldPosition.getHeight(),</span>
+<span class="fc" id="L1649">        estimatePosition(timeInterval, oldPosition.getLatitude(),</span>
+<span class="fc" id="L1650">                oldPosition.getLongitude(), oldPosition.getHeight(),</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L1664">    }</span>
+<span class="fc" id="L1652">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1683,9 +1671,9 @@ import com.irurueta.units.TimeUnit;
                                         final NEDVelocity oldVelocity,
                                         final NEDVelocity velocity,
                                         final NEDPosition result) {
-<span class="fc" id="L1686">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition,</span>
+<span class="fc" id="L1674">        estimatePosition(convertTimeToDouble(timeInterval), oldPosition,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L1688">    }</span>
+<span class="fc" id="L1676">    }</span>
 
     /**
      * Estimates curvilinear position by integrating the velocity.
@@ -1719,10 +1707,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double vn,
                                                            final double ve,
                                                            final double vd) {
-<span class="fc" id="L1722">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1723">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1710">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1711">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1725">        return result;</span>
+<span class="fc" id="L1713">        return result;</span>
     }
 
     /**
@@ -1757,10 +1745,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double vn,
                                                            final double ve,
                                                            final double vd) {
-<span class="fc" id="L1760">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1761">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1748">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1749">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1763">        return result;</span>
+<span class="fc" id="L1751">        return result;</span>
     }
 
     /**
@@ -1795,10 +1783,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Speed vn,
                                                            final Speed ve,
                                                            final Speed vd) {
-<span class="fc" id="L1798">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1799">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1786">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1787">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1801">        return result;</span>
+<span class="fc" id="L1789">        return result;</span>
     }
 
     /**
@@ -1833,10 +1821,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Speed vn,
                                                            final Speed ve,
                                                            final Speed vd) {
-<span class="fc" id="L1836">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1837">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1824">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1825">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1839">        return result;</span>
+<span class="fc" id="L1827">        return result;</span>
     }
 
     /**
@@ -1871,10 +1859,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double vn,
                                                            final double ve,
                                                            final double vd) {
-<span class="fc" id="L1874">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1875">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1862">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1863">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1877">        return result;</span>
+<span class="fc" id="L1865">        return result;</span>
     }
 
     /**
@@ -1909,10 +1897,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double vn,
                                                            final double ve,
                                                            final double vd) {
-<span class="fc" id="L1912">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1913">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1900">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1901">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1915">        return result;</span>
+<span class="fc" id="L1903">        return result;</span>
     }
 
     /**
@@ -1947,10 +1935,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Speed vn,
                                                            final Speed ve,
                                                            final Speed vd) {
-<span class="fc" id="L1950">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1951">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1938">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1939">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1953">        return result;</span>
+<span class="fc" id="L1941">        return result;</span>
     }
 
     /**
@@ -1985,10 +1973,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Speed vn,
                                                            final Speed ve,
                                                            final Speed vd) {
-<span class="fc" id="L1988">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L1989">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1976">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L1977">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVn, oldVe, oldVd, vn, ve, vd, result);
-<span class="fc" id="L1991">        return result;</span>
+<span class="fc" id="L1979">        return result;</span>
     }
 
     /**
@@ -2020,10 +2008,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double vn,
                                                            final double ve,
                                                            final double vd) {
-<span class="fc" id="L2023">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2024">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,</span>
+<span class="fc" id="L2011">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2012">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,</span>
                 result);
-<span class="fc" id="L2026">        return result;</span>
+<span class="fc" id="L2014">        return result;</span>
     }
 
     /**
@@ -2055,10 +2043,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double vn,
                                                            final double ve,
                                                            final double vd) {
-<span class="fc" id="L2058">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2059">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,</span>
+<span class="fc" id="L2046">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2047">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,</span>
                 result);
-<span class="fc" id="L2061">        return result;</span>
+<span class="fc" id="L2049">        return result;</span>
     }
 
     /**
@@ -2090,10 +2078,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Speed vn,
                                                            final Speed ve,
                                                            final Speed vd) {
-<span class="fc" id="L2093">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2094">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,</span>
+<span class="fc" id="L2081">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2082">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd, vn, ve, vd,</span>
                 result);
-<span class="fc" id="L2096">        return result;</span>
+<span class="fc" id="L2084">        return result;</span>
     }
 
     /**
@@ -2125,10 +2113,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Speed vn,
                                                            final Speed ve,
                                                            final Speed vd) {
-<span class="fc" id="L2128">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2129">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
+<span class="fc" id="L2116">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2117">        estimatePosition(timeInterval, oldPosition, oldVn, oldVe, oldVd,</span>
                 vn, ve, vd, result);
-<span class="fc" id="L2131">        return result;</span>
+<span class="fc" id="L2119">        return result;</span>
     }
 
     /**
@@ -2153,10 +2141,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double oldHeight,
                                                            final NEDVelocity oldVelocity,
                                                            final NEDVelocity velocity) {
-<span class="fc" id="L2156">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2157">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L2144">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2145">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L2159">        return result;</span>
+<span class="fc" id="L2147">        return result;</span>
     }
 
     /**
@@ -2181,10 +2169,10 @@ import com.irurueta.units.TimeUnit;
                                                            final double oldHeight,
                                                            final NEDVelocity oldVelocity,
                                                            final NEDVelocity velocity) {
-<span class="fc" id="L2184">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2185">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L2172">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2173">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L2187">        return result;</span>
+<span class="fc" id="L2175">        return result;</span>
     }
 
     /**
@@ -2210,10 +2198,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Distance oldHeight,
                                                            final NEDVelocity oldVelocity,
                                                            final NEDVelocity velocity) {
-<span class="fc" id="L2213">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2214">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L2201">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2202">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L2216">        return result;</span>
+<span class="fc" id="L2204">        return result;</span>
     }
 
     /**
@@ -2239,10 +2227,10 @@ import com.irurueta.units.TimeUnit;
                                                            final Distance oldHeight,
                                                            final NEDVelocity oldVelocity,
                                                            final NEDVelocity velocity) {
-<span class="fc" id="L2242">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2243">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L2230">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2231">        estimatePosition(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
                 oldVelocity, velocity, result);
-<span class="fc" id="L2245">        return result;</span>
+<span class="fc" id="L2233">        return result;</span>
     }
 
     /**
@@ -2264,9 +2252,9 @@ import com.irurueta.units.TimeUnit;
                                                            final NEDPosition oldPosition,
                                                            final NEDVelocity oldVelocity,
                                                            final NEDVelocity velocity) {
-<span class="fc" id="L2267">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2268">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
-<span class="fc" id="L2269">        return result;</span>
+<span class="fc" id="L2255">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2256">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity, result);</span>
+<span class="fc" id="L2257">        return result;</span>
     }
 
     /**
@@ -2288,10 +2276,10 @@ import com.irurueta.units.TimeUnit;
                                                            final NEDPosition oldPosition,
                                                            final NEDVelocity oldVelocity,
                                                            final NEDVelocity velocity) {
-<span class="fc" id="L2291">        final NEDPosition result = new NEDPosition();</span>
-<span class="fc" id="L2292">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity,</span>
+<span class="fc" id="L2279">        final NEDPosition result = new NEDPosition();</span>
+<span class="fc" id="L2280">        estimatePosition(timeInterval, oldPosition, oldVelocity, velocity,</span>
                 result);
-<span class="fc" id="L2294">        return result;</span>
+<span class="fc" id="L2282">        return result;</span>
     }
 
     /**
@@ -2301,7 +2289,7 @@ import com.irurueta.units.TimeUnit;
      * @return provided time value expressed in seconds.
      */
     private static double convertTimeToDouble(final Time time) {
-<span class="fc" id="L2304">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),</span>
+<span class="fc" id="L2292">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),</span>
                 TimeUnit.SECOND);
     }
 
@@ -2312,7 +2300,7 @@ import com.irurueta.units.TimeUnit;
      * @return provided angle value expressed in radians.
      */
     private static double convertAngleToDouble(final Angle angle) {
-<span class="fc" id="L2315">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L2303">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -2322,7 +2310,7 @@ import com.irurueta.units.TimeUnit;
      * @return provided distance value expressed in meters.
      */
     private static double convertDistanceToDouble(final Distance distance) {
-<span class="fc" id="L2325">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(),</span>
+<span class="fc" id="L2313">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(),</span>
                 DistanceUnit.METER);
     }
 
@@ -2333,7 +2321,7 @@ import com.irurueta.units.TimeUnit;
      * @return provided speed value expressed in meters per second.
      */
     private static double convertSpeedToDouble(final Speed speed) {
-<span class="fc" id="L2336">        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(),</span>
+<span class="fc" id="L2324">        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(),</span>
                 SpeedUnit.METERS_PER_SECOND);
     }
 }

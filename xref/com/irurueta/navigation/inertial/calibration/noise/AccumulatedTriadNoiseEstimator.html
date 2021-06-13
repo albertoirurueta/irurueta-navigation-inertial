@@ -774,7 +774,7 @@
 <a class="jxr_linenumber" name="L766" href="#L766">766</a> 
 <a class="jxr_linenumber" name="L767" href="#L767">767</a>         <strong class="jxr_keyword">if</strong> (mLastTriad == <strong class="jxr_keyword">null</strong> &amp;&amp; mListener != <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L768" href="#L768">768</a>             <em class="jxr_comment">//noinspection unchecked</em>
-<a class="jxr_linenumber" name="L769" href="#L769">769</a>             mListener.onStart((E)<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L769" href="#L769">769</a>             mListener.onStart((E) <strong class="jxr_keyword">this</strong>);
 <a class="jxr_linenumber" name="L770" href="#L770">770</a>         }
 <a class="jxr_linenumber" name="L771" href="#L771">771</a> 
 <a class="jxr_linenumber" name="L772" href="#L772">772</a>         <em class="jxr_comment">// compute averages</em>
@@ -907,7 +907,7 @@
 <a class="jxr_linenumber" name="L899" href="#L899">899</a> <em class="jxr_javadoccomment">     * Converts provided value and unit into default unit.</em>
 <a class="jxr_linenumber" name="L900" href="#L900">900</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L901" href="#L901">901</a> <em class="jxr_javadoccomment">     * @param value measurement value to be converted.</em>
-<a class="jxr_linenumber" name="L902" href="#L902">902</a> <em class="jxr_javadoccomment">     * @param unit unit of measurement value to be converted.</em>
+<a class="jxr_linenumber" name="L902" href="#L902">902</a> <em class="jxr_javadoccomment">     * @param unit  unit of measurement value to be converted.</em>
 <a class="jxr_linenumber" name="L903" href="#L903">903</a> <em class="jxr_javadoccomment">     * @return converted value.</em>
 <a class="jxr_linenumber" name="L904" href="#L904">904</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L905" href="#L905">905</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">abstract</strong> <strong class="jxr_keyword">double</strong> convertToDefaultUnit(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> value, <strong class="jxr_keyword">final</strong> U unit);

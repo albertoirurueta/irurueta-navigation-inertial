@@ -200,86 +200,86 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
 <span class="fc" id="L201">    private final MagnetometerMeasurementsGeneratorListener mMagnetometerListener =</span>
 <span class="fc" id="L202">            new MagnetometerMeasurementsGeneratorListener() {</span>
-        @Override
-        public void onInitializationStarted(
-                final MagnetometerMeasurementsGenerator generator) {
-<span class="pc bpc" id="L206" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L207">                mListener.onInitializationStarted(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-<span class="fc" id="L210">        }</span>
+                @Override
+                public void onInitializationStarted(
+                        final MagnetometerMeasurementsGenerator generator) {
+<span class="pc bpc" id="L206" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L207">                        mListener.onInitializationStarted(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+<span class="fc" id="L210">                }</span>
 
-        @Override
-        public void onInitializationCompleted(
-                final MagnetometerMeasurementsGenerator generator,
-                final double baseNoiseLevel) {
-<span class="pc bpc" id="L216" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L217">                mListener.onInitializationCompleted(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
-                        baseNoiseLevel);
-            }
-<span class="fc" id="L221">        }</span>
+                @Override
+                public void onInitializationCompleted(
+                        final MagnetometerMeasurementsGenerator generator,
+                        final double baseNoiseLevel) {
+<span class="pc bpc" id="L216" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L217">                        mListener.onInitializationCompleted(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
+                                baseNoiseLevel);
+                    }
+<span class="fc" id="L221">                }</span>
 
-        @Override
-        public void onError(
-                final MagnetometerMeasurementsGenerator generator,
-                final TriadStaticIntervalDetector.ErrorReason reason) {
-            // no action required
-<span class="fc" id="L228">        }</span>
+                @Override
+                public void onError(
+                        final MagnetometerMeasurementsGenerator generator,
+                        final TriadStaticIntervalDetector.ErrorReason reason) {
+                    // no action required
+<span class="fc" id="L228">                }</span>
 
-        @Override
-        public void onStaticIntervalDetected(
-                final MagnetometerMeasurementsGenerator generator) {
-<span class="pc bpc" id="L233" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L234">                mListener.onStaticIntervalDetected(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-<span class="fc" id="L237">        }</span>
+                @Override
+                public void onStaticIntervalDetected(
+                        final MagnetometerMeasurementsGenerator generator) {
+<span class="pc bpc" id="L233" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L234">                        mListener.onStaticIntervalDetected(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+<span class="fc" id="L237">                }</span>
 
-        @Override
-        public void onDynamicIntervalDetected(
-                final MagnetometerMeasurementsGenerator generator) {
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L243">                mListener.onDynamicIntervalDetected(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-<span class="fc" id="L246">        }</span>
+                @Override
+                public void onDynamicIntervalDetected(
+                        final MagnetometerMeasurementsGenerator generator) {
+<span class="pc bpc" id="L242" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L243">                        mListener.onDynamicIntervalDetected(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+<span class="fc" id="L246">                }</span>
 
-        @Override
-        public void onStaticIntervalSkipped(
-                final MagnetometerMeasurementsGenerator generator) {
-<span class="pc bpc" id="L251" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L252">                mListener.onStaticIntervalSkipped(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-<span class="fc" id="L255">        }</span>
+                @Override
+                public void onStaticIntervalSkipped(
+                        final MagnetometerMeasurementsGenerator generator) {
+<span class="pc bpc" id="L251" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L252">                        mListener.onStaticIntervalSkipped(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+<span class="fc" id="L255">                }</span>
 
-        @Override
-        public void onDynamicIntervalSkipped(
-                final MagnetometerMeasurementsGenerator generator) {
-<span class="pc bpc" id="L260" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L261">                mListener.onDynamicIntervalSkipped(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-<span class="fc" id="L264">        }</span>
+                @Override
+                public void onDynamicIntervalSkipped(
+                        final MagnetometerMeasurementsGenerator generator) {
+<span class="pc bpc" id="L260" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L261">                        mListener.onDynamicIntervalSkipped(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+<span class="fc" id="L264">                }</span>
 
-        @Override
-        public void onGeneratedMeasurement(
-                final MagnetometerMeasurementsGenerator generator,
-                final StandardDeviationBodyMagneticFluxDensity measurement) {
-<span class="pc bpc" id="L270" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L271">                mListener.onGeneratedMagnetometerMeasurement(</span>
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
-                        measurement);
-            }
-<span class="fc" id="L275">        }</span>
+                @Override
+                public void onGeneratedMeasurement(
+                        final MagnetometerMeasurementsGenerator generator,
+                        final StandardDeviationBodyMagneticFluxDensity measurement) {
+<span class="pc bpc" id="L270" title="1 of 2 branches missed.">                    if (mListener != null) {</span>
+<span class="fc" id="L271">                        mListener.onGeneratedMagnetometerMeasurement(</span>
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
+                                measurement);
+                    }
+<span class="fc" id="L275">                }</span>
 
-        @Override
-        public void onReset(
-                final MagnetometerMeasurementsGenerator generator) {
-            // no action required
-<span class="fc" id="L281">        }</span>
-    };
+                @Override
+                public void onReset(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    // no action required
+<span class="fc" id="L281">                }</span>
+            };
 
     /**
      * Internal accelerometer measurements generator.

@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -102,14 +103,14 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L105">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L106">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Constructor.
      */
     public LMedSRobustKnownBiasEasyGyroscopeCalibrator() {
-<span class="fc" id="L111">        super();</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L112">        super();</span>
+<span class="fc" id="L113">    }</span>
 
     /**
      * Constructor.
@@ -131,8 +132,8 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L134">        super(sequences, bias, initialMg, initialGg);</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L135">        super(sequences, bias, initialMg, initialGg);</span>
+<span class="fc" id="L136">    }</span>
 
     /**
      * Constructor.
@@ -157,8 +158,8 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L160">        super(sequences, bias, initialMg, initialGg, listener);</span>
-<span class="fc" id="L161">    }</span>
+<span class="fc" id="L161">        super(sequences, bias, initialMg, initialGg, listener);</span>
+<span class="fc" id="L162">    }</span>
 
     /**
      * Constructor.
@@ -180,8 +181,8 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L183">        super(sequences, bias, initialMg, initialGg);</span>
-<span class="fc" id="L184">    }</span>
+<span class="fc" id="L184">        super(sequences, bias, initialMg, initialGg);</span>
+<span class="fc" id="L185">    }</span>
 
     /**
      * Constructor.
@@ -206,8 +207,8 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L209">        super(sequences, bias, initialMg, initialGg, listener);</span>
-<span class="fc" id="L210">    }</span>
+<span class="fc" id="L210">        super(sequences, bias, initialMg, initialGg, listener);</span>
+<span class="fc" id="L211">    }</span>
 
     /**
      * Constructor.
@@ -237,9 +238,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L240">        super(sequences, bias, initialMg, initialGg,</span>
+<span class="fc" id="L241">        super(sequences, bias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L243">    }</span>
 
     /**
      * Constructor.
@@ -272,9 +273,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L275">        super(sequences, bias, initialMg, initialGg,</span>
+<span class="fc" id="L276">        super(sequences, bias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L277">    }</span>
+<span class="fc" id="L278">    }</span>
 
     /**
      * Constructor.
@@ -303,9 +304,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L306">        super(sequences, bias, initialMg, initialGg,</span>
+<span class="fc" id="L307">        super(sequences, bias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L308">    }</span>
+<span class="fc" id="L309">    }</span>
 
     /**
      * Constructor.
@@ -337,9 +338,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L340">        super(sequences, bias, initialMg, initialGg,</span>
+<span class="fc" id="L341">        super(sequences, bias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L342">    }</span>
+<span class="fc" id="L343">    }</span>
 
     /**
      * Constructor.
@@ -369,9 +370,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L372">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L373">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L374">    }</span>
+<span class="fc" id="L375">    }</span>
 
     /**
      * Constructor.
@@ -404,9 +405,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L407">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L408">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L409">    }</span>
+<span class="fc" id="L410">    }</span>
 
     /**
      * Constructor.
@@ -436,9 +437,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final double[] bias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L439">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L440">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 bias, initialMg, initialGg);
-<span class="fc" id="L441">    }</span>
+<span class="fc" id="L442">    }</span>
 
     /**
      * Constructor.
@@ -471,9 +472,9 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L474">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L475">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 bias, initialMg, initialGg, listener);
-<span class="fc" id="L476">    }</span>
+<span class="fc" id="L477">    }</span>
 
     /**
      * Constructor.
@@ -512,10 +513,10 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L515">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L516">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 bias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L518">    }</span>
+<span class="fc" id="L519">    }</span>
 
     /**
      * Constructor.
@@ -557,10 +558,10 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L560">        super(sequences, commonAxisUsed,</span>
+<span class="fc" id="L561">        super(sequences, commonAxisUsed,</span>
                 estimateGDependentCrossBiases, bias, initialMg,
                 initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L563">    }</span>
+<span class="fc" id="L564">    }</span>
 
     /**
      * Constructor.
@@ -599,10 +600,10 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L602">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L603">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 bias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L605">    }</span>
+<span class="fc" id="L606">    }</span>
 
     /**
      * Constructor.
@@ -644,10 +645,10 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustKnownBiasEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L647">        super(sequences, commonAxisUsed,</span>
+<span class="fc" id="L648">        super(sequences, commonAxisUsed,</span>
                 estimateGDependentCrossBiases, bias, initialMg,
                 initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L650">    }</span>
+<span class="fc" id="L651">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -669,7 +670,7 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L672">        return mStopThreshold;</span>
+<span class="fc" id="L673">        return mStopThreshold;</span>
     }
 
     /**
@@ -694,15 +695,15 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L697" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L698">            throw new LockedException();</span>
+<span class="fc bfc" id="L698" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L699">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L700" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L701">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L701" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L702">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L704">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L705">    }</span>
+<span class="fc" id="L705">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L706">    }</span>
 
     /**
      * Estimates gyroscope calibration parameters containing scale factors,
@@ -716,111 +717,113 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L719" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L720">            throw new LockedException();</span>
+<span class="fc bfc" id="L720" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L721">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L722" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L723">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L723" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L724">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L726">        final LMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L727">        final LMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new LMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L728">                        new LMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
-                    @Override
-                    public int getTotalSamples() {
-<span class="fc" id="L731">                        return mSequences.size();</span>
-                    }
+<span class="fc" id="L729">                        new LMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L732">                                return mSequences.size();</span>
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-<span class="fc" id="L736">                        return mPreliminarySubsetSize;</span>
-                    }
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L737">                                return mPreliminarySubsetSize;</span>
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L743">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L744">                    }</span>
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L744">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L745">                            }</span>
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation,
-                            final int i) {
-<span class="fc" id="L750">                        return computeError(mSequences.get(i), currentEstimation);</span>
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation,
+                                    final int i) {
+<span class="fc" id="L751">                                return computeError(mSequences.get(i), currentEstimation);</span>
+                            }
 
-                    @Override
-                    public boolean isReady() {
-<span class="fc" id="L755">                        return LMedSRobustKnownBiasEasyGyroscopeCalibrator.super.isReady();</span>
-                    }
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L756">                                return LMedSRobustKnownBiasEasyGyroscopeCalibrator.super.isReady();</span>
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L761">                    }</span>
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L763">                            }</span>
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L766">                    }</span>
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L769">                            }</span>
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final int iteration) {
-<span class="pc bpc" id="L772" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L773">                            mListener.onCalibrateNextIteration(</span>
-                                    LMedSRobustKnownBiasEasyGyroscopeCalibrator.this,
-                                    iteration);
-                        }
-<span class="fc" id="L777">                    }</span>
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final int iteration) {
+<span class="pc bpc" id="L775" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L776">                                    mListener.onCalibrateNextIteration(</span>
+                                            LMedSRobustKnownBiasEasyGyroscopeCalibrator.this,
+                                            iteration);
+                                }
+<span class="fc" id="L780">                            }</span>
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final float progress) {
-<span class="nc bnc" id="L783" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L784">                            mListener.onCalibrateProgressChange(</span>
-                                    LMedSRobustKnownBiasEasyGyroscopeCalibrator.this,
-                                    progress);
-                        }
-<span class="nc" id="L788">                    }</span>
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final float progress) {
+<span class="nc bnc" id="L786" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L787">                                    mListener.onCalibrateProgressChange(</span>
+                                            LMedSRobustKnownBiasEasyGyroscopeCalibrator.this,
+                                            progress);
+                                }
+<span class="nc" id="L791">                            }</span>
+                        });
 
         try {
-<span class="fc" id="L792">            mRunning = true;</span>
+<span class="fc" id="L795">            mRunning = true;</span>
 
-<span class="pc bpc" id="L794" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L795">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L797" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L798">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L798">            setupAccelerationFixer();</span>
+<span class="fc" id="L801">            setupAccelerationFixer();</span>
 
-<span class="fc" id="L800">            mInliersData = null;</span>
-<span class="fc" id="L801">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L802">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L803">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L804">            innerEstimator.setStopThreshold(mStopThreshold);</span>
-<span class="fc" id="L805">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L806">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L803">            mInliersData = null;</span>
+<span class="fc" id="L804">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L805">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L806">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L807">            innerEstimator.setStopThreshold(mStopThreshold);</span>
+<span class="fc" id="L808">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L809">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L808">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L811">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L810" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L811">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L813" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L814">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L814">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L815">            throw new LockedException(e);</span>
-<span class="nc" id="L816">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L817">            throw new NotReadyException(e);</span>
-<span class="nc" id="L818">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
-<span class="nc" id="L819">            throw new CalibrationException(e);</span>
+<span class="nc" id="L817">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L818">            throw new LockedException(e);</span>
+<span class="nc" id="L819">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L820">            throw new NotReadyException(e);</span>
+<span class="nc" id="L821">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
+<span class="nc" id="L822">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L821">            mRunning = false;</span>
+<span class="fc" id="L824">            mRunning = false;</span>
         }
-<span class="fc" id="L823">    }</span>
+<span class="fc" id="L826">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -829,7 +832,7 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L832">        return RobustEstimatorMethod.LMedS;</span>
+<span class="fc" id="L835">        return RobustEstimatorMethod.LMedS;</span>
     }
 
     /**
@@ -840,7 +843,7 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L843">        return false;</span>
+<span class="fc" id="L846">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

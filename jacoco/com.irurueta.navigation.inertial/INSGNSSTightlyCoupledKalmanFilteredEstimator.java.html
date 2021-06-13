@@ -31,6 +31,7 @@ import com.irurueta.navigation.inertial.navigators.InertialNavigatorException;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -50,7 +51,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     /**
      * Internal estimator to compute least squares solution for GNSS measurements.
      */
-<span class="fc" id="L53">    private final GNSSLeastSquaresPositionAndVelocityEstimator mLsEstimator</span>
+<span class="fc" id="L54">    private final GNSSLeastSquaresPositionAndVelocityEstimator mLsEstimator</span>
             = new GNSSLeastSquaresPositionAndVelocityEstimator();
 
     /**
@@ -128,8 +129,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     /**
      * Constructor.
      */
-<span class="fc" id="L131">    public INSGNSSTightlyCoupledKalmanFilteredEstimator() {</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L132">    public INSGNSSTightlyCoupledKalmanFilteredEstimator() {</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Constructor.
@@ -138,9 +139,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      *               through calibration).
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
-<span class="fc" id="L141">            final INSTightlyCoupledKalmanConfig config) {</span>
-<span class="fc" id="L142">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
-<span class="fc" id="L143">    }</span>
+<span class="fc" id="L142">            final INSTightlyCoupledKalmanConfig config) {</span>
+<span class="fc" id="L143">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -150,13 +151,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
-<span class="fc" id="L153">            final double epochInterval) {</span>
+<span class="fc" id="L154">            final double epochInterval) {</span>
         try {
-<span class="fc" id="L155">            setEpochInterval(epochInterval);</span>
-<span class="nc" id="L156">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L156">            setEpochInterval(epochInterval);</span>
+<span class="nc" id="L157">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L158">        }</span>
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L159">        }</span>
+<span class="fc" id="L160">    }</span>
 
     /**
      * Constructor.
@@ -164,9 +165,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @param listener listener to notify events raised by this instance.
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
-<span class="fc" id="L167">            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {</span>
-<span class="fc" id="L168">        mListener = listener;</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L168">            final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {</span>
+<span class="fc" id="L169">        mListener = listener;</span>
+<span class="fc" id="L170">    }</span>
 
     /**
      * Constructor.
@@ -179,9 +180,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final double epochInterval) {
-<span class="fc" id="L182">        this(epochInterval);</span>
-<span class="fc" id="L183">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
-<span class="fc" id="L184">    }</span>
+<span class="fc" id="L183">        this(epochInterval);</span>
+<span class="fc" id="L184">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L185">    }</span>
 
     /**
      * Constructor.
@@ -193,9 +194,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L196">        this(config);</span>
-<span class="fc" id="L197">        mListener = listener;</span>
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L197">        this(config);</span>
+<span class="fc" id="L198">        mListener = listener;</span>
+<span class="fc" id="L199">    }</span>
 
     /**
      * Constructor.
@@ -208,9 +209,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final double epochInterval,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L211">        this(epochInterval);</span>
-<span class="fc" id="L212">        mListener = listener;</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L212">        this(epochInterval);</span>
+<span class="fc" id="L213">        mListener = listener;</span>
+<span class="fc" id="L214">    }</span>
 
     /**
      * Constructor.
@@ -225,9 +226,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final double epochInterval,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L228">        this(config, epochInterval);</span>
-<span class="fc" id="L229">        mListener = listener;</span>
-<span class="fc" id="L230">    }</span>
+<span class="fc" id="L229">        this(config, epochInterval);</span>
+<span class="fc" id="L230">        mListener = listener;</span>
+<span class="fc" id="L231">    }</span>
 
     /**
      * Constructor.
@@ -237,9 +238,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(final Time epochInterval) {
-<span class="fc" id="L240">        this(TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L241">                epochInterval.getUnit(), TimeUnit.SECOND));</span>
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L241">        this(TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L242">                epochInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L243">    }</span>
 
     /**
      * Constructor.
@@ -252,9 +253,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final Time epochInterval) {
-<span class="fc" id="L255">        this(config, TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L256">                epochInterval.getUnit(), TimeUnit.SECOND));</span>
-<span class="fc" id="L257">    }</span>
+<span class="fc" id="L256">        this(config, TimeConverter.convert(epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L257">                epochInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L258">    }</span>
 
     /**
      * Constructor.
@@ -267,9 +268,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final Time epochInterval,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L270">        this(epochInterval);</span>
-<span class="fc" id="L271">        mListener = listener;</span>
-<span class="fc" id="L272">    }</span>
+<span class="fc" id="L271">        this(epochInterval);</span>
+<span class="fc" id="L272">        mListener = listener;</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * Constructor.
@@ -284,9 +285,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L287">        this(config, epochInterval);</span>
-<span class="fc" id="L288">        mListener = listener;</span>
-<span class="fc" id="L289">    }</span>
+<span class="fc" id="L288">        this(config, epochInterval);</span>
+<span class="fc" id="L289">        mListener = listener;</span>
+<span class="fc" id="L290">    }</span>
 
     /**
      * Constructor.
@@ -299,13 +300,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L302">        this();</span>
+<span class="fc" id="L303">        this();</span>
         try {
-<span class="fc" id="L304">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L305">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L305">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L306">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L307">        }</span>
-<span class="fc" id="L308">    }</span>
+<span class="fc" id="L308">        }</span>
+<span class="fc" id="L309">    }</span>
 
     /**
      * Constructor.
@@ -321,9 +322,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L324">        this(c);</span>
-<span class="fc" id="L325">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
-<span class="fc" id="L326">    }</span>
+<span class="fc" id="L325">        this(c);</span>
+<span class="fc" id="L326">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L327">    }</span>
 
     /**
      * Constructor.
@@ -339,13 +340,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final double epochInterval, final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L342">        this(epochInterval);</span>
+<span class="fc" id="L343">        this(epochInterval);</span>
         try {
-<span class="fc" id="L344">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L345">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L345">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L346">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L347">        }</span>
-<span class="fc" id="L348">    }</span>
+<span class="fc" id="L348">        }</span>
+<span class="fc" id="L349">    }</span>
 
     /**
      * Constructor.
@@ -360,9 +361,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L363">        this(c);</span>
-<span class="fc" id="L364">        mListener = listener;</span>
-<span class="fc" id="L365">    }</span>
+<span class="fc" id="L364">        this(c);</span>
+<span class="fc" id="L365">        mListener = listener;</span>
+<span class="fc" id="L366">    }</span>
 
     /**
      * Constructor.
@@ -381,13 +382,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final double epochInterval,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L384">        this(config, epochInterval);</span>
+<span class="fc" id="L385">        this(config, epochInterval);</span>
         try {
-<span class="fc" id="L386">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L387">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L387">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L388">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L389">        }</span>
-<span class="fc" id="L390">    }</span>
+<span class="fc" id="L390">        }</span>
+<span class="fc" id="L391">    }</span>
 
     /**
      * Constructor.
@@ -405,13 +406,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L408">        this(config, listener);</span>
+<span class="fc" id="L409">        this(config, listener);</span>
         try {
-<span class="fc" id="L410">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L411">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L411">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L412">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L413">        }</span>
-<span class="fc" id="L414">    }</span>
+<span class="fc" id="L414">        }</span>
+<span class="fc" id="L415">    }</span>
 
     /**
      * Constructor.
@@ -430,13 +431,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L433">        this(epochInterval, listener);</span>
+<span class="fc" id="L434">        this(epochInterval, listener);</span>
         try {
-<span class="fc" id="L435">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L436">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L436">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L437">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L438">        }</span>
-<span class="fc" id="L439">    }</span>
+<span class="fc" id="L439">        }</span>
+<span class="fc" id="L440">    }</span>
 
     /**
      * Constructor.
@@ -457,13 +458,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L460">        this(config, epochInterval, listener);</span>
+<span class="fc" id="L461">        this(config, epochInterval, listener);</span>
         try {
-<span class="fc" id="L462">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L463">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L463">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L464">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L465">        }</span>
-<span class="fc" id="L466">    }</span>
+<span class="fc" id="L466">        }</span>
+<span class="fc" id="L467">    }</span>
 
     /**
      * Constructor.
@@ -479,13 +480,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final Time epochInterval, final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L482">        this(epochInterval);</span>
+<span class="fc" id="L483">        this(epochInterval);</span>
         try {
-<span class="fc" id="L484">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L485">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L485">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L486">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L487">        }</span>
-<span class="fc" id="L488">    }</span>
+<span class="fc" id="L488">        }</span>
+<span class="fc" id="L489">    }</span>
 
     /**
      * Constructor.
@@ -504,13 +505,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L507">        this(config, epochInterval);</span>
+<span class="fc" id="L508">        this(config, epochInterval);</span>
         try {
-<span class="fc" id="L509">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L510">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L510">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L511">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L512">        }</span>
-<span class="fc" id="L513">    }</span>
+<span class="fc" id="L513">        }</span>
+<span class="fc" id="L514">    }</span>
 
     /**
      * Constructor.
@@ -529,13 +530,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L532">        this(epochInterval, listener);</span>
+<span class="fc" id="L533">        this(epochInterval, listener);</span>
         try {
-<span class="fc" id="L534">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L535">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L535">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L536">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L537">        }</span>
-<span class="fc" id="L538">    }</span>
+<span class="fc" id="L538">        }</span>
+<span class="fc" id="L539">    }</span>
 
     /**
      * Constructor.
@@ -556,13 +557,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L559">        this(config, epochInterval, listener);</span>
+<span class="fc" id="L560">        this(config, epochInterval, listener);</span>
         try {
-<span class="fc" id="L561">            setCoordinateTransformation(c);</span>
-<span class="nc" id="L562">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L562">            setCoordinateTransformation(c);</span>
+<span class="nc" id="L563">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L564">        }</span>
-<span class="fc" id="L565">    }</span>
+<span class="fc" id="L565">        }</span>
+<span class="fc" id="L566">    }</span>
 
     /**
      * Constructor.
@@ -572,13 +573,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
-<span class="fc" id="L575">        this();</span>
+<span class="fc" id="L576">        this();</span>
         try {
-<span class="fc" id="L577">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L578">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L578">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L579">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L580">        }</span>
-<span class="fc" id="L581">    }</span>
+<span class="fc" id="L581">        }</span>
+<span class="fc" id="L582">    }</span>
 
     /**
      * Constructor.
@@ -591,13 +592,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
-<span class="fc" id="L594">        this(config);</span>
+<span class="fc" id="L595">        this(config);</span>
         try {
-<span class="fc" id="L596">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L597">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L597">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L598">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L599">        }</span>
-<span class="fc" id="L600">    }</span>
+<span class="fc" id="L600">        }</span>
+<span class="fc" id="L601">    }</span>
 
     /**
      * Constructor.
@@ -611,13 +612,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final double epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
-<span class="fc" id="L614">        this(epochInterval);</span>
+<span class="fc" id="L615">        this(epochInterval);</span>
         try {
-<span class="fc" id="L616">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L617">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L617">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L618">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L619">        }</span>
-<span class="fc" id="L620">    }</span>
+<span class="fc" id="L620">        }</span>
+<span class="fc" id="L621">    }</span>
 
     /**
      * Constructor.
@@ -629,9 +630,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L632">        this(initialConfig);</span>
-<span class="fc" id="L633">        mListener = listener;</span>
-<span class="fc" id="L634">    }</span>
+<span class="fc" id="L633">        this(initialConfig);</span>
+<span class="fc" id="L634">        mListener = listener;</span>
+<span class="fc" id="L635">    }</span>
 
     /**
      * Constructor.
@@ -647,13 +648,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final double epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
-<span class="fc" id="L650">        this(config, epochInterval);</span>
+<span class="fc" id="L651">        this(config, epochInterval);</span>
         try {
-<span class="fc" id="L652">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L653">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L653">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L654">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L655">        }</span>
-<span class="fc" id="L656">    }</span>
+<span class="fc" id="L656">        }</span>
+<span class="fc" id="L657">    }</span>
 
     /**
      * Constructor.
@@ -668,13 +669,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L671">        this(config, listener);</span>
+<span class="fc" id="L672">        this(config, listener);</span>
         try {
-<span class="fc" id="L673">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L674">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L674">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L675">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L676">        }</span>
-<span class="fc" id="L677">    }</span>
+<span class="fc" id="L677">        }</span>
+<span class="fc" id="L678">    }</span>
 
     /**
      * Constructor.
@@ -690,13 +691,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final double epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L693">        this(epochInterval, listener);</span>
+<span class="fc" id="L694">        this(epochInterval, listener);</span>
         try {
-<span class="fc" id="L695">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L696">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L696">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L697">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L698">        }</span>
-<span class="fc" id="L699">    }</span>
+<span class="fc" id="L699">        }</span>
+<span class="fc" id="L700">    }</span>
 
     /**
      * Constructor.
@@ -714,13 +715,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final double epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L717">        this(config, epochInterval, listener);</span>
+<span class="fc" id="L718">        this(config, epochInterval, listener);</span>
         try {
-<span class="fc" id="L719">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L720">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L720">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L721">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L722">        }</span>
-<span class="fc" id="L723">    }</span>
+<span class="fc" id="L723">        }</span>
+<span class="fc" id="L724">    }</span>
 
     /**
      * Constructor.
@@ -734,13 +735,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final Time epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
-<span class="fc" id="L737">        this(epochInterval);</span>
+<span class="fc" id="L738">        this(epochInterval);</span>
         try {
-<span class="fc" id="L739">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L740">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L740">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L741">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L742">        }</span>
-<span class="fc" id="L743">    }</span>
+<span class="fc" id="L743">        }</span>
+<span class="fc" id="L744">    }</span>
 
     /**
      * Constructor.
@@ -756,13 +757,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public INSGNSSTightlyCoupledKalmanFilteredEstimator(
             final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig) {
-<span class="fc" id="L759">        this(config, epochInterval);</span>
+<span class="fc" id="L760">        this(config, epochInterval);</span>
         try {
-<span class="fc" id="L761">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L762">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L762">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L763">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L764">        }</span>
-<span class="fc" id="L765">    }</span>
+<span class="fc" id="L765">        }</span>
+<span class="fc" id="L766">    }</span>
 
     /**
      * Constructor.
@@ -778,13 +779,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final Time epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L781">        this(epochInterval, listener);</span>
+<span class="fc" id="L782">        this(epochInterval, listener);</span>
         try {
-<span class="fc" id="L783">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L784">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L784">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L785">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L786">        }</span>
-<span class="fc" id="L787">    }</span>
+<span class="fc" id="L787">        }</span>
+<span class="fc" id="L788">    }</span>
 
     /**
      * Constructor.
@@ -802,13 +803,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanConfig config, final Time epochInterval,
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener) {
-<span class="fc" id="L805">        this(config, epochInterval, listener);</span>
+<span class="fc" id="L806">        this(config, epochInterval, listener);</span>
         try {
-<span class="fc" id="L807">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L808">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L808">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L809">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L810">        }</span>
-<span class="fc" id="L811">    }</span>
+<span class="fc" id="L811">        }</span>
+<span class="fc" id="L812">    }</span>
 
     /**
      * Constructor.
@@ -824,13 +825,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L827">        this(c);</span>
+<span class="fc" id="L828">        this(c);</span>
         try {
-<span class="fc" id="L829">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L830">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L830">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L831">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L832">        }</span>
-<span class="fc" id="L833">    }</span>
+<span class="fc" id="L833">        }</span>
+<span class="fc" id="L834">    }</span>
 
     /**
      * Constructor.
@@ -849,13 +850,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L852">        this(config, c);</span>
+<span class="fc" id="L853">        this(config, c);</span>
         try {
-<span class="fc" id="L854">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L855">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L855">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L856">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L857">        }</span>
-<span class="fc" id="L858">    }</span>
+<span class="fc" id="L858">        }</span>
+<span class="fc" id="L859">    }</span>
 
     /**
      * Constructor.
@@ -875,13 +876,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L878">        this(epochInterval, c);</span>
+<span class="fc" id="L879">        this(epochInterval, c);</span>
         try {
-<span class="fc" id="L880">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L881">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L881">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L882">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L883">        }</span>
-<span class="fc" id="L884">    }</span>
+<span class="fc" id="L884">        }</span>
+<span class="fc" id="L885">    }</span>
 
     /**
      * Constructor.
@@ -899,13 +900,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L902">        this(c, listener);</span>
+<span class="fc" id="L903">        this(c, listener);</span>
         try {
-<span class="fc" id="L904">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L905">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L905">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L906">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L907">        }</span>
-<span class="fc" id="L908">    }</span>
+<span class="fc" id="L908">        }</span>
+<span class="fc" id="L909">    }</span>
 
     /**
      * Constructor.
@@ -927,13 +928,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L930">        this(config, epochInterval, c);</span>
+<span class="fc" id="L931">        this(config, epochInterval, c);</span>
         try {
-<span class="fc" id="L932">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L933">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L933">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L934">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L935">        }</span>
-<span class="fc" id="L936">    }</span>
+<span class="fc" id="L936">        }</span>
+<span class="fc" id="L937">    }</span>
 
     /**
      * Constructor.
@@ -954,13 +955,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L957">        this(config, c, listener);</span>
+<span class="fc" id="L958">        this(config, c, listener);</span>
         try {
-<span class="fc" id="L959">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L960">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L960">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L961">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L962">        }</span>
-<span class="fc" id="L963">    }</span>
+<span class="fc" id="L963">        }</span>
+<span class="fc" id="L964">    }</span>
 
     /**
      * Constructor.
@@ -982,13 +983,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L985">        this(epochInterval, c, listener);</span>
+<span class="fc" id="L986">        this(epochInterval, c, listener);</span>
         try {
-<span class="fc" id="L987">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L988">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L988">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L989">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L990">        }</span>
-<span class="fc" id="L991">    }</span>
+<span class="fc" id="L991">        }</span>
+<span class="fc" id="L992">    }</span>
 
     /**
      * Constructor.
@@ -1012,13 +1013,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1015">        this(config, epochInterval, c, listener);</span>
+<span class="fc" id="L1016">        this(config, epochInterval, c, listener);</span>
         try {
-<span class="fc" id="L1017">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L1018">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L1018">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1019">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1020">        }</span>
-<span class="fc" id="L1021">    }</span>
+<span class="fc" id="L1021">        }</span>
+<span class="fc" id="L1022">    }</span>
 
     /**
      * Constructor.
@@ -1038,13 +1039,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1041">        this(epochInterval, c);</span>
+<span class="fc" id="L1042">        this(epochInterval, c);</span>
         try {
-<span class="fc" id="L1043">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L1044">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L1044">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1045">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1046">        }</span>
-<span class="fc" id="L1047">    }</span>
+<span class="fc" id="L1047">        }</span>
+<span class="fc" id="L1048">    }</span>
 
     /**
      * Constructor.
@@ -1066,13 +1067,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig,
             final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1069">        this(config, epochInterval, c);</span>
+<span class="fc" id="L1070">        this(config, epochInterval, c);</span>
         try {
-<span class="fc" id="L1071">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L1072">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L1072">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1073">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1074">        }</span>
-<span class="fc" id="L1075">    }</span>
+<span class="fc" id="L1075">        }</span>
+<span class="fc" id="L1076">    }</span>
 
     /**
      * Constructor.
@@ -1094,13 +1095,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1097">        this(epochInterval, c, listener);</span>
+<span class="fc" id="L1098">        this(epochInterval, c, listener);</span>
         try {
-<span class="fc" id="L1099">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L1100">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L1100">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1101">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1102">        }</span>
-<span class="fc" id="L1103">    }</span>
+<span class="fc" id="L1103">        }</span>
+<span class="fc" id="L1104">    }</span>
 
     /**
      * Constructor.
@@ -1124,13 +1125,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final CoordinateTransformation c,
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1127">        this(config, epochInterval, c, listener);</span>
+<span class="fc" id="L1128">        this(config, epochInterval, c, listener);</span>
         try {
-<span class="fc" id="L1129">            setInitialConfig(initialConfig);</span>
-<span class="nc" id="L1130">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L1130">            setInitialConfig(initialConfig);</span>
+<span class="nc" id="L1131">        } catch (final LockedException ignore) {</span>
             // never happens
-<span class="fc" id="L1132">        }</span>
-<span class="fc" id="L1133">    }</span>
+<span class="fc" id="L1133">        }</span>
+<span class="fc" id="L1134">    }</span>
 
     /**
      * Gets listener to notify events raised by this instance.
@@ -1138,7 +1139,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return listener to notify events raised by this instance.
      */
     public INSGNSSTightlyCoupledKalmanFilteredEstimatorListener getListener() {
-<span class="fc" id="L1141">        return mListener;</span>
+<span class="fc" id="L1142">        return mListener;</span>
     }
 
     /**
@@ -1150,12 +1151,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public void setListener(
             final INSGNSSTightlyCoupledKalmanFilteredEstimatorListener listener)
             throws LockedException {
-<span class="fc bfc" id="L1153" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1154">            throw new LockedException();</span>
+<span class="fc bfc" id="L1154" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1155">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1157">        mListener = listener;</span>
-<span class="fc" id="L1158">    }</span>
+<span class="fc" id="L1158">        mListener = listener;</span>
+<span class="fc" id="L1159">    }</span>
 
     /**
      * Gets minimum epoch interval expressed in seconds (s) between consecutive
@@ -1167,7 +1168,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * measurements.
      */
     public double getEpochInterval() {
-<span class="fc" id="L1170">        return mEpochInterval;</span>
+<span class="fc" id="L1171">        return mEpochInterval;</span>
     }
 
     /**
@@ -1182,16 +1183,16 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public void setEpochInterval(final double epochInterval) throws LockedException {
-<span class="fc bfc" id="L1185" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1186">            throw new LockedException();</span>
+<span class="fc bfc" id="L1186" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1187">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L1189" title="All 2 branches covered.">        if (epochInterval &lt; 0.0) {</span>
-<span class="fc" id="L1190">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1190" title="All 2 branches covered.">        if (epochInterval &lt; 0.0) {</span>
+<span class="fc" id="L1191">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1193">        mEpochInterval = epochInterval;</span>
-<span class="fc" id="L1194">    }</span>
+<span class="fc" id="L1194">        mEpochInterval = epochInterval;</span>
+<span class="fc" id="L1195">    }</span>
 
     /**
      * Gets minimum epoch interval between consecutive propagations or measurements.
@@ -1201,9 +1202,9 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @param result instance where minimum epoch interval will be stored.
      */
     public void getEpochIntervalAsTime(final Time result) {
-<span class="fc" id="L1204">        result.setValue(mEpochInterval);</span>
-<span class="fc" id="L1205">        result.setUnit(TimeUnit.SECOND);</span>
-<span class="fc" id="L1206">    }</span>
+<span class="fc" id="L1205">        result.setValue(mEpochInterval);</span>
+<span class="fc" id="L1206">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1207">    }</span>
 
     /**
      * Gets minimum epoch interval between consecutive propagations or measurements.
@@ -1213,7 +1214,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return minimum epoch interval.
      */
     public Time getEpochIntervalAsTime() {
-<span class="fc" id="L1216">        return new Time(mEpochInterval, TimeUnit.SECOND);</span>
+<span class="fc" id="L1217">        return new Time(mEpochInterval, TimeUnit.SECOND);</span>
     }
 
     /**
@@ -1226,11 +1227,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws IllegalArgumentException if provided epoch interval is negative.
      */
     public void setEpochInterval(final Time epochInterval) throws LockedException {
-<span class="fc" id="L1229">        final double epochIntervalSeconds = TimeConverter.convert(</span>
-<span class="fc" id="L1230">                epochInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L1231">                epochInterval.getUnit(), TimeUnit.SECOND);</span>
-<span class="fc" id="L1232">        setEpochInterval(epochIntervalSeconds);</span>
-<span class="fc" id="L1233">    }</span>
+<span class="fc" id="L1230">        final double epochIntervalSeconds = TimeConverter.convert(</span>
+<span class="fc" id="L1231">                epochInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L1232">                epochInterval.getUnit(), TimeUnit.SECOND);</span>
+<span class="fc" id="L1233">        setEpochInterval(epochIntervalSeconds);</span>
+<span class="fc" id="L1234">    }</span>
 
     /**
      * Gets INS/GNSS tightly coupled Kalman configuration parameters (usually
@@ -1241,11 +1242,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance is updated, false otherwise.
      */
     public boolean getConfig(final INSTightlyCoupledKalmanConfig result) {
-<span class="fc bfc" id="L1244" title="All 2 branches covered.">        if (mConfig != null) {</span>
-<span class="fc" id="L1245">            result.copyFrom(mConfig);</span>
-<span class="fc" id="L1246">            return true;</span>
+<span class="fc bfc" id="L1245" title="All 2 branches covered.">        if (mConfig != null) {</span>
+<span class="fc" id="L1246">            result.copyFrom(mConfig);</span>
+<span class="fc" id="L1247">            return true;</span>
         } else {
-<span class="fc" id="L1248">            return false;</span>
+<span class="fc" id="L1249">            return false;</span>
         }
     }
 
@@ -1256,7 +1257,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return INS/GNSS tightly coupled Kalman configuration parameters.
      */
     public INSTightlyCoupledKalmanConfig getConfig() {
-<span class="fc" id="L1259">        return mConfig;</span>
+<span class="fc" id="L1260">        return mConfig;</span>
     }
 
     /**
@@ -1269,12 +1270,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public void setConfig(final INSTightlyCoupledKalmanConfig config)
             throws LockedException {
-<span class="fc bfc" id="L1272" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1273">            throw new LockedException();</span>
+<span class="fc bfc" id="L1273" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1274">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1276">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
-<span class="fc" id="L1277">    }</span>
+<span class="fc" id="L1277">        mConfig = new INSTightlyCoupledKalmanConfig(config);</span>
+<span class="fc" id="L1278">    }</span>
 
     /**
      * Gets body-to-ECEF coordinate transformation defining the body attitude.
@@ -1284,7 +1285,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return body-to-ECEF coordinate transformation.
      */
     public CoordinateTransformation getCoordinateTransformation() {
-<span class="fc bfc" id="L1287" title="All 2 branches covered.">        return mFrame != null ? mFrame.getCoordinateTransformation() : null;</span>
+<span class="fc bfc" id="L1288" title="All 2 branches covered.">        return mFrame != null ? mFrame.getCoordinateTransformation() : null;</span>
     }
 
     /**
@@ -1296,11 +1297,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getCoordinateTransformation(final CoordinateTransformation result) {
-<span class="fc bfc" id="L1299" title="All 2 branches covered.">        if (mFrame != null) {</span>
-<span class="fc" id="L1300">            mFrame.getCoordinateTransformation(result);</span>
-<span class="fc" id="L1301">            return true;</span>
+<span class="fc bfc" id="L1300" title="All 2 branches covered.">        if (mFrame != null) {</span>
+<span class="fc" id="L1301">            mFrame.getCoordinateTransformation(result);</span>
+<span class="fc" id="L1302">            return true;</span>
         } else {
-<span class="fc" id="L1303">            return false;</span>
+<span class="fc" id="L1304">            return false;</span>
         }
     }
 
@@ -1317,13 +1318,13 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public void setCoordinateTransformation(final CoordinateTransformation c)
             throws InvalidSourceAndDestinationFrameTypeException, LockedException {
-<span class="fc bfc" id="L1320" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1321">            throw new LockedException();</span>
+<span class="fc bfc" id="L1321" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1322">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1324">        initFrame();</span>
-<span class="fc" id="L1325">        mFrame.setCoordinateTransformation(c);</span>
-<span class="fc" id="L1326">    }</span>
+<span class="fc" id="L1325">        initFrame();</span>
+<span class="fc" id="L1326">        mFrame.setCoordinateTransformation(c);</span>
+<span class="fc" id="L1327">    }</span>
 
     /**
      * Gets initial INS tightly coupled Kalman configuration to set a proper
@@ -1336,11 +1337,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public boolean getInitialConfig(
             final INSTightlyCoupledKalmanInitializerConfig result) {
-<span class="fc bfc" id="L1339" title="All 2 branches covered.">        if (mInitialConfig != null) {</span>
-<span class="fc" id="L1340">            result.copyFrom(mInitialConfig);</span>
-<span class="fc" id="L1341">            return true;</span>
+<span class="fc bfc" id="L1340" title="All 2 branches covered.">        if (mInitialConfig != null) {</span>
+<span class="fc" id="L1341">            result.copyFrom(mInitialConfig);</span>
+<span class="fc" id="L1342">            return true;</span>
         } else {
-<span class="fc" id="L1343">            return false;</span>
+<span class="fc" id="L1344">            return false;</span>
         }
     }
 
@@ -1353,7 +1354,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return initial INS tightly coupled Kalman configuration.
      */
     public INSTightlyCoupledKalmanInitializerConfig getInitialConfig() {
-<span class="fc" id="L1356">        return mInitialConfig;</span>
+<span class="fc" id="L1357">        return mInitialConfig;</span>
     }
 
     /**
@@ -1369,12 +1370,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final INSTightlyCoupledKalmanInitializerConfig initialConfig)
             throws LockedException {
 
-<span class="fc bfc" id="L1372" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1373">            throw new LockedException();</span>
+<span class="fc bfc" id="L1373" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1374">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1376">        mInitialConfig = initialConfig;</span>
-<span class="fc" id="L1377">    }</span>
+<span class="fc" id="L1377">        mInitialConfig = initialConfig;</span>
+<span class="fc" id="L1378">    }</span>
 
     /**
      * Gets last updated GNSS measurements of a collection of satellites.
@@ -1382,15 +1383,15 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return last updated GNSS measurements of a collection of satellites.
      */
     public Collection&lt;GNSSMeasurement&gt; getMeasurements() {
-<span class="fc bfc" id="L1385" title="All 2 branches covered.">        if (mMeasurements == null) {</span>
-<span class="fc" id="L1386">            return null;</span>
+<span class="fc bfc" id="L1386" title="All 2 branches covered.">        if (mMeasurements == null) {</span>
+<span class="fc" id="L1387">            return null;</span>
         }
 
-<span class="fc" id="L1389">        final List&lt;GNSSMeasurement&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L1390" title="All 2 branches covered.">        for (final GNSSMeasurement measurement : mMeasurements) {</span>
-<span class="fc" id="L1391">            result.add(new GNSSMeasurement(measurement));</span>
-<span class="fc" id="L1392">        }</span>
-<span class="fc" id="L1393">        return result;</span>
+<span class="fc" id="L1390">        final List&lt;GNSSMeasurement&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L1391" title="All 2 branches covered.">        for (final GNSSMeasurement measurement : mMeasurements) {</span>
+<span class="fc" id="L1392">            result.add(new GNSSMeasurement(measurement));</span>
+<span class="fc" id="L1393">        }</span>
+<span class="fc" id="L1394">        return result;</span>
     }
 
     /**
@@ -1400,7 +1401,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return last provided user kinematics.
      */
     public BodyKinematics getKinematics() {
-<span class="fc bfc" id="L1403" title="All 2 branches covered.">        return mKinematics != null ? new BodyKinematics(mKinematics) : null;</span>
+<span class="fc bfc" id="L1404" title="All 2 branches covered.">        return mKinematics != null ? new BodyKinematics(mKinematics) : null;</span>
     }
 
     /**
@@ -1411,11 +1412,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if provided result instance was updated, false otherwise.
      */
     public boolean getKinematics(final BodyKinematics result) {
-<span class="fc bfc" id="L1414" title="All 2 branches covered.">        if (mKinematics != null) {</span>
-<span class="fc" id="L1415">            result.copyFrom(mKinematics);</span>
-<span class="fc" id="L1416">            return true;</span>
+<span class="fc bfc" id="L1415" title="All 2 branches covered.">        if (mKinematics != null) {</span>
+<span class="fc" id="L1416">            result.copyFrom(mKinematics);</span>
+<span class="fc" id="L1417">            return true;</span>
         } else {
-<span class="fc" id="L1418">            return false;</span>
+<span class="fc" id="L1419">            return false;</span>
         }
     }
 
@@ -1427,8 +1428,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @see #getKinematics()
      */
     public BodyKinematics getCorrectedKinematics() {
-<span class="fc bfc" id="L1430" title="All 2 branches covered.">        return mCorrectedKinematics != null ?</span>
-<span class="fc" id="L1431">                new BodyKinematics(mCorrectedKinematics) : null;</span>
+<span class="fc bfc" id="L1431" title="All 2 branches covered.">        return mCorrectedKinematics != null ?</span>
+<span class="fc" id="L1432">                new BodyKinematics(mCorrectedKinematics) : null;</span>
     }
 
     /**
@@ -1439,11 +1440,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if provided result instance was updated, false otherwise.
      */
     public boolean getCorrectedKinematics(final BodyKinematics result) {
-<span class="fc bfc" id="L1442" title="All 2 branches covered.">        if (mCorrectedKinematics != null) {</span>
-<span class="fc" id="L1443">            result.copyFrom(mCorrectedKinematics);</span>
-<span class="fc" id="L1444">            return true;</span>
+<span class="fc bfc" id="L1443" title="All 2 branches covered.">        if (mCorrectedKinematics != null) {</span>
+<span class="fc" id="L1444">            result.copyFrom(mCorrectedKinematics);</span>
+<span class="fc" id="L1445">            return true;</span>
         } else {
-<span class="fc" id="L1446">            return false;</span>
+<span class="fc" id="L1447">            return false;</span>
         }
     }
 
@@ -1455,7 +1456,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * clock offset and clock drift.
      */
     public GNSSEstimation getEstimation() {
-<span class="fc bfc" id="L1458" title="All 2 branches covered.">        return mEstimation != null ? new GNSSEstimation(mEstimation) : null;</span>
+<span class="fc bfc" id="L1459" title="All 2 branches covered.">        return mEstimation != null ? new GNSSEstimation(mEstimation) : null;</span>
     }
 
     /**
@@ -1467,11 +1468,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result estimation was updated, false otherwise.
      */
     public boolean getEstimation(final GNSSEstimation result) {
-<span class="fc bfc" id="L1470" title="All 2 branches covered.">        if (mEstimation != null) {</span>
-<span class="fc" id="L1471">            result.copyFrom(mEstimation);</span>
-<span class="fc" id="L1472">            return true;</span>
+<span class="fc bfc" id="L1471" title="All 2 branches covered.">        if (mEstimation != null) {</span>
+<span class="fc" id="L1472">            result.copyFrom(mEstimation);</span>
+<span class="fc" id="L1473">            return true;</span>
         } else {
-<span class="fc" id="L1474">            return false;</span>
+<span class="fc" id="L1475">            return false;</span>
         }
     }
 
@@ -1483,7 +1484,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * along with Kalman filter covariance error matrix.
      */
     public INSTightlyCoupledKalmanState getState() {
-<span class="fc bfc" id="L1486" title="All 2 branches covered.">        return mState != null ? new INSTightlyCoupledKalmanState(mState) : null;</span>
+<span class="fc bfc" id="L1487" title="All 2 branches covered.">        return mState != null ? new INSTightlyCoupledKalmanState(mState) : null;</span>
     }
 
     /**
@@ -1495,11 +1496,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result state was updated, false otherwise.
      */
     public boolean getState(final INSTightlyCoupledKalmanState result) {
-<span class="fc bfc" id="L1498" title="All 2 branches covered.">        if (mState != null) {</span>
-<span class="fc" id="L1499">            result.copyFrom(mState);</span>
-<span class="fc" id="L1500">            return true;</span>
+<span class="fc bfc" id="L1499" title="All 2 branches covered.">        if (mState != null) {</span>
+<span class="fc" id="L1500">            result.copyFrom(mState);</span>
+<span class="fc" id="L1501">            return true;</span>
         } else {
-<span class="fc" id="L1502">            return false;</span>
+<span class="fc" id="L1503">            return false;</span>
         }
     }
 
@@ -1511,7 +1512,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * state was last propagated.
      */
     public Double getLastStateTimestamp() {
-<span class="fc" id="L1514">        return mLastStateTimestamp;</span>
+<span class="fc" id="L1515">        return mLastStateTimestamp;</span>
     }
 
     /**
@@ -1522,12 +1523,12 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if result instance is updated, false otherwise.
      */
     public boolean getLastStateTimestampAsTime(final Time result) {
-<span class="fc bfc" id="L1525" title="All 2 branches covered.">        if (mLastStateTimestamp != null) {</span>
-<span class="fc" id="L1526">            result.setValue(mLastStateTimestamp);</span>
-<span class="fc" id="L1527">            result.setUnit(TimeUnit.SECOND);</span>
-<span class="fc" id="L1528">            return true;</span>
+<span class="fc bfc" id="L1526" title="All 2 branches covered.">        if (mLastStateTimestamp != null) {</span>
+<span class="fc" id="L1527">            result.setValue(mLastStateTimestamp);</span>
+<span class="fc" id="L1528">            result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L1529">            return true;</span>
         } else {
-<span class="fc" id="L1530">            return false;</span>
+<span class="fc" id="L1531">            return false;</span>
         }
     }
 
@@ -1538,8 +1539,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * propagated.
      */
     public Time getLastStateTimestampAsTime() {
-<span class="fc bfc" id="L1541" title="All 2 branches covered.">        return mLastStateTimestamp != null ?</span>
-<span class="fc" id="L1542">                new Time(mLastStateTimestamp, TimeUnit.SECOND) : null;</span>
+<span class="fc bfc" id="L1542" title="All 2 branches covered.">        return mLastStateTimestamp != null ?</span>
+<span class="fc" id="L1543">                new Time(mLastStateTimestamp, TimeUnit.SECOND) : null;</span>
     }
 
     /**
@@ -1548,7 +1549,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if this estimator is running, false otherwise.
      */
     public boolean isRunning() {
-<span class="fc" id="L1551">        return mRunning;</span>
+<span class="fc" id="L1552">        return mRunning;</span>
     }
 
     /**
@@ -1560,8 +1561,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public static boolean isUpdateMeasurementsReady(
             final Collection&lt;GNSSMeasurement&gt; measurements) {
-<span class="fc" id="L1563">        return GNSSLeastSquaresPositionAndVelocityEstimator</span>
-<span class="fc" id="L1564">                .isValidMeasurements(measurements);</span>
+<span class="fc" id="L1564">        return GNSSLeastSquaresPositionAndVelocityEstimator</span>
+<span class="fc" id="L1565">                .isValidMeasurements(measurements);</span>
     }
 
     /**
@@ -1581,8 +1582,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public boolean updateMeasurements(
             final Collection&lt;GNSSMeasurement&gt; measurements, final Time timestamp)
             throws LockedException, NotReadyException, INSGNSSException {
-<span class="fc" id="L1584">        return updateMeasurements(measurements, TimeConverter.convert(</span>
-<span class="fc" id="L1585">                timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+<span class="fc" id="L1585">        return updateMeasurements(measurements, TimeConverter.convert(</span>
+<span class="fc" id="L1586">                timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
                 TimeUnit.SECOND));
     }
 
@@ -1604,49 +1605,49 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final Collection&lt;GNSSMeasurement&gt; measurements, final double timestamp)
             throws LockedException, NotReadyException, INSGNSSException {
 
-<span class="fc bfc" id="L1607" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1608">            throw new LockedException();</span>
+<span class="fc bfc" id="L1608" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1609">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L1611" title="All 2 branches covered.">        if (!isUpdateMeasurementsReady(measurements)) {</span>
-<span class="fc" id="L1612">            throw new NotReadyException();</span>
+<span class="fc bfc" id="L1612" title="All 2 branches covered.">        if (!isUpdateMeasurementsReady(measurements)) {</span>
+<span class="fc" id="L1613">            throw new NotReadyException();</span>
         }
 
-<span class="fc bfc" id="L1615" title="All 2 branches covered.">        if (mLastStateTimestamp != null &amp;&amp;</span>
-<span class="pc bpc" id="L1616" title="1 of 2 branches missed.">                timestamp - mLastStateTimestamp &lt;= mEpochInterval) {</span>
-<span class="fc" id="L1617">            return false;</span>
+<span class="fc bfc" id="L1616" title="All 2 branches covered.">        if (mLastStateTimestamp != null &amp;&amp;</span>
+<span class="pc bpc" id="L1617" title="1 of 2 branches missed.">                timestamp - mLastStateTimestamp &lt;= mEpochInterval) {</span>
+<span class="fc" id="L1618">            return false;</span>
         }
 
         try {
-<span class="fc" id="L1621">            mRunning = true;</span>
+<span class="fc" id="L1622">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1623" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1624">                mListener.onUpdateGNSSMeasurementsStart(this);</span>
+<span class="pc bpc" id="L1624" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1625">                mListener.onUpdateGNSSMeasurementsStart(this);</span>
             }
 
-<span class="fc" id="L1627">            mMeasurements = new ArrayList&lt;&gt;(measurements);</span>
+<span class="fc" id="L1628">            mMeasurements = new ArrayList&lt;&gt;(measurements);</span>
 
-<span class="fc" id="L1629">            mLsEstimator.setMeasurements(mMeasurements);</span>
-<span class="fc" id="L1630">            mLsEstimator.setPriorPositionAndVelocityFromEstimation(mEstimation);</span>
-<span class="pc bpc" id="L1631" title="1 of 2 branches missed.">            if (mEstimation != null) {</span>
-<span class="nc" id="L1632">                mLsEstimator.estimate(mEstimation);</span>
+<span class="fc" id="L1630">            mLsEstimator.setMeasurements(mMeasurements);</span>
+<span class="fc" id="L1631">            mLsEstimator.setPriorPositionAndVelocityFromEstimation(mEstimation);</span>
+<span class="pc bpc" id="L1632" title="1 of 2 branches missed.">            if (mEstimation != null) {</span>
+<span class="nc" id="L1633">                mLsEstimator.estimate(mEstimation);</span>
             } else {
-<span class="fc" id="L1634">                mEstimation = mLsEstimator.estimate();</span>
+<span class="fc" id="L1635">                mEstimation = mLsEstimator.estimate();</span>
             }
 
-<span class="pc bpc" id="L1637" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1638">                mListener.onUpdateGNSSMeasurementsEnd(this);</span>
+<span class="pc bpc" id="L1638" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1639">                mListener.onUpdateGNSSMeasurementsEnd(this);</span>
             }
 
-<span class="fc" id="L1641">        } catch (final GNSSException e) {</span>
-<span class="fc" id="L1642">            throw new INSGNSSException(e);</span>
+<span class="nc" id="L1642">        } catch (final GNSSException e) {</span>
+<span class="nc" id="L1643">            throw new INSGNSSException(e);</span>
         } finally {
-<span class="fc" id="L1644">            mRunning = false;</span>
+<span class="fc" id="L1645">            mRunning = false;</span>
         }
 
-<span class="fc" id="L1647">        updateBodyKinematics(mKinematics, timestamp);</span>
+<span class="fc" id="L1648">        updateBodyKinematics(mKinematics, timestamp);</span>
 
-<span class="fc" id="L1649">        return true;</span>
+<span class="fc" id="L1650">        return true;</span>
     }
 
     /**
@@ -1665,8 +1666,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public boolean updateBodyKinematics(
             final BodyKinematics kinematics, final Time timestamp)
             throws LockedException, INSGNSSException {
-<span class="fc" id="L1668">        return updateBodyKinematics(kinematics, TimeConverter.convert(</span>
-<span class="fc" id="L1669">                timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
+<span class="fc" id="L1669">        return updateBodyKinematics(kinematics, TimeConverter.convert(</span>
+<span class="fc" id="L1670">                timestamp.getValue().doubleValue(), timestamp.getUnit(),</span>
                 TimeUnit.SECOND));
     }
 
@@ -1687,52 +1688,52 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
             final BodyKinematics kinematics, final double timestamp)
             throws LockedException, INSGNSSException {
 
-<span class="fc bfc" id="L1690" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1691">            throw new LockedException();</span>
+<span class="fc bfc" id="L1691" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1692">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L1694" title="All 2 branches covered.">        final double propagationInterval = mLastStateTimestamp != null ?</span>
-<span class="fc" id="L1695">                timestamp - mLastStateTimestamp : 0.0;</span>
-<span class="fc bfc" id="L1696" title="All 4 branches covered.">        if (mLastStateTimestamp != null &amp;&amp; propagationInterval &lt;= mEpochInterval) {</span>
-<span class="fc" id="L1697">            return false;</span>
+<span class="fc bfc" id="L1695" title="All 2 branches covered.">        final double propagationInterval = mLastStateTimestamp != null ?</span>
+<span class="fc" id="L1696">                timestamp - mLastStateTimestamp : 0.0;</span>
+<span class="fc bfc" id="L1697" title="All 4 branches covered.">        if (mLastStateTimestamp != null &amp;&amp; propagationInterval &lt;= mEpochInterval) {</span>
+<span class="fc" id="L1698">            return false;</span>
         }
 
         try {
-<span class="fc" id="L1701">            mRunning = true;</span>
+<span class="fc" id="L1702">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1703" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1704">                mListener.onUpdateBodyKinematicsStart(this);</span>
+<span class="pc bpc" id="L1704" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1705">                mListener.onUpdateBodyKinematicsStart(this);</span>
             }
 
-<span class="fc" id="L1707">            initFrame();</span>
-<span class="fc bfc" id="L1708" title="All 2 branches covered.">            if (mEstimation != null) {</span>
-<span class="fc" id="L1709">                mFrame.setCoordinates(</span>
-<span class="fc" id="L1710">                        mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());</span>
-<span class="fc" id="L1711">                mFrame.setVelocityCoordinates(</span>
-<span class="fc" id="L1712">                        mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());</span>
+<span class="fc" id="L1708">            initFrame();</span>
+<span class="fc bfc" id="L1709" title="All 2 branches covered.">            if (mEstimation != null) {</span>
+<span class="fc" id="L1710">                mFrame.setCoordinates(</span>
+<span class="fc" id="L1711">                        mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());</span>
+<span class="fc" id="L1712">                mFrame.setVelocityCoordinates(</span>
+<span class="fc" id="L1713">                        mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());</span>
             }
 
-<span class="fc bfc" id="L1715" title="All 2 branches covered.">            if (kinematics != null) {</span>
-<span class="fc" id="L1716">                correctKinematics(kinematics);</span>
-<span class="fc" id="L1717">                ECEFInertialNavigator.navigateECEF(propagationInterval, mFrame,</span>
+<span class="fc bfc" id="L1716" title="All 2 branches covered.">            if (kinematics != null) {</span>
+<span class="fc" id="L1717">                correctKinematics(kinematics);</span>
+<span class="fc" id="L1718">                ECEFInertialNavigator.navigateECEF(propagationInterval, mFrame,</span>
                         mCorrectedKinematics, mFrame);
             }
 
-<span class="fc" id="L1721">            mKinematics = kinematics;</span>
+<span class="fc" id="L1722">            mKinematics = kinematics;</span>
 
-<span class="pc bpc" id="L1723" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1724">                mListener.onUpdateBodyKinematicsEnd(this);</span>
+<span class="pc bpc" id="L1724" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1725">                mListener.onUpdateBodyKinematicsEnd(this);</span>
             }
 
-<span class="nc" id="L1727">        } catch (final InertialNavigatorException e) {</span>
-<span class="nc" id="L1728">            return false;</span>
+<span class="nc" id="L1728">        } catch (final InertialNavigatorException e) {</span>
+<span class="nc" id="L1729">            return false;</span>
         } finally {
-<span class="fc" id="L1730">            mRunning = false;</span>
+<span class="fc" id="L1731">            mRunning = false;</span>
         }
 
-<span class="fc" id="L1733">        propagate(timestamp);</span>
+<span class="fc" id="L1734">        propagate(timestamp);</span>
 
-<span class="fc" id="L1735">        return true;</span>
+<span class="fc" id="L1736">        return true;</span>
     }
 
     /**
@@ -1741,7 +1742,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if estimator is ready, false otherwise.
      */
     public boolean isPropagateReady() {
-<span class="fc bfc" id="L1744" title="All 4 branches covered.">        return mConfig != null &amp;&amp; mEstimation != null;</span>
+<span class="fc bfc" id="L1745" title="All 4 branches covered.">        return mConfig != null &amp;&amp; mEstimation != null;</span>
     }
 
     /**
@@ -1757,8 +1758,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      */
     public boolean propagate(final Time timestamp) throws LockedException,
             INSGNSSException {
-<span class="fc" id="L1760">        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(),</span>
-<span class="fc" id="L1761">                timestamp.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L1761">        return propagate(TimeConverter.convert(timestamp.getValue().doubleValue(),</span>
+<span class="fc" id="L1762">                timestamp.getUnit(), TimeUnit.SECOND));</span>
     }
 
     /**
@@ -1775,80 +1776,80 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
     public boolean propagate(final double timestamp) throws LockedException,
             INSGNSSException {
 
-<span class="fc bfc" id="L1778" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1779">            throw new LockedException();</span>
+<span class="fc bfc" id="L1779" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1780">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L1782" title="All 2 branches covered.">        if (!isPropagateReady()) {</span>
-<span class="fc" id="L1783">            return false;</span>
+<span class="fc bfc" id="L1783" title="All 2 branches covered.">        if (!isPropagateReady()) {</span>
+<span class="fc" id="L1784">            return false;</span>
         }
 
-<span class="fc bfc" id="L1786" title="All 2 branches covered.">        final double propagationInterval = mLastStateTimestamp != null ?</span>
-<span class="fc" id="L1787">                timestamp - mLastStateTimestamp : 0.0;</span>
-<span class="fc bfc" id="L1788" title="All 4 branches covered.">        if (mLastStateTimestamp != null &amp;&amp; propagationInterval &lt;= mEpochInterval) {</span>
-<span class="fc" id="L1789">            return false;</span>
+<span class="fc bfc" id="L1787" title="All 2 branches covered.">        final double propagationInterval = mLastStateTimestamp != null ?</span>
+<span class="fc" id="L1788">                timestamp - mLastStateTimestamp : 0.0;</span>
+<span class="fc bfc" id="L1789" title="All 4 branches covered.">        if (mLastStateTimestamp != null &amp;&amp; propagationInterval &lt;= mEpochInterval) {</span>
+<span class="fc" id="L1790">            return false;</span>
         }
 
         try {
-<span class="fc" id="L1793">            mRunning = true;</span>
+<span class="fc" id="L1794">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1795" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1796">                mListener.onPropagateStart(this);</span>
+<span class="pc bpc" id="L1796" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1797">                mListener.onPropagateStart(this);</span>
             }
 
-<span class="pc bpc" id="L1799" title="1 of 2 branches missed.">            if (initFrame()) {</span>
-<span class="nc" id="L1800">                mFrame.setCoordinates(</span>
-<span class="nc" id="L1801">                        mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());</span>
-<span class="nc" id="L1802">                mFrame.setVelocityCoordinates(</span>
-<span class="nc" id="L1803">                        mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());</span>
+<span class="pc bpc" id="L1800" title="1 of 2 branches missed.">            if (initFrame()) {</span>
+<span class="nc" id="L1801">                mFrame.setCoordinates(</span>
+<span class="nc" id="L1802">                        mEstimation.getX(), mEstimation.getY(), mEstimation.getZ());</span>
+<span class="nc" id="L1803">                mFrame.setVelocityCoordinates(</span>
+<span class="nc" id="L1804">                        mEstimation.getVx(), mEstimation.getVy(), mEstimation.getVz());</span>
             }
 
-<span class="fc bfc" id="L1806" title="All 2 branches covered.">            if (mState == null) {</span>
+<span class="fc bfc" id="L1807" title="All 2 branches covered.">            if (mState == null) {</span>
                 // initialize state
-<span class="fc" id="L1808">                initInitialConfig();</span>
-<span class="fc" id="L1809">                final Matrix covariance = INSTightlyCoupledKalmanInitializer</span>
-<span class="fc" id="L1810">                        .initialize(mInitialConfig);</span>
+<span class="fc" id="L1809">                initInitialConfig();</span>
+<span class="fc" id="L1810">                final Matrix covariance = INSTightlyCoupledKalmanInitializer</span>
+<span class="fc" id="L1811">                        .initialize(mInitialConfig);</span>
 
-<span class="fc" id="L1812">                mState = new INSTightlyCoupledKalmanState();</span>
-<span class="fc" id="L1813">                mState.setFrame(mFrame);</span>
-<span class="fc" id="L1814">                mState.setCovariance(covariance);</span>
+<span class="fc" id="L1813">                mState = new INSTightlyCoupledKalmanState();</span>
+<span class="fc" id="L1814">                mState.setFrame(mFrame);</span>
+<span class="fc" id="L1815">                mState.setCovariance(covariance);</span>
             }
 
-<span class="fc bfc" id="L1817" title="All 2 branches covered.">            if (mKinematics != null) {</span>
-<span class="fc" id="L1818">                correctKinematics(mKinematics);</span>
+<span class="fc bfc" id="L1818" title="All 2 branches covered.">            if (mKinematics != null) {</span>
+<span class="fc" id="L1819">                correctKinematics(mKinematics);</span>
             }
 
             final double fx;
             final double fy;
             final double fz;
-<span class="fc bfc" id="L1824" title="All 2 branches covered.">            if (mCorrectedKinematics != null) {</span>
-<span class="fc" id="L1825">                fx = mCorrectedKinematics.getFx();</span>
-<span class="fc" id="L1826">                fy = mCorrectedKinematics.getFy();</span>
-<span class="fc" id="L1827">                fz = mCorrectedKinematics.getFz();</span>
+<span class="fc bfc" id="L1825" title="All 2 branches covered.">            if (mCorrectedKinematics != null) {</span>
+<span class="fc" id="L1826">                fx = mCorrectedKinematics.getFx();</span>
+<span class="fc" id="L1827">                fy = mCorrectedKinematics.getFy();</span>
+<span class="fc" id="L1828">                fz = mCorrectedKinematics.getFz();</span>
             } else {
-<span class="fc" id="L1829">                fx = 0.0;</span>
-<span class="fc" id="L1830">                fy = 0.0;</span>
-<span class="fc" id="L1831">                fz = 0.0;</span>
+<span class="fc" id="L1830">                fx = 0.0;</span>
+<span class="fc" id="L1831">                fy = 0.0;</span>
+<span class="fc" id="L1832">                fz = 0.0;</span>
             }
 
-<span class="fc" id="L1834">            INSTightlyCoupledKalmanEpochEstimator.estimate(mMeasurements,</span>
+<span class="fc" id="L1835">            INSTightlyCoupledKalmanEpochEstimator.estimate(mMeasurements,</span>
                     propagationInterval, mState, fx, fy, fz, mConfig, mState);
-<span class="fc" id="L1836">            mLastStateTimestamp = timestamp;</span>
+<span class="fc" id="L1837">            mLastStateTimestamp = timestamp;</span>
 
-<span class="fc" id="L1838">            mState.getGNSSEstimation(mEstimation);</span>
-<span class="fc" id="L1839">            mState.getFrame(mFrame);</span>
+<span class="fc" id="L1839">            mState.getGNSSEstimation(mEstimation);</span>
+<span class="fc" id="L1840">            mState.getFrame(mFrame);</span>
 
-<span class="pc bpc" id="L1841" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1842">                mListener.onPropagateEnd(this);</span>
+<span class="pc bpc" id="L1842" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1843">                mListener.onPropagateEnd(this);</span>
             }
 
-<span class="nc" id="L1845">        } catch (final AlgebraException e) {</span>
-<span class="nc" id="L1846">            throw new INSGNSSException(e);</span>
+<span class="nc" id="L1846">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L1847">            throw new INSGNSSException(e);</span>
         } finally {
-<span class="fc" id="L1848">            mRunning = false;</span>
+<span class="fc" id="L1849">            mRunning = false;</span>
         }
 
-<span class="fc" id="L1851">        return true;</span>
+<span class="fc" id="L1852">        return true;</span>
     }
 
     /**
@@ -1857,25 +1858,25 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @throws LockedException if this estimator is already running.
      */
     public void reset() throws LockedException {
-<span class="fc bfc" id="L1860" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1861">            throw new LockedException();</span>
+<span class="fc bfc" id="L1861" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1862">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1864">        mRunning = true;</span>
-<span class="fc" id="L1865">        mMeasurements = null;</span>
-<span class="fc" id="L1866">        mEstimation = null;</span>
-<span class="fc" id="L1867">        mState = null;</span>
-<span class="fc" id="L1868">        mLastStateTimestamp = null;</span>
-<span class="fc" id="L1869">        mKinematics = null;</span>
-<span class="fc" id="L1870">        mCorrectedKinematics = null;</span>
-<span class="fc" id="L1871">        mFrame = null;</span>
+<span class="fc" id="L1865">        mRunning = true;</span>
+<span class="fc" id="L1866">        mMeasurements = null;</span>
+<span class="fc" id="L1867">        mEstimation = null;</span>
+<span class="fc" id="L1868">        mState = null;</span>
+<span class="fc" id="L1869">        mLastStateTimestamp = null;</span>
+<span class="fc" id="L1870">        mKinematics = null;</span>
+<span class="fc" id="L1871">        mCorrectedKinematics = null;</span>
+<span class="fc" id="L1872">        mFrame = null;</span>
 
-<span class="pc bpc" id="L1873" title="1 of 2 branches missed.">        if (mListener != null) {</span>
-<span class="fc" id="L1874">            mListener.onReset(this);</span>
+<span class="pc bpc" id="L1874" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L1875">            mListener.onReset(this);</span>
         }
 
-<span class="fc" id="L1877">        mRunning = false;</span>
-<span class="fc" id="L1878">    }</span>
+<span class="fc" id="L1878">        mRunning = false;</span>
+<span class="fc" id="L1879">    }</span>
 
     /**
      * Initializes current ECEF frame containing user position, velocity and
@@ -1885,11 +1886,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @return true if frame was initialized, false otherwise.
      */
     private boolean initFrame() {
-<span class="fc bfc" id="L1888" title="All 2 branches covered.">        if (mFrame == null) {</span>
-<span class="fc" id="L1889">            mFrame = new ECEFFrame();</span>
-<span class="fc" id="L1890">            return true;</span>
+<span class="fc bfc" id="L1889" title="All 2 branches covered.">        if (mFrame == null) {</span>
+<span class="fc" id="L1890">            mFrame = new ECEFFrame();</span>
+<span class="fc" id="L1891">            return true;</span>
         } else {
-<span class="fc" id="L1892">            return false;</span>
+<span class="fc" id="L1893">            return false;</span>
         }
     }
 
@@ -1899,10 +1900,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * This method makes no action if an initial configuration already exists.
      */
     private void initInitialConfig() {
-<span class="pc bpc" id="L1902" title="1 of 2 branches missed.">        if (mInitialConfig == null) {</span>
-<span class="nc" id="L1903">            mInitialConfig = new INSTightlyCoupledKalmanInitializerConfig();</span>
+<span class="pc bpc" id="L1903" title="1 of 2 branches missed.">        if (mInitialConfig == null) {</span>
+<span class="nc" id="L1904">            mInitialConfig = new INSTightlyCoupledKalmanInitializerConfig();</span>
         }
-<span class="fc" id="L1905">    }</span>
+<span class="fc" id="L1906">    }</span>
 
     /**
      * Corrects provided kinematics by taking into account currently estimated
@@ -1913,8 +1914,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
      * @param kinematics kinematics instance to be corrected.
      */
     private void correctKinematics(final BodyKinematics kinematics) {
-<span class="fc bfc" id="L1916" title="All 2 branches covered.">        if (mCorrectedKinematics == null) {</span>
-<span class="fc" id="L1917">            mCorrectedKinematics = new BodyKinematics();</span>
+<span class="fc bfc" id="L1917" title="All 2 branches covered.">        if (mCorrectedKinematics == null) {</span>
+<span class="fc" id="L1918">            mCorrectedKinematics = new BodyKinematics();</span>
         }
 
         final double accelBiasX;
@@ -1923,35 +1924,35 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimator {
         final double gyroBiasX;
         final double gyroBiasY;
         final double gyroBiasZ;
-<span class="fc bfc" id="L1926" title="All 2 branches covered.">        if (mState != null) {</span>
-<span class="fc" id="L1927">            accelBiasX = mState.getAccelerationBiasX();</span>
-<span class="fc" id="L1928">            accelBiasY = mState.getAccelerationBiasY();</span>
-<span class="fc" id="L1929">            accelBiasZ = mState.getAccelerationBiasZ();</span>
-<span class="fc" id="L1930">            gyroBiasX = mState.getGyroBiasX();</span>
-<span class="fc" id="L1931">            gyroBiasY = mState.getGyroBiasY();</span>
-<span class="fc" id="L1932">            gyroBiasZ = mState.getGyroBiasZ();</span>
+<span class="fc bfc" id="L1927" title="All 2 branches covered.">        if (mState != null) {</span>
+<span class="fc" id="L1928">            accelBiasX = mState.getAccelerationBiasX();</span>
+<span class="fc" id="L1929">            accelBiasY = mState.getAccelerationBiasY();</span>
+<span class="fc" id="L1930">            accelBiasZ = mState.getAccelerationBiasZ();</span>
+<span class="fc" id="L1931">            gyroBiasX = mState.getGyroBiasX();</span>
+<span class="fc" id="L1932">            gyroBiasY = mState.getGyroBiasY();</span>
+<span class="fc" id="L1933">            gyroBiasZ = mState.getGyroBiasZ();</span>
         } else {
-<span class="fc" id="L1934">            accelBiasX = 0.0;</span>
-<span class="fc" id="L1935">            accelBiasY = 0.0;</span>
-<span class="fc" id="L1936">            accelBiasZ = 0.0;</span>
-<span class="fc" id="L1937">            gyroBiasX = 0.0;</span>
-<span class="fc" id="L1938">            gyroBiasY = 0.0;</span>
-<span class="fc" id="L1939">            gyroBiasZ = 0.0;</span>
+<span class="fc" id="L1935">            accelBiasX = 0.0;</span>
+<span class="fc" id="L1936">            accelBiasY = 0.0;</span>
+<span class="fc" id="L1937">            accelBiasZ = 0.0;</span>
+<span class="fc" id="L1938">            gyroBiasX = 0.0;</span>
+<span class="fc" id="L1939">            gyroBiasY = 0.0;</span>
+<span class="fc" id="L1940">            gyroBiasZ = 0.0;</span>
         }
 
-<span class="fc" id="L1942">        final double fx = kinematics.getFx();</span>
-<span class="fc" id="L1943">        final double fy = kinematics.getFy();</span>
-<span class="fc" id="L1944">        final double fz = kinematics.getFz();</span>
-<span class="fc" id="L1945">        final double angularRateX = kinematics.getAngularRateX();</span>
-<span class="fc" id="L1946">        final double angularRateY = kinematics.getAngularRateY();</span>
-<span class="fc" id="L1947">        final double angularRateZ = kinematics.getAngularRateZ();</span>
+<span class="fc" id="L1943">        final double fx = kinematics.getFx();</span>
+<span class="fc" id="L1944">        final double fy = kinematics.getFy();</span>
+<span class="fc" id="L1945">        final double fz = kinematics.getFz();</span>
+<span class="fc" id="L1946">        final double angularRateX = kinematics.getAngularRateX();</span>
+<span class="fc" id="L1947">        final double angularRateY = kinematics.getAngularRateY();</span>
+<span class="fc" id="L1948">        final double angularRateZ = kinematics.getAngularRateZ();</span>
 
-<span class="fc" id="L1949">        mCorrectedKinematics.setSpecificForceCoordinates(</span>
+<span class="fc" id="L1950">        mCorrectedKinematics.setSpecificForceCoordinates(</span>
                 fx - accelBiasX, fy - accelBiasY, fz - accelBiasZ);
-<span class="fc" id="L1951">        mCorrectedKinematics.setAngularRateCoordinates(</span>
+<span class="fc" id="L1952">        mCorrectedKinematics.setAngularRateCoordinates(</span>
                 angularRateX - gyroBiasX,
                 angularRateY - gyroBiasY,
                 angularRateZ - gyroBiasZ);
-<span class="fc" id="L1955">    }</span>
+<span class="fc" id="L1956">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

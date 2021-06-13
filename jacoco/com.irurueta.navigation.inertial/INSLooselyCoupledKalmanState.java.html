@@ -29,18 +29,8 @@ import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -140,8 +130,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Constructor.
      */
-<span class="fc" id="L143">    public INSLooselyCoupledKalmanState() {</span>
-<span class="fc" id="L144">    }</span>
+<span class="fc" id="L133">    public INSLooselyCoupledKalmanState() {</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructor.
@@ -185,14 +175,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L188">            final Matrix covariance) {</span>
-<span class="fc" id="L189">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L190">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L191">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L192">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L193">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L194">        setCovariance(covariance);</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L178">            final Matrix covariance) {</span>
+<span class="fc" id="L179">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L180">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L181">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L182">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L183">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L184">        setCovariance(covariance);</span>
+<span class="fc" id="L185">    }</span>
 
     /**
      * Constructor.
@@ -229,14 +219,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L232">            final Matrix covariance) {</span>
-<span class="fc" id="L233">        setC(c);</span>
-<span class="fc" id="L234">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L235">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L236">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L237">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L238">        setCovariance(covariance);</span>
-<span class="fc" id="L239">    }</span>
+<span class="fc" id="L222">            final Matrix covariance) {</span>
+<span class="fc" id="L223">        setC(c);</span>
+<span class="fc" id="L224">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L225">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L226">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L227">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L228">        setCovariance(covariance);</span>
+<span class="fc" id="L229">    }</span>
 
     /**
      * Constructor.
@@ -271,14 +261,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L274">            final Matrix covariance) {</span>
-<span class="fc" id="L275">        setC(c);</span>
-<span class="fc" id="L276">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L277">        setPosition(position);</span>
-<span class="fc" id="L278">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L279">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L280">        setCovariance(covariance);</span>
-<span class="fc" id="L281">    }</span>
+<span class="fc" id="L264">            final Matrix covariance) {</span>
+<span class="fc" id="L265">        setC(c);</span>
+<span class="fc" id="L266">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L267">        setPosition(position);</span>
+<span class="fc" id="L268">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L269">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L270">        setCovariance(covariance);</span>
+<span class="fc" id="L271">    }</span>
 
     /**
      * Constructor.
@@ -303,22 +293,22 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public INSLooselyCoupledKalmanState(
             final CoordinateTransformation c,
-            final com.irurueta.navigation.frames.ECEFVelocity velocity,
-            final com.irurueta.navigation.frames.ECEFPosition position,
+            final ECEFVelocity velocity,
+            final ECEFPosition position,
             final double accelerationBiasX,
             final double accelerationBiasY,
             final double accelerationBiasZ,
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L314">            final Matrix covariance) {</span>
-<span class="fc" id="L315">        setC(c);</span>
-<span class="fc" id="L316">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L317">        setEcefPosition(position);</span>
-<span class="fc" id="L318">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L319">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L320">        setCovariance(covariance);</span>
-<span class="fc" id="L321">    }</span>
+<span class="fc" id="L304">            final Matrix covariance) {</span>
+<span class="fc" id="L305">        setC(c);</span>
+<span class="fc" id="L306">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L307">        setEcefPosition(position);</span>
+<span class="fc" id="L308">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L309">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L310">        setCovariance(covariance);</span>
+<span class="fc" id="L311">    }</span>
 
     /**
      * Constructor.
@@ -349,13 +339,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L352">            final Matrix covariance) {</span>
-<span class="fc" id="L353">        setC(c);</span>
-<span class="fc" id="L354">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L355">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L356">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L357">        setCovariance(covariance);</span>
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L342">            final Matrix covariance) {</span>
+<span class="fc" id="L343">        setC(c);</span>
+<span class="fc" id="L344">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L345">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L346">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L347">        setCovariance(covariance);</span>
+<span class="fc" id="L348">    }</span>
 
     /**
      * Constructor.
@@ -384,12 +374,12 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L387">            final Matrix covariance) {</span>
-<span class="fc" id="L388">        setFrame(frame);</span>
-<span class="fc" id="L389">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L390">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L391">        setCovariance(covariance);</span>
-<span class="fc" id="L392">    }</span>
+<span class="fc" id="L377">            final Matrix covariance) {</span>
+<span class="fc" id="L378">        setFrame(frame);</span>
+<span class="fc" id="L379">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L380">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L381">        setCovariance(covariance);</span>
+<span class="fc" id="L382">    }</span>
 
     /**
      * Constructor.
@@ -420,14 +410,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L423">            final Matrix covariance) {</span>
-<span class="fc" id="L424">        setC(c);</span>
-<span class="fc" id="L425">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L426">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L427">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L428">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L429">        setCovariance(covariance);</span>
-<span class="fc" id="L430">    }</span>
+<span class="fc" id="L413">            final Matrix covariance) {</span>
+<span class="fc" id="L414">        setC(c);</span>
+<span class="fc" id="L415">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L416">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L417">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L418">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L419">        setCovariance(covariance);</span>
+<span class="fc" id="L420">    }</span>
 
     /**
      * Constructor.
@@ -456,14 +446,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L459">            final Matrix covariance) {</span>
-<span class="fc" id="L460">        setC(c);</span>
-<span class="fc" id="L461">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L462">        setPosition(position);</span>
-<span class="fc" id="L463">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L464">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L465">        setCovariance(covariance);</span>
-<span class="fc" id="L466">    }</span>
+<span class="fc" id="L449">            final Matrix covariance) {</span>
+<span class="fc" id="L450">        setC(c);</span>
+<span class="fc" id="L451">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L452">        setPosition(position);</span>
+<span class="fc" id="L453">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L454">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L455">        setCovariance(covariance);</span>
+<span class="fc" id="L456">    }</span>
 
     /**
      * Constructor.
@@ -490,14 +480,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L493">            final Matrix covariance) {</span>
-<span class="fc" id="L494">        setC(c);</span>
-<span class="fc" id="L495">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L496">        setEcefPosition(position);</span>
-<span class="fc" id="L497">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L498">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L499">        setCovariance(covariance);</span>
-<span class="fc" id="L500">    }</span>
+<span class="fc" id="L483">            final Matrix covariance) {</span>
+<span class="fc" id="L484">        setC(c);</span>
+<span class="fc" id="L485">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L486">        setEcefPosition(position);</span>
+<span class="fc" id="L487">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L488">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L489">        setCovariance(covariance);</span>
+<span class="fc" id="L490">    }</span>
 
     /**
      * Constructor.
@@ -522,13 +512,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L525">            final Matrix covariance) {</span>
-<span class="fc" id="L526">        setC(c);</span>
-<span class="fc" id="L527">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L528">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L529">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L530">        setCovariance(covariance);</span>
-<span class="fc" id="L531">    }</span>
+<span class="fc" id="L515">            final Matrix covariance) {</span>
+<span class="fc" id="L516">        setC(c);</span>
+<span class="fc" id="L517">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L518">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L519">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L520">        setCovariance(covariance);</span>
+<span class="fc" id="L521">    }</span>
 
     /**
      * Constructor.
@@ -551,12 +541,12 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L554">            final Matrix covariance) {</span>
-<span class="fc" id="L555">        setFrame(frame);</span>
-<span class="fc" id="L556">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L557">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L558">        setCovariance(covariance);</span>
-<span class="fc" id="L559">    }</span>
+<span class="fc" id="L544">            final Matrix covariance) {</span>
+<span class="fc" id="L545">        setFrame(frame);</span>
+<span class="fc" id="L546">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L547">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L548">        setCovariance(covariance);</span>
+<span class="fc" id="L549">    }</span>
 
     /**
      * Constructor.
@@ -594,14 +584,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L597">            final Matrix covariance) {</span>
-<span class="fc" id="L598">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L599">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L600">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L601">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L602">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L603">        setCovariance(covariance);</span>
-<span class="fc" id="L604">    }</span>
+<span class="fc" id="L587">            final Matrix covariance) {</span>
+<span class="fc" id="L588">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L589">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L590">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L591">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L592">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L593">        setCovariance(covariance);</span>
+<span class="fc" id="L594">    }</span>
 
     /**
      * Constructor.
@@ -637,14 +627,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L640">            final Matrix covariance) {</span>
-<span class="fc" id="L641">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L642">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L643">        setPosition(position);</span>
-<span class="fc" id="L644">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L645">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L646">        setCovariance(covariance);</span>
-<span class="fc" id="L647">    }</span>
+<span class="fc" id="L630">            final Matrix covariance) {</span>
+<span class="fc" id="L631">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L632">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L633">        setPosition(position);</span>
+<span class="fc" id="L634">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L635">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L636">        setCovariance(covariance);</span>
+<span class="fc" id="L637">    }</span>
 
     /**
      * Constructor.
@@ -678,14 +668,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L681">            final Matrix covariance) {</span>
-<span class="fc" id="L682">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L683">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L684">        setEcefPosition(position);</span>
-<span class="fc" id="L685">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L686">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L687">        setCovariance(covariance);</span>
-<span class="fc" id="L688">    }</span>
+<span class="fc" id="L671">            final Matrix covariance) {</span>
+<span class="fc" id="L672">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L673">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L674">        setEcefPosition(position);</span>
+<span class="fc" id="L675">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L676">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L677">        setCovariance(covariance);</span>
+<span class="fc" id="L678">    }</span>
 
     /**
      * Constructor.
@@ -717,13 +707,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasX,
             final double gyroBiasY,
             final double gyroBiasZ,
-<span class="fc" id="L720">            final Matrix covariance) {</span>
-<span class="fc" id="L721">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L722">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L723">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L724">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L725">        setCovariance(covariance);</span>
-<span class="fc" id="L726">    }</span>
+<span class="fc" id="L710">            final Matrix covariance) {</span>
+<span class="fc" id="L711">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L712">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L713">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L714">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L715">        setCovariance(covariance);</span>
+<span class="fc" id="L716">    }</span>
 
     /**
      * Constructor.
@@ -755,14 +745,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L758">            final Matrix covariance) {</span>
-<span class="fc" id="L759">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L760">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L761">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L762">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L763">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L764">        setCovariance(covariance);</span>
-<span class="fc" id="L765">    }</span>
+<span class="fc" id="L748">            final Matrix covariance) {</span>
+<span class="fc" id="L749">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L750">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L751">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L752">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L753">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L754">        setCovariance(covariance);</span>
+<span class="fc" id="L755">    }</span>
 
     /**
      * Constructor.
@@ -792,14 +782,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L795">            final Matrix covariance) {</span>
-<span class="fc" id="L796">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L797">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L798">        setPosition(position);</span>
-<span class="fc" id="L799">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L800">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L801">        setCovariance(covariance);</span>
-<span class="fc" id="L802">    }</span>
+<span class="fc" id="L785">            final Matrix covariance) {</span>
+<span class="fc" id="L786">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L787">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L788">        setPosition(position);</span>
+<span class="fc" id="L789">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L790">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L791">        setCovariance(covariance);</span>
+<span class="fc" id="L792">    }</span>
 
     /**
      * Constructor.
@@ -827,14 +817,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L830">            final Matrix covariance) {</span>
-<span class="fc" id="L831">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L832">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L833">        setEcefPosition(position);</span>
-<span class="fc" id="L834">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L835">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L836">        setCovariance(covariance);</span>
-<span class="fc" id="L837">    }</span>
+<span class="fc" id="L820">            final Matrix covariance) {</span>
+<span class="fc" id="L821">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L822">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L823">        setEcefPosition(position);</span>
+<span class="fc" id="L824">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L825">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L826">        setCovariance(covariance);</span>
+<span class="fc" id="L827">    }</span>
 
     /**
      * Constructor.
@@ -860,22 +850,22 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasX,
             final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ,
-<span class="fc" id="L863">            final Matrix covariance) {</span>
-<span class="fc" id="L864">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L865">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L866">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L867">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L868">        setCovariance(covariance);</span>
-<span class="fc" id="L869">    }</span>
+<span class="fc" id="L853">            final Matrix covariance) {</span>
+<span class="fc" id="L854">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L855">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L856">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L857">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L858">        setCovariance(covariance);</span>
+<span class="fc" id="L859">    }</span>
 
     /**
      * Copy constructor.
      *
      * @param input input instance to copy data from.
      */
-<span class="fc" id="L876">    public INSLooselyCoupledKalmanState(final INSLooselyCoupledKalmanState input) {</span>
-<span class="fc" id="L877">        copyFrom(input);</span>
-<span class="fc" id="L878">    }</span>
+<span class="fc" id="L866">    public INSLooselyCoupledKalmanState(final INSLooselyCoupledKalmanState input) {</span>
+<span class="fc" id="L867">        copyFrom(input);</span>
+<span class="fc" id="L868">    }</span>
 
     /**
      * Gets estimated body to ECEF coordinate transformation matrix.
@@ -883,7 +873,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated body to ECEF coordinate transformation matrix.
      */
     public Matrix getBodyToEcefCoordinateTransformationMatrix() {
-<span class="fc" id="L886">        return mBodyToEcefCoordinateTransformationMatrix;</span>
+<span class="fc" id="L876">        return mBodyToEcefCoordinateTransformationMatrix;</span>
     }
 
     /**
@@ -895,13 +885,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setBodyToEcefCoordinateTransformationMatrix(
             final Matrix bodyToEcefCoordinateTransformationMatrix) {
-<span class="fc bfc" id="L898" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix.getRows() != CoordinateTransformation.ROWS ||</span>
-<span class="fc bfc" id="L899" title="All 2 branches covered.">                bodyToEcefCoordinateTransformationMatrix.getColumns() != CoordinateTransformation.COLS) {</span>
-<span class="fc" id="L900">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L888" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix.getRows() != CoordinateTransformation.ROWS ||</span>
+<span class="fc bfc" id="L889" title="All 2 branches covered.">                bodyToEcefCoordinateTransformationMatrix.getColumns() != CoordinateTransformation.COLS) {</span>
+<span class="fc" id="L890">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L902">        mBodyToEcefCoordinateTransformationMatrix =</span>
+<span class="fc" id="L892">        mBodyToEcefCoordinateTransformationMatrix =</span>
                 bodyToEcefCoordinateTransformationMatrix;
-<span class="fc" id="L904">    }</span>
+<span class="fc" id="L894">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
@@ -909,7 +899,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
      */
     public double getVx() {
-<span class="fc" id="L912">        return mVx;</span>
+<span class="fc" id="L902">        return mVx;</span>
     }
 
     /**
@@ -918,8 +908,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param vx estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
      */
     public void setVx(final double vx) {
-<span class="fc" id="L921">        mVx = vx;</span>
-<span class="fc" id="L922">    }</span>
+<span class="fc" id="L911">        mVx = vx;</span>
+<span class="fc" id="L912">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
@@ -927,7 +917,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      */
     public double getVy() {
-<span class="fc" id="L930">        return mVy;</span>
+<span class="fc" id="L920">        return mVy;</span>
     }
 
     /**
@@ -936,8 +926,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      */
     public void setVy(final double vy) {
-<span class="fc" id="L939">        mVy = vy;</span>
-<span class="fc" id="L940">    }</span>
+<span class="fc" id="L929">        mVy = vy;</span>
+<span class="fc" id="L930">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
@@ -945,7 +935,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
     public double getVz() {
-<span class="fc" id="L948">        return mVz;</span>
+<span class="fc" id="L938">        return mVz;</span>
     }
 
     /**
@@ -954,8 +944,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param vz estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
     public void setVz(final double vz) {
-<span class="fc" id="L957">        mVz = vz;</span>
-<span class="fc" id="L958">    }</span>
+<span class="fc" id="L947">        mVz = vz;</span>
+<span class="fc" id="L948">    }</span>
 
     /**
      * Sets estimated ECEF user velocity coordinates.
@@ -966,10 +956,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setVelocityCoordinates(
             final double vx, final double vy, final double vz) {
-<span class="fc" id="L969">        mVx = vx;</span>
-<span class="fc" id="L970">        mVy = vy;</span>
-<span class="fc" id="L971">        mVz = vz;</span>
-<span class="fc" id="L972">    }</span>
+<span class="fc" id="L959">        mVx = vx;</span>
+<span class="fc" id="L960">        mVy = vy;</span>
+<span class="fc" id="L961">        mVz = vz;</span>
+<span class="fc" id="L962">    }</span>
 
     /**
      * Gets x coordinate of estimated ECEF user position expressed in meters (m).
@@ -977,7 +967,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return x coordinate of estimated ECEF user position expressed in meters (m).
      */
     public double getX() {
-<span class="fc" id="L980">        return mX;</span>
+<span class="fc" id="L970">        return mX;</span>
     }
 
     /**
@@ -986,8 +976,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param x x coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setX(final double x) {
-<span class="fc" id="L989">        mX = x;</span>
-<span class="fc" id="L990">    }</span>
+<span class="fc" id="L979">        mX = x;</span>
+<span class="fc" id="L980">    }</span>
 
     /**
      * Gets y coordinate of estimated ECEF user position expressed in meters (m).
@@ -995,7 +985,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return y coordinate of estimated ECEF user position expressed in meters (m).
      */
     public double getY() {
-<span class="fc" id="L998">        return mY;</span>
+<span class="fc" id="L988">        return mY;</span>
     }
 
     /**
@@ -1004,8 +994,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setY(final double y) {
-<span class="fc" id="L1007">        mY = y;</span>
-<span class="fc" id="L1008">    }</span>
+<span class="fc" id="L997">        mY = y;</span>
+<span class="fc" id="L998">    }</span>
 
     /**
      * Gets z coordinate of estimated ECEF user position expressed in meters (m).
@@ -1013,7 +1003,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return z coordinate of estimated ECEF user position expressed in meters (m).
      */
     public double getZ() {
-<span class="fc" id="L1016">        return mZ;</span>
+<span class="fc" id="L1006">        return mZ;</span>
     }
 
     /**
@@ -1022,8 +1012,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param z z coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setZ(final double z) {
-<span class="fc" id="L1025">        mZ = z;</span>
-<span class="fc" id="L1026">    }</span>
+<span class="fc" id="L1015">        mZ = z;</span>
+<span class="fc" id="L1016">    }</span>
 
     /**
      * Sets estimated ECEF user position coordinates.
@@ -1034,10 +1024,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setPositionCoordinates(
             final double x, final double y, final double z) {
-<span class="fc" id="L1037">        mX = x;</span>
-<span class="fc" id="L1038">        mY = y;</span>
-<span class="fc" id="L1039">        mZ = z;</span>
-<span class="fc" id="L1040">    }</span>
+<span class="fc" id="L1027">        mX = x;</span>
+<span class="fc" id="L1028">        mY = y;</span>
+<span class="fc" id="L1029">        mZ = z;</span>
+<span class="fc" id="L1030">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around x axis and expressed in
@@ -1047,7 +1037,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * meters per squared second (m/s^2).
      */
     public double getAccelerationBiasX() {
-<span class="fc" id="L1050">        return mAccelerationBiasX;</span>
+<span class="fc" id="L1040">        return mAccelerationBiasX;</span>
     }
 
     /**
@@ -1058,8 +1048,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                          expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasX(final double accelerationBiasX) {
-<span class="fc" id="L1061">        mAccelerationBiasX = accelerationBiasX;</span>
-<span class="fc" id="L1062">    }</span>
+<span class="fc" id="L1051">        mAccelerationBiasX = accelerationBiasX;</span>
+<span class="fc" id="L1052">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around y axis and expressed in
@@ -1069,7 +1059,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * meters per squared second (m/s^2).
      */
     public double getAccelerationBiasY() {
-<span class="fc" id="L1072">        return mAccelerationBiasY;</span>
+<span class="fc" id="L1062">        return mAccelerationBiasY;</span>
     }
 
     /**
@@ -1080,8 +1070,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                          and expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasY(final double accelerationBiasY) {
-<span class="fc" id="L1083">        mAccelerationBiasY = accelerationBiasY;</span>
-<span class="fc" id="L1084">    }</span>
+<span class="fc" id="L1073">        mAccelerationBiasY = accelerationBiasY;</span>
+<span class="fc" id="L1074">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around z axis and expressed in
@@ -1091,7 +1081,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasZ() {
-<span class="fc" id="L1094">        return mAccelerationBiasZ;</span>
+<span class="fc" id="L1084">        return mAccelerationBiasZ;</span>
     }
 
     /**
@@ -1102,8 +1092,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                          and expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasZ(final double accelerationBiasZ) {
-<span class="fc" id="L1105">        mAccelerationBiasZ = accelerationBiasZ;</span>
-<span class="fc" id="L1106">    }</span>
+<span class="fc" id="L1095">        mAccelerationBiasZ = accelerationBiasZ;</span>
+<span class="fc" id="L1096">    }</span>
 
     /**
      * Sets estimated accelerometer bias expressed in meters per squared second (m/s^2).
@@ -1118,10 +1108,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     public void setAccelerationBiasCoordinates(
             final double accelerationBiasX, final double accelerationBiasY,
             final double accelerationBiasZ) {
-<span class="fc" id="L1121">        mAccelerationBiasX = accelerationBiasX;</span>
-<span class="fc" id="L1122">        mAccelerationBiasY = accelerationBiasY;</span>
-<span class="fc" id="L1123">        mAccelerationBiasZ = accelerationBiasZ;</span>
-<span class="fc" id="L1124">    }</span>
+<span class="fc" id="L1111">        mAccelerationBiasX = accelerationBiasX;</span>
+<span class="fc" id="L1112">        mAccelerationBiasY = accelerationBiasY;</span>
+<span class="fc" id="L1113">        mAccelerationBiasZ = accelerationBiasZ;</span>
+<span class="fc" id="L1114">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around x axis and expressed in
@@ -1131,7 +1121,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * radians per second (rad/s).
      */
     public double getGyroBiasX() {
-<span class="fc" id="L1134">        return mGyroBiasX;</span>
+<span class="fc" id="L1124">        return mGyroBiasX;</span>
     }
 
     /**
@@ -1142,8 +1132,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                  expressed in radians per second (rad/s).
      */
     public void setGyroBiasX(final double gyroBiasX) {
-<span class="fc" id="L1145">        mGyroBiasX = gyroBiasX;</span>
-<span class="fc" id="L1146">    }</span>
+<span class="fc" id="L1135">        mGyroBiasX = gyroBiasX;</span>
+<span class="fc" id="L1136">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around y axis and expressed in
@@ -1153,7 +1143,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * in radians per second (rad/s).
      */
     public double getGyroBiasY() {
-<span class="fc" id="L1156">        return mGyroBiasY;</span>
+<span class="fc" id="L1146">        return mGyroBiasY;</span>
     }
 
     /**
@@ -1164,8 +1154,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                  expressed in radians per second (rad/s).
      */
     public void setGyroBiasY(final double gyroBiasY) {
-<span class="fc" id="L1167">        mGyroBiasY = gyroBiasY;</span>
-<span class="fc" id="L1168">    }</span>
+<span class="fc" id="L1157">        mGyroBiasY = gyroBiasY;</span>
+<span class="fc" id="L1158">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around z axis and expressed in
@@ -1175,7 +1165,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * in radians per second (rad/s).
      */
     public double getGyroBiasZ() {
-<span class="fc" id="L1178">        return mGyroBiasZ;</span>
+<span class="fc" id="L1168">        return mGyroBiasZ;</span>
     }
 
     /**
@@ -1186,8 +1176,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                  expressed in radians per second (rad/s).
      */
     public void setGyroBiasZ(final double gyroBiasZ) {
-<span class="fc" id="L1189">        mGyroBiasZ = gyroBiasZ;</span>
-<span class="fc" id="L1190">    }</span>
+<span class="fc" id="L1179">        mGyroBiasZ = gyroBiasZ;</span>
+<span class="fc" id="L1180">    }</span>
 
     /**
      * Sets estimated gyroscope bias coordinates expressed in radians
@@ -1202,10 +1192,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setGyroBiasCoordinates(
             final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ) {
-<span class="fc" id="L1205">        mGyroBiasX = gyroBiasX;</span>
-<span class="fc" id="L1206">        mGyroBiasY = gyroBiasY;</span>
-<span class="fc" id="L1207">        mGyroBiasZ = gyroBiasZ;</span>
-<span class="fc" id="L1208">    }</span>
+<span class="fc" id="L1195">        mGyroBiasX = gyroBiasX;</span>
+<span class="fc" id="L1196">        mGyroBiasY = gyroBiasY;</span>
+<span class="fc" id="L1197">        mGyroBiasZ = gyroBiasZ;</span>
+<span class="fc" id="L1198">    }</span>
 
     /**
      * Gets Kalman filter error covariance matrix.
@@ -1221,11 +1211,11 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return true if result data has been copied, false otherwise.
      */
     public boolean getCovariance(final Matrix result) {
-<span class="fc bfc" id="L1224" title="All 2 branches covered.">        if (mCovariance != null) {</span>
-<span class="fc" id="L1225">            mCovariance.copyTo(result);</span>
-<span class="fc" id="L1226">            return true;</span>
+<span class="fc bfc" id="L1214" title="All 2 branches covered.">        if (mCovariance != null) {</span>
+<span class="fc" id="L1215">            mCovariance.copyTo(result);</span>
+<span class="fc" id="L1216">            return true;</span>
         } else {
-<span class="fc" id="L1228">            return false;</span>
+<span class="fc" id="L1218">            return false;</span>
         }
     }
 
@@ -1242,7 +1232,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return Kalman filter error covariance matrix.
      */
     public Matrix getCovariance() {
-<span class="fc" id="L1245">        return mCovariance;</span>
+<span class="fc" id="L1235">        return mCovariance;</span>
     }
 
     /**
@@ -1252,13 +1242,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 15x15.
      */
     public void setCovariance(final Matrix covariance) {
-<span class="fc bfc" id="L1255" title="All 2 branches covered.">        if (covariance.getRows() != NUM_PARAMS ||</span>
-<span class="pc bpc" id="L1256" title="1 of 2 branches missed.">                covariance.getColumns() != NUM_PARAMS) {</span>
-<span class="fc" id="L1257">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1245" title="All 2 branches covered.">        if (covariance.getRows() != NUM_PARAMS ||</span>
+<span class="pc bpc" id="L1246" title="1 of 2 branches missed.">                covariance.getColumns() != NUM_PARAMS) {</span>
+<span class="fc" id="L1247">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1260">        mCovariance = covariance;</span>
-<span class="fc" id="L1261">    }</span>
+<span class="fc" id="L1250">        mCovariance = covariance;</span>
+<span class="fc" id="L1251">    }</span>
 
     /**
      * Gets body to ECEF coordinate transformation.
@@ -1268,18 +1258,18 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                                        not valid (is not a 3x3 orthonormal matrix).
      */
     public CoordinateTransformation getC() throws InvalidRotationMatrixException {
-<span class="fc bfc" id="L1271" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc bfc" id="L1261" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
             try {
                 // Make sure that matrix is orthonormal
-<span class="fc" id="L1274">                final Matrix fixed = fixRotationMatrix();</span>
-<span class="fc" id="L1275">                return new CoordinateTransformation(fixed, FrameType.BODY_FRAME,</span>
+<span class="fc" id="L1264">                final Matrix fixed = fixRotationMatrix();</span>
+<span class="fc" id="L1265">                return new CoordinateTransformation(fixed, FrameType.BODY_FRAME,</span>
                         FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
-<span class="nc" id="L1277">            } catch (final AlgebraException ignore) {</span>
-<span class="nc" id="L1278">                return null;</span>
+<span class="nc" id="L1267">            } catch (final AlgebraException ignore) {</span>
+<span class="nc" id="L1268">                return null;</span>
             }
 
         } else {
-<span class="fc" id="L1282">            return null;</span>
+<span class="fc" id="L1272">            return null;</span>
         }
     }
 
@@ -1293,9 +1283,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                                        is considered not valid (is not a 3x3 orthonormal matrix) with provided threshold.
      */
     public CoordinateTransformation getC(final double threshold) throws InvalidRotationMatrixException {
-<span class="pc bpc" id="L1296" title="1 of 2 branches missed.">        return mBodyToEcefCoordinateTransformationMatrix != null ?</span>
-<span class="nc" id="L1297">                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,</span>
-<span class="fc" id="L1298">                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;</span>
+<span class="pc bpc" id="L1286" title="1 of 2 branches missed.">        return mBodyToEcefCoordinateTransformationMatrix != null ?</span>
+<span class="nc" id="L1287">                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="fc" id="L1288">                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;</span>
     }
 
     /**
@@ -1307,13 +1297,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                                        is not valid (is not a 3x3 orthonormal matrix).
      */
     public boolean getC(final CoordinateTransformation result) throws InvalidRotationMatrixException {
-<span class="fc bfc" id="L1310" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1311">            result.setSourceType(FrameType.BODY_FRAME);</span>
-<span class="fc" id="L1312">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
-<span class="fc" id="L1313">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L1314">            return true;</span>
+<span class="fc bfc" id="L1300" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1301">            result.setSourceType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L1302">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
+<span class="fc" id="L1303">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L1304">            return true;</span>
         } else {
-<span class="fc" id="L1316">            return false;</span>
+<span class="fc" id="L1306">            return false;</span>
         }
     }
 
@@ -1329,13 +1319,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public boolean getC(final CoordinateTransformation result,
                         final double threshold) throws InvalidRotationMatrixException {
-<span class="fc bfc" id="L1332" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1333">            result.setSourceType(FrameType.BODY_FRAME);</span>
-<span class="fc" id="L1334">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
-<span class="fc" id="L1335">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix, threshold);</span>
-<span class="fc" id="L1336">            return true;</span>
+<span class="fc bfc" id="L1322" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1323">            result.setSourceType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L1324">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
+<span class="fc" id="L1325">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix, threshold);</span>
+<span class="fc" id="L1326">            return true;</span>
         } else {
-<span class="fc" id="L1338">            return false;</span>
+<span class="fc" id="L1328">            return false;</span>
         }
     }
 
@@ -1347,23 +1337,23 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                                  not null and is not a body to ECEF transformation.
      */
     public void setC(final CoordinateTransformation c) {
-<span class="fc bfc" id="L1350" title="All 2 branches covered.">        if (c == null) {</span>
-<span class="fc" id="L1351">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
+<span class="fc bfc" id="L1340" title="All 2 branches covered.">        if (c == null) {</span>
+<span class="fc" id="L1341">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
 
         } else {
 
-<span class="fc bfc" id="L1355" title="All 2 branches covered.">            if (c.getSourceType() != FrameType.BODY_FRAME ||</span>
-<span class="pc bpc" id="L1356" title="1 of 2 branches missed.">                    c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {</span>
-<span class="fc" id="L1357">                throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1345" title="All 2 branches covered.">            if (c.getSourceType() != FrameType.BODY_FRAME ||</span>
+<span class="pc bpc" id="L1346" title="1 of 2 branches missed.">                    c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {</span>
+<span class="fc" id="L1347">                throw new IllegalArgumentException();</span>
             }
 
-<span class="fc bfc" id="L1360" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1361">                c.getMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc bfc" id="L1350" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1351">                c.getMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
             } else {
-<span class="fc" id="L1363">                mBodyToEcefCoordinateTransformationMatrix = c.getMatrix();</span>
+<span class="fc" id="L1353">                mBodyToEcefCoordinateTransformationMatrix = c.getMatrix();</span>
             }
         }
-<span class="fc" id="L1366">    }</span>
+<span class="fc" id="L1356">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around x axis.
@@ -1371,9 +1361,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity resolved around x axis will be stored.
      */
     public void getSpeedX(final Speed result) {
-<span class="fc" id="L1374">        result.setValue(mVx);</span>
-<span class="fc" id="L1375">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1376">    }</span>
+<span class="fc" id="L1364">        result.setValue(mVx);</span>
+<span class="fc" id="L1365">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1366">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around x axis.
@@ -1381,7 +1371,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around x axis.
      */
     public Speed getSpeedX() {
-<span class="fc" id="L1384">        return new Speed(mVx, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1374">        return new Speed(mVx, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -1390,9 +1380,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param vx estimated ECEF user velocity resolved around x axis.
      */
     public void setSpeedX(final Speed vx) {
-<span class="fc" id="L1393">        mVx = SpeedConverter.convert(vx.getValue().doubleValue(),</span>
-<span class="fc" id="L1394">                vx.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1395">    }</span>
+<span class="fc" id="L1383">        mVx = SpeedConverter.convert(vx.getValue().doubleValue(),</span>
+<span class="fc" id="L1384">                vx.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1385">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around y axis.
@@ -1400,9 +1390,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity resolved around y axis will be stored.
      */
     public void getSpeedY(final Speed result) {
-<span class="fc" id="L1403">        result.setValue(mVy);</span>
-<span class="fc" id="L1404">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1405">    }</span>
+<span class="fc" id="L1393">        result.setValue(mVy);</span>
+<span class="fc" id="L1394">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1395">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around y axis.
@@ -1410,7 +1400,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF velocity resolved around y axis.
      */
     public Speed getSpeedY() {
-<span class="fc" id="L1413">        return new Speed(mVy, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1403">        return new Speed(mVy, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -1419,9 +1409,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF user velocity resolved around y axis.
      */
     public void setSpeedY(final Speed vy) {
-<span class="fc" id="L1422">        mVy = SpeedConverter.convert(vy.getValue().doubleValue(),</span>
-<span class="fc" id="L1423">                vy.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1424">    }</span>
+<span class="fc" id="L1412">        mVy = SpeedConverter.convert(vy.getValue().doubleValue(),</span>
+<span class="fc" id="L1413">                vy.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1414">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around z axis.
@@ -1429,9 +1419,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity resolved around z axis will be stored.
      */
     public void getSpeedZ(final Speed result) {
-<span class="fc" id="L1432">        result.setValue(mVz);</span>
-<span class="fc" id="L1433">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1434">    }</span>
+<span class="fc" id="L1422">        result.setValue(mVz);</span>
+<span class="fc" id="L1423">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1424">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around z axis.
@@ -1439,7 +1429,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF velocity resolved around z axis.
      */
     public Speed getSpeedZ() {
-<span class="fc" id="L1442">        return new Speed(mVz, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1432">        return new Speed(mVz, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -1448,9 +1438,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param vz estimated ECEF velocity resolved around z axis.
      */
     public void setSpeedZ(final Speed vz) {
-<span class="fc" id="L1451">        mVz = SpeedConverter.convert(vz.getValue().doubleValue(),</span>
-<span class="fc" id="L1452">                vz.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1453">    }</span>
+<span class="fc" id="L1441">        mVz = SpeedConverter.convert(vz.getValue().doubleValue(),</span>
+<span class="fc" id="L1442">                vz.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1443">    }</span>
 
     /**
      * Sets estimated ECEF user velocity.
@@ -1461,27 +1451,27 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setVelocityCoordinates(
             final Speed vx, final Speed vy, final Speed vz) {
-<span class="fc" id="L1464">        setSpeedX(vx);</span>
-<span class="fc" id="L1465">        setSpeedY(vy);</span>
-<span class="fc" id="L1466">        setSpeedZ(vz);</span>
-<span class="fc" id="L1467">    }</span>
+<span class="fc" id="L1454">        setSpeedX(vx);</span>
+<span class="fc" id="L1455">        setSpeedY(vy);</span>
+<span class="fc" id="L1456">        setSpeedZ(vz);</span>
+<span class="fc" id="L1457">    }</span>
 
     /**
      * Gets estimated ECEF user velocity.
      *
      * @param result instance where estimated ECEF user velocity will be stored.
      */
-    public void getEcefVelocity(final com.irurueta.navigation.frames.ECEFVelocity result) {
-<span class="fc" id="L1475">        result.setCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L1476">    }</span>
+    public void getEcefVelocity(final ECEFVelocity result) {
+<span class="fc" id="L1465">        result.setCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L1466">    }</span>
 
     /**
      * Gets estimated ECEF user velocity.
      *
      * @return estimated ECEF user velocity.
      */
-    public com.irurueta.navigation.frames.ECEFVelocity getEcefVelocity() {
-<span class="fc" id="L1484">        return new com.irurueta.navigation.frames.ECEFVelocity(mVx, mVy, mVz);</span>
+    public ECEFVelocity getEcefVelocity() {
+<span class="fc" id="L1474">        return new ECEFVelocity(mVx, mVy, mVz);</span>
     }
 
     /**
@@ -1490,10 +1480,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param ecefVelocity estimated ECEF user velocity.
      */
     public void setEcefVelocity(final ECEFVelocity ecefVelocity) {
-<span class="fc" id="L1493">        mVx = ecefVelocity.getVx();</span>
-<span class="fc" id="L1494">        mVy = ecefVelocity.getVy();</span>
-<span class="fc" id="L1495">        mVz = ecefVelocity.getVz();</span>
-<span class="fc" id="L1496">    }</span>
+<span class="fc" id="L1483">        mVx = ecefVelocity.getVx();</span>
+<span class="fc" id="L1484">        mVy = ecefVelocity.getVy();</span>
+<span class="fc" id="L1485">        mVz = ecefVelocity.getVz();</span>
+<span class="fc" id="L1486">    }</span>
 
     /**
      * Gets x coordinate of estimated ECEF user position.
@@ -1502,9 +1492,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getDistanceX(final Distance result) {
-<span class="fc" id="L1505">        result.setValue(mX);</span>
-<span class="fc" id="L1506">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L1507">    }</span>
+<span class="fc" id="L1495">        result.setValue(mX);</span>
+<span class="fc" id="L1496">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1497">    }</span>
 
     /**
      * Gets x coordinate of estimated ECEF user position.
@@ -1512,7 +1502,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return x coordinate of estimated ECEF user position.
      */
     public Distance getDistanceX() {
-<span class="fc" id="L1515">        return new Distance(mX, DistanceUnit.METER);</span>
+<span class="fc" id="L1505">        return new Distance(mX, DistanceUnit.METER);</span>
     }
 
     /**
@@ -1521,9 +1511,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param x x coordinate of estimated ECEF user position.
      */
     public void setDistanceX(final Distance x) {
-<span class="fc" id="L1524">        mX = DistanceConverter.convert(x.getValue().doubleValue(),</span>
-<span class="fc" id="L1525">                x.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L1526">    }</span>
+<span class="fc" id="L1514">        mX = DistanceConverter.convert(x.getValue().doubleValue(),</span>
+<span class="fc" id="L1515">                x.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1516">    }</span>
 
     /**
      * Gets y coordinate of estimated ECEF user position.
@@ -1532,9 +1522,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getDistanceY(final Distance result) {
-<span class="fc" id="L1535">        result.setValue(mY);</span>
-<span class="fc" id="L1536">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L1537">    }</span>
+<span class="fc" id="L1525">        result.setValue(mY);</span>
+<span class="fc" id="L1526">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1527">    }</span>
 
     /**
      * Gets y coordinate of estimated ECEF user position.
@@ -1542,7 +1532,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return y coordinate of estimated ECEF user position.
      */
     public Distance getDistanceY() {
-<span class="fc" id="L1545">        return new Distance(mY, DistanceUnit.METER);</span>
+<span class="fc" id="L1535">        return new Distance(mY, DistanceUnit.METER);</span>
     }
 
     /**
@@ -1551,9 +1541,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position.
      */
     public void setDistanceY(final Distance y) {
-<span class="fc" id="L1554">        mY = DistanceConverter.convert(y.getValue().doubleValue(),</span>
-<span class="fc" id="L1555">                y.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L1556">    }</span>
+<span class="fc" id="L1544">        mY = DistanceConverter.convert(y.getValue().doubleValue(),</span>
+<span class="fc" id="L1545">                y.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1546">    }</span>
 
     /**
      * Gets z coordinate of estimated ECEF user position.
@@ -1562,9 +1552,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getDistanceZ(final Distance result) {
-<span class="fc" id="L1565">        result.setValue(mZ);</span>
-<span class="fc" id="L1566">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L1567">    }</span>
+<span class="fc" id="L1555">        result.setValue(mZ);</span>
+<span class="fc" id="L1556">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1557">    }</span>
 
     /**
      * Gets z coordinate of estimated ECEF user position.
@@ -1572,7 +1562,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return z coordinate of estimated ECEF user position.
      */
     public Distance getDistanceZ() {
-<span class="fc" id="L1575">        return new Distance(mZ, DistanceUnit.METER);</span>
+<span class="fc" id="L1565">        return new Distance(mZ, DistanceUnit.METER);</span>
     }
 
     /**
@@ -1581,9 +1571,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param z z coordinate of estimated ECEF user position.
      */
     public void setDistanceZ(final Distance z) {
-<span class="fc" id="L1584">        mZ = DistanceConverter.convert(z.getValue().doubleValue(),</span>
-<span class="fc" id="L1585">                z.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L1586">    }</span>
+<span class="fc" id="L1574">        mZ = DistanceConverter.convert(z.getValue().doubleValue(),</span>
+<span class="fc" id="L1575">                z.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1576">    }</span>
 
     /**
      * Sets coordinates of estimated ECEF user position.
@@ -1593,10 +1583,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param z z coordinate of estimated ECEF user position.
      */
     public void setPositionCoordinates(final Distance x, final Distance y, final Distance z) {
-<span class="fc" id="L1596">        setDistanceX(x);</span>
-<span class="fc" id="L1597">        setDistanceY(y);</span>
-<span class="fc" id="L1598">        setDistanceZ(z);</span>
-<span class="fc" id="L1599">    }</span>
+<span class="fc" id="L1586">        setDistanceX(x);</span>
+<span class="fc" id="L1587">        setDistanceY(y);</span>
+<span class="fc" id="L1588">        setDistanceZ(z);</span>
+<span class="fc" id="L1589">    }</span>
 
     /**
      * Gets estimated ECEF user position expressed in meters (m).
@@ -1605,8 +1595,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               in meters (m) will be stored.
      */
     public void getPosition(final Point3D result) {
-<span class="fc" id="L1608">        result.setInhomogeneousCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1609">    }</span>
+<span class="fc" id="L1598">        result.setInhomogeneousCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1599">    }</span>
 
     /**
      * Gets estimated ECEF user position expressed in meters (m).
@@ -1614,7 +1604,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user position expressed in meters (m).
      */
     public Point3D getPosition() {
-<span class="fc" id="L1617">        return new InhomogeneousPoint3D(mX, mY, mZ);</span>
+<span class="fc" id="L1607">        return new InhomogeneousPoint3D(mX, mY, mZ);</span>
     }
 
     /**
@@ -1624,10 +1614,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                 meters (m).
      */
     public void setPosition(final Point3D position) {
-<span class="fc" id="L1627">        mX = position.getInhomX();</span>
-<span class="fc" id="L1628">        mY = position.getInhomY();</span>
-<span class="fc" id="L1629">        mZ = position.getInhomZ();</span>
-<span class="fc" id="L1630">    }</span>
+<span class="fc" id="L1617">        mX = position.getInhomX();</span>
+<span class="fc" id="L1618">        mY = position.getInhomY();</span>
+<span class="fc" id="L1619">        mZ = position.getInhomZ();</span>
+<span class="fc" id="L1620">    }</span>
 
     /**
      * Gets estimated ECEF user position.
@@ -1635,17 +1625,17 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user position
      *               will be stored.
      */
-    public void getEcefPosition(final com.irurueta.navigation.frames.ECEFPosition result) {
-<span class="fc" id="L1639">        result.setCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1640">    }</span>
+    public void getEcefPosition(final ECEFPosition result) {
+<span class="fc" id="L1629">        result.setCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1630">    }</span>
 
     /**
      * Gets estimated ECEF user position.
      *
      * @return estimated ECEF user position.
      */
-    public com.irurueta.navigation.frames.ECEFPosition getEcefPosition() {
-<span class="fc" id="L1648">        return new com.irurueta.navigation.frames.ECEFPosition(mX, mY, mZ);</span>
+    public ECEFPosition getEcefPosition() {
+<span class="fc" id="L1638">        return new ECEFPosition(mX, mY, mZ);</span>
     }
 
     /**
@@ -1654,10 +1644,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param ecefPosition estimated ECEF user position.
      */
     public void setEcefPosition(final ECEFPosition ecefPosition) {
-<span class="fc" id="L1657">        mX = ecefPosition.getX();</span>
-<span class="fc" id="L1658">        mY = ecefPosition.getY();</span>
-<span class="fc" id="L1659">        mZ = ecefPosition.getZ();</span>
-<span class="fc" id="L1660">    }</span>
+<span class="fc" id="L1647">        mX = ecefPosition.getX();</span>
+<span class="fc" id="L1648">        mY = ecefPosition.getY();</span>
+<span class="fc" id="L1649">        mZ = ecefPosition.getZ();</span>
+<span class="fc" id="L1650">    }</span>
 
     /**
      * Gets estimated ECEF user position and velocity.
@@ -1666,9 +1656,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getPositionAndVelocity(final ECEFPositionAndVelocity result) {
-<span class="fc" id="L1669">        result.setPositionCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1670">        result.setVelocityCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L1671">    }</span>
+<span class="fc" id="L1659">        result.setPositionCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1660">        result.setVelocityCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L1661">    }</span>
 
     /**
      * Gets estimated ECEF user position and velocity.
@@ -1676,7 +1666,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user position and velocity.
      */
     public ECEFPositionAndVelocity getPositionAndVelocity() {
-<span class="fc" id="L1679">        return new ECEFPositionAndVelocity(mX, mY, mZ, mVx, mVy, mVz);</span>
+<span class="fc" id="L1669">        return new ECEFPositionAndVelocity(mX, mY, mZ, mVx, mVy, mVz);</span>
     }
 
     /**
@@ -1685,13 +1675,13 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param positionAndVelocity estimated ECEF user position and velocity.
      */
     public void setPositionAndVelocity(final ECEFPositionAndVelocity positionAndVelocity) {
-<span class="fc" id="L1688">        mX = positionAndVelocity.getX();</span>
-<span class="fc" id="L1689">        mY = positionAndVelocity.getY();</span>
-<span class="fc" id="L1690">        mZ = positionAndVelocity.getZ();</span>
-<span class="fc" id="L1691">        mVx = positionAndVelocity.getVx();</span>
-<span class="fc" id="L1692">        mVy = positionAndVelocity.getVy();</span>
-<span class="fc" id="L1693">        mVz = positionAndVelocity.getVz();</span>
-<span class="fc" id="L1694">    }</span>
+<span class="fc" id="L1678">        mX = positionAndVelocity.getX();</span>
+<span class="fc" id="L1679">        mY = positionAndVelocity.getY();</span>
+<span class="fc" id="L1680">        mZ = positionAndVelocity.getZ();</span>
+<span class="fc" id="L1681">        mVx = positionAndVelocity.getVx();</span>
+<span class="fc" id="L1682">        mVy = positionAndVelocity.getVy();</span>
+<span class="fc" id="L1683">        mVz = positionAndVelocity.getVz();</span>
+<span class="fc" id="L1684">    }</span>
 
     /**
      * Gets body to ECEF frame containing coordinate transformation, position and
@@ -1700,19 +1690,19 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where body to ECEF frame will be stored.
      * @return true if result was updated, false otherwise.
      */
-    public boolean getFrame(ECEFFrame result) {
-<span class="fc bfc" id="L1704" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+    public boolean getFrame(final ECEFFrame result) {
+<span class="fc bfc" id="L1694" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
             try {
-<span class="fc" id="L1706">                result.setCoordinateTransformation(getC());</span>
-<span class="nc" id="L1707">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
+<span class="fc" id="L1696">                result.setCoordinateTransformation(getC());</span>
+<span class="nc" id="L1697">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
                     | InvalidRotationMatrixException e) {
-<span class="nc" id="L1709">                return false;</span>
-<span class="fc" id="L1710">            }</span>
-<span class="fc" id="L1711">            result.setCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1712">            result.setVelocityCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L1713">            return true;</span>
+<span class="nc" id="L1699">                return false;</span>
+<span class="fc" id="L1700">            }</span>
+<span class="fc" id="L1701">            result.setCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1702">            result.setVelocityCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L1703">            return true;</span>
         } else {
-<span class="fc" id="L1715">            return false;</span>
+<span class="fc" id="L1705">            return false;</span>
         }
     }
 
@@ -1723,15 +1713,15 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return body to ECEF frame.
      */
     public ECEFFrame getFrame() {
-<span class="fc bfc" id="L1726" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc bfc" id="L1716" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
             try {
-<span class="fc" id="L1728">                return new ECEFFrame(mX, mY, mZ, mVx, mVy, mVz, getC());</span>
-<span class="nc" id="L1729">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
+<span class="fc" id="L1718">                return new ECEFFrame(mX, mY, mZ, mVx, mVy, mVz, getC());</span>
+<span class="nc" id="L1719">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
                     | InvalidRotationMatrixException e) {
-<span class="nc" id="L1731">                return null;</span>
+<span class="nc" id="L1721">                return null;</span>
             }
         } else {
-<span class="fc" id="L1734">            return null;</span>
+<span class="fc" id="L1724">            return null;</span>
         }
     }
 
@@ -1742,20 +1732,20 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param frame body to ECEF frame to be set.
      */
     public void setFrame(final ECEFFrame frame) {
-<span class="fc" id="L1745">        mX = frame.getX();</span>
-<span class="fc" id="L1746">        mY = frame.getY();</span>
-<span class="fc" id="L1747">        mZ = frame.getZ();</span>
+<span class="fc" id="L1735">        mX = frame.getX();</span>
+<span class="fc" id="L1736">        mY = frame.getY();</span>
+<span class="fc" id="L1737">        mZ = frame.getZ();</span>
 
-<span class="fc" id="L1749">        mVx = frame.getVx();</span>
-<span class="fc" id="L1750">        mVy = frame.getVy();</span>
-<span class="fc" id="L1751">        mVz = frame.getVz();</span>
+<span class="fc" id="L1739">        mVx = frame.getVx();</span>
+<span class="fc" id="L1740">        mVy = frame.getVy();</span>
+<span class="fc" id="L1741">        mVz = frame.getVz();</span>
 
-<span class="fc bfc" id="L1753" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1754">            frame.getCoordinateTransformationMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc bfc" id="L1743" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1744">            frame.getCoordinateTransformationMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
         } else {
-<span class="fc" id="L1756">            mBodyToEcefCoordinateTransformationMatrix = frame.getCoordinateTransformationMatrix();</span>
+<span class="fc" id="L1746">            mBodyToEcefCoordinateTransformationMatrix = frame.getCoordinateTransformationMatrix();</span>
         }
-<span class="fc" id="L1758">    }</span>
+<span class="fc" id="L1748">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around x axis.
@@ -1764,9 +1754,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               x axis will be stored.
      */
     public void getAccelerationBiasXAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1767">        result.setValue(mAccelerationBiasX);</span>
-<span class="fc" id="L1768">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1769">    }</span>
+<span class="fc" id="L1757">        result.setValue(mAccelerationBiasX);</span>
+<span class="fc" id="L1758">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1759">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around x axis.
@@ -1774,7 +1764,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around x axis.
      */
     public Acceleration getAccelerationBiasXAsAcceleration() {
-<span class="fc" id="L1777">        return new Acceleration(mAccelerationBiasX,</span>
+<span class="fc" id="L1767">        return new Acceleration(mAccelerationBiasX,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1785,11 +1775,11 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                          around x axis.
      */
     public void setAccelerationBiasX(final Acceleration accelerationBiasX) {
-<span class="fc" id="L1788">        mAccelerationBiasX = AccelerationConverter.convert(</span>
-<span class="fc" id="L1789">                accelerationBiasX.getValue().doubleValue(),</span>
-<span class="fc" id="L1790">                accelerationBiasX.getUnit(),</span>
+<span class="fc" id="L1778">        mAccelerationBiasX = AccelerationConverter.convert(</span>
+<span class="fc" id="L1779">                accelerationBiasX.getValue().doubleValue(),</span>
+<span class="fc" id="L1780">                accelerationBiasX.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L1792">    }</span>
+<span class="fc" id="L1782">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around y axis.
@@ -1798,9 +1788,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               y axis will be stored.
      */
     public void getAccelerationBiasYAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1801">        result.setValue(mAccelerationBiasY);</span>
-<span class="fc" id="L1802">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1803">    }</span>
+<span class="fc" id="L1791">        result.setValue(mAccelerationBiasY);</span>
+<span class="fc" id="L1792">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1793">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around y axis.
@@ -1808,7 +1798,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around y axis.
      */
     public Acceleration getAccelerationBiasYAsAcceleration() {
-<span class="fc" id="L1811">        return new Acceleration(mAccelerationBiasY,</span>
+<span class="fc" id="L1801">        return new Acceleration(mAccelerationBiasY,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1819,11 +1809,11 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                          around y axis.
      */
     public void setAccelerationBiasY(final Acceleration accelerationBiasY) {
-<span class="fc" id="L1822">        mAccelerationBiasY = AccelerationConverter.convert(</span>
-<span class="fc" id="L1823">                accelerationBiasY.getValue().doubleValue(),</span>
-<span class="fc" id="L1824">                accelerationBiasY.getUnit(),</span>
+<span class="fc" id="L1812">        mAccelerationBiasY = AccelerationConverter.convert(</span>
+<span class="fc" id="L1813">                accelerationBiasY.getValue().doubleValue(),</span>
+<span class="fc" id="L1814">                accelerationBiasY.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L1826">    }</span>
+<span class="fc" id="L1816">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around z axis.
@@ -1832,9 +1822,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               z axis will be stored.
      */
     public void getAccelerationBiasZAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1835">        result.setValue(mAccelerationBiasZ);</span>
-<span class="fc" id="L1836">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1837">    }</span>
+<span class="fc" id="L1825">        result.setValue(mAccelerationBiasZ);</span>
+<span class="fc" id="L1826">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1827">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around z axis.
@@ -1842,7 +1832,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around z axis.
      */
     public Acceleration getAccelerationBiasZAsAcceleration() {
-<span class="fc" id="L1845">        return new Acceleration(mAccelerationBiasZ,</span>
+<span class="fc" id="L1835">        return new Acceleration(mAccelerationBiasZ,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1853,11 +1843,11 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *                          around z axis.
      */
     public void setAccelerationBiasZ(final Acceleration accelerationBiasZ) {
-<span class="fc" id="L1856">        mAccelerationBiasZ = AccelerationConverter.convert(</span>
-<span class="fc" id="L1857">                accelerationBiasZ.getValue().doubleValue(),</span>
-<span class="fc" id="L1858">                accelerationBiasZ.getUnit(),</span>
+<span class="fc" id="L1846">        mAccelerationBiasZ = AccelerationConverter.convert(</span>
+<span class="fc" id="L1847">                accelerationBiasZ.getValue().doubleValue(),</span>
+<span class="fc" id="L1848">                accelerationBiasZ.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L1860">    }</span>
+<span class="fc" id="L1850">    }</span>
 
     /**
      * Sets estimated accelerometer bias coordinates.
@@ -1869,10 +1859,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     public void setAccelerationBiasCoordinates(
             final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
             final Acceleration accelerationBiasZ) {
-<span class="fc" id="L1872">        setAccelerationBiasX(accelerationBiasX);</span>
-<span class="fc" id="L1873">        setAccelerationBiasY(accelerationBiasY);</span>
-<span class="fc" id="L1874">        setAccelerationBiasZ(accelerationBiasZ);</span>
-<span class="fc" id="L1875">    }</span>
+<span class="fc" id="L1862">        setAccelerationBiasX(accelerationBiasX);</span>
+<span class="fc" id="L1863">        setAccelerationBiasY(accelerationBiasY);</span>
+<span class="fc" id="L1864">        setAccelerationBiasZ(accelerationBiasZ);</span>
+<span class="fc" id="L1865">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around x axis.
@@ -1881,9 +1871,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               be stored.
      */
     public void getAngularSpeedGyroBiasX(final AngularSpeed result) {
-<span class="fc" id="L1884">        result.setValue(mGyroBiasX);</span>
-<span class="fc" id="L1885">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1886">    }</span>
+<span class="fc" id="L1874">        result.setValue(mGyroBiasX);</span>
+<span class="fc" id="L1875">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1876">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around x axis.
@@ -1891,7 +1881,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated gyroscope bias resolved around x axis.
      */
     public AngularSpeed getAngularSpeedGyroBiasX() {
-<span class="fc" id="L1894">        return new AngularSpeed(mGyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1884">        return new AngularSpeed(mGyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 
     /**
@@ -1900,10 +1890,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasX estimated gyroscope bias resolved around x axis.
      */
     public void setGyroBiasX(final AngularSpeed gyroBiasX) {
-<span class="fc" id="L1903">        mGyroBiasX = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L1904">                gyroBiasX.getValue().doubleValue(),</span>
-<span class="fc" id="L1905">                gyroBiasX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1906">    }</span>
+<span class="fc" id="L1893">        mGyroBiasX = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L1894">                gyroBiasX.getValue().doubleValue(),</span>
+<span class="fc" id="L1895">                gyroBiasX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1896">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around y axis.
@@ -1912,9 +1902,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               be stored.
      */
     public void getAngularSpeedGyroBiasY(final AngularSpeed result) {
-<span class="fc" id="L1915">        result.setValue(mGyroBiasY);</span>
-<span class="fc" id="L1916">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1917">    }</span>
+<span class="fc" id="L1905">        result.setValue(mGyroBiasY);</span>
+<span class="fc" id="L1906">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1907">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around y axis.
@@ -1922,7 +1912,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated gyroscope bias resolved around y axis.
      */
     public AngularSpeed getAngularSpeedGyroBiasY() {
-<span class="fc" id="L1925">        return new AngularSpeed(mGyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1915">        return new AngularSpeed(mGyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 
     /**
@@ -1931,10 +1921,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasY estimated gyroscope bias resolved around y axis.
      */
     public void setGyroBiasY(final AngularSpeed gyroBiasY) {
-<span class="fc" id="L1934">        mGyroBiasY = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L1935">                gyroBiasY.getValue().doubleValue(),</span>
-<span class="fc" id="L1936">                gyroBiasY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1937">    }</span>
+<span class="fc" id="L1924">        mGyroBiasY = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L1925">                gyroBiasY.getValue().doubleValue(),</span>
+<span class="fc" id="L1926">                gyroBiasY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1927">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around z axis.
@@ -1943,9 +1933,9 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *               be stored.
      */
     public void getAngularSpeedGyroBiasZ(final AngularSpeed result) {
-<span class="fc" id="L1946">        result.setValue(mGyroBiasZ);</span>
-<span class="fc" id="L1947">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1948">    }</span>
+<span class="fc" id="L1936">        result.setValue(mGyroBiasZ);</span>
+<span class="fc" id="L1937">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1938">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around z axis.
@@ -1953,7 +1943,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated gyroscope bias resolved around z axis.
      */
     public AngularSpeed getAngularSpeedGyroBiasZ() {
-<span class="fc" id="L1956">        return new AngularSpeed(mGyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1946">        return new AngularSpeed(mGyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 
     /**
@@ -1962,10 +1952,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
      */
     public void setGyroBiasZ(final AngularSpeed gyroBiasZ) {
-<span class="fc" id="L1965">        mGyroBiasZ = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L1966">                gyroBiasZ.getValue().doubleValue(),</span>
-<span class="fc" id="L1967">                gyroBiasZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1968">    }</span>
+<span class="fc" id="L1955">        mGyroBiasZ = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L1956">                gyroBiasZ.getValue().doubleValue(),</span>
+<span class="fc" id="L1957">                gyroBiasZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1958">    }</span>
 
     /**
      * Sets estimated gyroscope bias coordinates.
@@ -1977,10 +1967,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
     public void setGyroBiasCoordinates(
             final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ) {
-<span class="fc" id="L1980">        setGyroBiasX(gyroBiasX);</span>
-<span class="fc" id="L1981">        setGyroBiasY(gyroBiasY);</span>
-<span class="fc" id="L1982">        setGyroBiasZ(gyroBiasZ);</span>
-<span class="fc" id="L1983">    }</span>
+<span class="fc" id="L1970">        setGyroBiasX(gyroBiasX);</span>
+<span class="fc" id="L1971">        setGyroBiasY(gyroBiasY);</span>
+<span class="fc" id="L1972">        setGyroBiasZ(gyroBiasZ);</span>
+<span class="fc" id="L1973">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -1988,8 +1978,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final INSLooselyCoupledKalmanState output) {
-<span class="fc" id="L1991">        output.copyFrom(this);</span>
-<span class="fc" id="L1992">    }</span>
+<span class="fc" id="L1981">        output.copyFrom(this);</span>
+<span class="fc" id="L1982">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -1998,45 +1988,45 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void copyFrom(final INSLooselyCoupledKalmanState input) {
         // copy coordinate transformation matrix
-<span class="fc bfc" id="L2001" title="All 2 branches covered.">        if (input.mBodyToEcefCoordinateTransformationMatrix == null) {</span>
-<span class="fc" id="L2002">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
+<span class="fc bfc" id="L1991" title="All 2 branches covered.">        if (input.mBodyToEcefCoordinateTransformationMatrix == null) {</span>
+<span class="fc" id="L1992">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
         } else {
-<span class="fc bfc" id="L2004" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix == null) {</span>
-<span class="fc" id="L2005">                mBodyToEcefCoordinateTransformationMatrix =</span>
+<span class="fc bfc" id="L1994" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix == null) {</span>
+<span class="fc" id="L1995">                mBodyToEcefCoordinateTransformationMatrix =</span>
                         new Matrix(input.mBodyToEcefCoordinateTransformationMatrix);
             } else {
-<span class="fc" id="L2008">                mBodyToEcefCoordinateTransformationMatrix.copyFrom(</span>
+<span class="fc" id="L1998">                mBodyToEcefCoordinateTransformationMatrix.copyFrom(</span>
                         input.mBodyToEcefCoordinateTransformationMatrix);
             }
         }
 
-<span class="fc" id="L2013">        mVx = input.mVx;</span>
-<span class="fc" id="L2014">        mVy = input.mVy;</span>
-<span class="fc" id="L2015">        mVz = input.mVz;</span>
+<span class="fc" id="L2003">        mVx = input.mVx;</span>
+<span class="fc" id="L2004">        mVy = input.mVy;</span>
+<span class="fc" id="L2005">        mVz = input.mVz;</span>
 
-<span class="fc" id="L2017">        mX = input.mX;</span>
-<span class="fc" id="L2018">        mY = input.mY;</span>
-<span class="fc" id="L2019">        mZ = input.mZ;</span>
+<span class="fc" id="L2007">        mX = input.mX;</span>
+<span class="fc" id="L2008">        mY = input.mY;</span>
+<span class="fc" id="L2009">        mZ = input.mZ;</span>
 
-<span class="fc" id="L2021">        mAccelerationBiasX = input.mAccelerationBiasX;</span>
-<span class="fc" id="L2022">        mAccelerationBiasY = input.mAccelerationBiasY;</span>
-<span class="fc" id="L2023">        mAccelerationBiasZ = input.mAccelerationBiasZ;</span>
+<span class="fc" id="L2011">        mAccelerationBiasX = input.mAccelerationBiasX;</span>
+<span class="fc" id="L2012">        mAccelerationBiasY = input.mAccelerationBiasY;</span>
+<span class="fc" id="L2013">        mAccelerationBiasZ = input.mAccelerationBiasZ;</span>
 
-<span class="fc" id="L2025">        mGyroBiasX = input.mGyroBiasX;</span>
-<span class="fc" id="L2026">        mGyroBiasY = input.mGyroBiasY;</span>
-<span class="fc" id="L2027">        mGyroBiasZ = input.mGyroBiasZ;</span>
+<span class="fc" id="L2015">        mGyroBiasX = input.mGyroBiasX;</span>
+<span class="fc" id="L2016">        mGyroBiasY = input.mGyroBiasY;</span>
+<span class="fc" id="L2017">        mGyroBiasZ = input.mGyroBiasZ;</span>
 
         // copy covariance
-<span class="fc bfc" id="L2030" title="All 2 branches covered.">        if (input.mCovariance == null) {</span>
-<span class="fc" id="L2031">            mCovariance = null;</span>
+<span class="fc bfc" id="L2020" title="All 2 branches covered.">        if (input.mCovariance == null) {</span>
+<span class="fc" id="L2021">            mCovariance = null;</span>
         } else {
-<span class="fc bfc" id="L2033" title="All 2 branches covered.">            if (mCovariance == null) {</span>
-<span class="fc" id="L2034">                mCovariance = new Matrix(input.mCovariance);</span>
+<span class="fc bfc" id="L2023" title="All 2 branches covered.">            if (mCovariance == null) {</span>
+<span class="fc" id="L2024">                mCovariance = new Matrix(input.mCovariance);</span>
             } else {
-<span class="fc" id="L2036">                mCovariance.copyFrom(input.mCovariance);</span>
+<span class="fc" id="L2026">                mCovariance.copyFrom(input.mCovariance);</span>
             }
         }
-<span class="fc" id="L2039">    }</span>
+<span class="fc" id="L2029">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -2046,10 +2036,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L2049">        return Objects.hash(mBodyToEcefCoordinateTransformationMatrix,</span>
-<span class="fc" id="L2050">                mVx, mVy, mVz, mX, mY, mZ,</span>
-<span class="fc" id="L2051">                mAccelerationBiasX, mAccelerationBiasY, mAccelerationBiasZ,</span>
-<span class="fc" id="L2052">                mGyroBiasX, mGyroBiasY, mGyroBiasZ, mCovariance);</span>
+<span class="fc" id="L2039">        return Objects.hash(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="fc" id="L2040">                mVx, mVy, mVz, mX, mY, mZ,</span>
+<span class="fc" id="L2041">                mAccelerationBiasX, mAccelerationBiasY, mAccelerationBiasZ,</span>
+<span class="fc" id="L2042">                mGyroBiasX, mGyroBiasY, mGyroBiasZ, mCovariance);</span>
     }
 
     /**
@@ -2061,14 +2051,14 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L2064" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L2065">            return true;</span>
+<span class="fc bfc" id="L2054" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L2055">            return true;</span>
         }
-<span class="fc bfc" id="L2067" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L2068">            return false;</span>
+<span class="fc bfc" id="L2057" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L2058">            return false;</span>
         }
-<span class="fc" id="L2070">        final INSLooselyCoupledKalmanState other = (INSLooselyCoupledKalmanState) obj;</span>
-<span class="fc" id="L2071">        return equals(other);</span>
+<span class="fc" id="L2060">        final INSLooselyCoupledKalmanState other = (INSLooselyCoupledKalmanState) obj;</span>
+<span class="fc" id="L2061">        return equals(other);</span>
     }
 
     /**
@@ -2078,7 +2068,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final INSLooselyCoupledKalmanState other) {
-<span class="fc" id="L2081">        return equals(other, 0.0);</span>
+<span class="fc" id="L2071">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -2092,26 +2082,26 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public boolean equals(final INSLooselyCoupledKalmanState other,
                           final double threshold) {
-<span class="fc bfc" id="L2095" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L2096">            return false;</span>
+<span class="fc bfc" id="L2085" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L2086">            return false;</span>
         }
 
-<span class="fc bfc" id="L2099" title="All 2 branches covered.">        return Math.abs(mVx - other.mVx) &lt;= threshold</span>
-<span class="pc bpc" id="L2100" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVy - other.mVy) &lt;= threshold</span>
-<span class="pc bpc" id="L2101" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVz - other.mVz) &lt;= threshold</span>
-<span class="pc bpc" id="L2102" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mX - other.mX) &lt;= threshold</span>
-<span class="pc bpc" id="L2103" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mY - other.mY) &lt;= threshold</span>
-<span class="pc bpc" id="L2104" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mZ - other.mZ) &lt;= threshold</span>
-<span class="pc bpc" id="L2105" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasX - other.mAccelerationBiasX) &lt;= threshold</span>
-<span class="pc bpc" id="L2106" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasY - other.mAccelerationBiasY) &lt;= threshold</span>
-<span class="pc bpc" id="L2107" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasZ - other.mAccelerationBiasZ) &lt;= threshold</span>
-<span class="pc bpc" id="L2108" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasX - other.mGyroBiasX) &lt;= threshold</span>
-<span class="pc bpc" id="L2109" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasY - other.mGyroBiasY) &lt;= threshold</span>
-<span class="pc bpc" id="L2110" title="2 of 4 branches missed.">                &amp;&amp; Math.abs(mGyroBiasZ - other.mGyroBiasZ) &lt;= threshold</span>
+<span class="fc bfc" id="L2089" title="All 2 branches covered.">        return Math.abs(mVx - other.mVx) &lt;= threshold</span>
+<span class="pc bpc" id="L2090" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVy - other.mVy) &lt;= threshold</span>
+<span class="pc bpc" id="L2091" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVz - other.mVz) &lt;= threshold</span>
+<span class="pc bpc" id="L2092" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mX - other.mX) &lt;= threshold</span>
+<span class="pc bpc" id="L2093" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mY - other.mY) &lt;= threshold</span>
+<span class="pc bpc" id="L2094" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mZ - other.mZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2095" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasX - other.mAccelerationBiasX) &lt;= threshold</span>
+<span class="pc bpc" id="L2096" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasY - other.mAccelerationBiasY) &lt;= threshold</span>
+<span class="pc bpc" id="L2097" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasZ - other.mAccelerationBiasZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2098" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasX - other.mGyroBiasX) &lt;= threshold</span>
+<span class="pc bpc" id="L2099" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasY - other.mGyroBiasY) &lt;= threshold</span>
+<span class="pc bpc" id="L2100" title="2 of 4 branches missed.">                &amp;&amp; Math.abs(mGyroBiasZ - other.mGyroBiasZ) &lt;= threshold</span>
                 &amp;&amp; other.mBodyToEcefCoordinateTransformationMatrix != null &amp;&amp;
-<span class="pc bpc" id="L2112" title="2 of 4 branches missed.">                other.mBodyToEcefCoordinateTransformationMatrix.equals(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="pc bpc" id="L2102" title="2 of 4 branches missed.">                other.mBodyToEcefCoordinateTransformationMatrix.equals(mBodyToEcefCoordinateTransformationMatrix,</span>
                         threshold)
-<span class="fc bfc" id="L2114" title="All 2 branches covered.">                &amp;&amp; other.mCovariance != null &amp;&amp; other.mCovariance.equals(mCovariance, threshold);</span>
+<span class="fc bfc" id="L2104" title="All 2 branches covered.">                &amp;&amp; other.mCovariance != null &amp;&amp; other.mCovariance.equals(mCovariance, threshold);</span>
     }
 
     /**
@@ -2122,10 +2112,10 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L2125">        final INSLooselyCoupledKalmanState result =</span>
-<span class="fc" id="L2126">                (INSLooselyCoupledKalmanState) super.clone();</span>
-<span class="fc" id="L2127">        copyTo(result);</span>
-<span class="fc" id="L2128">        return result;</span>
+<span class="fc" id="L2115">        final INSLooselyCoupledKalmanState result =</span>
+<span class="fc" id="L2116">                (INSLooselyCoupledKalmanState) super.clone();</span>
+<span class="fc" id="L2117">        copyTo(result);</span>
+<span class="fc" id="L2118">        return result;</span>
     }
 
     /**
@@ -2136,24 +2126,24 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return a fixed rotation matrix.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    private Matrix fixRotationMatrix() throws AlgebraException{
-<span class="fc" id="L2140">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(</span>
+    private Matrix fixRotationMatrix() throws AlgebraException {
+<span class="fc" id="L2130">        final SingularValueDecomposer decomposer = new SingularValueDecomposer(</span>
                 mBodyToEcefCoordinateTransformationMatrix);
-<span class="fc" id="L2142">        decomposer.decompose();</span>
+<span class="fc" id="L2132">        decomposer.decompose();</span>
 
         // fixed = u * w * v'
-<span class="fc" id="L2145">        final Matrix u = decomposer.getU();</span>
+<span class="fc" id="L2135">        final Matrix u = decomposer.getU();</span>
         // make sure all singular values are 1
-<span class="fc" id="L2147">        final Matrix w = Matrix.identity(Rotation3D.INHOM_COORDS,</span>
+<span class="fc" id="L2137">        final Matrix w = Matrix.identity(Rotation3D.INHOM_COORDS,</span>
                 Rotation3D.INHOM_COORDS);
-<span class="fc" id="L2149">        final Matrix v = decomposer.getV();</span>
+<span class="fc" id="L2139">        final Matrix v = decomposer.getV();</span>
 
         // fixed = u * w * v'
-<span class="fc" id="L2152">        u.multiply(w);</span>
-<span class="fc" id="L2153">        v.transpose();</span>
-<span class="fc" id="L2154">        u.multiply(v);</span>
+<span class="fc" id="L2142">        u.multiply(w);</span>
+<span class="fc" id="L2143">        v.transpose();</span>
+<span class="fc" id="L2144">        u.multiply(v);</span>
 
-<span class="fc" id="L2156">        return u;</span>
+<span class="fc" id="L2146">        return u;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

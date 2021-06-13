@@ -53,19 +53,19 @@
 <a class="jxr_linenumber" name="L45" href="#L45">45</a>  <em class="jxr_javadoccomment"> * Approximately estimates accelerometer and gyroscope biases and noise PSD's</em>
 <a class="jxr_linenumber" name="L46" href="#L46">46</a>  <em class="jxr_javadoccomment"> * by averaging all provided samples when body position and orientation is known</em>
 <a class="jxr_linenumber" name="L47" href="#L47">47</a>  <em class="jxr_javadoccomment"> * while assuming that any cross coupling errors can be neglected.</em>
-<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L48" href="#L48">48</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L49" href="#L49">49</a>  <em class="jxr_javadoccomment"> * This estimator must be used when the body where the accelerometer and gyroscope</em>
 <a class="jxr_linenumber" name="L50" href="#L50">50</a>  <em class="jxr_javadoccomment"> * is attached remains static on the same position with zero velocity and no rotation</em>
 <a class="jxr_linenumber" name="L51" href="#L51">51</a>  <em class="jxr_javadoccomment"> * speed while capturing data.</em>
-<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L52" href="#L52">52</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>  <em class="jxr_javadoccomment"> * To compute PSD's this estimator assumes that accelerometer samples are obtained</em>
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>  <em class="jxr_javadoccomment"> * at a constant provided rate equal to {@link #getTimeInterval()} seconds.</em>
 <a class="jxr_linenumber" name="L55" href="#L55">55</a>  <em class="jxr_javadoccomment"> * If not available, accelerometer and gyroscope sampling rate average can be</em>
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>  <em class="jxr_javadoccomment"> * estimated using {@link com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator}.</em>
-<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L57" href="#L57">57</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L58" href="#L58">58</a>  <em class="jxr_javadoccomment"> * Notice that in order to compute accelerometer and gyroscope biases, body position</em>
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>  <em class="jxr_javadoccomment"> * and orientation must be known to account for gravity and Earth rotation effects.</em>
-<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L60" href="#L60">60</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  <em class="jxr_javadoccomment"> * Even though this estimator obtains approximate bias values, the obtained</em>
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment"> * result can be used to initialize some non-linear calibrators to obtain</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment"> * more accurate results. Such calibrators are:</em>
@@ -88,11 +88,11 @@
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment"> * its subclasses.</em>
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment"> * - com.irurueta.navigation.inertial.calibration.gyroscope.RobustKnownBiasTurntableGyroscopeCalibrator and any</em>
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>  <em class="jxr_javadoccomment"> * of its subclasses.</em>
-<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L83" href="#L83">83</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>  <em class="jxr_javadoccomment"> * Even though this estimator can compute noise PSD's, if only noise PSD's levels</em>
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>  <em class="jxr_javadoccomment"> * are required, estimators in {@link com.irurueta.navigation.inertial.calibration.noise} package should</em>
 <a class="jxr_linenumber" name="L86" href="#L86">86</a>  <em class="jxr_javadoccomment"> * be used instead.</em>
-<a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment"> *</em>
+<a class="jxr_linenumber" name="L87" href="#L87">87</a>  <em class="jxr_javadoccomment"> * &lt;p&gt;</em>
 <a class="jxr_linenumber" name="L88" href="#L88">88</a>  <em class="jxr_javadoccomment"> * This estimator does NOT compute average bias values over a period of time, it only</em>
 <a class="jxr_linenumber" name="L89" href="#L89">89</a>  <em class="jxr_javadoccomment"> * computes accumulated averages.</em>
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment"> */</em>
@@ -554,7 +554,7 @@
 <a class="jxr_linenumber" name="L546" href="#L546">546</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L547" href="#L547">547</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L548" href="#L548">548</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude,
-<a class="jxr_linenumber" name="L549" href="#L549">549</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval) {
+<a class="jxr_linenumber" name="L549" href="#L549">549</a>                                        <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval) {
 <a class="jxr_linenumber" name="L550" href="#L550">550</a>         <strong class="jxr_keyword">this</strong>(latitude, longitude, height);
 <a class="jxr_linenumber" name="L551" href="#L551">551</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L552" href="#L552">552</a>             setTimeInterval(timeInterval);
@@ -579,7 +579,7 @@
 <a class="jxr_linenumber" name="L571" href="#L571">571</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L572" href="#L572">572</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L573" href="#L573">573</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> Angle latitude, <strong class="jxr_keyword">final</strong> Angle longitude,
-<a class="jxr_linenumber" name="L574" href="#L574">574</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval) {
+<a class="jxr_linenumber" name="L574" href="#L574">574</a>                                        <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval) {
 <a class="jxr_linenumber" name="L575" href="#L575">575</a>         <strong class="jxr_keyword">this</strong>(latitude, longitude, height);
 <a class="jxr_linenumber" name="L576" href="#L576">576</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L577" href="#L577">577</a>             setTimeInterval(timeInterval);
@@ -604,7 +604,7 @@
 <a class="jxr_linenumber" name="L596" href="#L596">596</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L597" href="#L597">597</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L598" href="#L598">598</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> Angle latitude, <strong class="jxr_keyword">final</strong> Angle longitude,
-<a class="jxr_linenumber" name="L599" href="#L599">599</a>                             <strong class="jxr_keyword">final</strong> Distance height, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval) {
+<a class="jxr_linenumber" name="L599" href="#L599">599</a>                                        <strong class="jxr_keyword">final</strong> Distance height, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval) {
 <a class="jxr_linenumber" name="L600" href="#L600">600</a>         <strong class="jxr_keyword">this</strong>(latitude, longitude, height);
 <a class="jxr_linenumber" name="L601" href="#L601">601</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L602" href="#L602">602</a>             setTimeInterval(timeInterval);
@@ -685,7 +685,7 @@
 <a class="jxr_linenumber" name="L677" href="#L677">677</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L678" href="#L678">678</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L679" href="#L679">679</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> timeInterval,
-<a class="jxr_linenumber" name="L680" href="#L680">680</a>                             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimatorListener.html">BodyKinematicsBiasEstimatorListener</a> listener) {
+<a class="jxr_linenumber" name="L680" href="#L680">680</a>                                        <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimatorListener.html">BodyKinematicsBiasEstimatorListener</a> listener) {
 <a class="jxr_linenumber" name="L681" href="#L681">681</a>         <strong class="jxr_keyword">this</strong>(timeInterval);
 <a class="jxr_linenumber" name="L682" href="#L682">682</a>         mListener = listener;
 <a class="jxr_linenumber" name="L683" href="#L683">683</a>     }
@@ -891,7 +891,7 @@
 <a class="jxr_linenumber" name="L883" href="#L883">883</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L884" href="#L884">884</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L885" href="#L885">885</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude,
-<a class="jxr_linenumber" name="L886" href="#L886">886</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> Time timeInterval) {
+<a class="jxr_linenumber" name="L886" href="#L886">886</a>                                        <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> Time timeInterval) {
 <a class="jxr_linenumber" name="L887" href="#L887">887</a>         <strong class="jxr_keyword">this</strong>(latitude, longitude, height, convertTime(timeInterval));
 <a class="jxr_linenumber" name="L888" href="#L888">888</a>     }
 <a class="jxr_linenumber" name="L889" href="#L889">889</a> 
@@ -910,7 +910,7 @@
 <a class="jxr_linenumber" name="L902" href="#L902">902</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L903" href="#L903">903</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L904" href="#L904">904</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> Angle latitude, <strong class="jxr_keyword">final</strong> Angle longitude,
-<a class="jxr_linenumber" name="L905" href="#L905">905</a>                             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> Time timeInterval) {
+<a class="jxr_linenumber" name="L905" href="#L905">905</a>                                        <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height, <strong class="jxr_keyword">final</strong> Time timeInterval) {
 <a class="jxr_linenumber" name="L906" href="#L906">906</a>         <strong class="jxr_keyword">this</strong>(latitude, longitude, height, convertTime(timeInterval));
 <a class="jxr_linenumber" name="L907" href="#L907">907</a>     }
 <a class="jxr_linenumber" name="L908" href="#L908">908</a> 
@@ -929,7 +929,7 @@
 <a class="jxr_linenumber" name="L921" href="#L921">921</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L922" href="#L922">922</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L923" href="#L923">923</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> Angle latitude, <strong class="jxr_keyword">final</strong> Angle longitude,
-<a class="jxr_linenumber" name="L924" href="#L924">924</a>                             <strong class="jxr_keyword">final</strong> Distance height, <strong class="jxr_keyword">final</strong> Time timeInterval) {
+<a class="jxr_linenumber" name="L924" href="#L924">924</a>                                        <strong class="jxr_keyword">final</strong> Distance height, <strong class="jxr_keyword">final</strong> Time timeInterval) {
 <a class="jxr_linenumber" name="L925" href="#L925">925</a>         <strong class="jxr_keyword">this</strong>(latitude, longitude, height, convertTime(timeInterval));
 <a class="jxr_linenumber" name="L926" href="#L926">926</a>     }
 <a class="jxr_linenumber" name="L927" href="#L927">927</a> 
@@ -992,7 +992,7 @@
 <a class="jxr_linenumber" name="L984" href="#L984">984</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided time interval is negative.</em>
 <a class="jxr_linenumber" name="L985" href="#L985">985</a> <em class="jxr_javadoccomment">     */</em>
 <a class="jxr_linenumber" name="L986" href="#L986">986</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimator.html">BodyKinematicsBiasEstimator</a>(<strong class="jxr_keyword">final</strong> Time timeInterval,
-<a class="jxr_linenumber" name="L987" href="#L987">987</a>                             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimatorListener.html">BodyKinematicsBiasEstimatorListener</a> listener) {
+<a class="jxr_linenumber" name="L987" href="#L987">987</a>                                        <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/bias/BodyKinematicsBiasEstimatorListener.html">BodyKinematicsBiasEstimatorListener</a> listener) {
 <a class="jxr_linenumber" name="L988" href="#L988">988</a>         <strong class="jxr_keyword">this</strong>(convertTime(timeInterval), listener);
 <a class="jxr_linenumber" name="L989" href="#L989">989</a>     }
 <a class="jxr_linenumber" name="L990" href="#L990">990</a> 

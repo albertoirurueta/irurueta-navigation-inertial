@@ -53,7 +53,7 @@ import java.net.URL;
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel loadFromResource(final String resource) throws IOException {
-<span class="fc" id="L56">        try(final InputStream stream = WMMLoader.class</span>
+<span class="fc" id="L56">        try (final InputStream stream = WMMLoader.class</span>
 <span class="fc" id="L57">                .getResourceAsStream(resource)) {</span>
 <span class="fc" id="L58">            return load(stream);</span>
         }

@@ -34,6 +34,7 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -91,7 +92,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * Default robust estimator method when none is provided.
      */
-<span class="fc" id="L94">    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =</span>
+<span class="fc" id="L95">    public static final RobustEstimatorMethod DEFAULT_ROBUST_METHOD =</span>
             RobustEstimatorMethod.LMedS;
 
     /**
@@ -178,21 +179,21 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * Amount of progress variation before notifying a progress change during calibration.
      */
-<span class="fc" id="L181">    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;</span>
+<span class="fc" id="L182">    protected float mProgressDelta = DEFAULT_PROGRESS_DELTA;</span>
 
     /**
      * Amount of confidence expressed as a value between 0.0 and 1.0 (which is equivalent
      * to 100%). The amount of confidence indicates the probability that the estimated
      * result is correct. Usually this value will be close to 1.0, but not exactly 1.0.
      */
-<span class="fc" id="L188">    protected double mConfidence = DEFAULT_CONFIDENCE;</span>
+<span class="fc" id="L189">    protected double mConfidence = DEFAULT_CONFIDENCE;</span>
 
     /**
      * Maximum allowed number of iterations. When the maximum number of iterations is
      * exceeded, result will not be available, however an approximate result will be
      * available for retrieval.
      */
-<span class="fc" id="L195">    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;</span>
+<span class="fc" id="L196">    protected int mMaxIterations = DEFAULT_MAX_ITERATIONS;</span>
 
     /**
      * Data related to inliers found after calibration.
@@ -205,19 +206,19 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * If true, inliers will be computed and kept in any implementation regardless of the
      * settings.
      */
-<span class="fc" id="L208">    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;</span>
+<span class="fc" id="L209">    protected boolean mRefineResult = DEFAULT_REFINE_RESULT;</span>
 
     /**
      * Size of subsets to be checked during robust estimation.
      */
-<span class="fc" id="L213">    protected int mPreliminarySubsetSize = MINIMUM_MEASUREMENTS;</span>
+<span class="fc" id="L214">    protected int mPreliminarySubsetSize = MINIMUM_MEASUREMENTS;</span>
 
     /**
      * This flag indicates whether z-axis is assumed to be common for accelerometer
      * and gyroscope.
      * When enabled, this eliminates 3 variables from Ma matrix.
      */
-<span class="fc" id="L220">    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
+<span class="fc" id="L221">    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
 
     /**
      * Initial x-coordinate of accelerometer bias to be used to find a solution.
@@ -286,13 +287,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * Indicates whether a linear calibrator is used or not for preliminary
      * solutions.
      */
-<span class="fc" id="L289">    private boolean mUseLinearCalibrator = DEFAULT_USE_LINEAR_CALIBRATOR;</span>
+<span class="fc" id="L290">    private boolean mUseLinearCalibrator = DEFAULT_USE_LINEAR_CALIBRATOR;</span>
 
     /**
      * Indicates whether preliminary solutions must be refined after an initial linear solution
      * is found.
      */
-<span class="fc" id="L295">    private boolean mRefinePreliminarySolutions = DEFAULT_REFINE_PRELIMINARY_SOLUTIONS;</span>
+<span class="fc" id="L296">    private boolean mRefinePreliminarySolutions = DEFAULT_REFINE_PRELIMINARY_SOLUTIONS;</span>
 
     /**
      * Estimated accelerometer biases for each IMU axis expressed in meter per squared
@@ -345,7 +346,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * Indicates whether covariance must be kept after refining result.
      * This setting is only taken into account if result is refined.
      */
-<span class="fc" id="L348">    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;</span>
+<span class="fc" id="L349">    private boolean mKeepCovariance = DEFAULT_KEEP_COVARIANCE;</span>
 
     /**
      * Estimated covariance of estimated position.
@@ -366,20 +367,20 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * A linear least squares calibrator.
      */
-<span class="fc" id="L369">    private final KnownFrameAccelerometerLinearLeastSquaresCalibrator mLinearCalibrator =</span>
+<span class="fc" id="L370">    private final KnownFrameAccelerometerLinearLeastSquaresCalibrator mLinearCalibrator =</span>
             new KnownFrameAccelerometerLinearLeastSquaresCalibrator();
 
     /**
      * A non-linear least squares calibrator.
      */
-<span class="fc" id="L375">    private final KnownFrameAccelerometerNonLinearLeastSquaresCalibrator mNonLinearCalibrator =</span>
+<span class="fc" id="L376">    private final KnownFrameAccelerometerNonLinearLeastSquaresCalibrator mNonLinearCalibrator =</span>
             new KnownFrameAccelerometerNonLinearLeastSquaresCalibrator();
 
     /**
      * Constructor.
      */
-<span class="fc" id="L381">    public RobustKnownFrameAccelerometerCalibrator() {</span>
-<span class="fc" id="L382">    }</span>
+<span class="fc" id="L382">    public RobustKnownFrameAccelerometerCalibrator() {</span>
+<span class="fc" id="L383">    }</span>
 
     /**
      * Constructor.
@@ -388,9 +389,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                 starts, ends or its progress significantly changes.
      */
     public RobustKnownFrameAccelerometerCalibrator(
-<span class="fc" id="L391">            final RobustKnownFrameAccelerometerCalibratorListener listener) {</span>
-<span class="fc" id="L392">        mListener = listener;</span>
-<span class="fc" id="L393">    }</span>
+<span class="fc" id="L392">            final RobustKnownFrameAccelerometerCalibratorListener listener) {</span>
+<span class="fc" id="L393">        mListener = listener;</span>
+<span class="fc" id="L394">    }</span>
 
     /**
      * Constructor.
@@ -400,9 +401,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     and velocities).
      */
     public RobustKnownFrameAccelerometerCalibrator(
-<span class="fc" id="L403">            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {</span>
-<span class="fc" id="L404">        mMeasurements = measurements;</span>
-<span class="fc" id="L405">    }</span>
+<span class="fc" id="L404">            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {</span>
+<span class="fc" id="L405">        mMeasurements = measurements;</span>
+<span class="fc" id="L406">    }</span>
 
     /**
      * Constructor.
@@ -415,9 +416,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public RobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L418">        this(measurements);</span>
-<span class="fc" id="L419">        mListener = listener;</span>
-<span class="fc" id="L420">    }</span>
+<span class="fc" id="L419">        this(measurements);</span>
+<span class="fc" id="L420">        mListener = listener;</span>
+<span class="fc" id="L421">    }</span>
 
     /**
      * Constructor.
@@ -425,9 +426,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-<span class="fc" id="L428">    public RobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {</span>
-<span class="fc" id="L429">        mCommonAxisUsed = commonAxisUsed;</span>
-<span class="fc" id="L430">    }</span>
+<span class="fc" id="L429">    public RobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {</span>
+<span class="fc" id="L430">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L431">    }</span>
 
     /**
      * Constructor.
@@ -439,9 +440,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public RobustKnownFrameAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L442">        this(commonAxisUsed);</span>
-<span class="fc" id="L443">        mListener = listener;</span>
-<span class="fc" id="L444">    }</span>
+<span class="fc" id="L443">        this(commonAxisUsed);</span>
+<span class="fc" id="L444">        mListener = listener;</span>
+<span class="fc" id="L445">    }</span>
 
     /**
      * Constructor.
@@ -455,9 +456,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public RobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L458">        this(measurements);</span>
-<span class="fc" id="L459">        mCommonAxisUsed = commonAxisUsed;</span>
-<span class="fc" id="L460">    }</span>
+<span class="fc" id="L459">        this(measurements);</span>
+<span class="fc" id="L460">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L461">    }</span>
 
     /**
      * Constructor.
@@ -473,9 +474,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L476">        this(measurements, commonAxisUsed);</span>
-<span class="fc" id="L477">        mListener = listener;</span>
-<span class="fc" id="L478">    }</span>
+<span class="fc" id="L477">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L478">        mListener = listener;</span>
+<span class="fc" id="L479">    }</span>
 
     /**
      * Gets initial x-coordinate of accelerometer bias to be used to find a solutions.
@@ -486,7 +487,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialBiasX() {
-<span class="fc" id="L489">        return mInitialBiasX;</span>
+<span class="fc" id="L490">        return mInitialBiasX;</span>
     }
 
     /**
@@ -499,11 +500,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBiasX(final double initialBiasX) throws LockedException {
-<span class="fc bfc" id="L502" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L503">            throw new LockedException();</span>
+<span class="fc bfc" id="L503" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L504">            throw new LockedException();</span>
         }
-<span class="fc" id="L505">        mInitialBiasX = initialBiasX;</span>
-<span class="fc" id="L506">    }</span>
+<span class="fc" id="L506">        mInitialBiasX = initialBiasX;</span>
+<span class="fc" id="L507">    }</span>
 
     /**
      * Gets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -514,7 +515,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialBiasY() {
-<span class="fc" id="L517">        return mInitialBiasY;</span>
+<span class="fc" id="L518">        return mInitialBiasY;</span>
     }
 
     /**
@@ -527,11 +528,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBiasY(final double initialBiasY) throws LockedException {
-<span class="fc bfc" id="L530" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L531">            throw new LockedException();</span>
+<span class="fc bfc" id="L531" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L532">            throw new LockedException();</span>
         }
-<span class="fc" id="L533">        mInitialBiasY = initialBiasY;</span>
-<span class="fc" id="L534">    }</span>
+<span class="fc" id="L534">        mInitialBiasY = initialBiasY;</span>
+<span class="fc" id="L535">    }</span>
 
     /**
      * Gets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -542,7 +543,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialBiasZ() {
-<span class="fc" id="L545">        return mInitialBiasZ;</span>
+<span class="fc" id="L546">        return mInitialBiasZ;</span>
     }
 
     /**
@@ -555,11 +556,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBiasZ(final double initialBiasZ) throws LockedException {
-<span class="fc bfc" id="L558" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L559">            throw new LockedException();</span>
+<span class="fc bfc" id="L559" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L560">            throw new LockedException();</span>
         }
-<span class="fc" id="L561">        mInitialBiasZ = initialBiasZ;</span>
-<span class="fc" id="L562">    }</span>
+<span class="fc" id="L562">        mInitialBiasZ = initialBiasZ;</span>
+<span class="fc" id="L563">    }</span>
 
     /**
      * Gets initial x-coordinate of accelerometer bias to be used to find a solution.
@@ -569,7 +570,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasXAsAcceleration() {
-<span class="fc" id="L572">        return new Acceleration(mInitialBiasX,</span>
+<span class="fc" id="L573">        return new Acceleration(mInitialBiasX,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -581,9 +582,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasXAsAcceleration(final Acceleration result) {
-<span class="fc" id="L584">        result.setValue(mInitialBiasX);</span>
-<span class="fc" id="L585">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L586">    }</span>
+<span class="fc" id="L585">        result.setValue(mInitialBiasX);</span>
+<span class="fc" id="L586">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L587">    }</span>
 
     /**
      * Sets initial x-coordinate of accelerometer bias to be used to find a solution.
@@ -595,11 +596,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public void setInitialBiasX(final Acceleration initialBiasX)
             throws LockedException {
-<span class="fc bfc" id="L598" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L599">            throw new LockedException();</span>
+<span class="fc bfc" id="L599" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L600">            throw new LockedException();</span>
         }
-<span class="fc" id="L601">        mInitialBiasX = convertAcceleration(initialBiasX);</span>
-<span class="fc" id="L602">    }</span>
+<span class="fc" id="L602">        mInitialBiasX = convertAcceleration(initialBiasX);</span>
+<span class="fc" id="L603">    }</span>
 
     /**
      * Gets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -609,7 +610,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasYAsAcceleration() {
-<span class="fc" id="L612">        return new Acceleration(mInitialBiasY,</span>
+<span class="fc" id="L613">        return new Acceleration(mInitialBiasY,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -621,9 +622,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasYAsAcceleration(final Acceleration result) {
-<span class="fc" id="L624">        result.setValue(mInitialBiasY);</span>
-<span class="fc" id="L625">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L626">    }</span>
+<span class="fc" id="L625">        result.setValue(mInitialBiasY);</span>
+<span class="fc" id="L626">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L627">    }</span>
 
     /**
      * Sets initial y-coordinate of accelerometer bias to be used to find a solution.
@@ -635,11 +636,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public void setInitialBiasY(final Acceleration initialBiasY)
             throws LockedException {
-<span class="fc bfc" id="L638" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L639">            throw new LockedException();</span>
+<span class="fc bfc" id="L639" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L640">            throw new LockedException();</span>
         }
-<span class="fc" id="L641">        mInitialBiasY = convertAcceleration(initialBiasY);</span>
-<span class="fc" id="L642">    }</span>
+<span class="fc" id="L642">        mInitialBiasY = convertAcceleration(initialBiasY);</span>
+<span class="fc" id="L643">    }</span>
 
     /**
      * Gets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -649,7 +650,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getInitialBiasZAsAcceleration() {
-<span class="fc" id="L652">        return new Acceleration(mInitialBiasZ,</span>
+<span class="fc" id="L653">        return new Acceleration(mInitialBiasZ,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -661,9 +662,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasZAsAcceleration(final Acceleration result) {
-<span class="fc" id="L664">        result.setValue(mInitialBiasZ);</span>
-<span class="fc" id="L665">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L666">    }</span>
+<span class="fc" id="L665">        result.setValue(mInitialBiasZ);</span>
+<span class="fc" id="L666">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L667">    }</span>
 
     /**
      * Sets initial z-coordinate of accelerometer bias to be used to find a solution.
@@ -675,11 +676,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public void setInitialBiasZ(final Acceleration initialBiasZ)
             throws LockedException {
-<span class="fc bfc" id="L678" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L679">            throw new LockedException();</span>
+<span class="fc bfc" id="L679" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L680">            throw new LockedException();</span>
         }
-<span class="fc" id="L681">        mInitialBiasZ = convertAcceleration(initialBiasZ);</span>
-<span class="fc" id="L682">    }</span>
+<span class="fc" id="L682">        mInitialBiasZ = convertAcceleration(initialBiasZ);</span>
+<span class="fc" id="L683">    }</span>
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution
@@ -694,13 +695,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public void setInitialBias(final double initialBiasX, final double initialBiasY,
                                final double initialBiasZ) throws LockedException {
-<span class="fc bfc" id="L697" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L698">            throw new LockedException();</span>
+<span class="fc bfc" id="L698" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L699">            throw new LockedException();</span>
         }
-<span class="fc" id="L700">        mInitialBiasX = initialBiasX;</span>
-<span class="fc" id="L701">        mInitialBiasY = initialBiasY;</span>
-<span class="fc" id="L702">        mInitialBiasZ = initialBiasZ;</span>
-<span class="fc" id="L703">    }</span>
+<span class="fc" id="L701">        mInitialBiasX = initialBiasX;</span>
+<span class="fc" id="L702">        mInitialBiasY = initialBiasY;</span>
+<span class="fc" id="L703">        mInitialBiasZ = initialBiasZ;</span>
+<span class="fc" id="L704">    }</span>
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
@@ -715,13 +716,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public void setInitialBias(final Acceleration initialBiasX,
                                final Acceleration initialBiasY,
                                final Acceleration initialBiasZ) throws LockedException {
-<span class="fc bfc" id="L718" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L719">            throw new LockedException();</span>
+<span class="fc bfc" id="L719" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L720">            throw new LockedException();</span>
         }
-<span class="fc" id="L721">        mInitialBiasX = convertAcceleration(initialBiasX);</span>
-<span class="fc" id="L722">        mInitialBiasY = convertAcceleration(initialBiasY);</span>
-<span class="fc" id="L723">        mInitialBiasZ = convertAcceleration(initialBiasZ);</span>
-<span class="fc" id="L724">    }</span>
+<span class="fc" id="L722">        mInitialBiasX = convertAcceleration(initialBiasX);</span>
+<span class="fc" id="L723">        mInitialBiasY = convertAcceleration(initialBiasY);</span>
+<span class="fc" id="L724">        mInitialBiasZ = convertAcceleration(initialBiasZ);</span>
+<span class="fc" id="L725">    }</span>
 
     /**
      * Gets initial bias coordinates of accelerometer used to find a solution.
@@ -730,7 +731,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public AccelerationTriad getInitialBiasAsTriad() {
-<span class="fc" id="L733">        return new AccelerationTriad(</span>
+<span class="fc" id="L734">        return new AccelerationTriad(</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND,
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ);
     }
@@ -742,10 +743,10 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasAsTriad(final AccelerationTriad result) {
-<span class="fc" id="L745">        result.setValueCoordinatesAndUnit(</span>
+<span class="fc" id="L746">        result.setValueCoordinatesAndUnit(</span>
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L748">    }</span>
+<span class="fc" id="L749">    }</span>
 
     /**
      * Sets initial bias coordinates of accelerometer used to find a solution.
@@ -754,13 +755,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBias(final AccelerationTriad initialBias) {
-<span class="fc" id="L757">        mInitialBiasX = convertAcceleration(</span>
-<span class="fc" id="L758">                initialBias.getValueX(), initialBias.getUnit());</span>
-<span class="fc" id="L759">        mInitialBiasY = convertAcceleration(</span>
-<span class="fc" id="L760">                initialBias.getValueY(), initialBias.getUnit());</span>
-<span class="fc" id="L761">        mInitialBiasZ = convertAcceleration(</span>
-<span class="fc" id="L762">                initialBias.getValueZ(), initialBias.getUnit());</span>
-<span class="fc" id="L763">    }</span>
+<span class="fc" id="L758">        mInitialBiasX = convertAcceleration(</span>
+<span class="fc" id="L759">                initialBias.getValueX(), initialBias.getUnit());</span>
+<span class="fc" id="L760">        mInitialBiasY = convertAcceleration(</span>
+<span class="fc" id="L761">                initialBias.getValueY(), initialBias.getUnit());</span>
+<span class="fc" id="L762">        mInitialBiasZ = convertAcceleration(</span>
+<span class="fc" id="L763">                initialBias.getValueZ(), initialBias.getUnit());</span>
+<span class="fc" id="L764">    }</span>
 
     /**
      * Gets initial x scaling factor.
@@ -770,7 +771,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialSx() {
-<span class="fc" id="L773">        return mInitialSx;</span>
+<span class="fc" id="L774">        return mInitialSx;</span>
     }
 
     /**
@@ -782,11 +783,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialSx(final double initialSx) throws LockedException {
-<span class="fc bfc" id="L785" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L786">            throw new LockedException();</span>
+<span class="fc bfc" id="L786" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L787">            throw new LockedException();</span>
         }
-<span class="fc" id="L788">        mInitialSx = initialSx;</span>
-<span class="fc" id="L789">    }</span>
+<span class="fc" id="L789">        mInitialSx = initialSx;</span>
+<span class="fc" id="L790">    }</span>
 
     /**
      * Gets initial y scaling factor.
@@ -796,7 +797,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialSy() {
-<span class="fc" id="L799">        return mInitialSy;</span>
+<span class="fc" id="L800">        return mInitialSy;</span>
     }
 
     /**
@@ -808,11 +809,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialSy(final double initialSy) throws LockedException {
-<span class="fc bfc" id="L811" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L812">            throw new LockedException();</span>
+<span class="fc bfc" id="L812" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L813">            throw new LockedException();</span>
         }
-<span class="fc" id="L814">        mInitialSy = initialSy;</span>
-<span class="fc" id="L815">    }</span>
+<span class="fc" id="L815">        mInitialSy = initialSy;</span>
+<span class="fc" id="L816">    }</span>
 
     /**
      * Gets initial z scaling factor.
@@ -822,7 +823,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialSz() {
-<span class="fc" id="L825">        return mInitialSz;</span>
+<span class="fc" id="L826">        return mInitialSz;</span>
     }
 
     /**
@@ -834,11 +835,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialSz(final double initialSz) throws LockedException {
-<span class="fc bfc" id="L837" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L838">            throw new LockedException();</span>
+<span class="fc bfc" id="L838" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L839">            throw new LockedException();</span>
         }
-<span class="fc" id="L840">        mInitialSz = initialSz;</span>
-<span class="fc" id="L841">    }</span>
+<span class="fc" id="L841">        mInitialSz = initialSz;</span>
+<span class="fc" id="L842">    }</span>
 
     /**
      * Gets initial x-y cross coupling error.
@@ -848,7 +849,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialMxy() {
-<span class="fc" id="L851">        return mInitialMxy;</span>
+<span class="fc" id="L852">        return mInitialMxy;</span>
     }
 
     /**
@@ -860,11 +861,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMxy(final double initialMxy) throws LockedException {
-<span class="fc bfc" id="L863" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L864">            throw new LockedException();</span>
+<span class="fc bfc" id="L864" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L865">            throw new LockedException();</span>
         }
-<span class="fc" id="L866">        mInitialMxy = initialMxy;</span>
-<span class="fc" id="L867">    }</span>
+<span class="fc" id="L867">        mInitialMxy = initialMxy;</span>
+<span class="fc" id="L868">    }</span>
 
     /**
      * Gets initial x-z cross coupling error.
@@ -874,7 +875,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialMxz() {
-<span class="fc" id="L877">        return mInitialMxz;</span>
+<span class="fc" id="L878">        return mInitialMxz;</span>
     }
 
     /**
@@ -886,11 +887,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMxz(final double initialMxz) throws LockedException {
-<span class="fc bfc" id="L889" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L890">            throw new LockedException();</span>
+<span class="fc bfc" id="L890" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L891">            throw new LockedException();</span>
         }
-<span class="fc" id="L892">        mInitialMxz = initialMxz;</span>
-<span class="fc" id="L893">    }</span>
+<span class="fc" id="L893">        mInitialMxz = initialMxz;</span>
+<span class="fc" id="L894">    }</span>
 
     /**
      * Gets initial y-x cross coupling error.
@@ -900,7 +901,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialMyx() {
-<span class="fc" id="L903">        return mInitialMyx;</span>
+<span class="fc" id="L904">        return mInitialMyx;</span>
     }
 
     /**
@@ -912,11 +913,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMyx(final double initialMyx) throws LockedException {
-<span class="fc bfc" id="L915" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L916">            throw new LockedException();</span>
+<span class="fc bfc" id="L916" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L917">            throw new LockedException();</span>
         }
-<span class="fc" id="L918">        mInitialMyx = initialMyx;</span>
-<span class="fc" id="L919">    }</span>
+<span class="fc" id="L919">        mInitialMyx = initialMyx;</span>
+<span class="fc" id="L920">    }</span>
 
     /**
      * Gets initial y-z cross coupling error.
@@ -926,7 +927,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialMyz() {
-<span class="fc" id="L929">        return mInitialMyz;</span>
+<span class="fc" id="L930">        return mInitialMyz;</span>
     }
 
     /**
@@ -938,11 +939,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMyz(final double initialMyz) throws LockedException {
-<span class="fc bfc" id="L941" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L942">            throw new LockedException();</span>
+<span class="fc bfc" id="L942" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L943">            throw new LockedException();</span>
         }
-<span class="fc" id="L944">        mInitialMyz = initialMyz;</span>
-<span class="fc" id="L945">    }</span>
+<span class="fc" id="L945">        mInitialMyz = initialMyz;</span>
+<span class="fc" id="L946">    }</span>
 
     /**
      * Gets initial z-x cross coupling error.
@@ -952,7 +953,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialMzx() {
-<span class="fc" id="L955">        return mInitialMzx;</span>
+<span class="fc" id="L956">        return mInitialMzx;</span>
     }
 
     /**
@@ -964,11 +965,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMzx(final double initialMzx) throws LockedException {
-<span class="fc bfc" id="L967" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L968">            throw new LockedException();</span>
+<span class="fc bfc" id="L968" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L969">            throw new LockedException();</span>
         }
-<span class="fc" id="L970">        mInitialMzx = initialMzx;</span>
-<span class="fc" id="L971">    }</span>
+<span class="fc" id="L971">        mInitialMzx = initialMzx;</span>
+<span class="fc" id="L972">    }</span>
 
     /**
      * Gets initial z-y cross coupling error.
@@ -978,7 +979,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getInitialMzy() {
-<span class="fc" id="L981">        return mInitialMzy;</span>
+<span class="fc" id="L982">        return mInitialMzy;</span>
     }
 
     /**
@@ -990,11 +991,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMzy(final double initialMzy) throws LockedException {
-<span class="fc bfc" id="L993" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L994">            throw new LockedException();</span>
+<span class="fc bfc" id="L994" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L995">            throw new LockedException();</span>
         }
-<span class="fc" id="L996">        mInitialMzy = initialMzy;</span>
-<span class="fc" id="L997">    }</span>
+<span class="fc" id="L997">        mInitialMzy = initialMzy;</span>
+<span class="fc" id="L998">    }</span>
 
     /**
      * Sets initial scaling factors.
@@ -1009,13 +1010,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public void setInitialScalingFactors(
             final double initialSx, final double initialSy, final double initialSz)
             throws LockedException {
-<span class="fc bfc" id="L1012" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1013">            throw new LockedException();</span>
+<span class="fc bfc" id="L1013" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1014">            throw new LockedException();</span>
         }
-<span class="fc" id="L1015">        mInitialSx = initialSx;</span>
-<span class="fc" id="L1016">        mInitialSy = initialSy;</span>
-<span class="fc" id="L1017">        mInitialSz = initialSz;</span>
-<span class="fc" id="L1018">    }</span>
+<span class="fc" id="L1016">        mInitialSx = initialSx;</span>
+<span class="fc" id="L1017">        mInitialSy = initialSy;</span>
+<span class="fc" id="L1018">        mInitialSz = initialSz;</span>
+<span class="fc" id="L1019">    }</span>
 
     /**
      * Sets initial cross coupling errors.
@@ -1034,16 +1035,16 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy)
             throws LockedException {
-<span class="fc bfc" id="L1037" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1038">            throw new LockedException();</span>
+<span class="fc bfc" id="L1038" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1039">            throw new LockedException();</span>
         }
-<span class="fc" id="L1040">        mInitialMxy = initialMxy;</span>
-<span class="fc" id="L1041">        mInitialMxz = initialMxz;</span>
-<span class="fc" id="L1042">        mInitialMyx = initialMyx;</span>
-<span class="fc" id="L1043">        mInitialMyz = initialMyz;</span>
-<span class="fc" id="L1044">        mInitialMzx = initialMzx;</span>
-<span class="fc" id="L1045">        mInitialMzy = initialMzy;</span>
-<span class="fc" id="L1046">    }</span>
+<span class="fc" id="L1041">        mInitialMxy = initialMxy;</span>
+<span class="fc" id="L1042">        mInitialMxz = initialMxz;</span>
+<span class="fc" id="L1043">        mInitialMyx = initialMyx;</span>
+<span class="fc" id="L1044">        mInitialMyz = initialMyz;</span>
+<span class="fc" id="L1045">        mInitialMzx = initialMzx;</span>
+<span class="fc" id="L1046">        mInitialMzy = initialMzy;</span>
+<span class="fc" id="L1047">    }</span>
 
     /**
      * Sets initial scaling factors and cross coupling errors.
@@ -1066,13 +1067,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double initialMxy, final double initialMxz, final double initialMyx,
             final double initialMyz, final double initialMzx, final double initialMzy)
             throws LockedException {
-<span class="fc bfc" id="L1069" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1070">            throw new LockedException();</span>
+<span class="fc bfc" id="L1070" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1071">            throw new LockedException();</span>
         }
-<span class="fc" id="L1072">        setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
-<span class="fc" id="L1073">        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,</span>
+<span class="fc" id="L1073">        setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L1074">        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,</span>
                 initialMyz, initialMzx, initialMzy);
-<span class="fc" id="L1075">    }</span>
+<span class="fc" id="L1076">    }</span>
 
     /**
      * Gets initial bias to be used to find a solution as an array.
@@ -1083,9 +1084,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double[] getInitialBias() {
-<span class="fc" id="L1086">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L1087">        getInitialBias(result);</span>
-<span class="fc" id="L1088">        return result;</span>
+<span class="fc" id="L1087">        final double[] result = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L1088">        getInitialBias(result);</span>
+<span class="fc" id="L1089">        return result;</span>
     }
 
     /**
@@ -1098,13 +1099,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBias(final double[] result) {
-<span class="fc bfc" id="L1101" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1102">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1102" title="All 2 branches covered.">        if (result.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1103">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1104">        result[0] = mInitialBiasX;</span>
-<span class="fc" id="L1105">        result[1] = mInitialBiasY;</span>
-<span class="fc" id="L1106">        result[2] = mInitialBiasZ;</span>
-<span class="fc" id="L1107">    }</span>
+<span class="fc" id="L1105">        result[0] = mInitialBiasX;</span>
+<span class="fc" id="L1106">        result[1] = mInitialBiasY;</span>
+<span class="fc" id="L1107">        result[2] = mInitialBiasZ;</span>
+<span class="fc" id="L1108">    }</span>
 
     /**
      * Sets initial bias to be used to find a solution as an array.
@@ -1117,17 +1118,17 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBias(final double[] initialBias) throws LockedException {
-<span class="fc bfc" id="L1120" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1121">            throw new LockedException();</span>
+<span class="fc bfc" id="L1121" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1122">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L1124" title="All 2 branches covered.">        if (initialBias.length != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1125">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1125" title="All 2 branches covered.">        if (initialBias.length != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1126">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1127">        mInitialBiasX = initialBias[0];</span>
-<span class="fc" id="L1128">        mInitialBiasY = initialBias[1];</span>
-<span class="fc" id="L1129">        mInitialBiasZ = initialBias[2];</span>
-<span class="fc" id="L1130">    }</span>
+<span class="fc" id="L1128">        mInitialBiasX = initialBias[0];</span>
+<span class="fc" id="L1129">        mInitialBiasY = initialBias[1];</span>
+<span class="fc" id="L1130">        mInitialBiasZ = initialBias[2];</span>
+<span class="fc" id="L1131">    }</span>
 
     /**
      * Gets initial bias to be used to find a solution as a column matrix.
@@ -1140,13 +1141,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public Matrix getInitialBiasAsMatrix() {
         Matrix result;
         try {
-<span class="fc" id="L1143">            result = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L1144">            getInitialBiasAsMatrix(result);</span>
-<span class="nc" id="L1145">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L1144">            result = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L1145">            getInitialBiasAsMatrix(result);</span>
+<span class="nc" id="L1146">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="nc" id="L1147">            result = null;</span>
-<span class="fc" id="L1148">        }</span>
-<span class="fc" id="L1149">        return result;</span>
+<span class="nc" id="L1148">            result = null;</span>
+<span class="fc" id="L1149">        }</span>
+<span class="fc" id="L1150">        return result;</span>
     }
 
     /**
@@ -1159,14 +1160,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialBiasAsMatrix(final Matrix result) {
-<span class="fc bfc" id="L1162" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1163" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
-<span class="fc" id="L1164">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1163" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1164" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1165">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1166">        result.setElementAtIndex(0, mInitialBiasX);</span>
-<span class="fc" id="L1167">        result.setElementAtIndex(1, mInitialBiasY);</span>
-<span class="fc" id="L1168">        result.setElementAtIndex(2, mInitialBiasZ);</span>
-<span class="fc" id="L1169">    }</span>
+<span class="fc" id="L1167">        result.setElementAtIndex(0, mInitialBiasX);</span>
+<span class="fc" id="L1168">        result.setElementAtIndex(1, mInitialBiasY);</span>
+<span class="fc" id="L1169">        result.setElementAtIndex(2, mInitialBiasZ);</span>
+<span class="fc" id="L1170">    }</span>
 
     /**
      * Sets initial bias to be used to find a solution as an array.
@@ -1179,18 +1180,18 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialBias(final Matrix initialBias) throws LockedException {
-<span class="fc bfc" id="L1182" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1183">            throw new LockedException();</span>
+<span class="fc bfc" id="L1183" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1184">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1185" title="All 2 branches covered.">        if (initialBias.getRows() != BodyKinematics.COMPONENTS</span>
-<span class="fc bfc" id="L1186" title="All 2 branches covered.">                || initialBias.getColumns() != 1) {</span>
-<span class="fc" id="L1187">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1186" title="All 2 branches covered.">        if (initialBias.getRows() != BodyKinematics.COMPONENTS</span>
+<span class="fc bfc" id="L1187" title="All 2 branches covered.">                || initialBias.getColumns() != 1) {</span>
+<span class="fc" id="L1188">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1190">        mInitialBiasX = initialBias.getElementAtIndex(0);</span>
-<span class="fc" id="L1191">        mInitialBiasY = initialBias.getElementAtIndex(1);</span>
-<span class="fc" id="L1192">        mInitialBiasZ = initialBias.getElementAtIndex(2);</span>
-<span class="fc" id="L1193">    }</span>
+<span class="fc" id="L1191">        mInitialBiasX = initialBias.getElementAtIndex(0);</span>
+<span class="fc" id="L1192">        mInitialBiasY = initialBias.getElementAtIndex(1);</span>
+<span class="fc" id="L1193">        mInitialBiasZ = initialBias.getElementAtIndex(2);</span>
+<span class="fc" id="L1194">    }</span>
 
     /**
      * Gets initial scale factors and cross coupling errors matrix.
@@ -1202,14 +1203,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public Matrix getInitialMa() {
         Matrix result;
         try {
-<span class="fc" id="L1205">            result = new Matrix(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L1206">            result = new Matrix(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="fc" id="L1207">            getInitialMa(result);</span>
-<span class="nc" id="L1208">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L1208">            getInitialMa(result);</span>
+<span class="nc" id="L1209">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="nc" id="L1210">            result = null;</span>
-<span class="fc" id="L1211">        }</span>
-<span class="fc" id="L1212">        return result;</span>
+<span class="nc" id="L1211">            result = null;</span>
+<span class="fc" id="L1212">        }</span>
+<span class="fc" id="L1213">        return result;</span>
     }
 
     /**
@@ -1221,22 +1222,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void getInitialMa(final Matrix result) {
-<span class="fc bfc" id="L1224" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS ||</span>
-<span class="fc bfc" id="L1225" title="All 2 branches covered.">                result.getColumns() != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1226">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1225" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS ||</span>
+<span class="fc bfc" id="L1226" title="All 2 branches covered.">                result.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1227">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1228">        result.setElementAtIndex(0, mInitialSx);</span>
-<span class="fc" id="L1229">        result.setElementAtIndex(1, mInitialMyx);</span>
-<span class="fc" id="L1230">        result.setElementAtIndex(2, mInitialMzx);</span>
+<span class="fc" id="L1229">        result.setElementAtIndex(0, mInitialSx);</span>
+<span class="fc" id="L1230">        result.setElementAtIndex(1, mInitialMyx);</span>
+<span class="fc" id="L1231">        result.setElementAtIndex(2, mInitialMzx);</span>
 
-<span class="fc" id="L1232">        result.setElementAtIndex(3, mInitialMxy);</span>
-<span class="fc" id="L1233">        result.setElementAtIndex(4, mInitialSy);</span>
-<span class="fc" id="L1234">        result.setElementAtIndex(5, mInitialMzy);</span>
+<span class="fc" id="L1233">        result.setElementAtIndex(3, mInitialMxy);</span>
+<span class="fc" id="L1234">        result.setElementAtIndex(4, mInitialSy);</span>
+<span class="fc" id="L1235">        result.setElementAtIndex(5, mInitialMzy);</span>
 
-<span class="fc" id="L1236">        result.setElementAtIndex(6, mInitialMxz);</span>
-<span class="fc" id="L1237">        result.setElementAtIndex(7, mInitialMyz);</span>
-<span class="fc" id="L1238">        result.setElementAtIndex(8, mInitialSz);</span>
-<span class="fc" id="L1239">    }</span>
+<span class="fc" id="L1237">        result.setElementAtIndex(6, mInitialMxz);</span>
+<span class="fc" id="L1238">        result.setElementAtIndex(7, mInitialMyz);</span>
+<span class="fc" id="L1239">        result.setElementAtIndex(8, mInitialSz);</span>
+<span class="fc" id="L1240">    }</span>
 
     /**
      * Sets initial scale factors and cross coupling errors matrix.
@@ -1248,26 +1249,26 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setInitialMa(final Matrix initialMa) throws LockedException {
-<span class="fc bfc" id="L1251" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1252">            throw new LockedException();</span>
+<span class="fc bfc" id="L1252" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1253">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1254" title="All 2 branches covered.">        if (initialMa.getRows() != BodyKinematics.COMPONENTS ||</span>
-<span class="fc bfc" id="L1255" title="All 2 branches covered.">                initialMa.getColumns() != BodyKinematics.COMPONENTS) {</span>
-<span class="fc" id="L1256">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1255" title="All 2 branches covered.">        if (initialMa.getRows() != BodyKinematics.COMPONENTS ||</span>
+<span class="fc bfc" id="L1256" title="All 2 branches covered.">                initialMa.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L1257">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1259">        mInitialSx = initialMa.getElementAtIndex(0);</span>
-<span class="fc" id="L1260">        mInitialMyx = initialMa.getElementAtIndex(1);</span>
-<span class="fc" id="L1261">        mInitialMzx = initialMa.getElementAtIndex(2);</span>
+<span class="fc" id="L1260">        mInitialSx = initialMa.getElementAtIndex(0);</span>
+<span class="fc" id="L1261">        mInitialMyx = initialMa.getElementAtIndex(1);</span>
+<span class="fc" id="L1262">        mInitialMzx = initialMa.getElementAtIndex(2);</span>
 
-<span class="fc" id="L1263">        mInitialMxy = initialMa.getElementAtIndex(3);</span>
-<span class="fc" id="L1264">        mInitialSy = initialMa.getElementAtIndex(4);</span>
-<span class="fc" id="L1265">        mInitialMzy = initialMa.getElementAtIndex(5);</span>
+<span class="fc" id="L1264">        mInitialMxy = initialMa.getElementAtIndex(3);</span>
+<span class="fc" id="L1265">        mInitialSy = initialMa.getElementAtIndex(4);</span>
+<span class="fc" id="L1266">        mInitialMzy = initialMa.getElementAtIndex(5);</span>
 
-<span class="fc" id="L1267">        mInitialMxz = initialMa.getElementAtIndex(6);</span>
-<span class="fc" id="L1268">        mInitialMyz = initialMa.getElementAtIndex(7);</span>
-<span class="fc" id="L1269">        mInitialSz = initialMa.getElementAtIndex(8);</span>
-<span class="fc" id="L1270">    }</span>
+<span class="fc" id="L1268">        mInitialMxz = initialMa.getElementAtIndex(6);</span>
+<span class="fc" id="L1269">        mInitialMyz = initialMa.getElementAtIndex(7);</span>
+<span class="fc" id="L1270">        mInitialSz = initialMa.getElementAtIndex(8);</span>
+<span class="fc" id="L1271">    }</span>
 
     /**
      * Gets a list of body kinematics measurements taken at different
@@ -1288,7 +1289,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public List&lt;StandardDeviationFrameBodyKinematics&gt; getMeasurements() {
-<span class="fc" id="L1291">        return mMeasurements;</span>
+<span class="fc" id="L1292">        return mMeasurements;</span>
     }
 
     /**
@@ -1313,11 +1314,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public void setMeasurements(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements)
             throws LockedException {
-<span class="fc bfc" id="L1316" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1317">            throw new LockedException();</span>
+<span class="fc bfc" id="L1317" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1318">            throw new LockedException();</span>
         }
-<span class="fc" id="L1319">        mMeasurements = measurements;</span>
-<span class="fc" id="L1320">    }</span>
+<span class="fc" id="L1320">        mMeasurements = measurements;</span>
+<span class="fc" id="L1321">    }</span>
 
     /**
      * Indicates the type of measurement used by this calibrator.
@@ -1326,7 +1327,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public AccelerometerCalibratorMeasurementType getMeasurementType() {
-<span class="fc" id="L1329">        return AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS;</span>
+<span class="fc" id="L1330">        return AccelerometerCalibratorMeasurementType.STANDARD_DEVIATION_FRAME_BODY_KINEMATICS;</span>
     }
 
     /**
@@ -1337,7 +1338,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean isOrderedMeasurementsRequired() {
-<span class="fc" id="L1340">        return true;</span>
+<span class="fc" id="L1341">        return true;</span>
     }
 
     /**
@@ -1350,7 +1351,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean isCommonAxisUsed() {
-<span class="fc" id="L1353">        return mCommonAxisUsed;</span>
+<span class="fc" id="L1354">        return mCommonAxisUsed;</span>
     }
 
     /**
@@ -1364,12 +1365,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public void setCommonAxisUsed(final boolean commonAxisUsed) throws LockedException {
-<span class="fc bfc" id="L1367" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1368">            throw new LockedException();</span>
+<span class="fc bfc" id="L1368" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1369">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1371">        mCommonAxisUsed = commonAxisUsed;</span>
-<span class="fc" id="L1372">    }</span>
+<span class="fc" id="L1372">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1373">    }</span>
 
     /**
      * Gets listener to handle events raised by this estimator.
@@ -1377,7 +1378,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return listener to handle events raised by this estimator.
      */
     public RobustKnownFrameAccelerometerCalibratorListener getListener() {
-<span class="fc" id="L1380">        return mListener;</span>
+<span class="fc" id="L1381">        return mListener;</span>
     }
 
     /**
@@ -1389,12 +1390,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public void setListener(
             final RobustKnownFrameAccelerometerCalibratorListener listener)
             throws LockedException {
-<span class="fc bfc" id="L1392" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1393">            throw new LockedException();</span>
+<span class="fc bfc" id="L1393" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1394">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1396">        mListener = listener;</span>
-<span class="fc" id="L1397">    }</span>
+<span class="fc" id="L1397">        mListener = listener;</span>
+<span class="fc" id="L1398">    }</span>
 
     /**
      * Gets minimum number of required measurements.
@@ -1403,7 +1404,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public int getMinimumRequiredMeasurements() {
-<span class="fc" id="L1406">        return MINIMUM_MEASUREMENTS;</span>
+<span class="fc" id="L1407">        return MINIMUM_MEASUREMENTS;</span>
     }
 
     /**
@@ -1413,7 +1414,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L1416" title="All 4 branches covered.">        return mMeasurements != null &amp;&amp; mMeasurements.size() &gt;= MINIMUM_MEASUREMENTS;</span>
+<span class="fc bfc" id="L1417" title="All 4 branches covered.">        return mMeasurements != null &amp;&amp; mMeasurements.size() &gt;= MINIMUM_MEASUREMENTS;</span>
     }
 
     /**
@@ -1423,7 +1424,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean isRunning() {
-<span class="fc" id="L1426">        return mRunning;</span>
+<span class="fc" id="L1427">        return mRunning;</span>
     }
 
     /**
@@ -1434,7 +1435,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * preliminary solutions.
      */
     public boolean isLinearCalibratorUsed() {
-<span class="fc" id="L1437">        return mUseLinearCalibrator;</span>
+<span class="fc" id="L1438">        return mUseLinearCalibrator;</span>
     }
 
     /**
@@ -1447,11 +1448,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setLinearCalibratorUsed(final boolean linearCalibratorUsed)
             throws LockedException {
-<span class="fc bfc" id="L1450" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1451">            throw new LockedException();</span>
+<span class="fc bfc" id="L1451" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1452">            throw new LockedException();</span>
         }
-<span class="fc" id="L1453">        mUseLinearCalibrator = linearCalibratorUsed;</span>
-<span class="fc" id="L1454">    }</span>
+<span class="fc" id="L1454">        mUseLinearCalibrator = linearCalibratorUsed;</span>
+<span class="fc" id="L1455">    }</span>
 
     /**
      * Indicates whether preliminary solutions must be refined after an initial linear solution is found.
@@ -1463,7 +1464,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * otherwise.
      */
     public boolean isPreliminarySolutionRefined() {
-<span class="fc" id="L1466">        return mRefinePreliminarySolutions;</span>
+<span class="fc" id="L1467">        return mRefinePreliminarySolutions;</span>
     }
 
     /**
@@ -1478,12 +1479,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setPreliminarySolutionRefined(
             final boolean preliminarySolutionRefined) throws LockedException {
-<span class="fc bfc" id="L1481" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1482">            throw new LockedException();</span>
+<span class="fc bfc" id="L1482" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1483">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L1485">        mRefinePreliminarySolutions = preliminarySolutionRefined;</span>
-<span class="fc" id="L1486">    }</span>
+<span class="fc" id="L1486">        mRefinePreliminarySolutions = preliminarySolutionRefined;</span>
+<span class="fc" id="L1487">    }</span>
 
     /**
      * Returns amount of progress variation before notifying a progress change during
@@ -1493,7 +1494,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * calibration.
      */
     public float getProgressDelta() {
-<span class="fc" id="L1496">        return mProgressDelta;</span>
+<span class="fc" id="L1497">        return mProgressDelta;</span>
     }
 
     /**
@@ -1507,15 +1508,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setProgressDelta(
             final float progressDelta) throws LockedException {
-<span class="fc bfc" id="L1510" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1511">            throw new LockedException();</span>
+<span class="fc bfc" id="L1511" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1512">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1513" title="All 4 branches covered.">        if (progressDelta &lt; MIN_PROGRESS_DELTA ||</span>
+<span class="fc bfc" id="L1514" title="All 4 branches covered.">        if (progressDelta &lt; MIN_PROGRESS_DELTA ||</span>
                 progressDelta &gt; MAX_PROGRESS_DELTA) {
-<span class="fc" id="L1515">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L1516">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1517">        mProgressDelta = progressDelta;</span>
-<span class="fc" id="L1518">    }</span>
+<span class="fc" id="L1518">        mProgressDelta = progressDelta;</span>
+<span class="fc" id="L1519">    }</span>
 
     /**
      * Returns amount of confidence expressed as a value between 0.0 and 1.0
@@ -1526,7 +1527,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return amount of confidence as a value between 0.0 and 1.0.
      */
     public double getConfidence() {
-<span class="fc" id="L1529">        return mConfidence;</span>
+<span class="fc" id="L1530">        return mConfidence;</span>
     }
 
     /**
@@ -1541,14 +1542,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setConfidence(
             final double confidence) throws LockedException {
-<span class="fc bfc" id="L1544" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1545">            throw new LockedException();</span>
+<span class="fc bfc" id="L1545" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1546">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1547" title="All 4 branches covered.">        if (confidence &lt; MIN_CONFIDENCE || confidence &gt; MAX_CONFIDENCE) {</span>
-<span class="fc" id="L1548">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1548" title="All 4 branches covered.">        if (confidence &lt; MIN_CONFIDENCE || confidence &gt; MAX_CONFIDENCE) {</span>
+<span class="fc" id="L1549">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1550">        mConfidence = confidence;</span>
-<span class="fc" id="L1551">    }</span>
+<span class="fc" id="L1551">        mConfidence = confidence;</span>
+<span class="fc" id="L1552">    }</span>
 
     /**
      * Returns maximum allowed number of iterations. If maximum allowed number of
@@ -1558,7 +1559,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return maximum allowed number of iterations.
      */
     public int getMaxIterations() {
-<span class="fc" id="L1561">        return mMaxIterations;</span>
+<span class="fc" id="L1562">        return mMaxIterations;</span>
     }
 
     /**
@@ -1572,14 +1573,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setMaxIterations(
             final int maxIterations) throws LockedException {
-<span class="fc bfc" id="L1575" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1576">            throw new LockedException();</span>
+<span class="fc bfc" id="L1576" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1577">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1578" title="All 2 branches covered.">        if (maxIterations &lt; MIN_ITERATIONS) {</span>
-<span class="fc" id="L1579">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1579" title="All 2 branches covered.">        if (maxIterations &lt; MIN_ITERATIONS) {</span>
+<span class="fc" id="L1580">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1581">        mMaxIterations = maxIterations;</span>
-<span class="fc" id="L1582">    }</span>
+<span class="fc" id="L1582">        mMaxIterations = maxIterations;</span>
+<span class="fc" id="L1583">    }</span>
 
     /**
      * Gets data related to inliers found after estimation.
@@ -1587,7 +1588,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return data related to inliers found after estimation.
      */
     public InliersData getInliersData() {
-<span class="fc" id="L1590">        return mInliersData;</span>
+<span class="fc" id="L1591">        return mInliersData;</span>
     }
 
     /**
@@ -1597,7 +1598,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * without further refining.
      */
     public boolean isResultRefined() {
-<span class="fc" id="L1600">        return mRefineResult;</span>
+<span class="fc" id="L1601">        return mRefineResult;</span>
     }
 
     /**
@@ -1609,11 +1610,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setResultRefined(
             final boolean refineResult) throws LockedException {
-<span class="fc bfc" id="L1612" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1613">            throw new LockedException();</span>
+<span class="fc bfc" id="L1613" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1614">            throw new LockedException();</span>
         }
-<span class="fc" id="L1615">        mRefineResult = refineResult;</span>
-<span class="fc" id="L1616">    }</span>
+<span class="fc" id="L1616">        mRefineResult = refineResult;</span>
+<span class="fc" id="L1617">    }</span>
 
     /**
      * Indicates whether covariance must be kept after refining result.
@@ -1622,7 +1623,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return true if covariance must be kept after refining result, false otherwise.
      */
     public boolean isCovarianceKept() {
-<span class="fc" id="L1625">        return mKeepCovariance;</span>
+<span class="fc" id="L1626">        return mKeepCovariance;</span>
     }
 
     /**
@@ -1635,11 +1636,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setCovarianceKept(
             final boolean keepCovariance) throws LockedException {
-<span class="fc bfc" id="L1638" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1639">            throw new LockedException();</span>
+<span class="fc bfc" id="L1639" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1640">            throw new LockedException();</span>
         }
-<span class="fc" id="L1641">        mKeepCovariance = keepCovariance;</span>
-<span class="fc" id="L1642">    }</span>
+<span class="fc" id="L1642">        mKeepCovariance = keepCovariance;</span>
+<span class="fc" id="L1643">    }</span>
 
     /**
      * Returns quality scores corresponding to each measurement.
@@ -1651,7 +1652,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L1654">        return null;</span>
+<span class="fc" id="L1655">        return null;</span>
     }
 
     /**
@@ -1669,7 +1670,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc" id="L1672">    }</span>
+<span class="fc" id="L1673">    }</span>
 
     /**
      * Gets array containing x,y,z components of estimated accelerometer biases
@@ -1679,7 +1680,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double[] getEstimatedBiases() {
-<span class="fc" id="L1682">        return mEstimatedBiases;</span>
+<span class="fc" id="L1683">        return mEstimatedBiases;</span>
     }
 
     /**
@@ -1692,12 +1693,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean getEstimatedBiases(final double[] result) {
-<span class="fc bfc" id="L1695" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
-<span class="fc" id="L1696">            System.arraycopy(mEstimatedBiases, 0, result,</span>
+<span class="fc bfc" id="L1696" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
+<span class="fc" id="L1697">            System.arraycopy(mEstimatedBiases, 0, result,</span>
                     0, mEstimatedBiases.length);
-<span class="fc" id="L1698">            return true;</span>
+<span class="fc" id="L1699">            return true;</span>
         } else {
-<span class="fc" id="L1700">            return false;</span>
+<span class="fc" id="L1701">            return false;</span>
         }
     }
 
@@ -1710,7 +1711,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Matrix getEstimatedBiasesAsMatrix() {
-<span class="fc bfc" id="L1713" title="All 2 branches covered.">        return mEstimatedBiases != null ? Matrix.newFromArray(mEstimatedBiases) : null;</span>
+<span class="fc bfc" id="L1714" title="All 2 branches covered.">        return mEstimatedBiases != null ? Matrix.newFromArray(mEstimatedBiases) : null;</span>
     }
 
     /**
@@ -1724,11 +1725,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     @Override
     public boolean getEstimatedBiasesAsMatrix(final Matrix result)
             throws WrongSizeException {
-<span class="fc bfc" id="L1727" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
-<span class="fc" id="L1728">            result.fromArray(mEstimatedBiases);</span>
-<span class="fc" id="L1729">            return true;</span>
+<span class="fc bfc" id="L1728" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
+<span class="fc" id="L1729">            result.fromArray(mEstimatedBiases);</span>
+<span class="fc" id="L1730">            return true;</span>
         } else {
-<span class="fc" id="L1731">            return false;</span>
+<span class="fc" id="L1732">            return false;</span>
         }
     }
 
@@ -1740,7 +1741,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedBiasFx() {
-<span class="fc bfc" id="L1743" title="All 2 branches covered.">        return mEstimatedBiases != null ? mEstimatedBiases[0] : null;</span>
+<span class="fc bfc" id="L1744" title="All 2 branches covered.">        return mEstimatedBiases != null ? mEstimatedBiases[0] : null;</span>
     }
 
     /**
@@ -1751,7 +1752,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedBiasFy() {
-<span class="fc bfc" id="L1754" title="All 2 branches covered.">        return mEstimatedBiases != null ? mEstimatedBiases[1] : null;</span>
+<span class="fc bfc" id="L1755" title="All 2 branches covered.">        return mEstimatedBiases != null ? mEstimatedBiases[1] : null;</span>
     }
 
     /**
@@ -1762,7 +1763,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedBiasFz() {
-<span class="fc bfc" id="L1765" title="All 2 branches covered.">        return mEstimatedBiases != null ? mEstimatedBiases[2] : null;</span>
+<span class="fc bfc" id="L1766" title="All 2 branches covered.">        return mEstimatedBiases != null ? mEstimatedBiases[2] : null;</span>
     }
 
     /**
@@ -1772,9 +1773,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getEstimatedBiasFxAsAcceleration() {
-<span class="fc bfc" id="L1775" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
-<span class="fc" id="L1776">                new Acceleration(mEstimatedBiases[0],</span>
-<span class="fc" id="L1777">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
+<span class="fc bfc" id="L1776" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
+<span class="fc" id="L1777">                new Acceleration(mEstimatedBiases[0],</span>
+<span class="fc" id="L1778">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
     }
 
     /**
@@ -1785,12 +1786,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasFxAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L1788" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
-<span class="fc" id="L1789">            result.setValue(mEstimatedBiases[0]);</span>
-<span class="fc" id="L1790">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1791">            return true;</span>
+<span class="fc bfc" id="L1789" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
+<span class="fc" id="L1790">            result.setValue(mEstimatedBiases[0]);</span>
+<span class="fc" id="L1791">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1792">            return true;</span>
         } else {
-<span class="fc" id="L1793">            return false;</span>
+<span class="fc" id="L1794">            return false;</span>
         }
     }
 
@@ -1801,9 +1802,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getEstimatedBiasFyAsAcceleration() {
-<span class="fc bfc" id="L1804" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
-<span class="fc" id="L1805">                new Acceleration(mEstimatedBiases[1],</span>
-<span class="fc" id="L1806">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
+<span class="fc bfc" id="L1805" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
+<span class="fc" id="L1806">                new Acceleration(mEstimatedBiases[1],</span>
+<span class="fc" id="L1807">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
     }
 
     /**
@@ -1814,12 +1815,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasFyAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L1817" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
-<span class="fc" id="L1818">            result.setValue(mEstimatedBiases[1]);</span>
-<span class="fc" id="L1819">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1820">            return true;</span>
+<span class="fc bfc" id="L1818" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
+<span class="fc" id="L1819">            result.setValue(mEstimatedBiases[1]);</span>
+<span class="fc" id="L1820">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1821">            return true;</span>
         } else {
-<span class="fc" id="L1822">            return false;</span>
+<span class="fc" id="L1823">            return false;</span>
         }
     }
 
@@ -1830,9 +1831,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Acceleration getEstimatedBiasFzAsAcceleration() {
-<span class="fc bfc" id="L1833" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
-<span class="fc" id="L1834">                new Acceleration(mEstimatedBiases[2],</span>
-<span class="fc" id="L1835">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
+<span class="fc bfc" id="L1834" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
+<span class="fc" id="L1835">                new Acceleration(mEstimatedBiases[2],</span>
+<span class="fc" id="L1836">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
     }
 
     /**
@@ -1843,12 +1844,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasFzAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L1846" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
-<span class="fc" id="L1847">            result.setValue(mEstimatedBiases[2]);</span>
-<span class="fc" id="L1848">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1849">            return true;</span>
+<span class="fc bfc" id="L1847" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
+<span class="fc" id="L1848">            result.setValue(mEstimatedBiases[2]);</span>
+<span class="fc" id="L1849">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1850">            return true;</span>
         } else {
-<span class="fc" id="L1851">            return false;</span>
+<span class="fc" id="L1852">            return false;</span>
         }
     }
 
@@ -1859,9 +1860,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public AccelerationTriad getEstimatedBiasAsTriad() {
-<span class="fc bfc" id="L1862" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
-<span class="fc" id="L1863">                new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
-<span class="fc" id="L1864">                        mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2]) : null;</span>
+<span class="fc bfc" id="L1863" title="All 2 branches covered.">        return mEstimatedBiases != null ?</span>
+<span class="fc" id="L1864">                new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
+<span class="fc" id="L1865">                        mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2]) : null;</span>
     }
 
     /**
@@ -1873,13 +1874,13 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public boolean getEstimatedBiasAsTriad(final AccelerationTriad result) {
-<span class="fc bfc" id="L1876" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
-<span class="fc" id="L1877">            result.setValueCoordinatesAndUnit(</span>
+<span class="fc bfc" id="L1877" title="All 2 branches covered.">        if (mEstimatedBiases != null) {</span>
+<span class="fc" id="L1878">            result.setValueCoordinatesAndUnit(</span>
                     mEstimatedBiases[0], mEstimatedBiases[1], mEstimatedBiases[2],
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L1880">            return true;</span>
+<span class="fc" id="L1881">            return true;</span>
         } else {
-<span class="fc" id="L1882">            return false;</span>
+<span class="fc" id="L1883">            return false;</span>
         }
     }
 
@@ -1927,7 +1928,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Matrix getEstimatedMa() {
-<span class="fc" id="L1930">        return mEstimatedMa;</span>
+<span class="fc" id="L1931">        return mEstimatedMa;</span>
     }
 
     /**
@@ -1937,8 +1938,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSx() {
-<span class="fc bfc" id="L1940" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L1941">                mEstimatedMa.getElementAt(0, 0) : null;</span>
+<span class="fc bfc" id="L1941" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L1942">                mEstimatedMa.getElementAt(0, 0) : null;</span>
     }
 
     /**
@@ -1948,8 +1949,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSy() {
-<span class="fc bfc" id="L1951" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L1952">                mEstimatedMa.getElementAt(1, 1) : null;</span>
+<span class="fc bfc" id="L1952" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L1953">                mEstimatedMa.getElementAt(1, 1) : null;</span>
     }
 
     /**
@@ -1959,8 +1960,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedSz() {
-<span class="fc bfc" id="L1962" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L1963">                mEstimatedMa.getElementAt(2, 2) : null;</span>
+<span class="fc bfc" id="L1963" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L1964">                mEstimatedMa.getElementAt(2, 2) : null;</span>
     }
 
     /**
@@ -1970,8 +1971,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMxy() {
-<span class="fc bfc" id="L1973" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L1974">                mEstimatedMa.getElementAt(0, 1) : null;</span>
+<span class="fc bfc" id="L1974" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L1975">                mEstimatedMa.getElementAt(0, 1) : null;</span>
     }
 
     /**
@@ -1981,8 +1982,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMxz() {
-<span class="fc bfc" id="L1984" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L1985">                mEstimatedMa.getElementAt(0, 2) : null;</span>
+<span class="fc bfc" id="L1985" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L1986">                mEstimatedMa.getElementAt(0, 2) : null;</span>
     }
 
     /**
@@ -1992,8 +1993,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMyx() {
-<span class="fc bfc" id="L1995" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L1996">                mEstimatedMa.getElementAt(1, 0) : null;</span>
+<span class="fc bfc" id="L1996" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L1997">                mEstimatedMa.getElementAt(1, 0) : null;</span>
     }
 
     /**
@@ -2003,8 +2004,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMyz() {
-<span class="fc bfc" id="L2006" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L2007">                mEstimatedMa.getElementAt(1, 2) : null;</span>
+<span class="fc bfc" id="L2007" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L2008">                mEstimatedMa.getElementAt(1, 2) : null;</span>
     }
 
     /**
@@ -2014,8 +2015,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMzx() {
-<span class="fc bfc" id="L2017" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L2018">                mEstimatedMa.getElementAt(2, 0) : null;</span>
+<span class="fc bfc" id="L2018" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L2019">                mEstimatedMa.getElementAt(2, 0) : null;</span>
     }
 
     /**
@@ -2025,8 +2026,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedMzy() {
-<span class="fc bfc" id="L2028" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
-<span class="fc" id="L2029">                mEstimatedMa.getElementAt(2, 1) : null;</span>
+<span class="fc bfc" id="L2029" title="All 2 branches covered.">        return mEstimatedMa != null ?</span>
+<span class="fc" id="L2030">                mEstimatedMa.getElementAt(2, 1) : null;</span>
     }
 
     /**
@@ -2036,7 +2037,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getEstimatedChiSq() {
-<span class="fc" id="L2039">        return mEstimatedChiSq;</span>
+<span class="fc" id="L2040">        return mEstimatedChiSq;</span>
     }
 
     /**
@@ -2046,7 +2047,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public double getEstimatedMse() {
-<span class="fc" id="L2049">        return mEstimatedMse;</span>
+<span class="fc" id="L2050">        return mEstimatedMse;</span>
     }
 
     /**
@@ -2061,7 +2062,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Matrix getEstimatedCovariance() {
-<span class="fc" id="L2064">        return mEstimatedCovariance;</span>
+<span class="fc" id="L2065">        return mEstimatedCovariance;</span>
     }
 
     /**
@@ -2070,7 +2071,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return variance of estimated x coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFxVariance() {
-<span class="fc bfc" id="L2073" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;</span>
+<span class="fc bfc" id="L2074" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;</span>
     }
 
     /**
@@ -2081,8 +2082,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available.
      */
     public Double getEstimatedBiasFxStandardDeviation() {
-<span class="fc" id="L2084">        final Double variance = getEstimatedBiasFxVariance();</span>
-<span class="fc bfc" id="L2085" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
+<span class="fc" id="L2085">        final Double variance = getEstimatedBiasFxVariance();</span>
+<span class="fc bfc" id="L2086" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
     }
 
     /**
@@ -2092,9 +2093,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available.
      */
     public Acceleration getEstimatedBiasFxStandardDeviationAsAcceleration() {
-<span class="fc bfc" id="L2095" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2096">                new Acceleration(getEstimatedBiasFxStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :</span>
-<span class="fc" id="L2097">                null;</span>
+<span class="fc bfc" id="L2096" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2097">                new Acceleration(getEstimatedBiasFxStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :</span>
+<span class="fc" id="L2098">                null;</span>
     }
 
     /**
@@ -2105,12 +2106,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasFxStandardDeviationAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L2108" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L2109">            result.setValue(getEstimatedBiasFxStandardDeviation());</span>
-<span class="fc" id="L2110">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L2111">            return true;</span>
+<span class="fc bfc" id="L2109" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2110">            result.setValue(getEstimatedBiasFxStandardDeviation());</span>
+<span class="fc" id="L2111">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2112">            return true;</span>
         } else {
-<span class="fc" id="L2113">            return false;</span>
+<span class="fc" id="L2114">            return false;</span>
         }
     }
 
@@ -2120,7 +2121,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return variance of estimated y coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFyVariance() {
-<span class="fc bfc" id="L2123" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;</span>
+<span class="fc bfc" id="L2124" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;</span>
     }
 
     /**
@@ -2131,8 +2132,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available.
      */
     public Double getEstimatedBiasFyStandardDeviation() {
-<span class="fc" id="L2134">        final Double variance = getEstimatedBiasFyVariance();</span>
-<span class="fc bfc" id="L2135" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
+<span class="fc" id="L2135">        final Double variance = getEstimatedBiasFyVariance();</span>
+<span class="fc bfc" id="L2136" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
     }
 
     /**
@@ -2142,9 +2143,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available.
      */
     public Acceleration getEstimatedBiasFyStandardDeviationAsAcceleration() {
-<span class="fc bfc" id="L2145" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2146">                new Acceleration(getEstimatedBiasFyStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :</span>
-<span class="fc" id="L2147">                null;</span>
+<span class="fc bfc" id="L2146" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2147">                new Acceleration(getEstimatedBiasFyStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :</span>
+<span class="fc" id="L2148">                null;</span>
     }
 
     /**
@@ -2155,12 +2156,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasFyStandardDeviationAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L2158" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L2159">            result.setValue(getEstimatedBiasFyStandardDeviation());</span>
-<span class="fc" id="L2160">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L2161">            return true;</span>
+<span class="fc bfc" id="L2159" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2160">            result.setValue(getEstimatedBiasFyStandardDeviation());</span>
+<span class="fc" id="L2161">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2162">            return true;</span>
         } else {
-<span class="fc" id="L2163">            return false;</span>
+<span class="fc" id="L2164">            return false;</span>
         }
     }
 
@@ -2170,7 +2171,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return variance of estimated z coordinate of accelerometer bias or null if not available.
      */
     public Double getEstimatedBiasFzVariance() {
-<span class="fc bfc" id="L2173" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;</span>
+<span class="fc bfc" id="L2174" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;</span>
     }
 
     /**
@@ -2181,8 +2182,8 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available.
      */
     public Double getEstimatedBiasFzStandardDeviation() {
-<span class="fc" id="L2184">        final Double variance = getEstimatedBiasFzVariance();</span>
-<span class="fc bfc" id="L2185" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
+<span class="fc" id="L2185">        final Double variance = getEstimatedBiasFzVariance();</span>
+<span class="fc bfc" id="L2186" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
     }
 
     /**
@@ -2192,9 +2193,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available.
      */
     public Acceleration getEstimatedBiasFzStandardDeviationAsAcceleration() {
-<span class="fc bfc" id="L2195" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2196">                new Acceleration(getEstimatedBiasFzStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :</span>
-<span class="fc" id="L2197">                null;</span>
+<span class="fc bfc" id="L2196" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2197">                new Acceleration(getEstimatedBiasFzStandardDeviation(), AccelerationUnit.METERS_PER_SQUARED_SECOND) :</span>
+<span class="fc" id="L2198">                null;</span>
     }
 
     /**
@@ -2205,12 +2206,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasFzStandardDeviationAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L2208" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L2209">            result.setValue(getEstimatedBiasFzStandardDeviation());</span>
-<span class="fc" id="L2210">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L2211">            return true;</span>
+<span class="fc bfc" id="L2209" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2210">            result.setValue(getEstimatedBiasFzStandardDeviation());</span>
+<span class="fc" id="L2211">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2212">            return true;</span>
         } else {
-<span class="fc" id="L2213">            return false;</span>
+<span class="fc" id="L2214">            return false;</span>
         }
     }
 
@@ -2220,11 +2221,11 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return standard deviation of estimated accelerometer bias coordinates.
      */
     public AccelerationTriad getEstimatedBiasStandardDeviation() {
-<span class="fc bfc" id="L2223" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2224">                new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
-<span class="fc" id="L2225">                        getEstimatedBiasFxStandardDeviation(),</span>
-<span class="fc" id="L2226">                        getEstimatedBiasFyStandardDeviation(),</span>
-<span class="fc" id="L2227">                        getEstimatedBiasFzStandardDeviation()) : null;</span>
+<span class="fc bfc" id="L2224" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2225">                new AccelerationTriad(AccelerationUnit.METERS_PER_SQUARED_SECOND,</span>
+<span class="fc" id="L2226">                        getEstimatedBiasFxStandardDeviation(),</span>
+<span class="fc" id="L2227">                        getEstimatedBiasFyStandardDeviation(),</span>
+<span class="fc" id="L2228">                        getEstimatedBiasFzStandardDeviation()) : null;</span>
     }
 
     /**
@@ -2235,15 +2236,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * otherwise.
      */
     public boolean getEstimatedBiasStandardDeviation(final AccelerationTriad result) {
-<span class="fc bfc" id="L2238" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L2239">            result.setValueCoordinatesAndUnit(</span>
-<span class="fc" id="L2240">                    getEstimatedBiasFxStandardDeviation(),</span>
-<span class="fc" id="L2241">                    getEstimatedBiasFyStandardDeviation(),</span>
-<span class="fc" id="L2242">                    getEstimatedBiasFzStandardDeviation(),</span>
+<span class="fc bfc" id="L2239" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2240">            result.setValueCoordinatesAndUnit(</span>
+<span class="fc" id="L2241">                    getEstimatedBiasFxStandardDeviation(),</span>
+<span class="fc" id="L2242">                    getEstimatedBiasFyStandardDeviation(),</span>
+<span class="fc" id="L2243">                    getEstimatedBiasFzStandardDeviation(),</span>
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L2244">            return true;</span>
+<span class="fc" id="L2245">            return true;</span>
         } else {
-<span class="fc" id="L2246">            return false;</span>
+<span class="fc" id="L2247">            return false;</span>
         }
     }
 
@@ -2255,10 +2256,10 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * if not available.
      */
     public Double getEstimatedBiasStandardDeviationAverage() {
-<span class="fc bfc" id="L2258" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2259">                (getEstimatedBiasFxStandardDeviation() +</span>
-<span class="fc" id="L2260">                        getEstimatedBiasFyStandardDeviation() +</span>
-<span class="fc" id="L2261">                        getEstimatedBiasFzStandardDeviation()) / 3.0 : null;</span>
+<span class="fc bfc" id="L2259" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2260">                (getEstimatedBiasFxStandardDeviation() +</span>
+<span class="fc" id="L2261">                        getEstimatedBiasFyStandardDeviation() +</span>
+<span class="fc" id="L2262">                        getEstimatedBiasFzStandardDeviation()) / 3.0 : null;</span>
     }
 
     /**
@@ -2267,9 +2268,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return average of estimated standard deviation of accelerometer bias coordinates or null.
      */
     public Acceleration getEstimatedBiasStandardDeviationAverageAsAcceleration() {
-<span class="fc bfc" id="L2270" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2271">                new Acceleration(getEstimatedBiasStandardDeviationAverage(),</span>
-<span class="fc" id="L2272">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
+<span class="fc bfc" id="L2271" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2272">                new Acceleration(getEstimatedBiasStandardDeviationAverage(),</span>
+<span class="fc" id="L2273">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
     }
 
     /**
@@ -2280,12 +2281,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationAverageAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L2283" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L2284">            result.setValue(getEstimatedBiasStandardDeviationAverage());</span>
-<span class="fc" id="L2285">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L2286">            return true;</span>
+<span class="fc bfc" id="L2284" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2285">            result.setValue(getEstimatedBiasStandardDeviationAverage());</span>
+<span class="fc" id="L2286">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2287">            return true;</span>
         } else {
-<span class="fc" id="L2288">            return false;</span>
+<span class="fc" id="L2289">            return false;</span>
         }
     }
 
@@ -2300,9 +2301,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     @Override
     public Double getEstimatedBiasStandardDeviationNorm() {
-<span class="fc bfc" id="L2303" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2304">                Math.sqrt(getEstimatedBiasFxVariance() + getEstimatedBiasFyVariance() + getEstimatedBiasFzVariance()) :</span>
-<span class="fc" id="L2305">                null;</span>
+<span class="fc bfc" id="L2304" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2305">                Math.sqrt(getEstimatedBiasFxVariance() + getEstimatedBiasFyVariance() + getEstimatedBiasFzVariance()) :</span>
+<span class="fc" id="L2306">                null;</span>
     }
 
     /**
@@ -2314,9 +2315,9 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * if not available.
      */
     public Acceleration getEstimatedBiasStandardDeviationNormAsAcceleration() {
-<span class="fc bfc" id="L2317" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
-<span class="fc" id="L2318">                new Acceleration(getEstimatedBiasStandardDeviationNorm(),</span>
-<span class="fc" id="L2319">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
+<span class="fc bfc" id="L2318" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2319">                new Acceleration(getEstimatedBiasStandardDeviationNorm(),</span>
+<span class="fc" id="L2320">                        AccelerationUnit.METERS_PER_SQUARED_SECOND) : null;</span>
     }
 
     /**
@@ -2329,12 +2330,12 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * available, false otherwise.
      */
     public boolean getEstimatedBiasStandardDeviationNormAsAcceleration(final Acceleration result) {
-<span class="fc bfc" id="L2332" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
-<span class="fc" id="L2333">            result.setValue(getEstimatedBiasStandardDeviationNorm());</span>
-<span class="fc" id="L2334">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L2335">            return true;</span>
+<span class="fc bfc" id="L2333" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2334">            result.setValue(getEstimatedBiasStandardDeviationNorm());</span>
+<span class="fc" id="L2335">            result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L2336">            return true;</span>
         } else {
-<span class="fc" id="L2337">            return false;</span>
+<span class="fc" id="L2338">            return false;</span>
         }
     }
 
@@ -2345,7 +2346,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return size of subsets to be checked during robust estimation.
      */
     public int getPreliminarySubsetSize() {
-<span class="fc" id="L2348">        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L2349">        return mPreliminarySubsetSize;</span>
     }
 
     /**
@@ -2358,15 +2359,15 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public void setPreliminarySubsetSize(
             final int preliminarySubsetSize) throws LockedException {
-<span class="fc bfc" id="L2361" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L2362">            throw new LockedException();</span>
+<span class="fc bfc" id="L2362" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2363">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L2364" title="All 2 branches covered.">        if (preliminarySubsetSize &lt; MINIMUM_MEASUREMENTS) {</span>
-<span class="fc" id="L2365">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L2365" title="All 2 branches covered.">        if (preliminarySubsetSize &lt; MINIMUM_MEASUREMENTS) {</span>
+<span class="fc" id="L2366">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L2368">        mPreliminarySubsetSize = preliminarySubsetSize;</span>
-<span class="fc" id="L2369">    }</span>
+<span class="fc" id="L2369">        mPreliminarySubsetSize = preliminarySubsetSize;</span>
+<span class="fc" id="L2370">    }</span>
 
     /**
      * Estimates accelerometer calibration parameters containing bias, scale factors
@@ -2395,18 +2396,18 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2398" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2399" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2400">                return new RANSACRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2401">                return new RANSACRobustKnownFrameAccelerometerCalibrator();</span>
             case LMedS:
-<span class="fc" id="L2402">                return new LMedSRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2403">                return new LMedSRobustKnownFrameAccelerometerCalibrator();</span>
             case MSAC:
-<span class="fc" id="L2404">                return new MSACRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2405">                return new MSACRobustKnownFrameAccelerometerCalibrator();</span>
             case PROSAC:
-<span class="fc" id="L2406">                return new PROSACRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2407">                return new PROSACRobustKnownFrameAccelerometerCalibrator();</span>
             case PROMedS:
             default:
-<span class="fc" id="L2409">                return new PROMedSRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2410">                return new PROMedSRobustKnownFrameAccelerometerCalibrator();</span>
         }
     }
 
@@ -2421,18 +2422,18 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2424" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2425" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2426">                return new RANSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2427">                return new RANSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case LMedS:
-<span class="fc" id="L2428">                return new LMedSRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2429">                return new LMedSRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case MSAC:
-<span class="fc" id="L2430">                return new MSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2431">                return new MSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case PROSAC:
-<span class="fc" id="L2432">                return new PROSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2433">                return new PROSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case PROMedS:
             default:
-<span class="fc" id="L2435">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2436">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(listener);</span>
         }
     }
 
@@ -2448,18 +2449,18 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2451" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2452" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2453">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2454">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case LMedS:
-<span class="fc" id="L2455">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2456">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case MSAC:
-<span class="fc" id="L2457">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2458">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case PROSAC:
-<span class="fc" id="L2459">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2460">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case PROMedS:
             default:
-<span class="fc" id="L2462">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2463">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements);
         }
     }
@@ -2478,22 +2479,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2481" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2482" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2483">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2484">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L2486">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2487">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L2489">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2490">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L2492">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2493">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case PROMedS:
             default:
-<span class="fc" id="L2496">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2497">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, listener);
         }
     }
@@ -2509,19 +2510,19 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2512" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2513" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2514">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2515">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
             case LMedS:
-<span class="fc" id="L2516">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2517">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
             case MSAC:
-<span class="fc" id="L2518">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2519">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
             case PROSAC:
-<span class="fc" id="L2520">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2521">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
                         commonAxisUsed);
             case PROMedS:
             default:
-<span class="fc" id="L2524">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2525">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         commonAxisUsed);
         }
     }
@@ -2539,22 +2540,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2542" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2543" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2544">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
+<span class="fc" id="L2545">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L2547">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
+<span class="fc" id="L2548">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L2550">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
+<span class="fc" id="L2551">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L2553">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2554">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
                         commonAxisUsed, listener);
             case PROMedS:
             default:
-<span class="fc" id="L2557">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2558">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         commonAxisUsed, listener);
         }
     }
@@ -2574,22 +2575,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2577" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2578" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2579">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2580">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
             case LMedS:
-<span class="fc" id="L2582">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2583">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
             case MSAC:
-<span class="fc" id="L2585">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2586">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
             case PROSAC:
-<span class="fc" id="L2588">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2589">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         commonAxisUsed);
             case PROMedS:
             default:
-<span class="fc" id="L2592">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2593">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
         }
     }
@@ -2611,22 +2612,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2614" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2615" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2616">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2617">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
             case LMedS:
-<span class="fc" id="L2619">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2620">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
             case MSAC:
-<span class="fc" id="L2622">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2623">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
             case PROSAC:
-<span class="fc" id="L2625">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2626">                return new PROSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         commonAxisUsed, listener);
             case PROMedS:
             default:
-<span class="fc" id="L2629">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2630">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
         }
     }
@@ -2643,19 +2644,19 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final double[] qualityScores,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2646" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2647" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2648">                return new RANSACRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2649">                return new RANSACRobustKnownFrameAccelerometerCalibrator();</span>
             case LMedS:
-<span class="fc" id="L2650">                return new LMedSRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2651">                return new LMedSRobustKnownFrameAccelerometerCalibrator();</span>
             case MSAC:
-<span class="fc" id="L2652">                return new MSACRobustKnownFrameAccelerometerCalibrator();</span>
+<span class="fc" id="L2653">                return new MSACRobustKnownFrameAccelerometerCalibrator();</span>
             case PROSAC:
-<span class="fc" id="L2654">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2655">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores);
             case PROMedS:
             default:
-<span class="fc" id="L2658">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2659">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores);
         }
     }
@@ -2675,19 +2676,19 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double[] qualityScores,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2678" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2679" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2680">                return new RANSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2681">                return new RANSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case LMedS:
-<span class="fc" id="L2682">                return new LMedSRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2683">                return new LMedSRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case MSAC:
-<span class="fc" id="L2684">                return new MSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
+<span class="fc" id="L2685">                return new MSACRobustKnownFrameAccelerometerCalibrator(listener);</span>
             case PROSAC:
-<span class="fc" id="L2686">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2687">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, listener);
             case PROMedS:
             default:
-<span class="fc" id="L2690">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2691">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, listener);
         }
     }
@@ -2708,19 +2709,19 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2711" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2712" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2713">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2714">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case LMedS:
-<span class="fc" id="L2715">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2716">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case MSAC:
-<span class="fc" id="L2717">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
+<span class="fc" id="L2718">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements);</span>
             case PROSAC:
-<span class="fc" id="L2719">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
+<span class="fc" id="L2720">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
                         measurements);
             case PROMedS:
             default:
-<span class="fc" id="L2723">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2724">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, measurements);
         }
     }
@@ -2743,22 +2744,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2746" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2747" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2748">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2749">                return new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L2751">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2752">                return new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L2754">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
+<span class="fc" id="L2755">                return new MSACRobustKnownFrameAccelerometerCalibrator(measurements,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L2757">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
+<span class="fc" id="L2758">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
                         measurements, listener);
             case PROMedS:
             default:
-<span class="fc" id="L2761">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2762">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, measurements, listener);
         }
     }
@@ -2778,19 +2779,19 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double[] qualityScores,
             final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2781" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2782" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2783">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2784">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
             case LMedS:
-<span class="fc" id="L2785">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2786">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
             case MSAC:
-<span class="fc" id="L2787">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
+<span class="fc" id="L2788">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed);</span>
             case PROSAC:
-<span class="fc" id="L2789">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
+<span class="fc" id="L2790">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
                         commonAxisUsed);
             case PROMedS:
             default:
-<span class="fc" id="L2793">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
+<span class="fc" id="L2794">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
                         commonAxisUsed);
         }
     }
@@ -2812,22 +2813,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2815" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2816" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2817">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
+<span class="fc" id="L2818">                return new RANSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
                         listener);
             case LMedS:
-<span class="fc" id="L2820">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
+<span class="fc" id="L2821">                return new LMedSRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
                         listener);
             case MSAC:
-<span class="fc" id="L2823">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
+<span class="fc" id="L2824">                return new MSACRobustKnownFrameAccelerometerCalibrator(commonAxisUsed,</span>
                         listener);
             case PROSAC:
-<span class="fc" id="L2826">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
+<span class="fc" id="L2827">                return new PROSACRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
                         commonAxisUsed, listener);
             case PROMedS:
             default:
-<span class="fc" id="L2830">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
+<span class="fc" id="L2831">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,</span>
                         commonAxisUsed, listener);
         }
     }
@@ -2851,22 +2852,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2854" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2855" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2856">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2857">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
             case LMedS:
-<span class="fc" id="L2859">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2860">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
             case MSAC:
-<span class="fc" id="L2862">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2863">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed);
             case PROSAC:
-<span class="fc" id="L2865">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2866">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, measurements, commonAxisUsed);
             case PROMedS:
             default:
-<span class="fc" id="L2869">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2870">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, measurements, commonAxisUsed);
         }
     }
@@ -2892,22 +2893,22 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener,
             final RobustEstimatorMethod method) {
-<span class="fc bfc" id="L2895" title="All 5 branches covered.">        switch (method) {</span>
+<span class="fc bfc" id="L2896" title="All 5 branches covered.">        switch (method) {</span>
             case RANSAC:
-<span class="fc" id="L2897">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2898">                return new RANSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
             case LMedS:
-<span class="fc" id="L2900">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2901">                return new LMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
             case MSAC:
-<span class="fc" id="L2903">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2904">                return new MSACRobustKnownFrameAccelerometerCalibrator(</span>
                         measurements, commonAxisUsed, listener);
             case PROSAC:
-<span class="fc" id="L2906">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2907">                return new PROSACRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, measurements, commonAxisUsed, listener);
             case PROMedS:
             default:
-<span class="fc" id="L2910">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
+<span class="fc" id="L2911">                return new PROMedSRobustKnownFrameAccelerometerCalibrator(</span>
                         qualityScores, measurements, commonAxisUsed, listener);
         }
     }
@@ -2918,7 +2919,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return a robust accelerometer calibrator.
      */
     public static RobustKnownFrameAccelerometerCalibrator create() {
-<span class="fc" id="L2921">        return create(DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2922">        return create(DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2930,7 +2931,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2933">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2934">        return create(listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2943,7 +2944,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L2946">        return create(measurements, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2947">        return create(measurements, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2958,7 +2959,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2961">        return create(measurements, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2962">        return create(measurements, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2970,7 +2971,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
             final boolean commonAxisUsed) {
-<span class="fc" id="L2973">        return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2974">        return create(commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -2984,7 +2985,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L2987">        return create(commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L2988">        return create(commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3000,7 +3001,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L3003">        return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3004">        return create(measurements, commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3018,7 +3019,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3021">        return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3022">        return create(measurements, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3031,7 +3032,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      */
     public static RobustKnownFrameAccelerometerCalibrator create(
             final double[] qualityScores) {
-<span class="fc" id="L3034">        return create(qualityScores, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3035">        return create(qualityScores, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3047,7 +3048,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final double[] qualityScores,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3050">        return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3051">        return create(qualityScores, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3064,7 +3065,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L3067">        return create(qualityScores, measurements, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3068">        return create(qualityScores, measurements, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3083,7 +3084,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3086">        return create(qualityScores, measurements, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3087">        return create(qualityScores, measurements, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3099,7 +3100,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     public static RobustKnownFrameAccelerometerCalibrator create(
             final double[] qualityScores,
             final boolean commonAxisUsed) {
-<span class="fc" id="L3102">        return create(qualityScores, commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3103">        return create(qualityScores, commonAxisUsed, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3117,7 +3118,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double[] qualityScores,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3120">        return create(qualityScores, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
+<span class="fc" id="L3121">        return create(qualityScores, commonAxisUsed, listener, DEFAULT_ROBUST_METHOD);</span>
     }
 
     /**
@@ -3137,7 +3138,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L3140">        return create(qualityScores, measurements, commonAxisUsed,</span>
+<span class="fc" id="L3141">        return create(qualityScores, measurements, commonAxisUsed,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -3160,7 +3161,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
-<span class="fc" id="L3163">        return create(qualityScores, measurements, commonAxisUsed, listener,</span>
+<span class="fc" id="L3164">        return create(qualityScores, measurements, commonAxisUsed, listener,</span>
                 DEFAULT_ROBUST_METHOD);
     }
 
@@ -3177,58 +3178,58 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
         // fmeas = ba + (I + Ma) * ftrue
 
         // Hence:
-        //  [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
-        //  [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
-        //  [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy]   [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
+        // [fmeasz]   [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
 
-<span class="fc" id="L3184">        final BodyKinematics measuredKinematics = measurement.getKinematics();</span>
-<span class="fc" id="L3185">        final ECEFFrame ecefFrame = measurement.getFrame();</span>
-<span class="fc" id="L3186">        final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();</span>
-<span class="fc" id="L3187">        final double timeInterval = measurement.getTimeInterval();</span>
+<span class="fc" id="L3185">        final BodyKinematics measuredKinematics = measurement.getKinematics();</span>
+<span class="fc" id="L3186">        final ECEFFrame ecefFrame = measurement.getFrame();</span>
+<span class="fc" id="L3187">        final ECEFFrame previousEcefFrame = measurement.getPreviousFrame();</span>
+<span class="fc" id="L3188">        final double timeInterval = measurement.getTimeInterval();</span>
 
-<span class="fc" id="L3189">        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator</span>
-<span class="fc" id="L3190">                .estimateKinematicsAndReturnNew(timeInterval, ecefFrame,</span>
+<span class="fc" id="L3190">        final BodyKinematics expectedKinematics = ECEFKinematicsEstimator</span>
+<span class="fc" id="L3191">                .estimateKinematicsAndReturnNew(timeInterval, ecefFrame,</span>
                         previousEcefFrame);
 
-<span class="fc" id="L3193">        final double fMeasX1 = measuredKinematics.getFx();</span>
-<span class="fc" id="L3194">        final double fMeasY1 = measuredKinematics.getFy();</span>
-<span class="fc" id="L3195">        final double fMeasZ1 = measuredKinematics.getFz();</span>
+<span class="fc" id="L3194">        final double fMeasX1 = measuredKinematics.getFx();</span>
+<span class="fc" id="L3195">        final double fMeasY1 = measuredKinematics.getFy();</span>
+<span class="fc" id="L3196">        final double fMeasZ1 = measuredKinematics.getFz();</span>
 
-<span class="fc" id="L3197">        final double fTrueX = expectedKinematics.getFx();</span>
-<span class="fc" id="L3198">        final double fTrueY = expectedKinematics.getFy();</span>
-<span class="fc" id="L3199">        final double fTrueZ = expectedKinematics.getFz();</span>
+<span class="fc" id="L3198">        final double fTrueX = expectedKinematics.getFx();</span>
+<span class="fc" id="L3199">        final double fTrueY = expectedKinematics.getFy();</span>
+<span class="fc" id="L3200">        final double fTrueZ = expectedKinematics.getFz();</span>
 
-<span class="fc" id="L3201">        final double[] b = preliminaryResult.mEstimatedBiases;</span>
-<span class="fc" id="L3202">        final double bx = b[0];</span>
-<span class="fc" id="L3203">        final double by = b[1];</span>
-<span class="fc" id="L3204">        final double bz = b[2];</span>
+<span class="fc" id="L3202">        final double[] b = preliminaryResult.mEstimatedBiases;</span>
+<span class="fc" id="L3203">        final double bx = b[0];</span>
+<span class="fc" id="L3204">        final double by = b[1];</span>
+<span class="fc" id="L3205">        final double bz = b[2];</span>
 
-<span class="fc" id="L3206">        final Matrix ma = preliminaryResult.mEstimatedMa;</span>
+<span class="fc" id="L3207">        final Matrix ma = preliminaryResult.mEstimatedMa;</span>
 
         try {
-<span class="fc" id="L3209">            final Matrix m = Matrix.identity(BodyKinematics.COMPONENTS,</span>
+<span class="fc" id="L3210">            final Matrix m = Matrix.identity(BodyKinematics.COMPONENTS,</span>
                     BodyKinematics.COMPONENTS);
-<span class="fc" id="L3211">            m.add(ma);</span>
+<span class="fc" id="L3212">            m.add(ma);</span>
 
-<span class="fc" id="L3213">            final Matrix ftrue = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
-<span class="fc" id="L3214">            ftrue.setElementAtIndex(0, fTrueX);</span>
-<span class="fc" id="L3215">            ftrue.setElementAtIndex(1, fTrueY);</span>
-<span class="fc" id="L3216">            ftrue.setElementAtIndex(2, fTrueZ);</span>
+<span class="fc" id="L3214">            final Matrix ftrue = new Matrix(BodyKinematics.COMPONENTS, 1);</span>
+<span class="fc" id="L3215">            ftrue.setElementAtIndex(0, fTrueX);</span>
+<span class="fc" id="L3216">            ftrue.setElementAtIndex(1, fTrueY);</span>
+<span class="fc" id="L3217">            ftrue.setElementAtIndex(2, fTrueZ);</span>
 
-<span class="fc" id="L3218">            m.multiply(ftrue);</span>
+<span class="fc" id="L3219">            m.multiply(ftrue);</span>
 
-<span class="fc" id="L3220">            final double fMeasX2 = bx + m.getElementAtIndex(0);</span>
-<span class="fc" id="L3221">            final double fMeasY2 = by + m.getElementAtIndex(1);</span>
-<span class="fc" id="L3222">            final double fMeasZ2 = bz + m.getElementAtIndex(2);</span>
+<span class="fc" id="L3221">            final double fMeasX2 = bx + m.getElementAtIndex(0);</span>
+<span class="fc" id="L3222">            final double fMeasY2 = by + m.getElementAtIndex(1);</span>
+<span class="fc" id="L3223">            final double fMeasZ2 = bz + m.getElementAtIndex(2);</span>
 
-<span class="fc" id="L3224">            final double diffX = fMeasX2 - fMeasX1;</span>
-<span class="fc" id="L3225">            final double diffY = fMeasY2 - fMeasY1;</span>
-<span class="fc" id="L3226">            final double diffZ = fMeasZ2 - fMeasZ1;</span>
+<span class="fc" id="L3225">            final double diffX = fMeasX2 - fMeasX1;</span>
+<span class="fc" id="L3226">            final double diffY = fMeasY2 - fMeasY1;</span>
+<span class="fc" id="L3227">            final double diffZ = fMeasZ2 - fMeasZ1;</span>
 
-<span class="fc" id="L3228">            return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);</span>
+<span class="fc" id="L3229">            return Math.sqrt(diffX * diffX + diffY * diffY + diffZ * diffZ);</span>
 
-<span class="nc" id="L3230">        } catch (final WrongSizeException e) {</span>
-<span class="nc" id="L3231">            return Double.MAX_VALUE;</span>
+<span class="nc" id="L3231">        } catch (final WrongSizeException e) {</span>
+<span class="nc" id="L3232">            return Double.MAX_VALUE;</span>
         }
     }
 
@@ -3241,51 +3242,51 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     protected void computePreliminarySolutions(final int[] samplesIndices,
                                                final List&lt;PreliminaryResult&gt; solutions) {
 
-<span class="fc" id="L3244">        final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements = new ArrayList&lt;&gt;();</span>
+<span class="fc" id="L3245">        final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements = new ArrayList&lt;&gt;();</span>
 
-<span class="fc bfc" id="L3246" title="All 2 branches covered.">        for (final int samplesIndex : samplesIndices) {</span>
-<span class="fc" id="L3247">            measurements.add(mMeasurements.get(samplesIndex));</span>
+<span class="fc bfc" id="L3247" title="All 2 branches covered.">        for (final int samplesIndex : samplesIndices) {</span>
+<span class="fc" id="L3248">            measurements.add(mMeasurements.get(samplesIndex));</span>
         }
 
         try {
-<span class="fc" id="L3251">            final PreliminaryResult result = new PreliminaryResult();</span>
-<span class="fc" id="L3252">            result.mEstimatedBiases = getInitialBias();</span>
-<span class="fc" id="L3253">            result.mEstimatedMa = getInitialMa();</span>
+<span class="fc" id="L3252">            final PreliminaryResult result = new PreliminaryResult();</span>
+<span class="fc" id="L3253">            result.mEstimatedBiases = getInitialBias();</span>
+<span class="fc" id="L3254">            result.mEstimatedMa = getInitialMa();</span>
 
-<span class="fc bfc" id="L3255" title="All 2 branches covered.">            if (mUseLinearCalibrator) {</span>
-<span class="fc" id="L3256">                mLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);</span>
-<span class="fc" id="L3257">                mLinearCalibrator.setMeasurements(measurements);</span>
-<span class="fc" id="L3258">                mLinearCalibrator.calibrate();</span>
+<span class="fc bfc" id="L3256" title="All 2 branches covered.">            if (mUseLinearCalibrator) {</span>
+<span class="fc" id="L3257">                mLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);</span>
+<span class="fc" id="L3258">                mLinearCalibrator.setMeasurements(measurements);</span>
+<span class="fc" id="L3259">                mLinearCalibrator.calibrate();</span>
 
-<span class="fc" id="L3260">                mLinearCalibrator.getEstimatedBiases(result.mEstimatedBiases);</span>
-<span class="fc" id="L3261">                result.mEstimatedMa = mLinearCalibrator.getEstimatedMa();</span>
+<span class="fc" id="L3261">                mLinearCalibrator.getEstimatedBiases(result.mEstimatedBiases);</span>
+<span class="fc" id="L3262">                result.mEstimatedMa = mLinearCalibrator.getEstimatedMa();</span>
             }
 
-<span class="fc bfc" id="L3264" title="All 2 branches covered.">            if (mRefinePreliminarySolutions) {</span>
-<span class="fc" id="L3265">                mNonLinearCalibrator.setInitialBias(result.mEstimatedBiases);</span>
-<span class="fc" id="L3266">                mNonLinearCalibrator.setInitialMa(result.mEstimatedMa);</span>
-<span class="fc" id="L3267">                mNonLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);</span>
-<span class="fc" id="L3268">                mNonLinearCalibrator.setMeasurements(measurements);</span>
-<span class="fc" id="L3269">                mNonLinearCalibrator.calibrate();</span>
+<span class="fc bfc" id="L3265" title="All 2 branches covered.">            if (mRefinePreliminarySolutions) {</span>
+<span class="fc" id="L3266">                mNonLinearCalibrator.setInitialBias(result.mEstimatedBiases);</span>
+<span class="fc" id="L3267">                mNonLinearCalibrator.setInitialMa(result.mEstimatedMa);</span>
+<span class="fc" id="L3268">                mNonLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);</span>
+<span class="fc" id="L3269">                mNonLinearCalibrator.setMeasurements(measurements);</span>
+<span class="fc" id="L3270">                mNonLinearCalibrator.calibrate();</span>
 
-<span class="fc" id="L3271">                mNonLinearCalibrator.getEstimatedBiases(result.mEstimatedBiases);</span>
-<span class="fc" id="L3272">                result.mEstimatedMa = mNonLinearCalibrator.getEstimatedMa();</span>
+<span class="fc" id="L3272">                mNonLinearCalibrator.getEstimatedBiases(result.mEstimatedBiases);</span>
+<span class="fc" id="L3273">                result.mEstimatedMa = mNonLinearCalibrator.getEstimatedMa();</span>
 
-<span class="pc bpc" id="L3274" title="1 of 2 branches missed.">                if (mKeepCovariance) {</span>
-<span class="fc" id="L3275">                    result.mCovariance = mNonLinearCalibrator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L3275" title="1 of 2 branches missed.">                if (mKeepCovariance) {</span>
+<span class="fc" id="L3276">                    result.mCovariance = mNonLinearCalibrator.getEstimatedCovariance();</span>
                 } else {
-<span class="nc" id="L3277">                    result.mCovariance = null;</span>
+<span class="nc" id="L3278">                    result.mCovariance = null;</span>
                 }
 
-<span class="fc" id="L3280">                result.mEstimatedMse = mNonLinearCalibrator.getEstimatedMse();</span>
-<span class="fc" id="L3281">                result.mEstimatedChiSq = mNonLinearCalibrator.getEstimatedChiSq();</span>
+<span class="fc" id="L3281">                result.mEstimatedMse = mNonLinearCalibrator.getEstimatedMse();</span>
+<span class="fc" id="L3282">                result.mEstimatedChiSq = mNonLinearCalibrator.getEstimatedChiSq();</span>
             }
 
-<span class="fc" id="L3284">            solutions.add(result);</span>
-<span class="nc" id="L3285">        } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
-<span class="nc" id="L3286">            solutions.clear();</span>
-<span class="fc" id="L3287">        }</span>
-<span class="fc" id="L3288">    }</span>
+<span class="fc" id="L3285">            solutions.add(result);</span>
+<span class="nc" id="L3286">        } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
+<span class="nc" id="L3287">            solutions.clear();</span>
+<span class="fc" id="L3288">        }</span>
+<span class="fc" id="L3289">    }</span>
 
     /**
      * Attempts to refine calibration parameters if refinement is requested.
@@ -3297,52 +3298,52 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param preliminaryResult a preliminary result.
      */
     protected void attemptRefine(final PreliminaryResult preliminaryResult) {
-<span class="pc bpc" id="L3300" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
-<span class="fc" id="L3301">            final BitSet inliers = mInliersData.getInliers();</span>
-<span class="fc" id="L3302">            final int nSamples = mMeasurements.size();</span>
+<span class="pc bpc" id="L3301" title="1 of 4 branches missed.">        if (mRefineResult &amp;&amp; mInliersData != null) {</span>
+<span class="fc" id="L3302">            final BitSet inliers = mInliersData.getInliers();</span>
+<span class="fc" id="L3303">            final int nSamples = mMeasurements.size();</span>
 
-<span class="fc" id="L3304">            final List&lt;StandardDeviationFrameBodyKinematics&gt; inlierMeasurements =</span>
+<span class="fc" id="L3305">            final List&lt;StandardDeviationFrameBodyKinematics&gt; inlierMeasurements =</span>
                     new ArrayList&lt;&gt;();
-<span class="fc bfc" id="L3306" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
-<span class="fc bfc" id="L3307" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
+<span class="fc bfc" id="L3307" title="All 2 branches covered.">            for (int i = 0; i &lt; nSamples; i++) {</span>
+<span class="fc bfc" id="L3308" title="All 2 branches covered.">                if (inliers.get(i)) {</span>
                     // sample is inlier
-<span class="fc" id="L3309">                    inlierMeasurements.add(mMeasurements.get(i));</span>
+<span class="fc" id="L3310">                    inlierMeasurements.add(mMeasurements.get(i));</span>
                 }
             }
 
             try {
-<span class="fc" id="L3314">                mNonLinearCalibrator.setInitialBias(preliminaryResult.mEstimatedBiases);</span>
-<span class="fc" id="L3315">                mNonLinearCalibrator.setInitialMa(preliminaryResult.mEstimatedMa);</span>
-<span class="fc" id="L3316">                mNonLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);</span>
-<span class="fc" id="L3317">                mNonLinearCalibrator.setMeasurements(inlierMeasurements);</span>
-<span class="fc" id="L3318">                mNonLinearCalibrator.calibrate();</span>
+<span class="fc" id="L3315">                mNonLinearCalibrator.setInitialBias(preliminaryResult.mEstimatedBiases);</span>
+<span class="fc" id="L3316">                mNonLinearCalibrator.setInitialMa(preliminaryResult.mEstimatedMa);</span>
+<span class="fc" id="L3317">                mNonLinearCalibrator.setCommonAxisUsed(mCommonAxisUsed);</span>
+<span class="fc" id="L3318">                mNonLinearCalibrator.setMeasurements(inlierMeasurements);</span>
+<span class="fc" id="L3319">                mNonLinearCalibrator.calibrate();</span>
 
-<span class="fc" id="L3320">                mEstimatedBiases = mNonLinearCalibrator.getEstimatedBiases();</span>
-<span class="fc" id="L3321">                mEstimatedMa = mNonLinearCalibrator.getEstimatedMa();</span>
-<span class="fc" id="L3322">                mEstimatedMse = mNonLinearCalibrator.getEstimatedMse();</span>
-<span class="fc" id="L3323">                mEstimatedChiSq = mNonLinearCalibrator.getEstimatedChiSq();</span>
+<span class="fc" id="L3321">                mEstimatedBiases = mNonLinearCalibrator.getEstimatedBiases();</span>
+<span class="fc" id="L3322">                mEstimatedMa = mNonLinearCalibrator.getEstimatedMa();</span>
+<span class="fc" id="L3323">                mEstimatedMse = mNonLinearCalibrator.getEstimatedMse();</span>
+<span class="fc" id="L3324">                mEstimatedChiSq = mNonLinearCalibrator.getEstimatedChiSq();</span>
 
-<span class="pc bpc" id="L3325" title="1 of 2 branches missed.">                if (mKeepCovariance) {</span>
-<span class="fc" id="L3326">                    mEstimatedCovariance = mNonLinearCalibrator.getEstimatedCovariance();</span>
+<span class="pc bpc" id="L3326" title="1 of 2 branches missed.">                if (mKeepCovariance) {</span>
+<span class="fc" id="L3327">                    mEstimatedCovariance = mNonLinearCalibrator.getEstimatedCovariance();</span>
                 } else {
-<span class="nc" id="L3328">                    mEstimatedCovariance = null;</span>
+<span class="nc" id="L3329">                    mEstimatedCovariance = null;</span>
                 }
 
-<span class="nc" id="L3331">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
-<span class="nc" id="L3332">                mEstimatedCovariance = preliminaryResult.mCovariance;</span>
-<span class="nc" id="L3333">                mEstimatedBiases = preliminaryResult.mEstimatedBiases;</span>
-<span class="nc" id="L3334">                mEstimatedMa = preliminaryResult.mEstimatedMa;</span>
-<span class="nc" id="L3335">                mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
-<span class="nc" id="L3336">                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
-<span class="fc" id="L3337">            }</span>
-<span class="fc" id="L3338">        } else {</span>
-<span class="fc" id="L3339">            mEstimatedCovariance = preliminaryResult.mCovariance;</span>
-<span class="fc" id="L3340">            mEstimatedBiases = preliminaryResult.mEstimatedBiases;</span>
-<span class="fc" id="L3341">            mEstimatedMa = preliminaryResult.mEstimatedMa;</span>
-<span class="fc" id="L3342">            mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
-<span class="fc" id="L3343">            mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
+<span class="nc" id="L3332">            } catch (final LockedException | CalibrationException | NotReadyException e) {</span>
+<span class="nc" id="L3333">                mEstimatedCovariance = preliminaryResult.mCovariance;</span>
+<span class="nc" id="L3334">                mEstimatedBiases = preliminaryResult.mEstimatedBiases;</span>
+<span class="nc" id="L3335">                mEstimatedMa = preliminaryResult.mEstimatedMa;</span>
+<span class="nc" id="L3336">                mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
+<span class="nc" id="L3337">                mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
+<span class="fc" id="L3338">            }</span>
+<span class="fc" id="L3339">        } else {</span>
+<span class="fc" id="L3340">            mEstimatedCovariance = preliminaryResult.mCovariance;</span>
+<span class="fc" id="L3341">            mEstimatedBiases = preliminaryResult.mEstimatedBiases;</span>
+<span class="fc" id="L3342">            mEstimatedMa = preliminaryResult.mEstimatedMa;</span>
+<span class="fc" id="L3343">            mEstimatedMse = preliminaryResult.mEstimatedMse;</span>
+<span class="fc" id="L3344">            mEstimatedChiSq = preliminaryResult.mEstimatedChiSq;</span>
         }
-<span class="fc" id="L3345">    }</span>
+<span class="fc" id="L3346">    }</span>
 
     /**
      * Converts acceleration value and unit to meters per squared second.
@@ -3352,7 +3353,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return converted value.
      */
     private static double convertAcceleration(final double value, final AccelerationUnit unit) {
-<span class="fc" id="L3355">        return AccelerationConverter.convert(value, unit,</span>
+<span class="fc" id="L3356">        return AccelerationConverter.convert(value, unit,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -3363,14 +3364,14 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L3366">        return convertAcceleration(acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L3367">                acceleration.getUnit());</span>
+<span class="fc" id="L3367">        return convertAcceleration(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L3368">                acceleration.getUnit());</span>
     }
 
     /**
      * Internal class containing estimated preliminary result.
      */
-<span class="fc" id="L3373">    protected static class PreliminaryResult {</span>
+<span class="fc" id="L3374">    protected static class PreliminaryResult {</span>
         /**
          * Estimated accelerometer biases for each IMU axis expressed in meter per squared
          * second (m/s^2).

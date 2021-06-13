@@ -28,6 +28,7 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -101,14 +102,14 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      * lower than the one typically used in LMedS, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L104">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L105">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Constructor.
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator() {
-<span class="fc" id="L110">        super();</span>
-<span class="fc" id="L111">    }</span>
+<span class="fc" id="L111">        super();</span>
+<span class="fc" id="L112">    }</span>
 
     /**
      * Constructor.
@@ -117,8 +118,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L120">        super(listener);</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L121">        super(listener);</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Constructor.
@@ -131,8 +132,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L134">        super(measurements);</span>
-<span class="fc" id="L135">    }</span>
+<span class="fc" id="L135">        super(measurements);</span>
+<span class="fc" id="L136">    }</span>
 
     /**
      * Constructor.
@@ -142,8 +143,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L145">        super(commonAxisUsed);</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L146">        super(commonAxisUsed);</span>
+<span class="fc" id="L147">    }</span>
 
     /**
      * Constructor.
@@ -153,8 +154,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final WorldMagneticModel magneticModel) {
-<span class="fc" id="L156">        super(magneticModel);</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L157">        super(magneticModel);</span>
+<span class="fc" id="L158">    }</span>
 
     /**
      * Constructor.
@@ -165,8 +166,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final double[] hardIron) {
-<span class="fc" id="L168">        super(hardIron);</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L169">        super(hardIron);</span>
+<span class="fc" id="L170">    }</span>
 
     /**
      * Constructor.
@@ -177,8 +178,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final Matrix hardIron) {
-<span class="fc" id="L180">        super(hardIron);</span>
-<span class="fc" id="L181">    }</span>
+<span class="fc" id="L181">        super(hardIron);</span>
+<span class="fc" id="L182">    }</span>
 
     /**
      * Constructor.
@@ -192,8 +193,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final Matrix hardIron, final Matrix initialMm) {
-<span class="fc" id="L195">        super(hardIron, initialMm);</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L196">        super(hardIron, initialMm);</span>
+<span class="fc" id="L197">    }</span>
 
     /**
      * Constructor.
@@ -203,8 +204,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position) {
-<span class="fc" id="L206">        super(position);</span>
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L207">        super(position);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Constructor.
@@ -220,8 +221,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L223">        super(position, measurements);</span>
-<span class="fc" id="L224">    }</span>
+<span class="fc" id="L224">        super(position, measurements);</span>
+<span class="fc" id="L225">    }</span>
 
     /**
      * Constructor.
@@ -239,8 +240,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L242">        super(position, measurements, listener);</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L243">        super(position, measurements, listener);</span>
+<span class="fc" id="L244">    }</span>
 
     /**
      * Constructor.
@@ -259,8 +260,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L262">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L263">    }</span>
+<span class="fc" id="L263">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L264">    }</span>
 
     /**
      * Constructor.
@@ -281,8 +282,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L284">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L285">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L286">    }</span>
 
     /**
      * Constructor.
@@ -302,8 +303,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final double[] hardIron) {
-<span class="fc" id="L305">        super(position, measurements, hardIron);</span>
-<span class="fc" id="L306">    }</span>
+<span class="fc" id="L306">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L307">    }</span>
 
     /**
      * Constructor.
@@ -325,8 +326,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L328">        super(position, measurements, hardIron, listener);</span>
-<span class="fc" id="L329">    }</span>
+<span class="fc" id="L329">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L330">    }</span>
 
     /**
      * Constructor.
@@ -348,8 +349,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
-<span class="fc" id="L351">        super(position, measurements, commonAxisUsed, hardIron);</span>
-<span class="fc" id="L352">    }</span>
+<span class="fc" id="L352">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L353">    }</span>
 
     /**
      * Constructor.
@@ -373,8 +374,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L376">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
-<span class="fc" id="L377">    }</span>
+<span class="fc" id="L377">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L378">    }</span>
 
     /**
      * Constructor.
@@ -394,8 +395,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron) {
-<span class="fc" id="L397">        super(position, measurements, hardIron);</span>
-<span class="fc" id="L398">    }</span>
+<span class="fc" id="L398">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L399">    }</span>
 
     /**
      * Constructor.
@@ -417,8 +418,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L420">        super(position, measurements, hardIron, listener);</span>
-<span class="fc" id="L421">    }</span>
+<span class="fc" id="L421">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L422">    }</span>
 
     /**
      * Constructor.
@@ -440,8 +441,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
-<span class="fc" id="L443">        super(position, measurements, commonAxisUsed, hardIron);</span>
-<span class="fc" id="L444">    }</span>
+<span class="fc" id="L444">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L445">    }</span>
 
     /**
      * Constructor.
@@ -465,8 +466,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L468">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
-<span class="fc" id="L469">    }</span>
+<span class="fc" id="L469">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L470">    }</span>
 
     /**
      * Constructor.
@@ -489,8 +490,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final NEDPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron, final Matrix initialMm) {
-<span class="fc" id="L492">        super(position, measurements, hardIron, initialMm);</span>
-<span class="fc" id="L493">    }</span>
+<span class="fc" id="L493">        super(position, measurements, hardIron, initialMm);</span>
+<span class="fc" id="L494">    }</span>
 
     /**
      * Constructor.
@@ -515,8 +516,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L518">        super(position, measurements, hardIron, initialMm, listener);</span>
-<span class="fc" id="L519">    }</span>
+<span class="fc" id="L519">        super(position, measurements, hardIron, initialMm, listener);</span>
+<span class="fc" id="L520">    }</span>
 
     /**
      * Constructor.
@@ -542,8 +543,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final Matrix initialMm) {
-<span class="fc" id="L545">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
-<span class="fc" id="L546">    }</span>
+<span class="fc" id="L546">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
+<span class="fc" id="L547">    }</span>
 
     /**
      * Constructor.
@@ -571,8 +572,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final boolean commonAxisUsed, final Matrix hardIron,
             final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L574">        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);</span>
-<span class="fc" id="L575">    }</span>
+<span class="fc" id="L575">        super(position, measurements, commonAxisUsed, hardIron, initialMm, listener);</span>
+<span class="fc" id="L576">    }</span>
 
     /**
      * Constructor.
@@ -582,8 +583,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position) {
-<span class="fc" id="L585">        super(position);</span>
-<span class="fc" id="L586">    }</span>
+<span class="fc" id="L586">        super(position);</span>
+<span class="fc" id="L587">    }</span>
 
     /**
      * Constructor.
@@ -599,8 +600,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
     public LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L602">        super(position, measurements);</span>
-<span class="fc" id="L603">    }</span>
+<span class="fc" id="L603">        super(position, measurements);</span>
+<span class="fc" id="L604">    }</span>
 
     /**
      * Constructor.
@@ -618,8 +619,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L621">        super(position, measurements, listener);</span>
-<span class="fc" id="L622">    }</span>
+<span class="fc" id="L622">        super(position, measurements, listener);</span>
+<span class="fc" id="L623">    }</span>
 
     /**
      * Constructor.
@@ -638,8 +639,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L641">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L642">    }</span>
+<span class="fc" id="L642">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L643">    }</span>
 
     /**
      * Constructor.
@@ -660,8 +661,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L663">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L664">    }</span>
+<span class="fc" id="L664">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L665">    }</span>
 
     /**
      * Constructor.
@@ -681,8 +682,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final double[] hardIron) {
-<span class="fc" id="L684">        super(position, measurements, hardIron);</span>
-<span class="fc" id="L685">    }</span>
+<span class="fc" id="L685">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L686">    }</span>
 
     /**
      * Constructor.
@@ -704,8 +705,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L707">        super(position, measurements, hardIron, listener);</span>
-<span class="fc" id="L708">    }</span>
+<span class="fc" id="L708">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L709">    }</span>
 
     /**
      * Constructor.
@@ -727,8 +728,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final double[] hardIron) {
-<span class="fc" id="L730">        super(position, measurements, commonAxisUsed, hardIron);</span>
-<span class="fc" id="L731">    }</span>
+<span class="fc" id="L731">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L732">    }</span>
 
     /**
      * Constructor.
@@ -752,8 +753,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final double[] hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L755">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
-<span class="fc" id="L756">    }</span>
+<span class="fc" id="L756">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L757">    }</span>
 
     /**
      * Constructor.
@@ -773,8 +774,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron) {
-<span class="fc" id="L776">        super(position, measurements, hardIron);</span>
-<span class="fc" id="L777">    }</span>
+<span class="fc" id="L777">        super(position, measurements, hardIron);</span>
+<span class="fc" id="L778">    }</span>
 
     /**
      * Constructor.
@@ -796,8 +797,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L799">        super(position, measurements, hardIron, listener);</span>
-<span class="fc" id="L800">    }</span>
+<span class="fc" id="L800">        super(position, measurements, hardIron, listener);</span>
+<span class="fc" id="L801">    }</span>
 
     /**
      * Constructor.
@@ -819,8 +820,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final Matrix hardIron) {
-<span class="fc" id="L822">        super(position, measurements, commonAxisUsed, hardIron);</span>
-<span class="fc" id="L823">    }</span>
+<span class="fc" id="L823">        super(position, measurements, commonAxisUsed, hardIron);</span>
+<span class="fc" id="L824">    }</span>
 
     /**
      * Constructor.
@@ -844,8 +845,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L847">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
-<span class="fc" id="L848">    }</span>
+<span class="fc" id="L848">        super(position, measurements, commonAxisUsed, hardIron, listener);</span>
+<span class="fc" id="L849">    }</span>
 
     /**
      * Constructor.
@@ -868,8 +869,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron, final Matrix initialMm) {
-<span class="fc" id="L871">        super(position, measurements, hardIron, initialMm);</span>
-<span class="fc" id="L872">    }</span>
+<span class="fc" id="L872">        super(position, measurements, hardIron, initialMm);</span>
+<span class="fc" id="L873">    }</span>
 
     /**
      * Constructor.
@@ -894,8 +895,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final Matrix hardIron, final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L897">        super(position, measurements, hardIron, initialMm, listener);</span>
-<span class="fc" id="L898">    }</span>
+<span class="fc" id="L898">        super(position, measurements, hardIron, initialMm, listener);</span>
+<span class="fc" id="L899">    }</span>
 
     /**
      * Constructor.
@@ -921,8 +922,8 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final List&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed, final Matrix hardIron,
             final Matrix initialMm) {
-<span class="fc" id="L924">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
-<span class="fc" id="L925">    }</span>
+<span class="fc" id="L925">        super(position, measurements, commonAxisUsed, hardIron, initialMm);</span>
+<span class="fc" id="L926">    }</span>
 
     /**
      * Constructor.
@@ -950,9 +951,9 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
             final boolean commonAxisUsed, final Matrix hardIron,
             final Matrix initialMm,
             final RobustKnownHardIronPositionAndInstantMagnetometerCalibratorListener listener) {
-<span class="fc" id="L953">        super(position, measurements, commonAxisUsed, hardIron, initialMm,</span>
+<span class="fc" id="L954">        super(position, measurements, commonAxisUsed, hardIron, initialMm,</span>
                 listener);
-<span class="fc" id="L955">    }</span>
+<span class="fc" id="L956">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -974,7 +975,7 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L977">        return mStopThreshold;</span>
+<span class="fc" id="L978">        return mStopThreshold;</span>
     }
 
     /**
@@ -999,15 +1000,15 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L1002" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1003">            throw new LockedException();</span>
+<span class="fc bfc" id="L1003" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1004">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1005" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L1006">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1006" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1007">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1009">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L1010">    }</span>
+<span class="fc" id="L1010">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L1011">    }</span>
 
     /**
      * Estimates magnetometer calibration parameters containing soft-iron
@@ -1021,113 +1022,115 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1024" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1025">            throw new LockedException();</span>
+<span class="fc bfc" id="L1025" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1026">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1027" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1028">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1028" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1029">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1031">        final LMedSRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
-<span class="fc" id="L1032">                new LMedSRobustEstimator&lt;&gt;(new LMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
+<span class="fc" id="L1032">        final LMedSRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
+<span class="fc" id="L1033">                new LMedSRobustEstimator&lt;&gt;(new LMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L1035">                        return mMeasurements.size();</span>
+<span class="fc" id="L1036">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L1040">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L1041">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;Matrix&gt; solutions) {
-<span class="fc" id="L1047">                        computePreliminarySolutions(</span>
+<span class="fc" id="L1048">                        computePreliminarySolutions(</span>
                                 samplesIndices, solutions);
-<span class="fc" id="L1049">                    }</span>
+<span class="fc" id="L1050">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final Matrix currentEstimation,
                             final int i) {
-<span class="fc" id="L1055">                        return computeError(mMeasurements.get(i),</span>
+<span class="fc" id="L1056">                        return computeError(mMeasurements.get(i),</span>
                                 currentEstimation);
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L1061">                        return LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this.isReady();</span>
+<span class="fc" id="L1062">                        return LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L1067">                    }</span>
+                        // no action needed
+<span class="fc" id="L1069">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L1072">                    }</span>
+                        // no action needed
+<span class="fc" id="L1075">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;Matrix&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L1078" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1079">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L1081" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L1082">                            mListener.onCalibrateNextIteration(</span>
                                     LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L1083">                    }</span>
+<span class="fc" id="L1086">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;Matrix&gt; estimator,
                             final float progress) {
-<span class="nc bnc" id="L1089" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1090">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L1092" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L1093">                            mListener.onCalibrateProgressChange(</span>
                                     LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L1094">                    }</span>
+<span class="nc" id="L1097">                    }</span>
                 });
 
         try {
-<span class="fc" id="L1098">            mRunning = true;</span>
+<span class="fc" id="L1101">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1100" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1101">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1103" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1104">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1104">            mInliersData = null;</span>
+<span class="fc" id="L1107">            mInliersData = null;</span>
 
-<span class="fc" id="L1106">            initialize();</span>
+<span class="fc" id="L1109">            initialize();</span>
 
-<span class="fc" id="L1108">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1109">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1110">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1111">            innerEstimator.setStopThreshold(mStopThreshold);</span>
-<span class="fc" id="L1112">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1113">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1111">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1112">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1113">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1114">            innerEstimator.setStopThreshold(mStopThreshold);</span>
+<span class="fc" id="L1115">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1116">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1115">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1118">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1117" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1118">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1120" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1121">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1121">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1122">            throw new LockedException(e);</span>
-<span class="nc" id="L1123">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1124">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1125">        } catch (final RobustEstimatorException | IOException e) {</span>
-<span class="nc" id="L1126">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1124">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1125">            throw new LockedException(e);</span>
+<span class="nc" id="L1126">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1127">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1128">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L1129">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1128">            mRunning = false;</span>
+<span class="fc" id="L1131">            mRunning = false;</span>
         }
-<span class="fc" id="L1130">    }</span>
+<span class="fc" id="L1133">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1136,7 +1139,7 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1139">        return RobustEstimatorMethod.LMedS;</span>
+<span class="fc" id="L1142">        return RobustEstimatorMethod.LMedS;</span>
     }
 
     /**
@@ -1147,7 +1150,7 @@ public class LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ex
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1150">        return false;</span>
+<span class="fc" id="L1153">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

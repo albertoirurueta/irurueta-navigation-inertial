@@ -26,6 +26,7 @@ import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.AngularSpeed;
+
 import java.util.List;
 
 /**
@@ -101,7 +102,7 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L104">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L105">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -113,8 +114,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * Constructor.
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator() {
-<span class="fc" id="L116">        super();</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L117">        super();</span>
+<span class="fc" id="L118">    }</span>
 
     /**
      * Constructor.
@@ -124,8 +125,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L127">        super(listener);</span>
-<span class="fc" id="L128">    }</span>
+<span class="fc" id="L128">        super(listener);</span>
+<span class="fc" id="L129">    }</span>
 
     /**
      * Constructor.
@@ -136,8 +137,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L139">        super(measurements);</span>
-<span class="fc" id="L140">    }</span>
+<span class="fc" id="L140">        super(measurements);</span>
+<span class="fc" id="L141">    }</span>
 
     /**
      * Constructor.
@@ -150,8 +151,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L153">        super(measurements, listener);</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L154">        super(measurements, listener);</span>
+<span class="fc" id="L155">    }</span>
 
     /**
      * Constructor.
@@ -161,8 +162,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L164">        super(commonAxisUsed);</span>
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L165">        super(commonAxisUsed);</span>
+<span class="fc" id="L166">    }</span>
 
     /**
      * Constructor.
@@ -174,8 +175,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L177">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L178">    }</span>
+<span class="fc" id="L178">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L179">    }</span>
 
     /**
      * Constructor.
@@ -189,8 +190,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L192">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L193">    }</span>
+<span class="fc" id="L193">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L194">    }</span>
 
     /**
      * Constructor.
@@ -206,8 +207,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L209">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L210">    }</span>
+<span class="fc" id="L210">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L211">    }</span>
 
     /**
      * Constructor.
@@ -221,8 +222,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L224">        super(biasX, biasY, biasZ);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L225">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L226">    }</span>
 
     /**
      * Constructor.
@@ -239,8 +240,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L242">        super(biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L243">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L244">    }</span>
 
     /**
      * Constructor.
@@ -258,8 +259,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L261">        super(measurements, biasX, biasY, biasZ);</span>
-<span class="fc" id="L262">    }</span>
+<span class="fc" id="L262">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L263">    }</span>
 
     /**
      * Constructor.
@@ -279,8 +280,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L282">        super(measurements, biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L283">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L284">    }</span>
 
     /**
      * Constructor.
@@ -297,8 +298,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L300">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L301">    }</span>
+<span class="fc" id="L301">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L302">    }</span>
 
     /**
      * Constructor.
@@ -317,8 +318,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L320">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L321">    }</span>
+<span class="fc" id="L321">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L322">    }</span>
 
     /**
      * Constructor.
@@ -339,8 +340,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L342">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L343">    }</span>
+<span class="fc" id="L343">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L344">    }</span>
 
     /**
      * Constructor.
@@ -363,8 +364,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L366">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L367">    }</span>
+<span class="fc" id="L367">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L368">    }</span>
 
     /**
      * Constructor.
@@ -375,8 +376,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-<span class="fc" id="L378">        super(biasX, biasY, biasZ);</span>
-<span class="fc" id="L379">    }</span>
+<span class="fc" id="L379">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L380">    }</span>
 
     /**
      * Constructor.
@@ -390,8 +391,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L393">        super(biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L394">    }</span>
+<span class="fc" id="L394">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L395">    }</span>
 
     /**
      * Constructor.
@@ -406,8 +407,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-<span class="fc" id="L409">        super(measurements, biasX, biasY, biasZ);</span>
-<span class="fc" id="L410">    }</span>
+<span class="fc" id="L410">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L411">    }</span>
 
     /**
      * Constructor.
@@ -424,8 +425,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L427">        super(measurements, biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L428">    }</span>
+<span class="fc" id="L428">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L429">    }</span>
 
     /**
      * Constructor.
@@ -439,8 +440,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L442">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L443">    }</span>
+<span class="fc" id="L443">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L444">    }</span>
 
     /**
      * Constructor.
@@ -456,8 +457,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L459">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L460">    }</span>
+<span class="fc" id="L460">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L461">    }</span>
 
     /**
      * Constructor.
@@ -475,8 +476,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L478">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L479">    }</span>
+<span class="fc" id="L479">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L480">    }</span>
 
     /**
      * Constructor.
@@ -496,8 +497,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L499">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L500">    }</span>
+<span class="fc" id="L500">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L501">    }</span>
 
     /**
      * Constructor.
@@ -507,8 +508,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias) {
-<span class="fc" id="L510">        super(bias);</span>
-<span class="fc" id="L511">    }</span>
+<span class="fc" id="L511">        super(bias);</span>
+<span class="fc" id="L512">    }</span>
 
     /**
      * Constructor.
@@ -521,8 +522,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L524">        super(bias, listener);</span>
-<span class="fc" id="L525">    }</span>
+<span class="fc" id="L525">        super(bias, listener);</span>
+<span class="fc" id="L526">    }</span>
 
     /**
      * Constructor.
@@ -536,8 +537,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias) {
-<span class="fc" id="L539">        super(measurements, bias);</span>
-<span class="fc" id="L540">    }</span>
+<span class="fc" id="L540">        super(measurements, bias);</span>
+<span class="fc" id="L541">    }</span>
 
     /**
      * Constructor.
@@ -553,8 +554,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L556">        super(measurements, bias, listener);</span>
-<span class="fc" id="L557">    }</span>
+<span class="fc" id="L557">        super(measurements, bias, listener);</span>
+<span class="fc" id="L558">    }</span>
 
     /**
      * Constructor.
@@ -566,8 +567,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias, final boolean commonAxisUsed) {
-<span class="fc" id="L569">        super(bias, commonAxisUsed);</span>
-<span class="fc" id="L570">    }</span>
+<span class="fc" id="L570">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L571">    }</span>
 
     /**
      * Constructor.
@@ -581,8 +582,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L584">        super(bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L585">    }</span>
+<span class="fc" id="L585">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L586">    }</span>
 
     /**
      * Constructor.
@@ -599,8 +600,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias,
             final boolean commonAxisUsed) {
-<span class="fc" id="L602">        super(measurements, bias, commonAxisUsed);</span>
-<span class="fc" id="L603">    }</span>
+<span class="fc" id="L603">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L604">    }</span>
 
     /**
      * Constructor.
@@ -618,8 +619,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L621">        super(measurements, bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L622">    }</span>
+<span class="fc" id="L622">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L623">    }</span>
 
     /**
      * Constructor.
@@ -629,8 +630,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias) {
-<span class="fc" id="L632">        super(bias);</span>
-<span class="fc" id="L633">    }</span>
+<span class="fc" id="L633">        super(bias);</span>
+<span class="fc" id="L634">    }</span>
 
     /**
      * Constructor.
@@ -643,8 +644,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L646">        super(bias, listener);</span>
-<span class="fc" id="L647">    }</span>
+<span class="fc" id="L647">        super(bias, listener);</span>
+<span class="fc" id="L648">    }</span>
 
     /**
      * Constructor.
@@ -658,8 +659,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias) {
-<span class="fc" id="L661">        super(measurements, bias);</span>
-<span class="fc" id="L662">    }</span>
+<span class="fc" id="L662">        super(measurements, bias);</span>
+<span class="fc" id="L663">    }</span>
 
     /**
      * Constructor.
@@ -675,8 +676,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L678">        super(measurements, bias, listener);</span>
-<span class="fc" id="L679">    }</span>
+<span class="fc" id="L679">        super(measurements, bias, listener);</span>
+<span class="fc" id="L680">    }</span>
 
     /**
      * Constructor.
@@ -688,8 +689,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias, final boolean commonAxisUsed) {
-<span class="fc" id="L691">        super(bias, commonAxisUsed);</span>
-<span class="fc" id="L692">    }</span>
+<span class="fc" id="L692">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L693">    }</span>
 
     /**
      * Constructor.
@@ -703,8 +704,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L706">        super(bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L707">    }</span>
+<span class="fc" id="L707">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L708">    }</span>
 
     /**
      * Constructor.
@@ -721,8 +722,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias,
             final boolean commonAxisUsed) {
-<span class="fc" id="L724">        super(measurements, bias, commonAxisUsed);</span>
-<span class="fc" id="L725">    }</span>
+<span class="fc" id="L725">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L726">    }</span>
 
     /**
      * Constructor.
@@ -740,8 +741,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L743">        super(measurements, bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L744">    }</span>
+<span class="fc" id="L744">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L745">    }</span>
 
     /**
      * Constructor.
@@ -758,9 +759,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
-<span class="fc" id="L761">        super(measurements);</span>
-<span class="fc" id="L762">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L763">    }</span>
+<span class="fc" id="L762">        super(measurements);</span>
+<span class="fc" id="L763">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L764">    }</span>
 
     /**
      * Constructor.
@@ -779,9 +780,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L782">        super(measurements, listener);</span>
-<span class="fc" id="L783">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L784">    }</span>
+<span class="fc" id="L783">        super(measurements, listener);</span>
+<span class="fc" id="L784">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L785">    }</span>
 
     /**
      * Constructor.
@@ -801,9 +802,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L804">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L805">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L806">    }</span>
+<span class="fc" id="L805">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L806">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L807">    }</span>
 
     /**
      * Constructor.
@@ -825,9 +826,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L828">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L829">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L830">    }</span>
+<span class="fc" id="L829">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L830">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L831">    }</span>
 
     /**
      * Constructor.
@@ -847,9 +848,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores,
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L850">        super(biasX, biasY, biasZ);</span>
-<span class="fc" id="L851">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L852">    }</span>
+<span class="fc" id="L851">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L852">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L853">    }</span>
 
     /**
      * Constructor.
@@ -872,9 +873,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L875">        super(biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L876">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L877">    }</span>
+<span class="fc" id="L876">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L877">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L878">    }</span>
 
     /**
      * Constructor.
@@ -898,9 +899,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L901">        super(measurements, biasX, biasY, biasZ);</span>
-<span class="fc" id="L902">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L903">    }</span>
+<span class="fc" id="L902">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L903">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L904">    }</span>
 
     /**
      * Constructor.
@@ -926,9 +927,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L929">        super(measurements, biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L930">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L931">    }</span>
+<span class="fc" id="L930">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L931">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L932">    }</span>
 
     /**
      * Constructor.
@@ -951,9 +952,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L954">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L955">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L956">    }</span>
+<span class="fc" id="L955">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L956">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L957">    }</span>
 
     /**
      * Constructor.
@@ -978,9 +979,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L981">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L982">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L983">    }</span>
+<span class="fc" id="L982">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L983">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L984">    }</span>
 
     /**
      * Constructor.
@@ -1007,9 +1008,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1010">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L1011">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1012">    }</span>
+<span class="fc" id="L1011">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L1012">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1013">    }</span>
 
     /**
      * Constructor.
@@ -1038,9 +1039,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1041">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L1042">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1043">    }</span>
+<span class="fc" id="L1042">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L1043">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1044">    }</span>
 
     /**
      * Constructor.
@@ -1057,9 +1058,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-<span class="fc" id="L1060">        super(biasX, biasY, biasZ);</span>
-<span class="fc" id="L1061">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1062">    }</span>
+<span class="fc" id="L1061">        super(biasX, biasY, biasZ);</span>
+<span class="fc" id="L1062">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1063">    }</span>
 
     /**
      * Constructor.
@@ -1079,9 +1080,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1082">        super(biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L1083">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1084">    }</span>
+<span class="fc" id="L1083">        super(biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L1084">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1085">    }</span>
 
     /**
      * Constructor.
@@ -1102,9 +1103,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
-<span class="fc" id="L1105">        super(measurements, biasX, biasY, biasZ);</span>
-<span class="fc" id="L1106">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1107">    }</span>
+<span class="fc" id="L1106">        super(measurements, biasX, biasY, biasZ);</span>
+<span class="fc" id="L1107">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1108">    }</span>
 
     /**
      * Constructor.
@@ -1127,9 +1128,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1130">        super(measurements, biasX, biasY, biasZ, listener);</span>
-<span class="fc" id="L1131">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1132">    }</span>
+<span class="fc" id="L1131">        super(measurements, biasX, biasY, biasZ, listener);</span>
+<span class="fc" id="L1132">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1133">    }</span>
 
     /**
      * Constructor.
@@ -1149,9 +1150,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1152">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L1153">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1154">    }</span>
+<span class="fc" id="L1153">        super(biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L1154">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1155">    }</span>
 
     /**
      * Constructor.
@@ -1173,9 +1174,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1176">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L1177">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1178">    }</span>
+<span class="fc" id="L1177">        super(biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L1178">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1179">    }</span>
 
     /**
      * Constructor.
@@ -1199,9 +1200,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1202">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
-<span class="fc" id="L1203">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1204">    }</span>
+<span class="fc" id="L1203">        super(measurements, biasX, biasY, biasZ, commonAxisUsed);</span>
+<span class="fc" id="L1204">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1205">    }</span>
 
     /**
      * Constructor.
@@ -1227,9 +1228,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1230">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
-<span class="fc" id="L1231">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1232">    }</span>
+<span class="fc" id="L1231">        super(measurements, biasX, biasY, biasZ, commonAxisUsed, listener);</span>
+<span class="fc" id="L1232">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1233">    }</span>
 
     /**
      * Constructor.
@@ -1244,9 +1245,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores, final double[] bias) {
-<span class="fc" id="L1247">        super(bias);</span>
-<span class="fc" id="L1248">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1249">    }</span>
+<span class="fc" id="L1248">        super(bias);</span>
+<span class="fc" id="L1249">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1250">    }</span>
 
     /**
      * Constructor.
@@ -1265,9 +1266,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1268">        super(bias, listener);</span>
-<span class="fc" id="L1269">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1270">    }</span>
+<span class="fc" id="L1269">        super(bias, listener);</span>
+<span class="fc" id="L1270">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1271">    }</span>
 
     /**
      * Constructor.
@@ -1287,9 +1288,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias) {
-<span class="fc" id="L1290">        super(measurements, bias);</span>
-<span class="fc" id="L1291">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1292">    }</span>
+<span class="fc" id="L1291">        super(measurements, bias);</span>
+<span class="fc" id="L1292">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1293">    }</span>
 
     /**
      * Constructor.
@@ -1311,9 +1312,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1314">        super(measurements, bias, listener);</span>
-<span class="fc" id="L1315">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1316">    }</span>
+<span class="fc" id="L1315">        super(measurements, bias, listener);</span>
+<span class="fc" id="L1316">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1317">    }</span>
 
     /**
      * Constructor.
@@ -1331,9 +1332,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores, final double[] bias,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1334">        super(bias, commonAxisUsed);</span>
-<span class="fc" id="L1335">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1336">    }</span>
+<span class="fc" id="L1335">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L1336">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1337">    }</span>
 
     /**
      * Constructor.
@@ -1353,9 +1354,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores, final double[] bias,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1356">        super(bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L1357">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1358">    }</span>
+<span class="fc" id="L1357">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1358">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1359">    }</span>
 
     /**
      * Constructor.
@@ -1378,9 +1379,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1381">        super(measurements, bias, commonAxisUsed);</span>
-<span class="fc" id="L1382">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1383">    }</span>
+<span class="fc" id="L1382">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L1383">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1384">    }</span>
 
     /**
      * Constructor.
@@ -1404,9 +1405,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1407">        super(measurements, bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L1408">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1409">    }</span>
+<span class="fc" id="L1408">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1409">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1410">    }</span>
 
     /**
      * Constructor.
@@ -1421,9 +1422,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores, final Matrix bias) {
-<span class="fc" id="L1424">        super(bias);</span>
-<span class="fc" id="L1425">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1426">    }</span>
+<span class="fc" id="L1425">        super(bias);</span>
+<span class="fc" id="L1426">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1427">    }</span>
 
     /**
      * Constructor.
@@ -1442,9 +1443,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1445">        super(bias, listener);</span>
-<span class="fc" id="L1446">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1447">    }</span>
+<span class="fc" id="L1446">        super(bias, listener);</span>
+<span class="fc" id="L1447">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1448">    }</span>
 
     /**
      * Constructor.
@@ -1464,9 +1465,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias) {
-<span class="fc" id="L1467">        super(measurements, bias);</span>
-<span class="fc" id="L1468">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1469">    }</span>
+<span class="fc" id="L1468">        super(measurements, bias);</span>
+<span class="fc" id="L1469">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1470">    }</span>
 
     /**
      * Constructor.
@@ -1488,9 +1489,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1491">        super(measurements, bias, listener);</span>
-<span class="fc" id="L1492">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1493">    }</span>
+<span class="fc" id="L1492">        super(measurements, bias, listener);</span>
+<span class="fc" id="L1493">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1494">    }</span>
 
     /**
      * Constructor.
@@ -1508,9 +1509,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     public PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] qualityScores, final Matrix bias,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1511">        super(bias, commonAxisUsed);</span>
-<span class="fc" id="L1512">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1513">    }</span>
+<span class="fc" id="L1512">        super(bias, commonAxisUsed);</span>
+<span class="fc" id="L1513">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1514">    }</span>
 
     /**
      * Constructor.
@@ -1530,9 +1531,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final double[] qualityScores, final Matrix bias,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1533">        super(bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L1534">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1535">    }</span>
+<span class="fc" id="L1534">        super(bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1535">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1536">    }</span>
 
     /**
      * Constructor.
@@ -1555,9 +1556,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias,
             final boolean commonAxisUsed) {
-<span class="fc" id="L1558">        super(measurements, bias, commonAxisUsed);</span>
-<span class="fc" id="L1559">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1560">    }</span>
+<span class="fc" id="L1559">        super(measurements, bias, commonAxisUsed);</span>
+<span class="fc" id="L1560">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1561">    }</span>
 
     /**
      * Constructor.
@@ -1581,9 +1582,9 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1584">        super(measurements, bias, commonAxisUsed, listener);</span>
-<span class="fc" id="L1585">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1586">    }</span>
+<span class="fc" id="L1585">        super(measurements, bias, commonAxisUsed, listener);</span>
+<span class="fc" id="L1586">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1587">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -1605,7 +1606,7 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L1608">        return mStopThreshold;</span>
+<span class="fc" id="L1609">        return mStopThreshold;</span>
     }
 
     /**
@@ -1630,15 +1631,15 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L1633" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1634">            throw new LockedException();</span>
+<span class="fc bfc" id="L1634" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1635">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1636" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L1637">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1637" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1638">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1640">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L1641">    }</span>
+<span class="fc" id="L1641">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L1642">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -1648,7 +1649,7 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L1651">        return mQualityScores;</span>
+<span class="fc" id="L1652">        return mQualityScores;</span>
     }
 
     /**
@@ -1663,11 +1664,11 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc bfc" id="L1666" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1667">            throw new LockedException();</span>
+<span class="fc bfc" id="L1667" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1668">            throw new LockedException();</span>
         }
-<span class="fc" id="L1669">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1670">    }</span>
+<span class="fc" id="L1670">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1671">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -1676,8 +1677,8 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="pc bpc" id="L1679" title="1 of 4 branches missed.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="pc bpc" id="L1680" title="1 of 2 branches missed.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="pc bpc" id="L1680" title="1 of 4 branches missed.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="pc bpc" id="L1681" title="1 of 2 branches missed.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -1692,119 +1693,121 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1695" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1696">            throw new LockedException();</span>
+<span class="fc bfc" id="L1696" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1697">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1698" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1699">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1699" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1700">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1702">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1703">        final PROMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new PROMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L1704">                        new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
-                    @Override
-                    public double[] getQualityScores() {
-<span class="fc" id="L1707">                        return mQualityScores;</span>
-                    }
+<span class="fc" id="L1705">                        new PROMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                            @Override
+                            public double[] getQualityScores() {
+<span class="fc" id="L1708">                                return mQualityScores;</span>
+                            }
 
-                    @Override
-                    public double getThreshold() {
-<span class="fc" id="L1712">                        return mStopThreshold;</span>
-                    }
+                            @Override
+                            public double getThreshold() {
+<span class="fc" id="L1713">                                return mStopThreshold;</span>
+                            }
 
-                    @Override
-                    public int getTotalSamples() {
-<span class="fc" id="L1717">                        return mMeasurements.size();</span>
-                    }
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L1718">                                return mMeasurements.size();</span>
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-<span class="fc" id="L1722">                        return mPreliminarySubsetSize;</span>
-                    }
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L1723">                                return mPreliminarySubsetSize;</span>
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1729">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1730">                    }</span>
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L1730">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1731">                            }</span>
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation,
-                            final int i) {
-<span class="fc" id="L1736">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation,
+                                    final int i) {
+<span class="fc" id="L1737">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
+                            }
 
-                    @Override
-                    public boolean isReady() {
-<span class="fc" id="L1741">                        return PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this.isReady();</span>
-                    }
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L1742">                                return PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this.isReady();</span>
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1747">                    }</span>
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L1749">                            }</span>
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1752">                    }</span>
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L1755">                            }</span>
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final int iteration) {
-<span class="pc bpc" id="L1758" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1759">                            mListener.onCalibrateNextIteration(</span>
-                                    PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this,
-                                    iteration);
-                        }
-<span class="fc" id="L1763">                    }</span>
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final int iteration) {
+<span class="pc bpc" id="L1761" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L1762">                                    mListener.onCalibrateNextIteration(</span>
+                                            PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this,
+                                            iteration);
+                                }
+<span class="fc" id="L1766">                            }</span>
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final float progress) {
-<span class="nc bnc" id="L1769" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1770">                            mListener.onCalibrateProgressChange(</span>
-                                    PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this,
-                                    progress);
-                        }
-<span class="nc" id="L1774">                    }</span>
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final float progress) {
+<span class="nc bnc" id="L1772" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L1773">                                    mListener.onCalibrateProgressChange(</span>
+                                            PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator.this,
+                                            progress);
+                                }
+<span class="nc" id="L1777">                            }</span>
+                        });
 
         try {
-<span class="fc" id="L1778">            mRunning = true;</span>
+<span class="fc" id="L1781">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1780" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1781">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1783" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1784">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1784">            mInliersData = null;</span>
-<span class="fc" id="L1785">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L1786">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1787">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1788">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1789">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1790">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1787">            mInliersData = null;</span>
+<span class="fc" id="L1788">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L1789">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1790">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1791">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1792">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1793">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1792">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1795">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1794" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1795">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1797" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1798">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1798">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1799">            throw new LockedException(e);</span>
-<span class="nc" id="L1800">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1801">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1802">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L1803">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1801">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1802">            throw new LockedException(e);</span>
+<span class="nc" id="L1803">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1804">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1805">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L1806">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1805">            mRunning = false;</span>
+<span class="fc" id="L1808">            mRunning = false;</span>
         }
-<span class="fc" id="L1807">    }</span>
+<span class="fc" id="L1810">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1813,7 +1816,7 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1816">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L1819">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -1824,7 +1827,7 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1827">        return true;</span>
+<span class="fc" id="L1830">        return true;</span>
     }
 
     /**
@@ -1837,11 +1840,11 @@ public class PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator extends
      *                                  smaller than 6 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1840" title="1 of 4 branches missed.">        if (qualityScores == null || qualityScores.length &lt; MINIMUM_MEASUREMENTS) {</span>
-<span class="fc" id="L1841">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L1843" title="1 of 4 branches missed.">        if (qualityScores == null || qualityScores.length &lt; MINIMUM_MEASUREMENTS) {</span>
+<span class="fc" id="L1844">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1844">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1845">    }</span>
+<span class="fc" id="L1847">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1848">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

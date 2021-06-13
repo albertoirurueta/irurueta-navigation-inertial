@@ -27,21 +27,7 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECIGravitation;
 import com.irurueta.navigation.inertial.estimators.ECIGravitationEstimator;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeConverter;
-import com.irurueta.units.TimeUnit;
+import com.irurueta.units.*;
 
 /**
  * Runs precision ECI-frame inertial navigation equations.
@@ -49,7 +35,7 @@ import com.irurueta.units.TimeUnit;
  * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECI.m
  */
-<span class="fc" id="L52">public class ECIInertialNavigator {</span>
+<span class="fc" id="L38">public class ECIInertialNavigator {</span>
 
     /**
      * Alpha threshold.
@@ -100,7 +86,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -118,9 +105,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L121">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L108">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L110">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -180,9 +167,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L183">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L170">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L172">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -221,9 +208,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L224">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L211">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L226">    }</span>
+<span class="fc" id="L213">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -262,9 +249,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L265">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L252">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L267">    }</span>
+<span class="fc" id="L254">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -318,9 +305,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L321">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L308">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L323">    }</span>
+<span class="fc" id="L310">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -374,9 +361,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L377">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L364">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L379">    }</span>
+<span class="fc" id="L366">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -409,9 +396,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L412">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L399">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L414">    }</span>
+<span class="fc" id="L401">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -444,9 +431,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L447">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L434">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L449">    }</span>
+<span class="fc" id="L436">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -487,7 +474,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final Distance oldX,
@@ -505,9 +493,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L508">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L496">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L510">    }</span>
+<span class="fc" id="L498">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -548,7 +536,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final Distance oldX,
@@ -566,9 +555,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L569">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L558">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L571">    }</span>
+<span class="fc" id="L560">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -607,9 +596,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L610">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L599">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 kinematics, result);
-<span class="fc" id="L612">    }</span>
+<span class="fc" id="L601">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -648,9 +637,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L651">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L640">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 kinematics, result);
-<span class="fc" id="L653">    }</span>
+<span class="fc" id="L642">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -691,7 +680,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -709,10 +699,10 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L712">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L702">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L715">    }</span>
+<span class="fc" id="L705">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -753,7 +743,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -771,10 +762,10 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L774">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L765">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L777">    }</span>
+<span class="fc" id="L768">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -813,9 +804,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L816">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L807">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-<span class="fc" id="L818">    }</span>
+<span class="fc" id="L809">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -854,9 +845,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L857">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L848">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-<span class="fc" id="L859">    }</span>
+<span class="fc" id="L850">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -894,7 +885,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -912,9 +904,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L915">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L907">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L917">    }</span>
+<span class="fc" id="L909">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -952,7 +944,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -970,9 +963,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L973">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L966">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L975">    }</span>
+<span class="fc" id="L968">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1010,7 +1003,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -1028,9 +1022,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1031">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1025">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1033">    }</span>
+<span class="fc" id="L1027">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1068,7 +1062,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -1086,9 +1081,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1089">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1084">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1091">    }</span>
+<span class="fc" id="L1086">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1129,7 +1124,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final Distance oldX,
@@ -1147,10 +1143,10 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1150">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1146">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1153">    }</span>
+<span class="fc" id="L1149">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1191,7 +1187,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final Distance oldX,
@@ -1209,10 +1206,10 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1212">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1209">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1215">    }</span>
+<span class="fc" id="L1212">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1247,7 +1244,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final Distance oldX,
@@ -1265,10 +1263,10 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1268">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1266">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1271">    }</span>
+<span class="fc" id="L1269">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1303,7 +1301,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final Distance oldX,
@@ -1321,10 +1320,10 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1324">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1323">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1327">    }</span>
+<span class="fc" id="L1326">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1359,7 +1358,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -1414,7 +1414,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -1432,9 +1433,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1435">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L1436">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1437">    }</span>
+<span class="fc" id="L1438">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1473,9 +1474,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1476">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1477">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-<span class="fc" id="L1478">    }</span>
+<span class="fc" id="L1479">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1514,9 +1515,9 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1517">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1518">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-<span class="fc" id="L1519">    }</span>
+<span class="fc" id="L1520">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1556,9 +1557,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1559">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1560">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1561">    }</span>
+<span class="fc" id="L1562">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1598,9 +1599,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1601">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1602">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1603">    }</span>
+<span class="fc" id="L1604">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1619,8 +1620,8 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1622">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
-<span class="fc" id="L1623">    }</span>
+<span class="fc" id="L1623">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
+<span class="fc" id="L1624">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1639,8 +1640,8 @@ import com.irurueta.units.TimeUnit;
                          final BodyKinematics kinematics,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1642">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
-<span class="fc" id="L1643">    }</span>
+<span class="fc" id="L1643">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
+<span class="fc" id="L1644">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1677,9 +1678,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1680">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1681">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1682">    }</span>
+<span class="fc" id="L1683">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1716,9 +1717,9 @@ import com.irurueta.units.TimeUnit;
                          final double angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1719">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1720">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1721">    }</span>
+<span class="fc" id="L1722">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1755,9 +1756,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1758">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1759">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1760">    }</span>
+<span class="fc" id="L1761">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1794,9 +1795,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1797">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1798">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1799">    }</span>
+<span class="fc" id="L1800">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1830,9 +1831,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1833">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1834">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1835">    }</span>
+<span class="fc" id="L1836">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1866,9 +1867,9 @@ import com.irurueta.units.TimeUnit;
                          final AngularSpeed angularRateZ,
                          final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L1869">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L1870">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L1871">    }</span>
+<span class="fc" id="L1872">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -1909,7 +1910,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -1926,7 +1928,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1929">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1931">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -1988,7 +1990,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L1991">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L1993">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2029,7 +2031,7 @@ import com.irurueta.units.TimeUnit;
                                          final double oldVz,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2032">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2034">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics);
     }
 
@@ -2069,7 +2071,7 @@ import com.irurueta.units.TimeUnit;
                                          final double oldVz,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2072">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2074">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics);
     }
 
@@ -2124,7 +2126,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2127">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
+<span class="fc" id="L2129">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2180,7 +2182,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2183">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
+<span class="fc" id="L2185">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2215,7 +2217,7 @@ import com.irurueta.units.TimeUnit;
                                          final double oldVz,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2218">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
+<span class="fc" id="L2220">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics);
     }
 
@@ -2249,7 +2251,7 @@ import com.irurueta.units.TimeUnit;
                                          final double oldVz,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2252">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
+<span class="fc" id="L2254">        return navigateECIAndReturnNew(timeInterval, oldPosition, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics);
     }
 
@@ -2292,7 +2294,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final Distance oldX,
@@ -2309,7 +2312,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2312">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2315">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2353,7 +2356,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final Distance oldX,
@@ -2370,7 +2374,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2373">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2377">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2411,7 +2415,7 @@ import com.irurueta.units.TimeUnit;
                                          final double oldVz,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2414">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2418">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics);
     }
 
@@ -2451,7 +2455,7 @@ import com.irurueta.units.TimeUnit;
                                          final double oldVz,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2454">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2458">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics);
     }
 
@@ -2494,7 +2498,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2511,7 +2516,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2514">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2519">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2555,7 +2560,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -2572,7 +2578,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2575">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2581">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2613,7 +2619,7 @@ import com.irurueta.units.TimeUnit;
                                          final Speed oldSpeedZ,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2616">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2622">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
     }
 
@@ -2653,7 +2659,7 @@ import com.irurueta.units.TimeUnit;
                                          final Speed oldSpeedZ,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2656">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2662">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
     }
 
@@ -2693,7 +2699,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2710,7 +2717,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2713">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2720">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2751,7 +2758,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -2768,7 +2776,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2771">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2779">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2809,7 +2817,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2826,7 +2835,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2829">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ,</span>
+<span class="fc" id="L2838">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ,</span>
                 oldC, oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2867,7 +2876,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -2884,7 +2894,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2887">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2897">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2928,7 +2938,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final Distance oldX,
@@ -2945,7 +2956,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L2948">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L2959">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -2989,7 +3000,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final Distance oldX,
@@ -3006,7 +3018,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3009">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3021">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -3044,7 +3056,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final Distance oldX,
@@ -3061,7 +3074,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3064">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3077">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -3099,7 +3112,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final Distance oldX,
@@ -3116,7 +3130,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3119">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3133">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -3154,7 +3168,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -3171,7 +3186,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3174">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3189">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -3209,7 +3224,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -3226,7 +3242,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3229">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3245">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz,
                 angularRateX, angularRateY, angularRateZ);
     }
@@ -3267,7 +3283,7 @@ import com.irurueta.units.TimeUnit;
                                          final Speed oldSpeedZ,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3270">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3286">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
     }
 
@@ -3307,7 +3323,7 @@ import com.irurueta.units.TimeUnit;
                                          final Speed oldSpeedZ,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3310">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3326">        return navigateECIAndReturnNew(timeInterval, oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics);
     }
 
@@ -3348,7 +3364,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3351">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3367">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3389,7 +3405,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3392">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3408">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3409,7 +3425,7 @@ import com.irurueta.units.TimeUnit;
                                          final ECIFrame oldFrame,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException {
-<span class="fc" id="L3412">        return navigateECIAndReturnNew(timeInterval, oldFrame, kinematics);</span>
+<span class="fc" id="L3428">        return navigateECIAndReturnNew(timeInterval, oldFrame, kinematics);</span>
     }
 
     /**
@@ -3428,7 +3444,7 @@ import com.irurueta.units.TimeUnit;
                                          final ECIFrame oldFrame,
                                          final BodyKinematics kinematics)
             throws InertialNavigatorException {
-<span class="fc" id="L3431">        return navigateECIAndReturnNew(timeInterval, oldFrame, kinematics);</span>
+<span class="fc" id="L3447">        return navigateECIAndReturnNew(timeInterval, oldFrame, kinematics);</span>
     }
 
     /**
@@ -3465,7 +3481,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3468">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3484">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3503,7 +3519,7 @@ import com.irurueta.units.TimeUnit;
                                          final double angularRateY,
                                          final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3506">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3522">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3541,7 +3557,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3544">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3560">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3579,7 +3595,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3582">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3598">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3614,7 +3630,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3617">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3633">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3649,7 +3665,7 @@ import com.irurueta.units.TimeUnit;
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L3652">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L3668">        return navigateECIAndReturnNew(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ);
     }
 
@@ -3712,114 +3728,114 @@ import com.irurueta.units.TimeUnit;
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
 
-<span class="fc bfc" id="L3715" title="All 2 branches covered.">        if (!isValidBodyToEciCoordinateTransformationMatrix(oldC)) {</span>
-<span class="fc" id="L3716">            throw new InvalidSourceAndDestinationFrameTypeException();</span>
+<span class="fc bfc" id="L3731" title="All 2 branches covered.">        if (!isValidBodyToEciCoordinateTransformationMatrix(oldC)) {</span>
+<span class="fc" id="L3732">            throw new InvalidSourceAndDestinationFrameTypeException();</span>
         }
 
         try {
             // Attitude update
             // Calculate attitude increment, magnitude, and skew-symmetric matrix
-<span class="fc" id="L3722">            final Matrix alphaIbb = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L3723">            alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);</span>
-<span class="fc" id="L3724">            alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);</span>
-<span class="fc" id="L3725">            alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);</span>
+<span class="fc" id="L3738">            final Matrix alphaIbb = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L3739">            alphaIbb.setElementAtIndex(0, angularRateX * timeInterval);</span>
+<span class="fc" id="L3740">            alphaIbb.setElementAtIndex(1, angularRateY * timeInterval);</span>
+<span class="fc" id="L3741">            alphaIbb.setElementAtIndex(2, angularRateZ * timeInterval);</span>
 
-<span class="fc" id="L3727">            final double magAlpha = Utils.normF(alphaIbb);</span>
-<span class="fc" id="L3728">            final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);</span>
+<span class="fc" id="L3743">            final double magAlpha = Utils.normF(alphaIbb);</span>
+<span class="fc" id="L3744">            final Matrix skewAlpha = Utils.skewMatrix(alphaIbb);</span>
 
             // Obtain coordinate transformation matrix from the new attitude to the old
             // using Rodrigues' formula, (5.73)
-<span class="fc" id="L3732">            final Matrix cNewOld = Matrix.identity(ROWS, ROWS);</span>
-<span class="pc bpc" id="L3733" title="1 of 2 branches missed.">            if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
-<span class="fc" id="L3734">                final double magAlpha2 = magAlpha * magAlpha;</span>
-<span class="fc" id="L3735">                final double value1 = Math.sin(magAlpha) / magAlpha;</span>
-<span class="fc" id="L3736">                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;</span>
+<span class="fc" id="L3748">            final Matrix cNewOld = Matrix.identity(ROWS, ROWS);</span>
+<span class="pc bpc" id="L3749" title="1 of 2 branches missed.">            if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
+<span class="fc" id="L3750">                final double magAlpha2 = magAlpha * magAlpha;</span>
+<span class="fc" id="L3751">                final double value1 = Math.sin(magAlpha) / magAlpha;</span>
+<span class="fc" id="L3752">                final double value2 = (1.0 - Math.cos(magAlpha)) / magAlpha2;</span>
 
-<span class="fc" id="L3738">                final Matrix tmp1 = skewAlpha.multiplyByScalarAndReturnNew(value1);</span>
-<span class="fc" id="L3739">                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value2);</span>
-<span class="fc" id="L3740">                tmp2.multiply(skewAlpha);</span>
+<span class="fc" id="L3754">                final Matrix tmp1 = skewAlpha.multiplyByScalarAndReturnNew(value1);</span>
+<span class="fc" id="L3755">                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value2);</span>
+<span class="fc" id="L3756">                tmp2.multiply(skewAlpha);</span>
 
-<span class="fc" id="L3742">                cNewOld.add(tmp1);</span>
-<span class="fc" id="L3743">                cNewOld.add(tmp2);</span>
-<span class="fc" id="L3744">            } else {</span>
-<span class="nc" id="L3745">                cNewOld.add(skewAlpha);</span>
+<span class="fc" id="L3758">                cNewOld.add(tmp1);</span>
+<span class="fc" id="L3759">                cNewOld.add(tmp2);</span>
+<span class="fc" id="L3760">            } else {</span>
+<span class="nc" id="L3761">                cNewOld.add(skewAlpha);</span>
             }
 
             // Update attitude
-<span class="fc" id="L3749">            final Matrix oldCbi = oldC.getMatrix();</span>
-<span class="fc" id="L3750">            final Matrix cbi = oldCbi.multiplyAndReturnNew(cNewOld);</span>
+<span class="fc" id="L3765">            final Matrix oldCbi = oldC.getMatrix();</span>
+<span class="fc" id="L3766">            final Matrix cbi = oldCbi.multiplyAndReturnNew(cNewOld);</span>
 
             // Specific force frame transformation
             // Calculate the average body-to-ECI-frame coordinate transformation
             // matrix over the update interval using (5.84)
-<span class="pc bpc" id="L3755" title="1 of 2 branches missed.">            if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
-<span class="fc" id="L3756">                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);</span>
-<span class="fc" id="L3757">                final double magAlpha2 = magAlpha * magAlpha;</span>
-<span class="fc" id="L3758">                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;</span>
-<span class="fc" id="L3759">                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;</span>
+<span class="pc bpc" id="L3771" title="1 of 2 branches missed.">            if (magAlpha &gt; ALPHA_THRESHOLD) {</span>
+<span class="fc" id="L3772">                final Matrix tmp1 = Matrix.identity(ROWS, ROWS);</span>
+<span class="fc" id="L3773">                final double magAlpha2 = magAlpha * magAlpha;</span>
+<span class="fc" id="L3774">                final double value1 = (1.0 - Math.cos(magAlpha)) / magAlpha2;</span>
+<span class="fc" id="L3775">                final double value2 = (1.0 - Math.sin(magAlpha) / magAlpha) / magAlpha2;</span>
 
-<span class="fc" id="L3761">                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value1);</span>
-<span class="fc" id="L3762">                final Matrix tmp3 = skewAlpha.multiplyByScalarAndReturnNew(value2);</span>
-<span class="fc" id="L3763">                tmp3.multiply(skewAlpha);</span>
+<span class="fc" id="L3777">                final Matrix tmp2 = skewAlpha.multiplyByScalarAndReturnNew(value1);</span>
+<span class="fc" id="L3778">                final Matrix tmp3 = skewAlpha.multiplyByScalarAndReturnNew(value2);</span>
+<span class="fc" id="L3779">                tmp3.multiply(skewAlpha);</span>
 
-<span class="fc" id="L3765">                tmp1.add(tmp2);</span>
-<span class="fc" id="L3766">                tmp1.add(tmp3);</span>
+<span class="fc" id="L3781">                tmp1.add(tmp2);</span>
+<span class="fc" id="L3782">                tmp1.add(tmp3);</span>
 
-<span class="fc" id="L3768">                oldCbi.multiply(tmp1);</span>
+<span class="fc" id="L3784">                oldCbi.multiply(tmp1);</span>
             }
 
             // oldCbi contains average body-to-ECI-frame (aveCbi)
 
             // Transform specific force to ECI-frame resolving axes using (5.81)
-<span class="fc" id="L3774">            final Matrix fIbb = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L3775">            fIbb.setElementAtIndex(0, fx);</span>
-<span class="fc" id="L3776">            fIbb.setElementAtIndex(1, fy);</span>
-<span class="fc" id="L3777">            fIbb.setElementAtIndex(2, fz);</span>
+<span class="fc" id="L3790">            final Matrix fIbb = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L3791">            fIbb.setElementAtIndex(0, fx);</span>
+<span class="fc" id="L3792">            fIbb.setElementAtIndex(1, fy);</span>
+<span class="fc" id="L3793">            fIbb.setElementAtIndex(2, fz);</span>
 
-<span class="fc" id="L3779">            oldCbi.multiply(fIbb);</span>
+<span class="fc" id="L3795">            oldCbi.multiply(fIbb);</span>
             // now oldCbi contains specific force to ECI-frame resolving axes(fIbi)
 
             // Update velocity
             // From (5.18) and (5.20),
-<span class="fc" id="L3784">            final Matrix oldVibi = new Matrix(ROWS, 1);</span>
-<span class="fc" id="L3785">            oldVibi.setElementAtIndex(0, oldVx);</span>
-<span class="fc" id="L3786">            oldVibi.setElementAtIndex(1, oldVy);</span>
-<span class="fc" id="L3787">            oldVibi.setElementAtIndex(2, oldVz);</span>
+<span class="fc" id="L3800">            final Matrix oldVibi = new Matrix(ROWS, 1);</span>
+<span class="fc" id="L3801">            oldVibi.setElementAtIndex(0, oldVx);</span>
+<span class="fc" id="L3802">            oldVibi.setElementAtIndex(1, oldVy);</span>
+<span class="fc" id="L3803">            oldVibi.setElementAtIndex(2, oldVz);</span>
 
-<span class="fc" id="L3789">            final ECIGravitation gravitation = ECIGravitationEstimator</span>
-<span class="fc" id="L3790">                    .estimateGravitationAndReturnNew(oldX, oldY, oldZ);</span>
-<span class="fc" id="L3791">            final Matrix g = gravitation.asMatrix();</span>
+<span class="fc" id="L3805">            final ECIGravitation gravitation = ECIGravitationEstimator</span>
+<span class="fc" id="L3806">                    .estimateGravitationAndReturnNew(oldX, oldY, oldZ);</span>
+<span class="fc" id="L3807">            final Matrix g = gravitation.asMatrix();</span>
 
-            //fIbi + g
-<span class="fc" id="L3794">            oldCbi.add(g);</span>
+            // fIbi + g
+<span class="fc" id="L3810">            oldCbi.add(g);</span>
 
             // timeInterval * (fIbi + g)
-<span class="fc" id="L3797">            oldCbi.multiplyByScalar(timeInterval);</span>
+<span class="fc" id="L3813">            oldCbi.multiplyByScalar(timeInterval);</span>
 
             // oldVibi + timeInterval * (fIbi + g)
-<span class="fc" id="L3800">            final Matrix vIbi = oldVibi.addAndReturnNew(oldCbi);</span>
+<span class="fc" id="L3816">            final Matrix vIbi = oldVibi.addAndReturnNew(oldCbi);</span>
 
-<span class="fc" id="L3802">            final double vx = vIbi.getElementAtIndex(0);</span>
-<span class="fc" id="L3803">            final double vy = vIbi.getElementAtIndex(1);</span>
-<span class="fc" id="L3804">            final double vz = vIbi.getElementAtIndex(2);</span>
+<span class="fc" id="L3818">            final double vx = vIbi.getElementAtIndex(0);</span>
+<span class="fc" id="L3819">            final double vy = vIbi.getElementAtIndex(1);</span>
+<span class="fc" id="L3820">            final double vz = vIbi.getElementAtIndex(2);</span>
 
             // Update cartesian position
             // From (5.23),
-<span class="fc" id="L3808">            final double x = oldX + (vx + oldVx) * 0.5 * timeInterval;</span>
-<span class="fc" id="L3809">            final double y = oldY + (vy + oldVy) * 0.5 * timeInterval;</span>
-<span class="fc" id="L3810">            final double z = oldZ + (vz + oldVz) * 0.5 * timeInterval;</span>
+<span class="fc" id="L3824">            final double x = oldX + (vx + oldVx) * 0.5 * timeInterval;</span>
+<span class="fc" id="L3825">            final double y = oldY + (vy + oldVy) * 0.5 * timeInterval;</span>
+<span class="fc" id="L3826">            final double z = oldZ + (vz + oldVz) * 0.5 * timeInterval;</span>
 
-<span class="fc" id="L3812">            final CoordinateTransformation newC = new CoordinateTransformation(cbi,</span>
+<span class="fc" id="L3828">            final CoordinateTransformation newC = new CoordinateTransformation(cbi,</span>
                     FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_INERTIAL_FRAME);
 
-<span class="fc" id="L3815">            result.setCoordinates(x, y, z);</span>
-<span class="fc" id="L3816">            result.setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L3817">            result.setCoordinateTransformation(newC);</span>
+<span class="fc" id="L3831">            result.setCoordinates(x, y, z);</span>
+<span class="fc" id="L3832">            result.setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L3833">            result.setCoordinateTransformation(newC);</span>
 
-<span class="nc" id="L3819">        } catch (final AlgebraException | InvalidRotationMatrixException e) {</span>
-<span class="nc" id="L3820">            throw new InertialNavigatorException(e);</span>
-<span class="fc" id="L3821">        }</span>
-<span class="fc" id="L3822">    }</span>
+<span class="nc" id="L3835">        } catch (final AlgebraException | InvalidRotationMatrixException e) {</span>
+<span class="nc" id="L3836">            throw new InertialNavigatorException(e);</span>
+<span class="fc" id="L3837">        }</span>
+<span class="fc" id="L3838">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -3879,10 +3895,10 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3882">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3898">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
-<span class="fc" id="L3885">    }</span>
+<span class="fc" id="L3901">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -3921,11 +3937,11 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3924">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L3925">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L3926">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
-<span class="fc" id="L3927">                kinematics.getAngularRateZ(), result);</span>
-<span class="fc" id="L3928">    }</span>
+<span class="fc" id="L3940">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L3941">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L3942">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
+<span class="fc" id="L3943">                kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L3944">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -3964,9 +3980,9 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L3967">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L3983">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics, result);
-<span class="fc" id="L3969">    }</span>
+<span class="fc" id="L3985">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4020,9 +4036,9 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4023">        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),</span>
+<span class="fc" id="L4039">        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),</span>
                 oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L4025">    }</span>
+<span class="fc" id="L4041">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4076,9 +4092,9 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4079">        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),</span>
+<span class="fc" id="L4095">        navigateECI(timeInterval, oldPosition.getInhomX(), oldPosition.getInhomY(), oldPosition.getInhomZ(),</span>
                 oldC, oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L4081">    }</span>
+<span class="fc" id="L4097">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4111,11 +4127,11 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4114">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L4115">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L4116">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
-<span class="fc" id="L4117">                kinematics.getAngularRateZ(), result);</span>
-<span class="fc" id="L4118">    }</span>
+<span class="fc" id="L4130">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L4131">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L4132">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
+<span class="fc" id="L4133">                kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L4134">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4148,9 +4164,9 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4151">        navigateECI(convertTimeToDouble(timeInterval), oldPosition, oldC,</span>
+<span class="fc" id="L4167">        navigateECI(convertTimeToDouble(timeInterval), oldPosition, oldC,</span>
                 oldVx, oldVy, oldVz, kinematics, result);
-<span class="fc" id="L4153">    }</span>
+<span class="fc" id="L4169">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4191,7 +4207,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final Distance oldX,
@@ -4209,11 +4226,11 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4212">        navigateECI(timeInterval, convertDistanceToDouble(oldX),</span>
-<span class="fc" id="L4213">                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,</span>
+<span class="fc" id="L4229">        navigateECI(timeInterval, convertDistanceToDouble(oldX),</span>
+<span class="fc" id="L4230">                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY, angularRateZ,
                 result);
-<span class="fc" id="L4216">    }</span>
+<span class="fc" id="L4233">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4254,7 +4271,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final Distance oldX,
@@ -4272,10 +4290,10 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4275">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L4293">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY,
                 angularRateZ, result);
-<span class="fc" id="L4278">    }</span>
+<span class="fc" id="L4296">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4314,11 +4332,11 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4317">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L4318">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L4319">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
-<span class="fc" id="L4320">                kinematics.getAngularRateZ(), result);</span>
-<span class="fc" id="L4321">    }</span>
+<span class="fc" id="L4335">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L4336">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L4337">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
+<span class="fc" id="L4338">                kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L4339">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4357,11 +4375,11 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4360">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L4361">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L4362">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
-<span class="fc" id="L4363">                kinematics.getAngularRateZ(), result);</span>
-<span class="fc" id="L4364">    }</span>
+<span class="fc" id="L4378">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L4379">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L4380">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
+<span class="fc" id="L4381">                kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L4382">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4402,7 +4420,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -4420,11 +4439,11 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4423">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
-<span class="fc" id="L4424">                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),</span>
-<span class="fc" id="L4425">                convertSpeedToDouble(oldSpeedZ), fx, fy, fz, angularRateX,</span>
+<span class="fc" id="L4442">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L4443">                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),</span>
+<span class="fc" id="L4444">                convertSpeedToDouble(oldSpeedZ), fx, fy, fz, angularRateX,</span>
                 angularRateY, angularRateZ, result);
-<span class="fc" id="L4427">    }</span>
+<span class="fc" id="L4446">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4465,7 +4484,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -4483,10 +4503,10 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4486">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L4506">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX,
                 angularRateY, angularRateZ, result);
-<span class="fc" id="L4489">    }</span>
+<span class="fc" id="L4509">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4525,11 +4545,11 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4528">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,</span>
-<span class="fc" id="L4529">                oldSpeedZ, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L4530">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
-<span class="fc" id="L4531">                kinematics.getAngularRateZ(), result);</span>
-<span class="fc" id="L4532">    }</span>
+<span class="fc" id="L4548">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,</span>
+<span class="fc" id="L4549">                oldSpeedZ, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L4550">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
+<span class="fc" id="L4551">                kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L4552">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4568,9 +4588,9 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4571">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L4591">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-<span class="fc" id="L4573">    }</span>
+<span class="fc" id="L4593">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4608,7 +4628,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -4626,11 +4647,11 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4629">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L4630">                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),</span>
-<span class="fc" id="L4631">                convertAccelerationToDouble(fz), angularRateX, angularRateY,</span>
+<span class="fc" id="L4650">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L4651">                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),</span>
+<span class="fc" id="L4652">                convertAccelerationToDouble(fz), angularRateX, angularRateY,</span>
                 angularRateZ, result);
-<span class="fc" id="L4633">    }</span>
+<span class="fc" id="L4654">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4668,7 +4689,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -4686,11 +4708,11 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4689">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L4690">                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),</span>
-<span class="fc" id="L4691">                convertAccelerationToDouble(fz), angularRateX, angularRateY,</span>
+<span class="fc" id="L4711">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L4712">                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),</span>
+<span class="fc" id="L4713">                convertAccelerationToDouble(fz), angularRateX, angularRateY,</span>
                 angularRateZ, result);
-<span class="fc" id="L4693">    }</span>
+<span class="fc" id="L4715">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4728,7 +4750,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -4746,11 +4769,11 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4749">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L4750">                fx, fy, fz, convertAngularSpeedToDouble(angularRateX),</span>
-<span class="fc" id="L4751">                convertAngularSpeedToDouble(angularRateY),</span>
-<span class="fc" id="L4752">                convertAngularSpeedToDouble(angularRateZ), result);</span>
-<span class="fc" id="L4753">    }</span>
+<span class="fc" id="L4772">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L4773">                fx, fy, fz, convertAngularSpeedToDouble(angularRateX),</span>
+<span class="fc" id="L4774">                convertAngularSpeedToDouble(angularRateY),</span>
+<span class="fc" id="L4775">                convertAngularSpeedToDouble(angularRateZ), result);</span>
+<span class="fc" id="L4776">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4788,7 +4811,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -4806,10 +4830,10 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4809">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L4833">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY,
                 angularRateZ, result);
-<span class="fc" id="L4812">    }</span>
+<span class="fc" id="L4836">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4850,7 +4874,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final Distance oldX,
@@ -4868,12 +4893,12 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4871">        navigateECI(timeInterval, convertDistanceToDouble(oldX),</span>
-<span class="fc" id="L4872">                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,</span>
-<span class="fc" id="L4873">                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),</span>
-<span class="fc" id="L4874">                convertSpeedToDouble(oldSpeedZ), fx, fy, fz, angularRateX, angularRateY,</span>
+<span class="fc" id="L4896">        navigateECI(timeInterval, convertDistanceToDouble(oldX),</span>
+<span class="fc" id="L4897">                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,</span>
+<span class="fc" id="L4898">                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),</span>
+<span class="fc" id="L4899">                convertSpeedToDouble(oldSpeedZ), fx, fy, fz, angularRateX, angularRateY,</span>
                 angularRateZ, result);
-<span class="fc" id="L4876">    }</span>
+<span class="fc" id="L4901">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4914,7 +4939,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final Distance oldX,
@@ -4932,10 +4958,10 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4935">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L4961">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX, angularRateY,
                 angularRateZ, result);
-<span class="fc" id="L4938">    }</span>
+<span class="fc" id="L4964">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -4970,7 +4996,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final Distance oldX,
@@ -4988,16 +5015,16 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L4991">        navigateECI(timeInterval, convertDistanceToDouble(oldX),</span>
-<span class="fc" id="L4992">                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,</span>
-<span class="fc" id="L4993">                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),</span>
-<span class="fc" id="L4994">                convertSpeedToDouble(oldSpeedZ), convertAccelerationToDouble(fx),</span>
-<span class="fc" id="L4995">                convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),</span>
-<span class="fc" id="L4996">                convertAngularSpeedToDouble(angularRateX),</span>
-<span class="fc" id="L4997">                convertAngularSpeedToDouble(angularRateY),</span>
-<span class="fc" id="L4998">                convertAngularSpeedToDouble(angularRateZ),</span>
+<span class="fc" id="L5018">        navigateECI(timeInterval, convertDistanceToDouble(oldX),</span>
+<span class="fc" id="L5019">                convertDistanceToDouble(oldY), convertDistanceToDouble(oldZ), oldC,</span>
+<span class="fc" id="L5020">                convertSpeedToDouble(oldSpeedX), convertSpeedToDouble(oldSpeedY),</span>
+<span class="fc" id="L5021">                convertSpeedToDouble(oldSpeedZ), convertAccelerationToDouble(fx),</span>
+<span class="fc" id="L5022">                convertAccelerationToDouble(fy), convertAccelerationToDouble(fz),</span>
+<span class="fc" id="L5023">                convertAngularSpeedToDouble(angularRateX),</span>
+<span class="fc" id="L5024">                convertAngularSpeedToDouble(angularRateY),</span>
+<span class="fc" id="L5025">                convertAngularSpeedToDouble(angularRateZ),</span>
                 result);
-<span class="fc" id="L5000">    }</span>
+<span class="fc" id="L5027">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5032,7 +5059,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final Distance oldX,
@@ -5050,10 +5078,10 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5053">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L5081">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, fx, fy, fz, angularRateX,
                 angularRateY, angularRateZ, result);
-<span class="fc" id="L5056">    }</span>
+<span class="fc" id="L5084">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5088,7 +5116,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -5106,13 +5135,13 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5109">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
-<span class="fc" id="L5110">                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),</span>
-<span class="fc" id="L5111">                convertAccelerationToDouble(fz),</span>
-<span class="fc" id="L5112">                convertAngularSpeedToDouble(angularRateX),</span>
-<span class="fc" id="L5113">                convertAngularSpeedToDouble(angularRateY),</span>
-<span class="fc" id="L5114">                convertAngularSpeedToDouble(angularRateZ), result);</span>
-<span class="fc" id="L5115">    }</span>
+<span class="fc" id="L5138">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L5139">                convertAccelerationToDouble(fx), convertAccelerationToDouble(fy),</span>
+<span class="fc" id="L5140">                convertAccelerationToDouble(fz),</span>
+<span class="fc" id="L5141">                convertAngularSpeedToDouble(angularRateX),</span>
+<span class="fc" id="L5142">                convertAngularSpeedToDouble(angularRateY),</span>
+<span class="fc" id="L5143">                convertAngularSpeedToDouble(angularRateZ), result);</span>
+<span class="fc" id="L5144">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5147,7 +5176,8 @@ import com.irurueta.units.TimeUnit;
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -5165,10 +5195,10 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5168">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L5198">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldVx, oldVy, oldVz, fx, fy, fz, angularRateX, angularRateY,
                 angularRateZ, result);
-<span class="fc" id="L5171">    }</span>
+<span class="fc" id="L5201">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5207,11 +5237,11 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5210">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,</span>
-<span class="fc" id="L5211">                oldSpeedZ, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L5212">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
-<span class="fc" id="L5213">                kinematics.getAngularRateZ(), result);</span>
-<span class="fc" id="L5214">    }</span>
+<span class="fc" id="L5240">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY,</span>
+<span class="fc" id="L5241">                oldSpeedZ, kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L5242">                kinematics.getAngularRateX(), kinematics.getAngularRateY(),</span>
+<span class="fc" id="L5243">                kinematics.getAngularRateZ(), result);</span>
+<span class="fc" id="L5244">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5250,9 +5280,9 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5253">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
+<span class="fc" id="L5283">        navigateECI(convertTimeToDouble(timeInterval), oldX, oldY, oldZ, oldC,</span>
                 oldSpeedX, oldSpeedY, oldSpeedZ, kinematics, result);
-<span class="fc" id="L5255">    }</span>
+<span class="fc" id="L5285">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5293,14 +5323,14 @@ import com.irurueta.units.TimeUnit;
                                    final ECIFrame result)
             throws InertialNavigatorException {
         try {
-<span class="fc" id="L5296">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
-<span class="fc" id="L5297">                    oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L5298">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
+<span class="fc" id="L5326">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
+<span class="fc" id="L5327">                    oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L5328">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
                     angularRateX, angularRateY, angularRateZ, result);
-<span class="nc" id="L5300">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
+<span class="nc" id="L5330">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
             // never happens
-<span class="fc" id="L5302">        }</span>
-<span class="fc" id="L5303">    }</span>
+<span class="fc" id="L5332">        }</span>
+<span class="fc" id="L5333">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5340,9 +5370,9 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L5343">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L5373">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5345">    }</span>
+<span class="fc" id="L5375">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5362,14 +5392,14 @@ import com.irurueta.units.TimeUnit;
                                    final ECIFrame result)
             throws InertialNavigatorException {
         try {
-<span class="fc" id="L5365">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
-<span class="fc" id="L5366">                    oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L5367">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), kinematics,</span>
+<span class="fc" id="L5395">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
+<span class="fc" id="L5396">                    oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L5397">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), kinematics,</span>
                     result);
-<span class="nc" id="L5369">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
+<span class="nc" id="L5399">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
             // never happens
-<span class="fc" id="L5371">        }</span>
-<span class="fc" id="L5372">    }</span>
+<span class="fc" id="L5401">        }</span>
+<span class="fc" id="L5402">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5388,8 +5418,8 @@ import com.irurueta.units.TimeUnit;
                                    final BodyKinematics kinematics,
                                    final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L5391">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, kinematics, result);</span>
-<span class="fc" id="L5392">    }</span>
+<span class="fc" id="L5421">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, kinematics, result);</span>
+<span class="fc" id="L5422">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5427,14 +5457,14 @@ import com.irurueta.units.TimeUnit;
                                    final ECIFrame result)
             throws InertialNavigatorException {
         try {
-<span class="fc" id="L5430">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
-<span class="fc" id="L5431">                    oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L5432">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
+<span class="fc" id="L5460">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
+<span class="fc" id="L5461">                    oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L5462">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
                     angularRateX, angularRateY, angularRateZ, result);
-<span class="nc" id="L5434">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
+<span class="nc" id="L5464">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
             // never happens
-<span class="fc" id="L5436">        }</span>
-<span class="fc" id="L5437">    }</span>
+<span class="fc" id="L5466">        }</span>
+<span class="fc" id="L5467">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5471,9 +5501,9 @@ import com.irurueta.units.TimeUnit;
                                    final double angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L5474">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L5504">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5476">    }</span>
+<span class="fc" id="L5506">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5511,14 +5541,14 @@ import com.irurueta.units.TimeUnit;
                                    final ECIFrame result)
             throws InertialNavigatorException {
         try {
-<span class="fc" id="L5514">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
-<span class="fc" id="L5515">                    oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L5516">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
+<span class="fc" id="L5544">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
+<span class="fc" id="L5545">                    oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L5546">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
                     angularRateX, angularRateY, angularRateZ, result);
-<span class="nc" id="L5518">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
+<span class="nc" id="L5548">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
             // never happens
-<span class="fc" id="L5520">        }</span>
-<span class="fc" id="L5521">    }</span>
+<span class="fc" id="L5550">        }</span>
+<span class="fc" id="L5551">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5555,9 +5585,9 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L5558">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L5588">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5560">    }</span>
+<span class="fc" id="L5590">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5592,14 +5622,14 @@ import com.irurueta.units.TimeUnit;
                                    final ECIFrame result)
             throws InertialNavigatorException {
         try {
-<span class="fc" id="L5595">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
-<span class="fc" id="L5596">                    oldFrame.getCoordinateTransformation(),</span>
-<span class="fc" id="L5597">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
+<span class="fc" id="L5625">            navigateECI(timeInterval, oldFrame.getX(), oldFrame.getY(), oldFrame.getZ(),</span>
+<span class="fc" id="L5626">                    oldFrame.getCoordinateTransformation(),</span>
+<span class="fc" id="L5627">                    oldFrame.getVx(), oldFrame.getVy(), oldFrame.getVz(), fx, fy, fz,</span>
                     angularRateX, angularRateY, angularRateZ, result);
-<span class="nc" id="L5599">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
+<span class="nc" id="L5629">        } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {</span>
             // never happens
-<span class="fc" id="L5601">        }</span>
-<span class="fc" id="L5602">    }</span>
+<span class="fc" id="L5631">        }</span>
+<span class="fc" id="L5632">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5633,9 +5663,9 @@ import com.irurueta.units.TimeUnit;
                                    final AngularSpeed angularRateZ,
                                    final ECIFrame result)
             throws InertialNavigatorException {
-<span class="fc" id="L5636">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L5666">        navigateECI(convertTimeToDouble(timeInterval), oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5638">    }</span>
+<span class="fc" id="L5668">    }</span>
 
     /**
      * Runs precision ECI-frame inertial navigation equations.
@@ -5676,7 +5706,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -5693,10 +5724,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5696">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5697">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L5727">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L5728">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5699">        return result;</span>
+<span class="fc" id="L5730">        return result;</span>
     }
 
     /**
@@ -5756,10 +5787,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5759">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5760">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L5790">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L5791">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5762">        return result;</span>
+<span class="fc" id="L5793">        return result;</span>
     }
 
     /**
@@ -5798,10 +5829,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double oldVz,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5801">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5802">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L5832">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L5833">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L5804">        return result;</span>
+<span class="fc" id="L5835">        return result;</span>
     }
 
     /**
@@ -5840,10 +5871,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double oldVz,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5843">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5844">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L5874">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L5875">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L5846">        return result;</span>
+<span class="fc" id="L5877">        return result;</span>
     }
 
     /**
@@ -5897,10 +5928,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5900">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5901">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L5931">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L5932">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5903">        return result;</span>
+<span class="fc" id="L5934">        return result;</span>
     }
 
     /**
@@ -5954,10 +5985,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5957">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5958">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L5988">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L5989">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L5960">        return result;</span>
+<span class="fc" id="L5991">        return result;</span>
     }
 
     /**
@@ -5990,10 +6021,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double oldVz,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L5993">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L5994">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L6024">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6025">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L5996">        return result;</span>
+<span class="fc" id="L6027">        return result;</span>
     }
 
     /**
@@ -6026,10 +6057,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double oldVz,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6029">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6030">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L6060">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6061">        navigateECI(timeInterval, oldPosition, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L6032">        return result;</span>
+<span class="fc" id="L6063">        return result;</span>
     }
 
     /**
@@ -6071,7 +6102,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final Distance oldX,
@@ -6088,10 +6120,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6091">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6092">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L6123">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6124">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6094">        return result;</span>
+<span class="fc" id="L6126">        return result;</span>
     }
 
     /**
@@ -6133,7 +6165,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final Distance oldX,
@@ -6150,10 +6183,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6153">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6154">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L6186">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6187">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6156">        return result;</span>
+<span class="fc" id="L6189">        return result;</span>
     }
 
     /**
@@ -6192,10 +6225,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double oldVz,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6195">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6196">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L6228">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6229">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L6198">        return result;</span>
+<span class="fc" id="L6231">        return result;</span>
     }
 
     /**
@@ -6234,10 +6267,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double oldVz,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6237">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6238">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
+<span class="fc" id="L6270">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6271">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz, kinematics,</span>
                 result);
-<span class="fc" id="L6240">        return result;</span>
+<span class="fc" id="L6273">        return result;</span>
     }
 
     /**
@@ -6279,7 +6312,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6296,10 +6330,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6299">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6300">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6333">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6334">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6302">        return result;</span>
+<span class="fc" id="L6336">        return result;</span>
     }
 
     /**
@@ -6341,7 +6375,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -6358,10 +6393,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6361">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6362">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6396">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6397">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6364">        return result;</span>
+<span class="fc" id="L6399">        return result;</span>
     }
 
     /**
@@ -6400,10 +6435,10 @@ import com.irurueta.units.TimeUnit;
                                                    final Speed oldSpeedZ,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6403">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6404">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6438">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6439">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 kinematics, result);
-<span class="fc" id="L6406">        return result;</span>
+<span class="fc" id="L6441">        return result;</span>
     }
 
     /**
@@ -6442,10 +6477,10 @@ import com.irurueta.units.TimeUnit;
                                                    final Speed oldSpeedZ,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6445">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6446">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6480">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6481">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 kinematics, result);
-<span class="fc" id="L6448">        return result;</span>
+<span class="fc" id="L6483">        return result;</span>
     }
 
     /**
@@ -6484,7 +6519,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6501,10 +6537,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6504">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6505">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L6540">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6541">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6507">        return result;</span>
+<span class="fc" id="L6543">        return result;</span>
     }
 
     /**
@@ -6543,7 +6579,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -6560,10 +6597,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6563">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6564">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L6600">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6601">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6566">        return result;</span>
+<span class="fc" id="L6603">        return result;</span>
     }
 
     /**
@@ -6602,7 +6639,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6619,10 +6657,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6622">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6623">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L6660">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6661">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6625">        return result;</span>
+<span class="fc" id="L6663">        return result;</span>
     }
 
     /**
@@ -6661,7 +6699,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -6678,10 +6717,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6681">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6682">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L6720">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6721">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6684">        return result;</span>
+<span class="fc" id="L6723">        return result;</span>
     }
 
     /**
@@ -6723,7 +6762,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final Distance oldX,
@@ -6740,10 +6780,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6743">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6744">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6783">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6784">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6746">        return result;</span>
+<span class="fc" id="L6786">        return result;</span>
     }
 
     /**
@@ -6785,7 +6825,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final Distance oldX,
@@ -6802,10 +6843,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6805">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6806">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6846">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6847">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6808">        return result;</span>
+<span class="fc" id="L6849">        return result;</span>
     }
 
     /**
@@ -6841,7 +6882,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final Distance oldX,
@@ -6858,10 +6900,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6861">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6862">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6903">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6904">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6864">        return result;</span>
+<span class="fc" id="L6906">        return result;</span>
     }
 
     /**
@@ -6897,7 +6939,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final Distance oldX,
@@ -6914,10 +6957,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6917">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6918">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L6960">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L6961">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6920">        return result;</span>
+<span class="fc" id="L6963">        return result;</span>
     }
 
     /**
@@ -6953,7 +6996,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6970,10 +7014,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L6973">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L6974">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L7017">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7018">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L6976">        return result;</span>
+<span class="fc" id="L7020">        return result;</span>
     }
 
     /**
@@ -7009,7 +7053,8 @@ import com.irurueta.units.TimeUnit;
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -7026,10 +7071,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L7029">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7030">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
+<span class="fc" id="L7074">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7075">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldVx, oldVy, oldVz,</span>
                 fx, fy, fz, angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7032">        return result;</span>
+<span class="fc" id="L7077">        return result;</span>
     }
 
     /**
@@ -7068,10 +7113,10 @@ import com.irurueta.units.TimeUnit;
                                                    final Speed oldSpeedZ,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L7071">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7072">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L7116">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7117">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 kinematics, result);
-<span class="fc" id="L7074">        return result;</span>
+<span class="fc" id="L7119">        return result;</span>
     }
 
     /**
@@ -7110,10 +7155,10 @@ import com.irurueta.units.TimeUnit;
                                                    final Speed oldSpeedZ,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-<span class="fc" id="L7113">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7114">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
+<span class="fc" id="L7158">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7159">        navigateECI(timeInterval, oldX, oldY, oldZ, oldC, oldSpeedX, oldSpeedY, oldSpeedZ,</span>
                 kinematics, result);
-<span class="fc" id="L7116">        return result;</span>
+<span class="fc" id="L7161">        return result;</span>
     }
 
     /**
@@ -7153,10 +7198,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7156">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7157">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7201">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7202">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7159">        return result;</span>
+<span class="fc" id="L7204">        return result;</span>
     }
 
     /**
@@ -7196,10 +7241,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7199">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7200">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7244">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7245">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7202">        return result;</span>
+<span class="fc" id="L7247">        return result;</span>
     }
 
     /**
@@ -7218,9 +7263,9 @@ import com.irurueta.units.TimeUnit;
                                                    final ECIFrame oldFrame,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException {
-<span class="fc" id="L7221">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7222">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
-<span class="fc" id="L7223">        return result;</span>
+<span class="fc" id="L7266">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7267">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
+<span class="fc" id="L7268">        return result;</span>
     }
 
     /**
@@ -7239,9 +7284,9 @@ import com.irurueta.units.TimeUnit;
                                                    final ECIFrame oldFrame,
                                                    final BodyKinematics kinematics)
             throws InertialNavigatorException {
-<span class="fc" id="L7242">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7243">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
-<span class="fc" id="L7244">        return result;</span>
+<span class="fc" id="L7287">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7288">        navigateECI(timeInterval, oldFrame, kinematics, result);</span>
+<span class="fc" id="L7289">        return result;</span>
     }
 
     /**
@@ -7278,10 +7323,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7281">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7282">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7326">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7327">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7284">        return result;</span>
+<span class="fc" id="L7329">        return result;</span>
     }
 
     /**
@@ -7318,10 +7363,10 @@ import com.irurueta.units.TimeUnit;
                                                    final double angularRateY,
                                                    final double angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7321">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7322">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7366">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7367">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7324">        return result;</span>
+<span class="fc" id="L7369">        return result;</span>
     }
 
     /**
@@ -7358,10 +7403,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7361">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7362">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7406">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7407">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7364">        return result;</span>
+<span class="fc" id="L7409">        return result;</span>
     }
 
     /**
@@ -7398,10 +7443,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7401">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7402">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7446">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7447">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7404">        return result;</span>
+<span class="fc" id="L7449">        return result;</span>
     }
 
     /**
@@ -7435,10 +7480,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7438">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7439">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7483">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7484">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7441">        return result;</span>
+<span class="fc" id="L7486">        return result;</span>
     }
 
     /**
@@ -7472,10 +7517,10 @@ import com.irurueta.units.TimeUnit;
                                                    final AngularSpeed angularRateY,
                                                    final AngularSpeed angularRateZ)
             throws InertialNavigatorException {
-<span class="fc" id="L7475">        final ECIFrame result = new ECIFrame();</span>
-<span class="fc" id="L7476">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
+<span class="fc" id="L7520">        final ECIFrame result = new ECIFrame();</span>
+<span class="fc" id="L7521">        navigateECI(timeInterval, oldFrame, fx, fy, fz,</span>
                 angularRateX, angularRateY, angularRateZ, result);
-<span class="fc" id="L7478">        return result;</span>
+<span class="fc" id="L7523">        return result;</span>
     }
 
     /**
@@ -7486,7 +7531,7 @@ import com.irurueta.units.TimeUnit;
      * @return true if provided value is valid, false otherwise.
      */
     public static boolean isValidBodyToEciCoordinateTransformationMatrix(final CoordinateTransformation c) {
-<span class="fc" id="L7489">        return ECIFrame.isValidCoordinateTransformation(c);</span>
+<span class="fc" id="L7534">        return ECIFrame.isValidCoordinateTransformation(c);</span>
     }
 
     /**
@@ -7497,7 +7542,7 @@ import com.irurueta.units.TimeUnit;
      * @return converted value expressed in seconds.
      */
     private static double convertTimeToDouble(final com.irurueta.units.Time time) {
-<span class="fc" id="L7500">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),</span>
+<span class="fc" id="L7545">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),</span>
                 TimeUnit.SECOND);
     }
 
@@ -7509,8 +7554,8 @@ import com.irurueta.units.TimeUnit;
      * @return converted value expressed in meters.
      */
     private static double convertDistanceToDouble(final Distance distance) {
-<span class="fc" id="L7512">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
-<span class="fc" id="L7513">                distance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L7557">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
+<span class="fc" id="L7558">                distance.getUnit(), DistanceUnit.METER);</span>
     }
 
     /**
@@ -7521,8 +7566,8 @@ import com.irurueta.units.TimeUnit;
      * @return converted value expressed in meters per second.
      */
     private static double convertSpeedToDouble(final Speed speed) {
-<span class="fc" id="L7524">        return SpeedConverter.convert(speed.getValue().doubleValue(),</span>
-<span class="fc" id="L7525">                speed.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L7569">        return SpeedConverter.convert(speed.getValue().doubleValue(),</span>
+<span class="fc" id="L7570">                speed.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -7533,8 +7578,8 @@ import com.irurueta.units.TimeUnit;
      * @return converted value expressed in meters per squared second.
      */
     private static double convertAccelerationToDouble(final Acceleration acceleration) {
-<span class="fc" id="L7536">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L7537">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L7581">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L7582">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
     }
 
     /**
@@ -7545,8 +7590,8 @@ import com.irurueta.units.TimeUnit;
      * @return converted value expressed in radians per second.
      */
     private static double convertAngularSpeedToDouble(final AngularSpeed angularSpeed) {
-<span class="fc" id="L7548">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),</span>
-<span class="fc" id="L7549">                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L7593">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),</span>
+<span class="fc" id="L7594">                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

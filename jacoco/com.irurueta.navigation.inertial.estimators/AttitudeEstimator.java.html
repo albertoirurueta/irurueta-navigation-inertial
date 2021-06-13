@@ -33,6 +33,7 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
+
 import java.io.IOException;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -65,9 +66,9 @@ public class AttitudeEstimator {
      * @throws IOException if an I/O error occurs while loading the WMM
      *                     model.
      */
-<span class="fc" id="L68">    public AttitudeEstimator() throws IOException {</span>
-<span class="fc" id="L69">        mWMMEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
-<span class="fc" id="L70">    }</span>
+<span class="fc" id="L69">    public AttitudeEstimator() throws IOException {</span>
+<span class="fc" id="L70">        mWMMEstimator = new WMMEarthMagneticFluxDensityEstimator();</span>
+<span class="fc" id="L71">    }</span>
 
     /**
      * Constructor.
@@ -76,9 +77,9 @@ public class AttitudeEstimator {
      *              a certain timespan.
      * @throws NullPointerException if provided model is null.
      */
-<span class="fc" id="L79">    public AttitudeEstimator(final WorldMagneticModel model) {</span>
-<span class="fc" id="L80">        mWMMEstimator = new WMMEarthMagneticFluxDensityEstimator(model);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L80">    public AttitudeEstimator(final WorldMagneticModel model) {</span>
+<span class="fc" id="L81">        mWMMEstimator = new WMMEarthMagneticFluxDensityEstimator(model);</span>
+<span class="fc" id="L82">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -115,11 +116,11 @@ public class AttitudeEstimator {
             final double year, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz,
             final CoordinateTransformation result) {
-<span class="fc" id="L118">        final double declination = mWMMEstimator.getDeclination(</span>
+<span class="fc" id="L119">        final double declination = mWMMEstimator.getDeclination(</span>
                 latitude, longitude, height, year);
-<span class="fc" id="L120">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
+<span class="fc" id="L121">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
                 result);
-<span class="fc" id="L122">    }</span>
+<span class="fc" id="L123">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -155,9 +156,9 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final double year, final double fx, final double fy, final double fz,
             final double bx, final double by, final double bz) {
-<span class="fc" id="L158">        final double declination = mWMMEstimator.getDeclination(</span>
+<span class="fc" id="L159">        final double declination = mWMMEstimator.getDeclination(</span>
                 latitude, longitude, height, year);
-<span class="fc" id="L160">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,</span>
+<span class="fc" id="L161">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,</span>
                 declination);
     }
 
@@ -196,11 +197,11 @@ public class AttitudeEstimator {
             final GregorianCalendar calendar, final double fx, final double fy,
             final double fz, final double bx, final double by, final double bz,
             final CoordinateTransformation result) {
-<span class="fc" id="L199">        final double declination = mWMMEstimator.getDeclination(</span>
+<span class="fc" id="L200">        final double declination = mWMMEstimator.getDeclination(</span>
                 latitude, longitude, height, calendar);
-<span class="fc" id="L201">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
+<span class="fc" id="L202">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
                 result);
-<span class="fc" id="L203">    }</span>
+<span class="fc" id="L204">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -236,9 +237,9 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final GregorianCalendar calendar, final double fx, final double fy,
             final double fz, final double bx, final double by, final double bz) {
-<span class="fc" id="L239">        final double declination = mWMMEstimator.getDeclination(</span>
+<span class="fc" id="L240">        final double declination = mWMMEstimator.getDeclination(</span>
                 latitude, longitude, height, calendar);
-<span class="fc" id="L241">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,</span>
+<span class="fc" id="L242">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,</span>
                 declination);
     }
 
@@ -277,11 +278,11 @@ public class AttitudeEstimator {
             final Date timestamp, final double fx, final double fy,
             final double fz, final double bx, final double by, final double bz,
             final CoordinateTransformation result) {
-<span class="fc" id="L280">        final double declination = mWMMEstimator.getDeclination(</span>
+<span class="fc" id="L281">        final double declination = mWMMEstimator.getDeclination(</span>
                 latitude, longitude, height, timestamp);
-<span class="fc" id="L282">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
+<span class="fc" id="L283">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
                 result);
-<span class="fc" id="L284">    }</span>
+<span class="fc" id="L285">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -317,9 +318,9 @@ public class AttitudeEstimator {
             final double latitude, final double longitude, final double height,
             final Date timestamp, final double fx, final double fy,
             final double fz, final double bx, final double by, final double bz) {
-<span class="fc" id="L320">        final double declination = mWMMEstimator.getDeclination(</span>
+<span class="fc" id="L321">        final double declination = mWMMEstimator.getDeclination(</span>
                 latitude, longitude, height, timestamp);
-<span class="fc" id="L322">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,</span>
+<span class="fc" id="L323">        return getAttitude(latitude, height, fx, fy, fz, bx, by, bz,</span>
                 declination);
     }
 
@@ -346,11 +347,11 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final CoordinateTransformation result) {
-<span class="fc" id="L349">        getAttitude(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L350">                position.getHeight(), year, kinematics.getFx(),</span>
-<span class="fc" id="L351">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
-<span class="fc" id="L352">                b.getBy(), b.getBz(), result);</span>
-<span class="fc" id="L353">    }</span>
+<span class="fc" id="L350">        getAttitude(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L351">                position.getHeight(), year, kinematics.getFx(),</span>
+<span class="fc" id="L352">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
+<span class="fc" id="L353">                b.getBy(), b.getBz(), result);</span>
+<span class="fc" id="L354">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -374,10 +375,10 @@ public class AttitudeEstimator {
             final double year,
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b) {
-<span class="fc" id="L377">        return getAttitude(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L378">                position.getHeight(), year, kinematics.getFx(),</span>
-<span class="fc" id="L379">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
-<span class="fc" id="L380">                b.getBy(), b.getBz());</span>
+<span class="fc" id="L378">        return getAttitude(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L379">                position.getHeight(), year, kinematics.getFx(),</span>
+<span class="fc" id="L380">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
+<span class="fc" id="L381">                b.getBy(), b.getBz());</span>
     }
 
     /**
@@ -403,11 +404,11 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final CoordinateTransformation result) {
-<span class="fc" id="L406">        getAttitude(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L407">                position.getHeight(), calendar, kinematics.getFx(),</span>
-<span class="fc" id="L408">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
-<span class="fc" id="L409">                b.getBy(), b.getBz(), result);</span>
-<span class="fc" id="L410">    }</span>
+<span class="fc" id="L407">        getAttitude(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L408">                position.getHeight(), calendar, kinematics.getFx(),</span>
+<span class="fc" id="L409">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
+<span class="fc" id="L410">                b.getBy(), b.getBz(), result);</span>
+<span class="fc" id="L411">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -431,10 +432,10 @@ public class AttitudeEstimator {
             final GregorianCalendar calendar,
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b) {
-<span class="fc" id="L434">        return getAttitude(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L435">                position.getHeight(), calendar, kinematics.getFx(),</span>
-<span class="fc" id="L436">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
-<span class="fc" id="L437">                b.getBy(), b.getBz());</span>
+<span class="fc" id="L435">        return getAttitude(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L436">                position.getHeight(), calendar, kinematics.getFx(),</span>
+<span class="fc" id="L437">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
+<span class="fc" id="L438">                b.getBy(), b.getBz());</span>
     }
 
     /**
@@ -460,11 +461,11 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final CoordinateTransformation result) {
-<span class="fc" id="L463">        getAttitude(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L464">                position.getHeight(), timestamp, kinematics.getFx(),</span>
-<span class="fc" id="L465">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
-<span class="fc" id="L466">                b.getBy(), b.getBz(), result);</span>
-<span class="fc" id="L467">    }</span>
+<span class="fc" id="L464">        getAttitude(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L465">                position.getHeight(), timestamp, kinematics.getFx(),</span>
+<span class="fc" id="L466">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
+<span class="fc" id="L467">                b.getBy(), b.getBz(), result);</span>
+<span class="fc" id="L468">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -488,10 +489,10 @@ public class AttitudeEstimator {
             final Date timestamp,
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b) {
-<span class="fc" id="L491">        return getAttitude(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L492">                position.getHeight(), timestamp, kinematics.getFx(),</span>
-<span class="fc" id="L493">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
-<span class="fc" id="L494">                b.getBy(), b.getBz());</span>
+<span class="fc" id="L492">        return getAttitude(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L493">                position.getHeight(), timestamp, kinematics.getFx(),</span>
+<span class="fc" id="L494">                kinematics.getFy(), kinematics.getFz(), b.getBx(),</span>
+<span class="fc" id="L495">                b.getBy(), b.getBz());</span>
     }
 
     /**
@@ -529,15 +530,15 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final double declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L532">        result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);</span>
-<span class="fc" id="L533">        result.setDestinationType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L533">        result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);</span>
+<span class="fc" id="L534">        result.setDestinationType(FrameType.BODY_FRAME);</span>
 
-<span class="fc" id="L535">        final double roll = LevelingEstimator.getRoll(fy, fz);</span>
-<span class="fc" id="L536">        final double pitch = LevelingEstimator.getPitch(fx, fy, fz);</span>
-<span class="fc" id="L537">        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
+<span class="fc" id="L536">        final double roll = LevelingEstimator.getRoll(fy, fz);</span>
+<span class="fc" id="L537">        final double pitch = LevelingEstimator.getPitch(fx, fy, fz);</span>
+<span class="fc" id="L538">        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
 
-<span class="fc" id="L539">        result.setEulerAngles(roll, pitch, yaw);</span>
-<span class="fc" id="L540">    }</span>
+<span class="fc" id="L540">        result.setEulerAngles(roll, pitch, yaw);</span>
+<span class="fc" id="L541">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -574,11 +575,11 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final double declination) {
 
-<span class="fc" id="L577">        final double roll = LevelingEstimator.getRoll(fy, fz);</span>
-<span class="fc" id="L578">        final double pitch = LevelingEstimator.getPitch(fx, fy, fz);</span>
-<span class="fc" id="L579">        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
+<span class="fc" id="L578">        final double roll = LevelingEstimator.getRoll(fy, fz);</span>
+<span class="fc" id="L579">        final double pitch = LevelingEstimator.getPitch(fx, fy, fz);</span>
+<span class="fc" id="L580">        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
 
-<span class="fc" id="L581">        return new CoordinateTransformation(roll, pitch, yaw,</span>
+<span class="fc" id="L582">        return new CoordinateTransformation(roll, pitch, yaw,</span>
                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
     }
 
@@ -613,10 +614,10 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final Angle declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L616">        getAttitude(convertAcceleration(fx), convertAcceleration(fy),</span>
-<span class="fc" id="L617">                convertAcceleration(fz), bx, by, bz,</span>
-<span class="fc" id="L618">                convertAngle(declination), result);</span>
-<span class="fc" id="L619">    }</span>
+<span class="fc" id="L617">        getAttitude(convertAcceleration(fx), convertAcceleration(fy),</span>
+<span class="fc" id="L618">                convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L619">                convertAngle(declination), result);</span>
+<span class="fc" id="L620">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -648,9 +649,9 @@ public class AttitudeEstimator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double bx, final double by, final double bz,
             final Angle declination) {
-<span class="fc" id="L651">        return getAttitude(convertAcceleration(fx), convertAcceleration(fy),</span>
-<span class="fc" id="L652">                convertAcceleration(fz), bx, by, bz,</span>
-<span class="fc" id="L653">                convertAngle(declination));</span>
+<span class="fc" id="L652">        return getAttitude(convertAcceleration(fx), convertAcceleration(fy),</span>
+<span class="fc" id="L653">                convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L654">                convertAngle(declination));</span>
     }
 
     /**
@@ -678,9 +679,9 @@ public class AttitudeEstimator {
             final BodyMagneticFluxDensity b,
             final double declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L681">        getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L682">                b.getBx(), b.getBy(), b.getBz(), declination, result);</span>
-<span class="fc" id="L683">    }</span>
+<span class="fc" id="L682">        getAttitude(kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L683">                b.getBx(), b.getBy(), b.getBz(), declination, result);</span>
+<span class="fc" id="L684">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -706,8 +707,8 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final double declination) {
-<span class="fc" id="L709">        return getAttitude(kinematics.getFx(), kinematics.getFy(),</span>
-<span class="fc" id="L710">                kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),</span>
+<span class="fc" id="L710">        return getAttitude(kinematics.getFx(), kinematics.getFy(),</span>
+<span class="fc" id="L711">                kinematics.getFz(), b.getBx(), b.getBy(), b.getBz(),</span>
                 declination);
     }
 
@@ -735,8 +736,8 @@ public class AttitudeEstimator {
             final BodyMagneticFluxDensity b,
             final Angle declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L738">        getAttitude(kinematics, b, convertAngle(declination), result);</span>
-<span class="fc" id="L739">    }</span>
+<span class="fc" id="L739">        getAttitude(kinematics, b, convertAngle(declination), result);</span>
+<span class="fc" id="L740">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -761,7 +762,7 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final Angle declination) {
-<span class="fc" id="L764">        return getAttitude(kinematics, b, convertAngle(declination));</span>
+<span class="fc" id="L765">        return getAttitude(kinematics, b, convertAngle(declination));</span>
     }
 
     /**
@@ -807,16 +808,16 @@ public class AttitudeEstimator {
             final double declination,
             final CoordinateTransformation result) {
 
-<span class="fc" id="L810">        LevelingEstimator2.getPartialAttitude(latitude, height,</span>
+<span class="fc" id="L811">        LevelingEstimator2.getPartialAttitude(latitude, height,</span>
                 fx, fy, fz, result);
 
         // fix yaw angle
-<span class="fc" id="L814">        final double roll = result.getRollEulerAngle();</span>
-<span class="fc" id="L815">        final double pitch = result.getPitchEulerAngle();</span>
-<span class="fc" id="L816">        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
+<span class="fc" id="L815">        final double roll = result.getRollEulerAngle();</span>
+<span class="fc" id="L816">        final double pitch = result.getPitchEulerAngle();</span>
+<span class="fc" id="L817">        final double yaw = getYaw(bx, by, bz, declination, roll, pitch);</span>
 
-<span class="fc" id="L818">        result.setEulerAngles(roll, pitch, yaw);</span>
-<span class="fc" id="L819">    }</span>
+<span class="fc" id="L819">        result.setEulerAngles(roll, pitch, yaw);</span>
+<span class="fc" id="L820">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -860,11 +861,11 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final double declination) {
 
-<span class="fc" id="L863">        final CoordinateTransformation result = new CoordinateTransformation(</span>
+<span class="fc" id="L864">        final CoordinateTransformation result = new CoordinateTransformation(</span>
                 FrameType.LOCAL_NAVIGATION_FRAME, FrameType.BODY_FRAME);
-<span class="fc" id="L865">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
+<span class="fc" id="L866">        getAttitude(latitude, height, fx, fy, fz, bx, by, bz, declination,</span>
                 result);
-<span class="fc" id="L867">        return result;</span>
+<span class="fc" id="L868">        return result;</span>
     }
 
     /**
@@ -905,11 +906,11 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final Angle declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L908">        getAttitude(convertAngle(latitude), convertDistance(height),</span>
-<span class="fc" id="L909">                convertAcceleration(fx), convertAcceleration(fy),</span>
-<span class="fc" id="L910">                convertAcceleration(fz), bx, by, bz,</span>
-<span class="fc" id="L911">                convertAngle(declination), result);</span>
-<span class="fc" id="L912">    }</span>
+<span class="fc" id="L909">        getAttitude(convertAngle(latitude), convertDistance(height),</span>
+<span class="fc" id="L910">                convertAcceleration(fx), convertAcceleration(fy),</span>
+<span class="fc" id="L911">                convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L912">                convertAngle(declination), result);</span>
+<span class="fc" id="L913">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -948,10 +949,10 @@ public class AttitudeEstimator {
             final Acceleration fx, final Acceleration fy, final Acceleration fz,
             final double bx, final double by, final double bz,
             final Angle declination) {
-<span class="fc" id="L951">        return getAttitude(convertAngle(latitude), convertDistance(height),</span>
-<span class="fc" id="L952">                convertAcceleration(fx), convertAcceleration(fy),</span>
-<span class="fc" id="L953">                convertAcceleration(fz), bx, by, bz,</span>
-<span class="fc" id="L954">                convertAngle(declination));</span>
+<span class="fc" id="L952">        return getAttitude(convertAngle(latitude), convertDistance(height),</span>
+<span class="fc" id="L953">                convertAcceleration(fx), convertAcceleration(fy),</span>
+<span class="fc" id="L954">                convertAcceleration(fz), bx, by, bz,</span>
+<span class="fc" id="L955">                convertAngle(declination));</span>
     }
 
     /**
@@ -985,11 +986,11 @@ public class AttitudeEstimator {
             final BodyMagneticFluxDensity b,
             final double declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L988">        getAttitude(position.getLatitude(), position.getHeight(),</span>
-<span class="fc" id="L989">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L990">                b.getBx(), b.getBy(), b.getBz(), declination,</span>
+<span class="fc" id="L989">        getAttitude(position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L990">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L991">                b.getBx(), b.getBy(), b.getBz(), declination,</span>
                 result);
-<span class="fc" id="L992">    }</span>
+<span class="fc" id="L993">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -1021,9 +1022,9 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final double declination) {
-<span class="fc" id="L1024">        return getAttitude(position.getLatitude(), position.getHeight(),</span>
-<span class="fc" id="L1025">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
-<span class="fc" id="L1026">                b.getBx(), b.getBy(), b.getBz(), declination);</span>
+<span class="fc" id="L1025">        return getAttitude(position.getLatitude(), position.getHeight(),</span>
+<span class="fc" id="L1026">                kinematics.getFx(), kinematics.getFy(), kinematics.getFz(),</span>
+<span class="fc" id="L1027">                b.getBx(), b.getBy(), b.getBz(), declination);</span>
     }
 
     /**
@@ -1056,9 +1057,9 @@ public class AttitudeEstimator {
             final BodyMagneticFluxDensity b,
             final Angle declination,
             final CoordinateTransformation result) {
-<span class="fc" id="L1059">        getAttitude(position, kinematics, b, convertAngle(declination),</span>
+<span class="fc" id="L1060">        getAttitude(position, kinematics, b, convertAngle(declination),</span>
                 result);
-<span class="fc" id="L1061">    }</span>
+<span class="fc" id="L1062">    }</span>
 
     /**
      * Gets body attitude expressed in the local navigation frame.
@@ -1089,8 +1090,8 @@ public class AttitudeEstimator {
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity b,
             final Angle declination) {
-<span class="fc" id="L1092">        return getAttitude(position, kinematics, b,</span>
-<span class="fc" id="L1093">                convertAngle(declination));</span>
+<span class="fc" id="L1093">        return getAttitude(position, kinematics, b,</span>
+<span class="fc" id="L1094">                convertAngle(declination));</span>
     }
 
     /**
@@ -1111,17 +1112,17 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final double roll, final double pitch) {
 
-<span class="fc" id="L1114">        final double sinRoll = Math.sin(roll);</span>
-<span class="fc" id="L1115">        final double cosRoll = Math.cos(roll);</span>
+<span class="fc" id="L1115">        final double sinRoll = Math.sin(roll);</span>
+<span class="fc" id="L1116">        final double cosRoll = Math.cos(roll);</span>
 
-<span class="fc" id="L1117">        final double sinPitch = Math.sin(pitch);</span>
-<span class="fc" id="L1118">        final double cosPitch = Math.cos(pitch);</span>
+<span class="fc" id="L1118">        final double sinPitch = Math.sin(pitch);</span>
+<span class="fc" id="L1119">        final double cosPitch = Math.cos(pitch);</span>
 
-<span class="fc" id="L1120">        final double tmp1 = -by * cosRoll + bz * sinRoll;</span>
-<span class="fc" id="L1121">        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch</span>
+<span class="fc" id="L1121">        final double tmp1 = -by * cosRoll + bz * sinRoll;</span>
+<span class="fc" id="L1122">        final double tmp2 = bx * cosPitch + by * sinRoll * sinPitch</span>
                 + bz * cosRoll * sinPitch;
 
-<span class="fc" id="L1124">        return Math.atan2(tmp1, tmp2);</span>
+<span class="fc" id="L1125">        return Math.atan2(tmp1, tmp2);</span>
     }
 
     /**
@@ -1135,7 +1136,7 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final BodyMagneticFluxDensity b,
             final double roll, final double pitch) {
-<span class="fc" id="L1138">        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(),</span>
+<span class="fc" id="L1139">        return getMagneticHeading(b.getBx(), b.getBy(), b.getBz(),</span>
                 roll, pitch);
     }
 
@@ -1155,8 +1156,8 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final double bx, final double by, final double bz,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1158">        return getMagneticHeading(bx, by, bz, convertAngle(roll),</span>
-<span class="fc" id="L1159">                convertAngle(pitch));</span>
+<span class="fc" id="L1159">        return getMagneticHeading(bx, by, bz, convertAngle(roll),</span>
+<span class="fc" id="L1160">                convertAngle(pitch));</span>
     }
 
     /**
@@ -1170,8 +1171,8 @@ public class AttitudeEstimator {
     public static double getMagneticHeading(
             final BodyMagneticFluxDensity b,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1173">        return getMagneticHeading(b, convertAngle(roll),</span>
-<span class="fc" id="L1174">                convertAngle(pitch));</span>
+<span class="fc" id="L1174">        return getMagneticHeading(b, convertAngle(roll),</span>
+<span class="fc" id="L1175">                convertAngle(pitch));</span>
     }
 
     /**
@@ -1190,9 +1191,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final double roll, final double pitch, final Angle result) {
-<span class="fc" id="L1193">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1194">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
-<span class="fc" id="L1195">    }</span>
+<span class="fc" id="L1194">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1195">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
+<span class="fc" id="L1196">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1210,7 +1211,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final double roll, final double pitch) {
-<span class="fc" id="L1213">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
+<span class="fc" id="L1214">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1225,9 +1226,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final double roll, final double pitch, final Angle result) {
-<span class="fc" id="L1228">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1229">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
-<span class="fc" id="L1230">    }</span>
+<span class="fc" id="L1229">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1230">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
+<span class="fc" id="L1231">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1240,7 +1241,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final double roll, final double pitch) {
-<span class="fc" id="L1243">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
+<span class="fc" id="L1244">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1260,9 +1261,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final Angle roll, final Angle pitch, final Angle result) {
-<span class="fc" id="L1263">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1264">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
-<span class="fc" id="L1265">    }</span>
+<span class="fc" id="L1264">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1265">        result.setValue(getMagneticHeading(bx, by, bz, roll, pitch));</span>
+<span class="fc" id="L1266">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1280,7 +1281,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final double bx, final double by, final double bz,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1283">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
+<span class="fc" id="L1284">        return new Angle(getMagneticHeading(bx, by, bz, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1295,9 +1296,9 @@ public class AttitudeEstimator {
     public static void getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final Angle roll, final Angle pitch, final Angle result) {
-<span class="fc" id="L1298">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1299">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
-<span class="fc" id="L1300">    }</span>
+<span class="fc" id="L1299">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1300">        result.setValue(getMagneticHeading(b, roll, pitch));</span>
+<span class="fc" id="L1301">    }</span>
 
     /**
      * Returns magnetic heading (angle respect Earth magnetic north).
@@ -1310,7 +1311,7 @@ public class AttitudeEstimator {
     public static Angle getMagneticHeadingAsAngle(
             final BodyMagneticFluxDensity b,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1313">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
+<span class="fc" id="L1314">        return new Angle(getMagneticHeading(b, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1341,7 +1342,7 @@ public class AttitudeEstimator {
     public static double getYaw(
             final double bx, final double by, final double bz,
             final double declination, final double roll, final double pitch) {
-<span class="fc" id="L1344">        return getMagneticHeading(bx, by, bz, roll, pitch) + declination;</span>
+<span class="fc" id="L1345">        return getMagneticHeading(bx, by, bz, roll, pitch) + declination;</span>
     }
 
     /**
@@ -1366,7 +1367,7 @@ public class AttitudeEstimator {
     public static double getYaw(
             final BodyMagneticFluxDensity b, final double declination,
             final double roll, final double pitch) {
-<span class="fc" id="L1369">        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination,</span>
+<span class="fc" id="L1370">        return getYaw(b.getBx(), b.getBy(), b.getBz(), declination,</span>
                 roll, pitch);
     }
 
@@ -1396,8 +1397,8 @@ public class AttitudeEstimator {
     public static double getYaw(
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch) {
-<span class="fc" id="L1399">        return getYaw(bx, by, bz, convertAngle(declination),</span>
-<span class="fc" id="L1400">                convertAngle(roll), convertAngle(pitch));</span>
+<span class="fc" id="L1400">        return getYaw(bx, by, bz, convertAngle(declination),</span>
+<span class="fc" id="L1401">                convertAngle(roll), convertAngle(pitch));</span>
     }
 
     /**
@@ -1421,8 +1422,8 @@ public class AttitudeEstimator {
     public static double getYaw(
             final BodyMagneticFluxDensity b, final Angle declination,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1424">        return getYaw(b, convertAngle(declination), convertAngle(roll),</span>
-<span class="fc" id="L1425">                convertAngle(pitch));</span>
+<span class="fc" id="L1425">        return getYaw(b, convertAngle(declination), convertAngle(roll),</span>
+<span class="fc" id="L1426">                convertAngle(pitch));</span>
     }
 
     /**
@@ -1454,9 +1455,9 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final double declination, final double roll, final double pitch,
             final Angle result) {
-<span class="fc" id="L1457">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1458">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
-<span class="fc" id="L1459">    }</span>
+<span class="fc" id="L1458">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1459">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
+<span class="fc" id="L1460">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1485,7 +1486,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final double bx, final double by, final double bz,
             final double declination, final double roll, final double pitch) {
-<span class="fc" id="L1488">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
+<span class="fc" id="L1489">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1512,9 +1513,9 @@ public class AttitudeEstimator {
     public static void getYawAsAngle(
             final BodyMagneticFluxDensity b, final double declination,
             final double roll, final double pitch, final Angle result) {
-<span class="fc" id="L1515">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1516">        result.setValue(getYaw(b, declination, roll, pitch));</span>
-<span class="fc" id="L1517">    }</span>
+<span class="fc" id="L1516">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1517">        result.setValue(getYaw(b, declination, roll, pitch));</span>
+<span class="fc" id="L1518">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1538,7 +1539,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final BodyMagneticFluxDensity b, final double declination,
             final double roll, final double pitch) {
-<span class="fc" id="L1541">        return new Angle(getYaw(b, declination, roll, pitch),</span>
+<span class="fc" id="L1542">        return new Angle(getYaw(b, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1570,9 +1571,9 @@ public class AttitudeEstimator {
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch,
             final Angle result) {
-<span class="fc" id="L1573">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1574">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
-<span class="fc" id="L1575">    }</span>
+<span class="fc" id="L1574">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1575">        result.setValue(getYaw(bx, by, bz, declination, roll, pitch));</span>
+<span class="fc" id="L1576">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1600,7 +1601,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final double bx, final double by, final double bz,
             final Angle declination, final Angle roll, final Angle pitch) {
-<span class="fc" id="L1603">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
+<span class="fc" id="L1604">        return new Angle(getYaw(bx, by, bz, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1626,9 +1627,9 @@ public class AttitudeEstimator {
     public static void getYawAsAngle(
             final BodyMagneticFluxDensity b, final Angle declination,
             final Angle roll, final Angle pitch, final Angle result) {
-<span class="fc" id="L1629">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1630">        result.setValue(getYaw(b, declination, roll, pitch));</span>
-<span class="fc" id="L1631">    }</span>
+<span class="fc" id="L1630">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1631">        result.setValue(getYaw(b, declination, roll, pitch));</span>
+<span class="fc" id="L1632">    }</span>
 
     /**
      * Returns body yaw angle resolved around NED frame.
@@ -1651,7 +1652,7 @@ public class AttitudeEstimator {
     public static Angle getYawAsAngle(
             final BodyMagneticFluxDensity b, final Angle declination,
             final Angle roll, final Angle pitch) {
-<span class="fc" id="L1654">        return new Angle(getYaw(b, declination, roll, pitch),</span>
+<span class="fc" id="L1655">        return new Angle(getYaw(b, declination, roll, pitch),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1662,8 +1663,8 @@ public class AttitudeEstimator {
      * @return converted value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-<span class="fc" id="L1665">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
-<span class="fc" id="L1666">                distance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1666">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
+<span class="fc" id="L1667">                distance.getUnit(), DistanceUnit.METER);</span>
     }
 
     /**
@@ -1673,8 +1674,8 @@ public class AttitudeEstimator {
      * @return converted value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L1676">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
-<span class="fc" id="L1677">                angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L1677">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
+<span class="fc" id="L1678">                angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -1684,9 +1685,9 @@ public class AttitudeEstimator {
      * @return converted acceleration value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L1687">        return AccelerationConverter.convert(</span>
-<span class="fc" id="L1688">                acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L1689">                acceleration.getUnit(),</span>
+<span class="fc" id="L1688">        return AccelerationConverter.convert(</span>
+<span class="fc" id="L1689">                acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L1690">                acceleration.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 }

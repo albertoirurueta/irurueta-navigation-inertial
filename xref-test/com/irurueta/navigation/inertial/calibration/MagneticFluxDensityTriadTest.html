@@ -132,7 +132,7 @@
 <a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueY = randomizer.nextDouble();
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueZ = randomizer.nextDouble();
 <a class="jxr_linenumber" name="L126" href="#L126">126</a> 
-<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values1 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{ valueX, valueY, valueZ };
+<a class="jxr_linenumber" name="L127" href="#L127">127</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values1 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{valueX, valueY, valueZ};
 <a class="jxr_linenumber" name="L128" href="#L128">128</a>         <strong class="jxr_keyword">final</strong> Matrix v1 = Matrix.newFromArray(values1);
 <a class="jxr_linenumber" name="L129" href="#L129">129</a> 
 <a class="jxr_linenumber" name="L130" href="#L130">130</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad triad = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad(
@@ -143,7 +143,7 @@
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>         assertEquals(valueY, triad.getValueY(), 0.0);
 <a class="jxr_linenumber" name="L136" href="#L136">136</a>         assertEquals(valueZ, triad.getValueZ(), 0.0);
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>         assertEquals(MagneticFluxDensityTriad.DEFAULT_UNIT, triad.getUnit());
-<a class="jxr_linenumber" name="L138" href="#L138">138</a>         assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{ valueX, valueY, valueZ },
+<a class="jxr_linenumber" name="L138" href="#L138">138</a>         assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{valueX, valueY, valueZ},
 <a class="jxr_linenumber" name="L139" href="#L139">139</a>                 triad.getValuesAsArray(), 0.0);
 <a class="jxr_linenumber" name="L140" href="#L140">140</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values2 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[3];
 <a class="jxr_linenumber" name="L141" href="#L141">141</a>         triad.getValuesAsArray(values2);
@@ -185,7 +185,7 @@
 <a class="jxr_linenumber" name="L177" href="#L177">177</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueY = randomizer.nextDouble();
 <a class="jxr_linenumber" name="L178" href="#L178">178</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueZ = randomizer.nextDouble();
 <a class="jxr_linenumber" name="L179" href="#L179">179</a> 
-<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values1 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{ valueX, valueY, valueZ };
+<a class="jxr_linenumber" name="L180" href="#L180">180</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values1 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{valueX, valueY, valueZ};
 <a class="jxr_linenumber" name="L181" href="#L181">181</a>         <strong class="jxr_keyword">final</strong> Matrix v1 = Matrix.newFromArray(values1);
 <a class="jxr_linenumber" name="L182" href="#L182">182</a> 
 <a class="jxr_linenumber" name="L183" href="#L183">183</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad triad = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad(
@@ -196,7 +196,7 @@
 <a class="jxr_linenumber" name="L188" href="#L188">188</a>         assertEquals(valueY, triad.getValueY(), 0.0);
 <a class="jxr_linenumber" name="L189" href="#L189">189</a>         assertEquals(valueZ, triad.getValueZ(), 0.0);
 <a class="jxr_linenumber" name="L190" href="#L190">190</a>         assertEquals(MagneticFluxDensityUnit.NANOTESLA, triad.getUnit());
-<a class="jxr_linenumber" name="L191" href="#L191">191</a>         assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{ valueX, valueY, valueZ },
+<a class="jxr_linenumber" name="L191" href="#L191">191</a>         assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{valueX, valueY, valueZ},
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>                 triad.getValuesAsArray(), 0.0);
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values2 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[3];
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         triad.getValuesAsArray(values2);
@@ -245,7 +245,7 @@
 <a class="jxr_linenumber" name="L237" href="#L237">237</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity bz = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(
 <a class="jxr_linenumber" name="L238" href="#L238">238</a>                 valueZ, MagneticFluxDensityUnit.TESLA);
 <a class="jxr_linenumber" name="L239" href="#L239">239</a> 
-<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values1 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{ valueX, valueY, valueZ };
+<a class="jxr_linenumber" name="L240" href="#L240">240</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values1 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{valueX, valueY, valueZ};
 <a class="jxr_linenumber" name="L241" href="#L241">241</a>         <strong class="jxr_keyword">final</strong> Matrix v1 = Matrix.newFromArray(values1);
 <a class="jxr_linenumber" name="L242" href="#L242">242</a> 
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad triad = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad(bx, by, bz);
@@ -255,7 +255,7 @@
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>         assertEquals(valueY, triad.getValueY(), 0.0);
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         assertEquals(valueZ, triad.getValueZ(), 0.0);
 <a class="jxr_linenumber" name="L249" href="#L249">249</a>         assertEquals(MagneticFluxDensityTriad.DEFAULT_UNIT, triad.getUnit());
-<a class="jxr_linenumber" name="L250" href="#L250">250</a>         assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{ valueX, valueY, valueZ },
+<a class="jxr_linenumber" name="L250" href="#L250">250</a>         assertArrayEquals(<strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[]{valueX, valueY, valueZ},
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>                 triad.getValuesAsArray(), 0.0);
 <a class="jxr_linenumber" name="L252" href="#L252">252</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] values2 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[3];
 <a class="jxr_linenumber" name="L253" href="#L253">253</a>         triad.getValuesAsArray(values2);

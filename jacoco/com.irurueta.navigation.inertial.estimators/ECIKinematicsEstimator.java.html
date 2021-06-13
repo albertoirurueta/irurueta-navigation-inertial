@@ -1007,7 +1007,7 @@ import com.irurueta.units.TimeUnit;
                 // oldCbi now contains the average body-to-ECI-frame coordinate transformation
 
                 // Transform specific force to body-frame resolving axes using (5.81)
-<span class="fc" id="L1010">                Matrix invAveCbi = Utils.inverse(oldCbi);</span>
+<span class="fc" id="L1010">                final Matrix invAveCbi = Utils.inverse(oldCbi);</span>
 <span class="fc" id="L1011">                invAveCbi.multiply(vIbi);</span>
 
 <span class="fc" id="L1013">                final double specificForceX = invAveCbi.getElementAtIndex(0);</span>

@@ -15,21 +15,8 @@
  */
 package com.irurueta.navigation.inertial;
 
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleConverter;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -67,8 +54,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
     /**
      * Constructor.
      */
-<span class="fc" id="L70">    public INSLooselyCoupledKalmanInitializerConfig() {</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L57">    public INSLooselyCoupledKalmanInitializerConfig() {</span>
+<span class="fc" id="L58">    }</span>
 
     /**
      * Constructor.
@@ -88,13 +75,13 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
                                                     final double initialVelocityUncertainty,
                                                     final double initialPositionUncertainty,
                                                     final double initialAccelerationBiasUncertainty,
-<span class="fc" id="L91">                                                    final double initialGyroscopeBiasUncertainty) {</span>
-<span class="fc" id="L92">        setValues(initialAttitudeUncertainty,</span>
+<span class="fc" id="L78">                                                    final double initialGyroscopeBiasUncertainty) {</span>
+<span class="fc" id="L79">        setValues(initialAttitudeUncertainty,</span>
                 initialVelocityUncertainty,
                 initialPositionUncertainty,
                 initialAccelerationBiasUncertainty,
                 initialGyroscopeBiasUncertainty);
-<span class="fc" id="L97">    }</span>
+<span class="fc" id="L84">    }</span>
 
     /**
      * Constructor.
@@ -109,22 +96,22 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
                                                     final Speed initialVelocityUncertainty,
                                                     final Distance initialPositionUncertainty,
                                                     final Acceleration initialAccelerationBiasUncertainty,
-<span class="fc" id="L112">                                                    final AngularSpeed initialGyroscopeBiasUncertainty) {</span>
-<span class="fc" id="L113">        setValues(initialAttitudeUncertainty,</span>
+<span class="fc" id="L99">                                                    final AngularSpeed initialGyroscopeBiasUncertainty) {</span>
+<span class="fc" id="L100">        setValues(initialAttitudeUncertainty,</span>
                 initialVelocityUncertainty,
                 initialPositionUncertainty,
                 initialAccelerationBiasUncertainty,
                 initialGyroscopeBiasUncertainty);
-<span class="fc" id="L118">    }</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Copy constructor.
      *
      * @param input input instance to copy data from.
      */
-<span class="fc" id="L125">    public INSLooselyCoupledKalmanInitializerConfig(final INSLooselyCoupledKalmanInitializerConfig input) {</span>
-<span class="fc" id="L126">        copyFrom(input);</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L112">    public INSLooselyCoupledKalmanInitializerConfig(final INSLooselyCoupledKalmanInitializerConfig input) {</span>
+<span class="fc" id="L113">        copyFrom(input);</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * Gets initial attitude uncertainty per axis expressed in radians (rad).
@@ -132,7 +119,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial attitude uncertainty per axis expressed in radians (rad).
      */
     public double getInitialAttitudeUncertainty() {
-<span class="fc" id="L135">        return mInitialAttitudeUncertainty;</span>
+<span class="fc" id="L122">        return mInitialAttitudeUncertainty;</span>
     }
 
     /**
@@ -142,8 +129,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      *                                   in radians (rad).
      */
     public void setInitialAttitudeUncertainty(final double initialAttitudeUncertainty) {
-<span class="fc" id="L145">        mInitialAttitudeUncertainty = initialAttitudeUncertainty;</span>
-<span class="fc" id="L146">    }</span>
+<span class="fc" id="L132">        mInitialAttitudeUncertainty = initialAttitudeUncertainty;</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Gets initial attitude uncertainty per axis.
@@ -151,9 +138,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param result instance where initial attitude uncertainty per axis will be stored.
      */
     public void getInitialAttitudeUncertaintyAngle(final Angle result) {
-<span class="fc" id="L154">        result.setValue(mInitialAttitudeUncertainty);</span>
-<span class="fc" id="L155">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L156">    }</span>
+<span class="fc" id="L141">        result.setValue(mInitialAttitudeUncertainty);</span>
+<span class="fc" id="L142">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Gets initial attitude uncertainty per axis.
@@ -161,7 +148,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial attitude uncertainty per axis.
      */
     public Angle getInitialAttitudeUncertaintyAngle() {
-<span class="fc" id="L164">        return new Angle(mInitialAttitudeUncertainty, AngleUnit.RADIANS);</span>
+<span class="fc" id="L151">        return new Angle(mInitialAttitudeUncertainty, AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -170,10 +157,10 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialAttitudeUncertainty initial attitude uncertainty per axis.
      */
     public void setInitialAttitudeUncertainty(final Angle initialAttitudeUncertainty) {
-<span class="fc" id="L173">        mInitialAttitudeUncertainty = AngleConverter.convert(</span>
-<span class="fc" id="L174">                initialAttitudeUncertainty.getValue().doubleValue(),</span>
-<span class="fc" id="L175">                initialAttitudeUncertainty.getUnit(), AngleUnit.RADIANS);</span>
-<span class="fc" id="L176">    }</span>
+<span class="fc" id="L160">        mInitialAttitudeUncertainty = AngleConverter.convert(</span>
+<span class="fc" id="L161">                initialAttitudeUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L162">                initialAttitudeUncertainty.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Gets initial velocity uncertainty per axis expressed in meters per second (m/s).
@@ -181,7 +168,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial velocity uncertainty per axis expressed in meters per second (m/s).
      */
     public double getInitialVelocityUncertainty() {
-<span class="fc" id="L184">        return mInitialVelocityUncertainty;</span>
+<span class="fc" id="L171">        return mInitialVelocityUncertainty;</span>
     }
 
     /**
@@ -191,8 +178,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      *                                   in meters per second (m/s).
      */
     public void setInitialVelocityUncertainty(final double initialVelocityUncertainty) {
-<span class="fc" id="L194">        mInitialVelocityUncertainty = initialVelocityUncertainty;</span>
-<span class="fc" id="L195">    }</span>
+<span class="fc" id="L181">        mInitialVelocityUncertainty = initialVelocityUncertainty;</span>
+<span class="fc" id="L182">    }</span>
 
     /**
      * Gets initial velocity uncertainty per axis.
@@ -200,9 +187,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param result instance where initial attitude uncertainty per axis will be stored.
      */
     public void getInitialVelocityUncertaintySpeed(final Speed result) {
-<span class="fc" id="L203">        result.setValue(mInitialVelocityUncertainty);</span>
-<span class="fc" id="L204">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L205">    }</span>
+<span class="fc" id="L190">        result.setValue(mInitialVelocityUncertainty);</span>
+<span class="fc" id="L191">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L192">    }</span>
 
     /**
      * Gets initial velocity uncertainty per axis.
@@ -210,7 +197,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial velocity uncertainty per axis.
      */
     public Speed getInitialVelocityUncertaintySpeed() {
-<span class="fc" id="L213">        return new Speed(mInitialVelocityUncertainty, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L200">        return new Speed(mInitialVelocityUncertainty, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -219,10 +206,10 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialVelocityUncertainty initial velocity uncertainty per axis.
      */
     public void setInitialVelocityUncertainty(final Speed initialVelocityUncertainty) {
-<span class="fc" id="L222">        mInitialVelocityUncertainty = SpeedConverter.convert(</span>
-<span class="fc" id="L223">                initialVelocityUncertainty.getValue().doubleValue(),</span>
-<span class="fc" id="L224">                initialVelocityUncertainty.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L209">        mInitialVelocityUncertainty = SpeedConverter.convert(</span>
+<span class="fc" id="L210">                initialVelocityUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L211">                initialVelocityUncertainty.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L212">    }</span>
 
     /**
      * Gets initial position uncertainty per axis expressed in meters (m)
@@ -230,7 +217,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial position uncertainty per axis expressed in meters (m).
      */
     public double getInitialPositionUncertainty() {
-<span class="fc" id="L233">        return mInitialPositionUncertainty;</span>
+<span class="fc" id="L220">        return mInitialPositionUncertainty;</span>
     }
 
     /**
@@ -240,8 +227,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      *                                   in meters (m).
      */
     public void setInitialPositionUncertainty(final double initialPositionUncertainty) {
-<span class="fc" id="L243">        mInitialPositionUncertainty = initialPositionUncertainty;</span>
-<span class="fc" id="L244">    }</span>
+<span class="fc" id="L230">        mInitialPositionUncertainty = initialPositionUncertainty;</span>
+<span class="fc" id="L231">    }</span>
 
     /**
      * Gets initial position uncertainty per axis.
@@ -249,9 +236,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param result instance where initial position uncertainty per axis will be stored.
      */
     public void getInitialPositionUncertaintyDistance(final Distance result) {
-<span class="fc" id="L252">        result.setValue(mInitialPositionUncertainty);</span>
-<span class="fc" id="L253">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L254">    }</span>
+<span class="fc" id="L239">        result.setValue(mInitialPositionUncertainty);</span>
+<span class="fc" id="L240">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L241">    }</span>
 
     /**
      * Gets initial position uncertainty per axis.
@@ -259,7 +246,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial position uncertainty per axis.
      */
     public Distance getInitialPositionUncertaintyDistance() {
-<span class="fc" id="L262">        return new Distance(mInitialPositionUncertainty, DistanceUnit.METER);</span>
+<span class="fc" id="L249">        return new Distance(mInitialPositionUncertainty, DistanceUnit.METER);</span>
     }
 
     /**
@@ -268,10 +255,10 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param initialPositionUncertainty initial position uncertainty per axis.
      */
     public void setInitialPositionUncertainty(final Distance initialPositionUncertainty) {
-<span class="fc" id="L271">        mInitialPositionUncertainty = DistanceConverter.convert(</span>
-<span class="fc" id="L272">                initialPositionUncertainty.getValue().doubleValue(),</span>
-<span class="fc" id="L273">                initialPositionUncertainty.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L274">    }</span>
+<span class="fc" id="L258">        mInitialPositionUncertainty = DistanceConverter.convert(</span>
+<span class="fc" id="L259">                initialPositionUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L260">                initialPositionUncertainty.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L261">    }</span>
 
     /**
      * Gets initial acceleration bias uncertainty expressed in meters per squared second (m/s^2).
@@ -279,7 +266,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial acceleration bias uncertainty expressed in meters per squared second (m/s^2).
      */
     public double getInitialAccelerationBiasUncertainty() {
-<span class="fc" id="L282">        return mInitialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L269">        return mInitialAccelerationBiasUncertainty;</span>
     }
 
     /**
@@ -290,8 +277,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     public void setInitialAccelerationBiasUncertainty(
             final double initialAccelerationBiasUncertainty) {
-<span class="fc" id="L293">        mInitialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
-<span class="fc" id="L294">    }</span>
+<span class="fc" id="L280">        mInitialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L281">    }</span>
 
     /**
      * Gets initial acceleration bias uncertainty.
@@ -299,9 +286,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param result instance where initial acceleration bias uncertainty will be stored.
      */
     public void getInitialAccelerationBiasUncertaintyAcceleration(final Acceleration result) {
-<span class="fc" id="L302">        result.setValue(mInitialAccelerationBiasUncertainty);</span>
-<span class="fc" id="L303">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L304">    }</span>
+<span class="fc" id="L289">        result.setValue(mInitialAccelerationBiasUncertainty);</span>
+<span class="fc" id="L290">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L291">    }</span>
 
     /**
      * Gets initial acceleration bias uncertainty.
@@ -309,7 +296,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial acceleration bias uncertainty.
      */
     public Acceleration getInitialAccelerationBiasUncertaintyAcceleration() {
-<span class="fc" id="L312">        return new Acceleration(mInitialAccelerationBiasUncertainty,</span>
+<span class="fc" id="L299">        return new Acceleration(mInitialAccelerationBiasUncertainty,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -320,11 +307,11 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     public void setInitialAccelerationBiasUncertainty(
             final Acceleration initialAccelerationUncertainty) {
-<span class="fc" id="L323">        mInitialAccelerationBiasUncertainty = AccelerationConverter.convert(</span>
-<span class="fc" id="L324">                initialAccelerationUncertainty.getValue().doubleValue(),</span>
-<span class="fc" id="L325">                initialAccelerationUncertainty.getUnit(),</span>
+<span class="fc" id="L310">        mInitialAccelerationBiasUncertainty = AccelerationConverter.convert(</span>
+<span class="fc" id="L311">                initialAccelerationUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L312">                initialAccelerationUncertainty.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L327">    }</span>
+<span class="fc" id="L314">    }</span>
 
     /**
      * Gets initial gyroscope bias uncertainty expressed in radians per second (rad/s).
@@ -332,7 +319,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial gyroscope bias uncertainty expressed in radians per second (rad/s).
      */
     public double getInitialGyroscopeBiasUncertainty() {
-<span class="fc" id="L335">        return mInitialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L322">        return mInitialGyroscopeBiasUncertainty;</span>
     }
 
     /**
@@ -343,8 +330,8 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     public void setInitialGyroscopeBiasUncertainty(
             final double initialGyroscopeBiasUncertainty) {
-<span class="fc" id="L346">        mInitialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L333">        mInitialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L334">    }</span>
 
     /**
      * Gets initial gyroscope bias uncertainty.
@@ -353,9 +340,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     public void getInitialGyroscopeBiasUncertaintyAngularSpeed(
             final AngularSpeed result) {
-<span class="fc" id="L356">        result.setValue(mInitialGyroscopeBiasUncertainty);</span>
-<span class="fc" id="L357">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L343">        result.setValue(mInitialGyroscopeBiasUncertainty);</span>
+<span class="fc" id="L344">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Gets initial gyroscope bias uncertainty.
@@ -363,7 +350,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return initial gyroscope bias uncertainty.
      */
     public AngularSpeed getInitialGyroscopeBiasUncertaintyAngularSpeed() {
-<span class="fc" id="L366">        return new AngularSpeed(mInitialGyroscopeBiasUncertainty,</span>
+<span class="fc" id="L353">        return new AngularSpeed(mInitialGyroscopeBiasUncertainty,</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -374,11 +361,11 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     public void setInitialGyroscopeBiasUncertainty(
             final AngularSpeed initialGyroscopeBiasUncertainty) {
-<span class="fc" id="L377">        mInitialGyroscopeBiasUncertainty = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L378">                initialGyroscopeBiasUncertainty.getValue().doubleValue(),</span>
-<span class="fc" id="L379">                initialGyroscopeBiasUncertainty.getUnit(),</span>
+<span class="fc" id="L364">        mInitialGyroscopeBiasUncertainty = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L365">                initialGyroscopeBiasUncertainty.getValue().doubleValue(),</span>
+<span class="fc" id="L366">                initialGyroscopeBiasUncertainty.getUnit(),</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
-<span class="fc" id="L381">    }</span>
+<span class="fc" id="L368">    }</span>
 
     /**
      * Sets configuration parameters.
@@ -399,12 +386,12 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
                           final double initialPositionUncertainty,
                           final double initialAccelerationBiasUncertainty,
                           final double initialGyroscopeBiasUncertainty) {
-<span class="fc" id="L402">        mInitialAttitudeUncertainty = initialAttitudeUncertainty;</span>
-<span class="fc" id="L403">        mInitialVelocityUncertainty = initialVelocityUncertainty;</span>
-<span class="fc" id="L404">        mInitialPositionUncertainty = initialPositionUncertainty;</span>
-<span class="fc" id="L405">        mInitialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
-<span class="fc" id="L406">        mInitialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
-<span class="fc" id="L407">    }</span>
+<span class="fc" id="L389">        mInitialAttitudeUncertainty = initialAttitudeUncertainty;</span>
+<span class="fc" id="L390">        mInitialVelocityUncertainty = initialVelocityUncertainty;</span>
+<span class="fc" id="L391">        mInitialPositionUncertainty = initialPositionUncertainty;</span>
+<span class="fc" id="L392">        mInitialAccelerationBiasUncertainty = initialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L393">        mInitialGyroscopeBiasUncertainty = initialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L394">    }</span>
 
     /**
      * Sets configuration parameters.
@@ -420,12 +407,12 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
                           final Distance initialPositionUncertainty,
                           final Acceleration initialAccelerationBiasUncertainty,
                           final AngularSpeed initialGyroscopeBiasUncertainty) {
-<span class="fc" id="L423">        setInitialAttitudeUncertainty(initialAttitudeUncertainty);</span>
-<span class="fc" id="L424">        setInitialVelocityUncertainty(initialVelocityUncertainty);</span>
-<span class="fc" id="L425">        setInitialPositionUncertainty(initialPositionUncertainty);</span>
-<span class="fc" id="L426">        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertainty);</span>
-<span class="fc" id="L427">        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertainty);</span>
-<span class="fc" id="L428">    }</span>
+<span class="fc" id="L410">        setInitialAttitudeUncertainty(initialAttitudeUncertainty);</span>
+<span class="fc" id="L411">        setInitialVelocityUncertainty(initialVelocityUncertainty);</span>
+<span class="fc" id="L412">        setInitialPositionUncertainty(initialPositionUncertainty);</span>
+<span class="fc" id="L413">        setInitialAccelerationBiasUncertainty(initialAccelerationBiasUncertainty);</span>
+<span class="fc" id="L414">        setInitialGyroscopeBiasUncertainty(initialGyroscopeBiasUncertainty);</span>
+<span class="fc" id="L415">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -433,12 +420,12 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final INSLooselyCoupledKalmanInitializerConfig output) {
-<span class="fc" id="L436">        output.mInitialAttitudeUncertainty = mInitialAttitudeUncertainty;</span>
-<span class="fc" id="L437">        output.mInitialVelocityUncertainty = mInitialVelocityUncertainty;</span>
-<span class="fc" id="L438">        output.mInitialPositionUncertainty = mInitialPositionUncertainty;</span>
-<span class="fc" id="L439">        output.mInitialAccelerationBiasUncertainty = mInitialAccelerationBiasUncertainty;</span>
-<span class="fc" id="L440">        output.mInitialGyroscopeBiasUncertainty = mInitialGyroscopeBiasUncertainty;</span>
-<span class="fc" id="L441">    }</span>
+<span class="fc" id="L423">        output.mInitialAttitudeUncertainty = mInitialAttitudeUncertainty;</span>
+<span class="fc" id="L424">        output.mInitialVelocityUncertainty = mInitialVelocityUncertainty;</span>
+<span class="fc" id="L425">        output.mInitialPositionUncertainty = mInitialPositionUncertainty;</span>
+<span class="fc" id="L426">        output.mInitialAccelerationBiasUncertainty = mInitialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L427">        output.mInitialGyroscopeBiasUncertainty = mInitialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L428">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -446,12 +433,12 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @param input instance to copy data from.
      */
     public void copyFrom(final INSLooselyCoupledKalmanInitializerConfig input) {
-<span class="fc" id="L449">        mInitialAttitudeUncertainty = input.mInitialAttitudeUncertainty;</span>
-<span class="fc" id="L450">        mInitialVelocityUncertainty = input.mInitialVelocityUncertainty;</span>
-<span class="fc" id="L451">        mInitialPositionUncertainty = input.mInitialPositionUncertainty;</span>
-<span class="fc" id="L452">        mInitialAccelerationBiasUncertainty = input.mInitialAccelerationBiasUncertainty;</span>
-<span class="fc" id="L453">        mInitialGyroscopeBiasUncertainty = input.mInitialGyroscopeBiasUncertainty;</span>
-<span class="fc" id="L454">    }</span>
+<span class="fc" id="L436">        mInitialAttitudeUncertainty = input.mInitialAttitudeUncertainty;</span>
+<span class="fc" id="L437">        mInitialVelocityUncertainty = input.mInitialVelocityUncertainty;</span>
+<span class="fc" id="L438">        mInitialPositionUncertainty = input.mInitialPositionUncertainty;</span>
+<span class="fc" id="L439">        mInitialAccelerationBiasUncertainty = input.mInitialAccelerationBiasUncertainty;</span>
+<span class="fc" id="L440">        mInitialGyroscopeBiasUncertainty = input.mInitialGyroscopeBiasUncertainty;</span>
+<span class="fc" id="L441">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -461,9 +448,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L464">        return Objects.hash(mInitialAttitudeUncertainty,</span>
-<span class="fc" id="L465">                mInitialVelocityUncertainty, mInitialPositionUncertainty,</span>
-<span class="fc" id="L466">                mInitialAccelerationBiasUncertainty, mInitialGyroscopeBiasUncertainty);</span>
+<span class="fc" id="L451">        return Objects.hash(mInitialAttitudeUncertainty,</span>
+<span class="fc" id="L452">                mInitialVelocityUncertainty, mInitialPositionUncertainty,</span>
+<span class="fc" id="L453">                mInitialAccelerationBiasUncertainty, mInitialGyroscopeBiasUncertainty);</span>
     }
 
     /**
@@ -474,16 +461,16 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L477" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L478">            return true;</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L465">            return true;</span>
         }
-<span class="fc bfc" id="L480" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L481">            return false;</span>
+<span class="fc bfc" id="L467" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L468">            return false;</span>
         }
 
-<span class="fc" id="L484">        final INSLooselyCoupledKalmanInitializerConfig other =</span>
+<span class="fc" id="L471">        final INSLooselyCoupledKalmanInitializerConfig other =</span>
                 (INSLooselyCoupledKalmanInitializerConfig) obj;
-<span class="fc" id="L486">        return equals(other);</span>
+<span class="fc" id="L473">        return equals(other);</span>
     }
 
     /**
@@ -493,7 +480,7 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final INSLooselyCoupledKalmanInitializerConfig other) {
-<span class="fc" id="L496">        return equals(other, 0.0);</span>
+<span class="fc" id="L483">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -506,15 +493,15 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      * false otherwise.
      */
     public boolean equals(final INSLooselyCoupledKalmanInitializerConfig other, final double threshold) {
-<span class="fc bfc" id="L509" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L510">            return false;</span>
+<span class="fc bfc" id="L496" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L497">            return false;</span>
         }
 
-<span class="fc bfc" id="L513" title="All 2 branches covered.">        return Math.abs(mInitialAttitudeUncertainty - other.mInitialAttitudeUncertainty) &lt;= threshold</span>
-<span class="pc bpc" id="L514" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialVelocityUncertainty - other.mInitialVelocityUncertainty) &lt;= threshold</span>
-<span class="pc bpc" id="L515" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialPositionUncertainty - other.mInitialPositionUncertainty) &lt;= threshold</span>
-<span class="pc bpc" id="L516" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialAccelerationBiasUncertainty - other.mInitialAccelerationBiasUncertainty) &lt;= threshold</span>
-<span class="pc bpc" id="L517" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialGyroscopeBiasUncertainty - other.mInitialGyroscopeBiasUncertainty) &lt;= threshold;</span>
+<span class="fc bfc" id="L500" title="All 2 branches covered.">        return Math.abs(mInitialAttitudeUncertainty - other.mInitialAttitudeUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L501" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialVelocityUncertainty - other.mInitialVelocityUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L502" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialPositionUncertainty - other.mInitialPositionUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L503" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialAccelerationBiasUncertainty - other.mInitialAccelerationBiasUncertainty) &lt;= threshold</span>
+<span class="pc bpc" id="L504" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mInitialGyroscopeBiasUncertainty - other.mInitialGyroscopeBiasUncertainty) &lt;= threshold;</span>
     }
 
     /**
@@ -525,9 +512,9 @@ public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L528">        final INSLooselyCoupledKalmanInitializerConfig result = (INSLooselyCoupledKalmanInitializerConfig) super.clone();</span>
-<span class="fc" id="L529">        copyTo(result);</span>
-<span class="fc" id="L530">        return result;</span>
+<span class="fc" id="L515">        final INSLooselyCoupledKalmanInitializerConfig result = (INSLooselyCoupledKalmanInitializerConfig) super.clone();</span>
+<span class="fc" id="L516">        copyTo(result);</span>
+<span class="fc" id="L517">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

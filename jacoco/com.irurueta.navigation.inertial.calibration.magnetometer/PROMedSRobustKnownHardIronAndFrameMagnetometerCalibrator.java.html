@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -95,7 +96,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L98">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L99">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -106,8 +107,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     /**
      * Constructor.
      */
-<span class="fc" id="L109">    public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator() {</span>
-<span class="fc" id="L110">    }</span>
+<span class="fc" id="L110">    public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator() {</span>
+<span class="fc" id="L111">    }</span>
 
     /**
      * Constructor.
@@ -117,8 +118,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L120">        super(listener);</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L121">        super(listener);</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Constructor.
@@ -129,8 +130,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L132">        super(measurements);</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L133">        super(measurements);</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructor.
@@ -143,8 +144,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L146">        super(measurements, listener);</span>
-<span class="fc" id="L147">    }</span>
+<span class="fc" id="L147">        super(measurements, listener);</span>
+<span class="fc" id="L148">    }</span>
 
     /**
      * Constructor.
@@ -154,8 +155,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L157">        super(commonAxisUsed);</span>
-<span class="fc" id="L158">    }</span>
+<span class="fc" id="L158">        super(commonAxisUsed);</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Constructor.
@@ -167,8 +168,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L170">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L171">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L172">    }</span>
 
     /**
      * Constructor.
@@ -182,8 +183,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L185">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L186">    }</span>
+<span class="fc" id="L186">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L187">    }</span>
 
     /**
      * Constructor.
@@ -199,8 +200,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L202">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L203">    }</span>
+<span class="fc" id="L203">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L204">    }</span>
 
     /**
      * Constructor.
@@ -213,9 +214,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final double[] qualityScores) {
-<span class="fc" id="L216">        super();</span>
-<span class="fc" id="L217">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L218">    }</span>
+<span class="fc" id="L217">        super();</span>
+<span class="fc" id="L218">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L219">    }</span>
 
     /**
      * Constructor.
@@ -231,9 +232,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final double[] qualityScores,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L234">        super(listener);</span>
-<span class="fc" id="L235">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L236">    }</span>
+<span class="fc" id="L235">        super(listener);</span>
+<span class="fc" id="L236">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L237">    }</span>
 
     /**
      * Constructor.
@@ -250,9 +251,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
-<span class="fc" id="L253">        super(measurements);</span>
-<span class="fc" id="L254">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L255">    }</span>
+<span class="fc" id="L254">        super(measurements);</span>
+<span class="fc" id="L255">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L256">    }</span>
 
     /**
      * Constructor.
@@ -271,9 +272,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L274">        super(measurements, listener);</span>
-<span class="fc" id="L275">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L276">    }</span>
+<span class="fc" id="L275">        super(measurements, listener);</span>
+<span class="fc" id="L276">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L277">    }</span>
 
     /**
      * Constructor.
@@ -289,9 +290,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     public PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator(
             final double[] qualityScores,
             final boolean commonAxisUsed) {
-<span class="fc" id="L292">        super(commonAxisUsed);</span>
-<span class="fc" id="L293">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L294">    }</span>
+<span class="fc" id="L293">        super(commonAxisUsed);</span>
+<span class="fc" id="L294">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L295">    }</span>
 
     /**
      * Constructor.
@@ -309,9 +310,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             final double[] qualityScores,
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L312">        super(commonAxisUsed, listener);</span>
-<span class="fc" id="L313">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L314">    }</span>
+<span class="fc" id="L313">        super(commonAxisUsed, listener);</span>
+<span class="fc" id="L314">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L315">    }</span>
 
     /**
      * Constructor.
@@ -331,9 +332,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             final double[] qualityScores,
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L334">        super(measurements, commonAxisUsed);</span>
-<span class="fc" id="L335">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L336">    }</span>
+<span class="fc" id="L335">        super(measurements, commonAxisUsed);</span>
+<span class="fc" id="L336">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L337">    }</span>
 
     /**
      * Constructor.
@@ -355,9 +356,9 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
-<span class="fc" id="L358">        super(measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L359">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L360">    }</span>
+<span class="fc" id="L359">        super(measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L360">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L361">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -379,7 +380,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L382">        return mStopThreshold;</span>
+<span class="fc" id="L383">        return mStopThreshold;</span>
     }
 
     /**
@@ -404,15 +405,15 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L407" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L408">            throw new LockedException();</span>
+<span class="fc bfc" id="L408" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L409">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="nc" id="L411">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="nc" id="L412">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L414">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L415">    }</span>
+<span class="fc" id="L415">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L416">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sample.
@@ -422,7 +423,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L425">        return mQualityScores;</span>
+<span class="fc" id="L426">        return mQualityScores;</span>
     }
 
     /**
@@ -437,11 +438,11 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="pc bpc" id="L440" title="1 of 2 branches missed.">        if (mRunning) {</span>
-<span class="nc" id="L441">            throw new LockedException();</span>
+<span class="pc bpc" id="L441" title="1 of 2 branches missed.">        if (mRunning) {</span>
+<span class="nc" id="L442">            throw new LockedException();</span>
         }
-<span class="fc" id="L443">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L444">    }</span>
+<span class="fc" id="L444">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L445">    }</span>
 
     /**
      * Indicates whether solver is ready to find a solution.
@@ -450,8 +451,8 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L453" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="fc bfc" id="L454" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
+<span class="fc bfc" id="L454" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L455" title="All 2 branches covered.">                mQualityScores.length == mMeasurements.size();</span>
     }
 
     /**
@@ -465,119 +466,121 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L468" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L469">            throw new LockedException();</span>
+<span class="fc bfc" id="L469" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L470">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L471" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L472">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L472" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L473">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L475">        final PROMedSRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
-<span class="fc" id="L476">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
+<span class="fc" id="L476">        final PROMedSRobustEstimator&lt;Matrix&gt; innerEstimator =</span>
+<span class="fc" id="L477">                new PROMedSRobustEstimator&lt;&gt;(new PROMedSRobustEstimatorListener&lt;Matrix&gt;() {</span>
                     @Override
                     public double[] getQualityScores() {
-<span class="fc" id="L479">                        return mQualityScores;</span>
+<span class="fc" id="L480">                        return mQualityScores;</span>
                     }
 
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L484">                        return mStopThreshold;</span>
+<span class="fc" id="L485">                        return mStopThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L489">                        return mMeasurements.size();</span>
+<span class="fc" id="L490">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L494">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L495">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;Matrix&gt; solutions) {
-<span class="fc" id="L501">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L502">                    }</span>
+<span class="fc" id="L502">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L503">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final Matrix currentEstimation,
                             final int i) {
-<span class="fc" id="L508">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L509">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L513">                        return PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this.isReady();</span>
+<span class="fc" id="L514">                        return PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L519">                    }</span>
+                        // no action needed
+<span class="fc" id="L521">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;Matrix&gt; estimator) {
-<span class="fc" id="L524">                    }</span>
+                        // no action needed
+<span class="fc" id="L527">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;Matrix&gt; estimator, final int iteration) {
-<span class="pc bpc" id="L529" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L530">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L532" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L533">                            mListener.onCalibrateNextIteration(</span>
                                     PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
                                     iteration);
                         }
-<span class="fc" id="L534">                    }</span>
+<span class="fc" id="L537">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;Matrix&gt; estimator, final float progress) {
-<span class="nc bnc" id="L539" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L540">                            mListener.onCalibrateProgressChange(</span>
+<span class="nc bnc" id="L542" title="All 2 branches missed.">                        if (mListener != null) {</span>
+<span class="nc" id="L543">                            mListener.onCalibrateProgressChange(</span>
                                     PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
                                     progress);
                         }
-<span class="nc" id="L544">                    }</span>
+<span class="nc" id="L547">                    }</span>
                 });
 
         try {
-<span class="fc" id="L548">            mRunning = true;</span>
+<span class="fc" id="L551">            mRunning = true;</span>
 
-<span class="pc bpc" id="L550" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L551">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L553" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L554">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L554">            mInliersData = null;</span>
+<span class="fc" id="L557">            mInliersData = null;</span>
 
-<span class="fc" id="L556">            setupWmmEstimator();</span>
+<span class="fc" id="L559">            setupWmmEstimator();</span>
 
-<span class="fc" id="L558">            innerEstimator.setUseInlierThresholds(true);</span>
-<span class="fc" id="L559">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L560">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L561">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L562">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L563">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L561">            innerEstimator.setUseInlierThresholds(true);</span>
+<span class="fc" id="L562">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L563">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L564">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L565">            final Matrix preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L566">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L565">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L568">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L567" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L568">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L570" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L571">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L571">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L572">            throw new LockedException(e);</span>
-<span class="nc" id="L573">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L574">            throw new NotReadyException(e);</span>
-<span class="nc" id="L575">        } catch (final RobustEstimatorException | IOException e) {</span>
-<span class="nc" id="L576">            throw new CalibrationException(e);</span>
+<span class="nc" id="L574">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L575">            throw new LockedException(e);</span>
+<span class="nc" id="L576">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L577">            throw new NotReadyException(e);</span>
+<span class="nc" id="L578">        } catch (final RobustEstimatorException | IOException e) {</span>
+<span class="nc" id="L579">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L578">            mRunning = false;</span>
+<span class="fc" id="L581">            mRunning = false;</span>
         }
-<span class="fc" id="L580">    }</span>
+<span class="fc" id="L583">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -586,7 +589,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L589">        return RobustEstimatorMethod.PROMedS;</span>
+<span class="fc" id="L592">        return RobustEstimatorMethod.PROMedS;</span>
     }
 
     /**
@@ -597,7 +600,7 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L600">        return true;</span>
+<span class="fc" id="L603">        return true;</span>
     }
 
     /**
@@ -610,12 +613,12 @@ public class PROMedSRobustKnownHardIronAndFrameMagnetometerCalibrator extends
      *                                  is smaller than 3 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L613" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L616" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; MINIMUM_MEASUREMENTS) {
-<span class="fc" id="L615">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L618">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L618">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L619">    }</span>
+<span class="fc" id="L621">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L622">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

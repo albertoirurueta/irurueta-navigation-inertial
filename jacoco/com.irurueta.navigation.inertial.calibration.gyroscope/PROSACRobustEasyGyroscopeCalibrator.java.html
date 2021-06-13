@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -88,17 +89,17 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      * The threshold refers to the amount of error between integrated rotations
      * of sequences.
      */
-<span class="fc" id="L91">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+<span class="fc" id="L92">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
     /**
      * Indicates whether inliers must be computed and kept.
      */
-<span class="fc" id="L96">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
+<span class="fc" id="L97">    private boolean mComputeAndKeepInliers = DEFAULT_COMPUTE_AND_KEEP_INLIERS;</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
      */
-<span class="fc" id="L101">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
+<span class="fc" id="L102">    private boolean mComputeAndKeepResiduals = DEFAULT_COMPUTE_AND_KEEP_RESIDUALS;</span>
 
     /**
      * Quality scores corresponding to each provided sample.
@@ -110,8 +111,8 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      * Constructor.
      */
     public PROSACRobustEasyGyroscopeCalibrator() {
-<span class="fc" id="L113">        super();</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L114">        super();</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Constructor.
@@ -134,8 +135,8 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L137">        super(sequences, initialBias, initialMg, initialGg);</span>
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L138">        super(sequences, initialBias, initialMg, initialGg);</span>
+<span class="fc" id="L139">    }</span>
 
     /**
      * Constructor.
@@ -161,8 +162,8 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L164">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L165">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
+<span class="fc" id="L166">    }</span>
 
     /**
      * Constructor.
@@ -185,8 +186,8 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L188">        super(sequences, initialBias, initialMg, initialGg);</span>
-<span class="fc" id="L189">    }</span>
+<span class="fc" id="L189">        super(sequences, initialBias, initialMg, initialGg);</span>
+<span class="fc" id="L190">    }</span>
 
     /**
      * Constructor.
@@ -212,8 +213,8 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L215">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
-<span class="fc" id="L216">    }</span>
+<span class="fc" id="L216">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
+<span class="fc" id="L217">    }</span>
 
     /**
      * Constructor.
@@ -244,9 +245,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L247">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L248">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L249">    }</span>
+<span class="fc" id="L250">    }</span>
 
     /**
      * Constructor.
@@ -280,9 +281,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L283">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L284">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L286">    }</span>
 
     /**
      * Constructor.
@@ -312,9 +313,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L315">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L316">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L317">    }</span>
+<span class="fc" id="L318">    }</span>
 
     /**
      * Constructor.
@@ -347,9 +348,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L350">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L351">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L352">    }</span>
+<span class="fc" id="L353">    }</span>
 
     /**
      * Constructor.
@@ -380,9 +381,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L383">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L384">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L385">    }</span>
+<span class="fc" id="L386">    }</span>
 
     /**
      * Constructor.
@@ -416,9 +417,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L419">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L420">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L421">    }</span>
+<span class="fc" id="L422">    }</span>
 
     /**
      * Constructor.
@@ -449,9 +450,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L452">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L453">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L454">    }</span>
+<span class="fc" id="L455">    }</span>
 
     /**
      * Constructor.
@@ -485,9 +486,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L488">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L489">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L490">    }</span>
+<span class="fc" id="L491">    }</span>
 
     /**
      * Constructor.
@@ -527,10 +528,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L530">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L531">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L533">    }</span>
+<span class="fc" id="L534">    }</span>
 
     /**
      * Constructor.
@@ -573,10 +574,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L576">        super(sequences, commonAxisUsed,</span>
+<span class="fc" id="L577">        super(sequences, commonAxisUsed,</span>
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L579">    }</span>
+<span class="fc" id="L580">    }</span>
 
     /**
      * Constructor.
@@ -616,10 +617,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L619">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L620">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L622">    }</span>
+<span class="fc" id="L623">    }</span>
 
     /**
      * Constructor.
@@ -662,10 +663,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L665">        super(sequences, commonAxisUsed,</span>
+<span class="fc" id="L666">        super(sequences, commonAxisUsed,</span>
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L668">    }</span>
+<span class="fc" id="L669">    }</span>
 
     /**
      * Constructor.
@@ -678,9 +679,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     public PROSACRobustEasyGyroscopeCalibrator(
             final double[] qualityScores) {
-<span class="fc" id="L681">        super();</span>
-<span class="fc" id="L682">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L683">    }</span>
+<span class="fc" id="L682">        super();</span>
+<span class="fc" id="L683">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L684">    }</span>
 
     /**
      * Constructor.
@@ -709,9 +710,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L712">        super(sequences, initialBias, initialMg, initialGg);</span>
-<span class="fc" id="L713">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L714">    }</span>
+<span class="fc" id="L713">        super(sequences, initialBias, initialMg, initialGg);</span>
+<span class="fc" id="L714">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L715">    }</span>
 
     /**
      * Constructor.
@@ -743,9 +744,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L746">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
-<span class="fc" id="L747">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L748">    }</span>
+<span class="fc" id="L747">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
+<span class="fc" id="L748">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L749">    }</span>
 
     /**
      * Constructor.
@@ -774,9 +775,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L777">        super(sequences, initialBias, initialMg, initialGg);</span>
-<span class="fc" id="L778">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L779">    }</span>
+<span class="fc" id="L778">        super(sequences, initialBias, initialMg, initialGg);</span>
+<span class="fc" id="L779">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L780">    }</span>
 
     /**
      * Constructor.
@@ -808,9 +809,9 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L811">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
-<span class="fc" id="L812">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L813">    }</span>
+<span class="fc" id="L812">        super(sequences, initialBias, initialMg, initialGg, listener);</span>
+<span class="fc" id="L813">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L814">    }</span>
 
     /**
      * Constructor.
@@ -847,10 +848,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L850">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L851">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L852">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L853">    }</span>
+<span class="fc" id="L853">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L854">    }</span>
 
     /**
      * Constructor.
@@ -890,10 +891,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L893">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L894">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L895">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L896">    }</span>
+<span class="fc" id="L896">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L897">    }</span>
 
     /**
      * Constructor.
@@ -929,10 +930,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L932">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L933">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L934">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L935">    }</span>
+<span class="fc" id="L935">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L936">    }</span>
 
     /**
      * Constructor.
@@ -971,10 +972,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L974">        super(sequences, initialBias, initialMg, initialGg,</span>
+<span class="fc" id="L975">        super(sequences, initialBias, initialMg, initialGg,</span>
                 accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L976">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L977">    }</span>
+<span class="fc" id="L977">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L978">    }</span>
 
     /**
      * Constructor.
@@ -1011,10 +1012,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1014">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L1015">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L1016">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1017">    }</span>
+<span class="fc" id="L1017">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1018">    }</span>
 
     /**
      * Constructor.
@@ -1054,10 +1055,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1057">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L1058">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L1059">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1060">    }</span>
+<span class="fc" id="L1060">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1061">    }</span>
 
     /**
      * Constructor.
@@ -1094,10 +1095,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1097">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L1098">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L1099">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1100">    }</span>
+<span class="fc" id="L1100">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1101">    }</span>
 
     /**
      * Constructor.
@@ -1137,10 +1138,10 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1140">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L1141">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L1142">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1143">    }</span>
+<span class="fc" id="L1143">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1144">    }</span>
 
     /**
      * Constructor.
@@ -1186,11 +1187,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1189">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L1190">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L1192">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1193">    }</span>
+<span class="fc" id="L1193">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1194">    }</span>
 
     /**
      * Constructor.
@@ -1239,11 +1240,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1242">        super(sequences, commonAxisUsed,</span>
+<span class="fc" id="L1243">        super(sequences, commonAxisUsed,</span>
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L1245">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1246">    }</span>
+<span class="fc" id="L1246">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1247">    }</span>
 
     /**
      * Constructor.
@@ -1289,11 +1290,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1292">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
+<span class="fc" id="L1293">        super(sequences, commonAxisUsed, estimateGDependentCrossBiases,</span>
                 initialBias, initialMg, initialGg,
                 accelerometerBias, accelerometerMa);
-<span class="fc" id="L1295">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1296">    }</span>
+<span class="fc" id="L1296">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1297">    }</span>
 
     /**
      * Constructor.
@@ -1342,11 +1343,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustEasyGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1345">        super(sequences, commonAxisUsed,</span>
+<span class="fc" id="L1346">        super(sequences, commonAxisUsed,</span>
                 estimateGDependentCrossBiases, initialBias, initialMg,
                 initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L1348">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1349">    }</span>
+<span class="fc" id="L1349">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1350">    }</span>
 
     /**
      * Gets threshold to determine whether samples are inliers or not when testing possible solutions.
@@ -1356,7 +1357,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L1359">        return mThreshold;</span>
+<span class="fc" id="L1360">        return mThreshold;</span>
     }
 
     /**
@@ -1369,14 +1370,14 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc bfc" id="L1372" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1373">            throw new LockedException();</span>
+<span class="fc bfc" id="L1373" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1374">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1375" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
-<span class="fc" id="L1376">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1376" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L1377">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1378">        mThreshold = threshold;</span>
-<span class="fc" id="L1379">    }</span>
+<span class="fc" id="L1379">        mThreshold = threshold;</span>
+<span class="fc" id="L1380">    }</span>
 
     /**
      * Returns quality scores corresponding to each provided sequence.
@@ -1386,7 +1387,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     @Override
     public double[] getQualityScores() {
-<span class="fc" id="L1389">        return mQualityScores;</span>
+<span class="fc" id="L1390">        return mQualityScores;</span>
     }
 
     /**
@@ -1401,11 +1402,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
     @Override
     public void setQualityScores(final double[] qualityScores)
             throws LockedException {
-<span class="fc bfc" id="L1404" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1405">            throw new LockedException();</span>
+<span class="fc bfc" id="L1405" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1406">            throw new LockedException();</span>
         }
-<span class="fc" id="L1407">        internalSetQualityScores(qualityScores);</span>
-<span class="fc" id="L1408">    }</span>
+<span class="fc" id="L1408">        internalSetQualityScores(qualityScores);</span>
+<span class="fc" id="L1409">    }</span>
 
     /**
      * Indicates whether calibrator is ready to find a solution.
@@ -1414,8 +1415,8 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     @Override
     public boolean isReady() {
-<span class="fc bfc" id="L1417" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
-<span class="fc bfc" id="L1418" title="All 2 branches covered.">                mQualityScores.length == mSequences.size();</span>
+<span class="fc bfc" id="L1418" title="All 4 branches covered.">        return super.isReady() &amp;&amp; mQualityScores != null &amp;&amp;</span>
+<span class="fc bfc" id="L1419" title="All 2 branches covered.">                mQualityScores.length == mSequences.size();</span>
     }
 
     /**
@@ -1425,7 +1426,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepInliersEnabled() {
-<span class="fc" id="L1428">        return mComputeAndKeepInliers;</span>
+<span class="fc" id="L1429">        return mComputeAndKeepInliers;</span>
     }
 
     /**
@@ -1437,11 +1438,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     public void setComputeAndKeepInliersEnabled(final boolean computeAndKeepInliers)
             throws LockedException {
-<span class="fc bfc" id="L1440" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1441">            throw new LockedException();</span>
+<span class="fc bfc" id="L1441" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1442">            throw new LockedException();</span>
         }
-<span class="fc" id="L1443">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
-<span class="fc" id="L1444">    }</span>
+<span class="fc" id="L1444">        mComputeAndKeepInliers = computeAndKeepInliers;</span>
+<span class="fc" id="L1445">    }</span>
 
     /**
      * Indicates whether residuals must be computed and kept.
@@ -1450,7 +1451,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      * only need to be computed but not kept.
      */
     public boolean isComputeAndKeepResiduals() {
-<span class="fc" id="L1453">        return mComputeAndKeepResiduals;</span>
+<span class="fc" id="L1454">        return mComputeAndKeepResiduals;</span>
     }
 
     /**
@@ -1462,11 +1463,11 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     public void setComputeAndKeepResidualsEnabled(final boolean computeAndKeepResiduals)
             throws LockedException {
-<span class="fc bfc" id="L1465" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1466">            throw new LockedException();</span>
+<span class="fc bfc" id="L1466" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1467">            throw new LockedException();</span>
         }
-<span class="fc" id="L1468">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
-<span class="fc" id="L1469">    }</span>
+<span class="fc" id="L1469">        mComputeAndKeepResiduals = computeAndKeepResiduals;</span>
+<span class="fc" id="L1470">    }</span>
 
     /**
      * Estimates gyroscope calibration parameters containing bias, scale factors,
@@ -1480,122 +1481,124 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1483" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1484">            throw new LockedException();</span>
+<span class="fc bfc" id="L1484" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1485">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1486" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1487">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1487" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1488">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1490">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1491">        final PROSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new PROSACRobustEstimator&lt;&gt;(
-<span class="fc" id="L1492">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
-                    @Override
-                    public double[] getQualityScores() {
-<span class="fc" id="L1495">                        return mQualityScores;</span>
-                    }
+<span class="fc" id="L1493">                        new PROSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                            @Override
+                            public double[] getQualityScores() {
+<span class="fc" id="L1496">                                return mQualityScores;</span>
+                            }
 
-                    @Override
-                    public double getThreshold() {
-<span class="fc" id="L1500">                        return mThreshold;</span>
-                    }
+                            @Override
+                            public double getThreshold() {
+<span class="fc" id="L1501">                                return mThreshold;</span>
+                            }
 
-                    @Override
-                    public int getTotalSamples() {
-<span class="fc" id="L1505">                        return mSequences.size();</span>
-                    }
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L1506">                                return mSequences.size();</span>
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-<span class="fc" id="L1510">                        return mPreliminarySubsetSize;</span>
-                    }
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L1511">                                return mPreliminarySubsetSize;</span>
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1517">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1518">                    }</span>
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L1518">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1519">                            }</span>
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L1523">                        return computeError(mSequences.get(i), currentEstimation);</span>
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L1524">                                return computeError(mSequences.get(i), currentEstimation);</span>
+                            }
 
-                    @Override
-                    public boolean isReady() {
-<span class="fc" id="L1528">                        return PROSACRobustEasyGyroscopeCalibrator.this.isReady();</span>
-                    }
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L1529">                                return PROSACRobustEasyGyroscopeCalibrator.this.isReady();</span>
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1534">                    }</span>
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L1536">                            }</span>
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L1539">                    }</span>
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L1542">                            }</span>
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final int iteration) {
-<span class="pc bpc" id="L1545" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L1546">                            mListener.onCalibrateNextIteration(</span>
-                                    PROSACRobustEasyGyroscopeCalibrator.this,
-                                    iteration);
-                        }
-<span class="fc" id="L1550">                    }</span>
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final int iteration) {
+<span class="pc bpc" id="L1548" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L1549">                                    mListener.onCalibrateNextIteration(</span>
+                                            PROSACRobustEasyGyroscopeCalibrator.this,
+                                            iteration);
+                                }
+<span class="fc" id="L1553">                            }</span>
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final float progress) {
-<span class="nc bnc" id="L1556" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L1557">                            mListener.onCalibrateProgressChange(</span>
-                                    PROSACRobustEasyGyroscopeCalibrator.this, progress);
-                        }
-<span class="nc" id="L1560">                    }</span>
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final float progress) {
+<span class="nc bnc" id="L1559" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L1560">                                    mListener.onCalibrateProgressChange(</span>
+                                            PROSACRobustEasyGyroscopeCalibrator.this, progress);
+                                }
+<span class="nc" id="L1563">                            }</span>
+                        });
 
         try {
-<span class="fc" id="L1564">            mRunning = true;</span>
+<span class="fc" id="L1567">            mRunning = true;</span>
 
-<span class="pc bpc" id="L1566" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1567">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L1569" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1570">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L1570">            setupAccelerationFixer();</span>
+<span class="fc" id="L1573">            setupAccelerationFixer();</span>
 
-<span class="fc" id="L1572">            mInliersData = null;</span>
-<span class="pc bpc" id="L1573" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
+<span class="fc" id="L1575">            mInliersData = null;</span>
+<span class="pc bpc" id="L1576" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepInliersEnabled(</span>
                     mComputeAndKeepInliers || mRefineResult);
-<span class="pc bpc" id="L1575" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
+<span class="pc bpc" id="L1578" title="2 of 4 branches missed.">            innerEstimator.setComputeAndKeepResidualsEnabled(</span>
                     mComputeAndKeepResiduals || mRefineResult);
-<span class="fc" id="L1577">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L1578">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L1579">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L1580">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L1581">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L1580">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L1581">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L1582">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L1583">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L1584">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L1583">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L1586">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L1585" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L1586">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L1588" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L1589">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L1589">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L1590">            throw new LockedException(e);</span>
-<span class="nc" id="L1591">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L1592">            throw new NotReadyException(e);</span>
-<span class="nc" id="L1593">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
-<span class="nc" id="L1594">            throw new CalibrationException(e);</span>
+<span class="nc" id="L1592">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L1593">            throw new LockedException(e);</span>
+<span class="nc" id="L1594">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L1595">            throw new NotReadyException(e);</span>
+<span class="nc" id="L1596">        } catch (final RobustEstimatorException | AlgebraException e) {</span>
+<span class="nc" id="L1597">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L1596">            mRunning = false;</span>
+<span class="fc" id="L1599">            mRunning = false;</span>
         }
-<span class="fc" id="L1598">    }</span>
+<span class="fc" id="L1601">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -1604,7 +1607,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L1607">        return RobustEstimatorMethod.PROSAC;</span>
+<span class="fc" id="L1610">        return RobustEstimatorMethod.PROSAC;</span>
     }
 
     /**
@@ -1615,7 +1618,7 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L1618">        return true;</span>
+<span class="fc" id="L1621">        return true;</span>
     }
 
     /**
@@ -1628,12 +1631,12 @@ public class PROSACRobustEasyGyroscopeCalibrator extends
      *                                  is smaller than 4 samples.
      */
     private void internalSetQualityScores(final double[] qualityScores) {
-<span class="pc bpc" id="L1631" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
+<span class="pc bpc" id="L1634" title="1 of 4 branches missed.">        if (qualityScores == null ||</span>
                 qualityScores.length &lt; EasyGyroscopeCalibrator.MINIMUM_SEQUENCES_COMMON_Z_AXIS) {
-<span class="fc" id="L1633">            throw new IllegalArgumentException();</span>
+<span class="fc" id="L1636">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1636">        mQualityScores = qualityScores;</span>
-<span class="fc" id="L1637">    }</span>
+<span class="fc" id="L1639">        mQualityScores = qualityScores;</span>
+<span class="fc" id="L1640">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

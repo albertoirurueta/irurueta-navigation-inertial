@@ -21,6 +21,7 @@ import com.irurueta.units.Measurement;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.Arrays;
 
 /**
@@ -70,18 +71,18 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * Window size must always be larger than allowed minimum value and must
      * have and odd value.
      */
-<span class="fc" id="L73">    private int mWindowSize = DEFAULT_WINDOW_SIZE;</span>
+<span class="fc" id="L74">    private int mWindowSize = DEFAULT_WINDOW_SIZE;</span>
 
     /**
      * Time interval expressed in seconds (s) between consecutive measurements.
      */
-<span class="fc" id="L78">    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
+<span class="fc" id="L79">    private double mTimeInterval = DEFAULT_TIME_INTERVAL_SECONDS;</span>
 
     /**
      * Keeps the window of measurements expressed in their default units.
      * (m/s^2 for acceleration, rad/s for angular speed or T for magnetic flux density).
      */
-<span class="fc" id="L84">    private double[] mWindowedMeasurements = new double[DEFAULT_WINDOW_SIZE];</span>
+<span class="fc" id="L85">    private double[] mWindowedMeasurements = new double[DEFAULT_WINDOW_SIZE];</span>
 
     /**
      * Listener to handle events raised by this estimator.
@@ -129,17 +130,17 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
     /**
      * Constructor.
      */
-<span class="fc" id="L132">    public WindowedMeasurementNoiseEstimator() {</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L133">    public WindowedMeasurementNoiseEstimator() {</span>
+<span class="fc" id="L134">    }</span>
 
     /**
      * Constructor.
      *
      * @param listener listener to handle events raised by this estimator.
      */
-<span class="fc" id="L140">    public WindowedMeasurementNoiseEstimator(final L listener) {</span>
-<span class="fc" id="L141">        mListener = listener;</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L141">    public WindowedMeasurementNoiseEstimator(final L listener) {</span>
+<span class="fc" id="L142">        mListener = listener;</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Gets length of number of samples to keep within the window being processed.
@@ -149,7 +150,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return length of number of samples to keep within the window.
      */
     public int getWindowSize() {
-<span class="fc" id="L152">        return mWindowSize;</span>
+<span class="fc" id="L153">        return mWindowSize;</span>
     }
 
     /**
@@ -162,24 +163,24 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException          if estimator is currently running.
      */
     public void setWindowSize(final int windowSize) throws LockedException {
-<span class="fc bfc" id="L165" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L166">            throw new LockedException();</span>
+<span class="fc bfc" id="L166" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L167">            throw new LockedException();</span>
         }
 
         // check that window is larger than minimum allowed value
-<span class="fc bfc" id="L170" title="All 2 branches covered.">        if (windowSize &lt; MIN_WINDOW_SIZE) {</span>
-<span class="fc" id="L171">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">        if (windowSize &lt; MIN_WINDOW_SIZE) {</span>
+<span class="fc" id="L172">            throw new IllegalArgumentException();</span>
         }
 
         // check that window size is not even
-<span class="pc bpc" id="L175" title="1 of 2 branches missed.">        if (windowSize % 2 == 0) {</span>
-<span class="nc" id="L176">            throw new IllegalArgumentException();</span>
+<span class="pc bpc" id="L176" title="1 of 2 branches missed.">        if (windowSize % 2 == 0) {</span>
+<span class="nc" id="L177">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L179">        mWindowSize = windowSize;</span>
-<span class="fc" id="L180">        mWindowedMeasurements = new double[windowSize];</span>
-<span class="fc" id="L181">        reset();</span>
-<span class="fc" id="L182">    }</span>
+<span class="fc" id="L180">        mWindowSize = windowSize;</span>
+<span class="fc" id="L181">        mWindowedMeasurements = new double[windowSize];</span>
+<span class="fc" id="L182">        reset();</span>
+<span class="fc" id="L183">    }</span>
 
     /**
      * Gets time interval between accelerometer triad samples expressed in
@@ -188,7 +189,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return time interval between accelerometer triad samples.
      */
     public double getTimeInterval() {
-<span class="fc" id="L191">        return mTimeInterval;</span>
+<span class="fc" id="L192">        return mTimeInterval;</span>
     }
 
     /**
@@ -200,16 +201,16 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException          if estimator is currently running.
      */
     public void setTimeInterval(final double timeInterval) throws LockedException {
-<span class="fc bfc" id="L203" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L204">            throw new LockedException();</span>
+<span class="fc bfc" id="L204" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L205">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L207" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
-<span class="fc" id="L208">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L208" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L209">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L211">        mTimeInterval = timeInterval;</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L212">        mTimeInterval = timeInterval;</span>
+<span class="fc" id="L213">    }</span>
 
     /**
      * Gets time interval between accelerometer triad samples.
@@ -217,7 +218,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return time interval between accelerometer triad samples.
      */
     public Time getTimeIntervalAsTime() {
-<span class="fc" id="L220">        return new Time(mTimeInterval, TimeUnit.SECOND);</span>
+<span class="fc" id="L221">        return new Time(mTimeInterval, TimeUnit.SECOND);</span>
     }
 
     /**
@@ -226,9 +227,9 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @param result instance where time interval will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-<span class="fc" id="L229">        result.setValue(mTimeInterval);</span>
-<span class="fc" id="L230">        result.setUnit(TimeUnit.SECOND);</span>
-<span class="fc" id="L231">    }</span>
+<span class="fc" id="L230">        result.setValue(mTimeInterval);</span>
+<span class="fc" id="L231">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L232">    }</span>
 
     /**
      * Sets time interval between accelerometer triad samples.
@@ -237,9 +238,9 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if estimator is currently running.
      */
     public void setTimeInterval(final Time timeInterval) throws LockedException {
-<span class="fc" id="L240">        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
-<span class="fc" id="L241">                timeInterval.getUnit(), TimeUnit.SECOND));</span>
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L241">        setTimeInterval(TimeConverter.convert(timeInterval.getValue().doubleValue(),</span>
+<span class="fc" id="L242">                timeInterval.getUnit(), TimeUnit.SECOND));</span>
+<span class="fc" id="L243">    }</span>
 
     /**
      * Gets listener to handle events raised by this estimator.
@@ -247,7 +248,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return listener to handle events raised by this estimator.
      */
     public L getListener() {
-<span class="fc" id="L250">        return mListener;</span>
+<span class="fc" id="L251">        return mListener;</span>
     }
 
     /**
@@ -257,12 +258,12 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if this estimator is running.
      */
     public void setListener(final L listener) throws LockedException {
-<span class="fc bfc" id="L260" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L261">            throw new LockedException();</span>
+<span class="fc bfc" id="L261" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L262">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L264">        mListener = listener;</span>
-<span class="fc" id="L265">    }</span>
+<span class="fc" id="L265">        mListener = listener;</span>
+<span class="fc" id="L266">    }</span>
 
     /**
      * Gets first provided measurement value expressed in its default units.
@@ -271,10 +272,10 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return first provided measurement value or null if not available.
      */
     public Double getFirstWindowedMeasurementValue() {
-<span class="fc bfc" id="L274" title="All 2 branches covered.">        if (mNumberOfAddedSamples == 0) {</span>
-<span class="fc" id="L275">            return null;</span>
+<span class="fc bfc" id="L275" title="All 2 branches covered.">        if (mNumberOfAddedSamples == 0) {</span>
+<span class="fc" id="L276">            return null;</span>
         } else {
-<span class="fc" id="L277">            return mWindowedMeasurements[mFirstCursor % mWindowSize];</span>
+<span class="fc" id="L278">            return mWindowedMeasurements[mFirstCursor % mWindowSize];</span>
         }
     }
 
@@ -285,10 +286,10 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return last provided measurement value or null if not available.
      */
     public Double getLastWindowedMeasurementValue() {
-<span class="fc bfc" id="L288" title="All 2 branches covered.">        if (mNumberOfAddedSamples == 0) {</span>
-<span class="fc" id="L289">            return null;</span>
+<span class="fc bfc" id="L289" title="All 2 branches covered.">        if (mNumberOfAddedSamples == 0) {</span>
+<span class="fc" id="L290">            return null;</span>
         } else {
-<span class="fc" id="L291">            return mWindowedMeasurements[(mLastCursor - 1 + mWindowSize) % mWindowSize];</span>
+<span class="fc" id="L292">            return mWindowedMeasurements[(mLastCursor - 1 + mWindowSize) % mWindowSize];</span>
         }
     }
 
@@ -298,8 +299,8 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return first provided measurement within the window or null if not available.
      */
     public M getFirstWindowedMeasurement() {
-<span class="fc" id="L301">        final Double value = getFirstWindowedMeasurementValue();</span>
-<span class="fc bfc" id="L302" title="All 2 branches covered.">        return value != null ? createMeasurement(value, getDefaultUnit()) : null;</span>
+<span class="fc" id="L302">        final Double value = getFirstWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L303" title="All 2 branches covered.">        return value != null ? createMeasurement(value, getDefaultUnit()) : null;</span>
     }
 
     /**
@@ -309,13 +310,13 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return true if result was updated, false if first measurement is not available.
      */
     public boolean getFirstWindowedMeasurement(final M result) {
-<span class="fc" id="L312">        final Double value = getFirstWindowedMeasurementValue();</span>
-<span class="fc bfc" id="L313" title="All 2 branches covered.">        if (value != null) {</span>
-<span class="fc" id="L314">            result.setValue(value);</span>
-<span class="fc" id="L315">            result.setUnit(getDefaultUnit());</span>
-<span class="fc" id="L316">            return true;</span>
+<span class="fc" id="L313">        final Double value = getFirstWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L314" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L315">            result.setValue(value);</span>
+<span class="fc" id="L316">            result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L317">            return true;</span>
         } else {
-<span class="fc" id="L318">            return false;</span>
+<span class="fc" id="L319">            return false;</span>
         }
     }
 
@@ -325,8 +326,8 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return last provided measurement within the window or null if not available.
      */
     public M getLastWindowedMeasurement() {
-<span class="fc" id="L328">        final Double value = getLastWindowedMeasurementValue();</span>
-<span class="fc bfc" id="L329" title="All 2 branches covered.">        return value != null ? createMeasurement(value, getDefaultUnit()) : null;</span>
+<span class="fc" id="L329">        final Double value = getLastWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L330" title="All 2 branches covered.">        return value != null ? createMeasurement(value, getDefaultUnit()) : null;</span>
     }
 
     /**
@@ -336,13 +337,13 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return true if result was updated, false if last measurement is not available.
      */
     public boolean getLastWindowedMeasurement(final M result) {
-<span class="fc" id="L339">        final Double value = getLastWindowedMeasurementValue();</span>
-<span class="fc bfc" id="L340" title="All 2 branches covered.">        if (value != null) {</span>
-<span class="fc" id="L341">            result.setValue(value);</span>
-<span class="fc" id="L342">            result.setUnit(getDefaultUnit());</span>
-<span class="fc" id="L343">            return true;</span>
+<span class="fc" id="L340">        final Double value = getLastWindowedMeasurementValue();</span>
+<span class="fc bfc" id="L341" title="All 2 branches covered.">        if (value != null) {</span>
+<span class="fc" id="L342">            result.setValue(value);</span>
+<span class="fc" id="L343">            result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L344">            return true;</span>
         } else {
-<span class="fc" id="L345">            return false;</span>
+<span class="fc" id="L346">            return false;</span>
         }
     }
 
@@ -353,7 +354,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return average of measurement in current window.
      */
     public double getAvg() {
-<span class="fc" id="L356">        return mAvg;</span>
+<span class="fc" id="L357">        return mAvg;</span>
     }
 
     /**
@@ -362,7 +363,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return average of measurement in current window
      */
     public M getAvgAsMeasurement() {
-<span class="fc" id="L365">        return createMeasurement(mAvg, getDefaultUnit());</span>
+<span class="fc" id="L366">        return createMeasurement(mAvg, getDefaultUnit());</span>
     }
 
     /**
@@ -371,9 +372,9 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @param result instance where average of measurement will be stored.
      */
     public void getAvgAsMeasurement(final M result) {
-<span class="fc" id="L374">        result.setValue(mAvg);</span>
-<span class="fc" id="L375">        result.setUnit(getDefaultUnit());</span>
-<span class="fc" id="L376">    }</span>
+<span class="fc" id="L375">        result.setValue(mAvg);</span>
+<span class="fc" id="L376">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L377">    }</span>
 
     /**
      * Gets estimated variance of measurement within current window
@@ -383,7 +384,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return estimated variance of measurement within current window.
      */
     public double getVariance() {
-<span class="fc" id="L386">        return mVariance;</span>
+<span class="fc" id="L387">        return mVariance;</span>
     }
 
     /**
@@ -394,7 +395,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return estimated standard of measurement.
      */
     public double getStandardDeviation() {
-<span class="fc" id="L397">        return Math.sqrt(mVariance);</span>
+<span class="fc" id="L398">        return Math.sqrt(mVariance);</span>
     }
 
     /**
@@ -403,7 +404,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return estimated standard deviation of measurement.
      */
     public M getStandardDeviationAsMeasurement() {
-<span class="fc" id="L406">        return createMeasurement(getStandardDeviation(), getDefaultUnit());</span>
+<span class="fc" id="L407">        return createMeasurement(getStandardDeviation(), getDefaultUnit());</span>
     }
 
     /**
@@ -413,9 +414,9 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      *               will be stored.
      */
     public void getStandardDeviationAsMeasurement(final M result) {
-<span class="fc" id="L416">        result.setValue(getStandardDeviation());</span>
-<span class="fc" id="L417">        result.setUnit(getDefaultUnit());</span>
-<span class="fc" id="L418">    }</span>
+<span class="fc" id="L417">        result.setValue(getStandardDeviation());</span>
+<span class="fc" id="L418">        result.setUnit(getDefaultUnit());</span>
+<span class="fc" id="L419">    }</span>
 
     /**
      * Gets measurement noise PSD (Power Spectral Density) expressed
@@ -425,7 +426,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return measurement noise PSD.
      */
     public double getPsd() {
-<span class="fc" id="L428">        return mVariance * mTimeInterval;</span>
+<span class="fc" id="L429">        return mVariance * mTimeInterval;</span>
     }
 
     /**
@@ -436,7 +437,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return measurement noise root PSD.
      */
     public double getRootPsd() {
-<span class="fc" id="L439">        return Math.sqrt(getPsd());</span>
+<span class="fc" id="L440">        return Math.sqrt(getPsd());</span>
     }
 
     /**
@@ -445,7 +446,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return number of samples that have been processed so far.
      */
     public int getNumberOfProcessedSamples() {
-<span class="fc" id="L448">        return mNumberOfProcessedSamples;</span>
+<span class="fc" id="L449">        return mNumberOfProcessedSamples;</span>
     }
 
     /**
@@ -454,7 +455,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return number of samples that have been added so far.
      */
     public int getNumberOfAddedSamples() {
-<span class="fc" id="L457">        return mNumberOfAddedSamples;</span>
+<span class="fc" id="L458">        return mNumberOfAddedSamples;</span>
     }
 
     /**
@@ -463,7 +464,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return number of samples within the window.
      */
     public int getNumberOfSamplesInWindow() {
-<span class="fc" id="L466">        return Math.min(mNumberOfAddedSamples, mWindowSize);</span>
+<span class="fc" id="L467">        return Math.min(mNumberOfAddedSamples, mWindowSize);</span>
     }
 
     /**
@@ -472,7 +473,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return true if window is filled, false otherwise.
      */
     public boolean isWindowFilled() {
-<span class="fc bfc" id="L475" title="All 2 branches covered.">        return getNumberOfSamplesInWindow() == mWindowSize;</span>
+<span class="fc bfc" id="L476" title="All 2 branches covered.">        return getNumberOfSamplesInWindow() == mWindowSize;</span>
     }
 
     /**
@@ -481,7 +482,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @return true if estimator is running, false otherwise.
      */
     public boolean isRunning() {
-<span class="fc" id="L484">        return mRunning;</span>
+<span class="fc" id="L485">        return mRunning;</span>
     }
 
     /**
@@ -495,8 +496,8 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if estimator is currently running.
      */
     public void addMeasurementAndProcess(final double value) throws LockedException {
-<span class="fc" id="L498">        internalAdd(value, true);</span>
-<span class="fc" id="L499">    }</span>
+<span class="fc" id="L499">        internalAdd(value, true);</span>
+<span class="fc" id="L500">    }</span>
 
     /**
      * Adds a measurement and processes current window.
@@ -508,8 +509,8 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if estimator is currently running.
      */
     public void addMeasurementAndProcess(final M value) throws LockedException {
-<span class="fc" id="L511">        internalAdd(convertToDefaultUnit(value), true);</span>
-<span class="fc" id="L512">    }</span>
+<span class="fc" id="L512">        internalAdd(convertToDefaultUnit(value), true);</span>
+<span class="fc" id="L513">    }</span>
 
     /**
      * Adds a measurement value expressed in its default unit (m/s^2 for acceleration, rad/s for
@@ -522,8 +523,8 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if estimator is currently running.
      */
     public void addMeasurement(final double value) throws LockedException {
-<span class="fc" id="L525">        internalAdd(value, false);</span>
-<span class="fc" id="L526">    }</span>
+<span class="fc" id="L526">        internalAdd(value, false);</span>
+<span class="fc" id="L527">    }</span>
 
     /**
      * Adds a measurement.
@@ -535,8 +536,8 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if estimator is currently running
      */
     public void addMeasurement(final M value) throws LockedException {
-<span class="fc" id="L538">        internalAdd(convertToDefaultUnit(value), false);</span>
-<span class="fc" id="L539">    }</span>
+<span class="fc" id="L539">        internalAdd(convertToDefaultUnit(value), false);</span>
+<span class="fc" id="L540">    }</span>
 
     /**
      * Resets current estimator.
@@ -545,28 +546,28 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      * @throws LockedException if estimator is currently running.
      */
     public boolean reset() throws LockedException {
-<span class="fc bfc" id="L548" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L549">            throw new LockedException();</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L550">            throw new LockedException();</span>
         }
 
-<span class="fc bfc" id="L552" title="All 2 branches covered.">        if (mNumberOfProcessedSamples == 0) {</span>
-<span class="fc" id="L553">            return false;</span>
+<span class="fc bfc" id="L553" title="All 2 branches covered.">        if (mNumberOfProcessedSamples == 0) {</span>
+<span class="fc" id="L554">            return false;</span>
         }
 
-<span class="fc" id="L556">        Arrays.fill(mWindowedMeasurements, 0.0);</span>
-<span class="fc" id="L557">        mFirstCursor = 0;</span>
-<span class="fc" id="L558">        mLastCursor = 0;</span>
-<span class="fc" id="L559">        mAvg = 0.0;</span>
-<span class="fc" id="L560">        mVariance = 0.0;</span>
-<span class="fc" id="L561">        mNumberOfProcessedSamples = 0;</span>
-<span class="fc" id="L562">        mNumberOfAddedSamples = 0;</span>
+<span class="fc" id="L557">        Arrays.fill(mWindowedMeasurements, 0.0);</span>
+<span class="fc" id="L558">        mFirstCursor = 0;</span>
+<span class="fc" id="L559">        mLastCursor = 0;</span>
+<span class="fc" id="L560">        mAvg = 0.0;</span>
+<span class="fc" id="L561">        mVariance = 0.0;</span>
+<span class="fc" id="L562">        mNumberOfProcessedSamples = 0;</span>
+<span class="fc" id="L563">        mNumberOfAddedSamples = 0;</span>
 
-<span class="pc bpc" id="L564" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="pc bpc" id="L565" title="1 of 2 branches missed.">        if (mListener != null) {</span>
             //noinspection unchecked
-<span class="fc" id="L566">            mListener.onReset((E) this);</span>
+<span class="fc" id="L567">            mListener.onReset((E) this);</span>
         }
 
-<span class="fc" id="L569">        return true;</span>
+<span class="fc" id="L570">        return true;</span>
     }
 
     /**
@@ -596,84 +597,84 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
     /**
      * Internally adds a measurement value and processes current window if indicated.
      *
-     * @param value measurement value to be added.
+     * @param value   measurement value to be added.
      * @param process true if window of samples must also be processed, false otherwise.
      * @throws LockedException if estimator is currently running.
      */
     private void internalAdd(final double value, final boolean process) throws LockedException {
-<span class="fc bfc" id="L604" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L605">            throw new LockedException();</span>
+<span class="fc bfc" id="L605" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L606">            throw new LockedException();</span>
         }
 
-<span class="fc" id="L608">        mRunning = true;</span>
+<span class="fc" id="L609">        mRunning = true;</span>
 
-<span class="pc bpc" id="L610" title="1 of 4 branches missed.">        if (mNumberOfAddedSamples == 0 &amp;&amp; mListener != null) {</span>
+<span class="pc bpc" id="L611" title="1 of 4 branches missed.">        if (mNumberOfAddedSamples == 0 &amp;&amp; mListener != null) {</span>
             //noinspection unchecked
-<span class="fc" id="L612">            mListener.onStart((E) this);</span>
+<span class="fc" id="L613">            mListener.onStart((E) this);</span>
         }
 
-<span class="fc" id="L615">        final boolean wasFilled = isWindowFilled();</span>
-<span class="fc bfc" id="L616" title="All 2 branches covered.">        if (wasFilled) {</span>
+<span class="fc" id="L616">        final boolean wasFilled = isWindowFilled();</span>
+<span class="fc bfc" id="L617" title="All 2 branches covered.">        if (wasFilled) {</span>
             // increase first cursor
-<span class="fc" id="L618">            mFirstCursor = (mFirstCursor + 1) % mWindowSize;</span>
+<span class="fc" id="L619">            mFirstCursor = (mFirstCursor + 1) % mWindowSize;</span>
         }
-<span class="fc" id="L620">        mWindowedMeasurements[mLastCursor] = value;</span>
-<span class="fc" id="L621">        mLastCursor = (mLastCursor + 1) % mWindowSize;</span>
-<span class="fc" id="L622">        mNumberOfAddedSamples++;</span>
+<span class="fc" id="L621">        mWindowedMeasurements[mLastCursor] = value;</span>
+<span class="fc" id="L622">        mLastCursor = (mLastCursor + 1) % mWindowSize;</span>
+<span class="fc" id="L623">        mNumberOfAddedSamples++;</span>
 
         // process window
-<span class="fc bfc" id="L625" title="All 2 branches covered.">        if (process) {</span>
-<span class="fc" id="L626">            processWindow();</span>
+<span class="fc bfc" id="L626" title="All 2 branches covered.">        if (process) {</span>
+<span class="fc" id="L627">            processWindow();</span>
         }
 
-<span class="fc" id="L629">        mRunning = false;</span>
+<span class="fc" id="L630">        mRunning = false;</span>
 
-<span class="pc bpc" id="L631" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="pc bpc" id="L632" title="1 of 2 branches missed.">        if (mListener != null) {</span>
             //noinspection unchecked
-<span class="fc" id="L633">            mListener.onMeasurementAdded((E) this);</span>
+<span class="fc" id="L634">            mListener.onMeasurementAdded((E) this);</span>
 
-<span class="fc bfc" id="L635" title="All 4 branches covered.">            if (!wasFilled &amp;&amp; isWindowFilled()) {</span>
+<span class="fc bfc" id="L636" title="All 4 branches covered.">            if (!wasFilled &amp;&amp; isWindowFilled()) {</span>
                 //noinspection unchecked
-<span class="fc" id="L637">                mListener.onWindowFilled((E) this);</span>
+<span class="fc" id="L638">                mListener.onWindowFilled((E) this);</span>
             }
         }
-<span class="fc" id="L640">    }</span>
+<span class="fc" id="L641">    }</span>
 
     /**
      * Processes current windowed samples.
      */
     private void processWindow() {
-<span class="fc" id="L646">        mNumberOfProcessedSamples++;</span>
+<span class="fc" id="L647">        mNumberOfProcessedSamples++;</span>
 
-<span class="fc" id="L648">        final int n = getNumberOfSamplesInWindow();</span>
+<span class="fc" id="L649">        final int n = getNumberOfSamplesInWindow();</span>
 
-<span class="fc" id="L650">        final int endPos = Math.min(n, mWindowSize);</span>
+<span class="fc" id="L651">        final int endPos = Math.min(n, mWindowSize);</span>
 
         // compute averages
-<span class="fc" id="L653">        double avg = 0.0;</span>
-<span class="fc bfc" id="L654" title="All 2 branches covered.">        for (int i = 0; i &lt; endPos; i++) {</span>
-<span class="fc" id="L655">            final double value = mWindowedMeasurements[i];</span>
-<span class="fc" id="L656">            avg += value;</span>
+<span class="fc" id="L654">        double avg = 0.0;</span>
+<span class="fc bfc" id="L655" title="All 2 branches covered.">        for (int i = 0; i &lt; endPos; i++) {</span>
+<span class="fc" id="L656">            final double value = mWindowedMeasurements[i];</span>
+<span class="fc" id="L657">            avg += value;</span>
         }
 
-<span class="fc" id="L659">        avg /= mWindowSize;</span>
+<span class="fc" id="L660">        avg /= mWindowSize;</span>
 
         // compute variances
-<span class="fc" id="L662">        double var = 0.0;</span>
-<span class="fc bfc" id="L663" title="All 2 branches covered.">        for (int i = 0; i &lt; endPos; i++) {</span>
-<span class="fc" id="L664">            final double value = mWindowedMeasurements[i];</span>
-<span class="fc" id="L665">            final double diff = value - avg;</span>
-<span class="fc" id="L666">            final double diff2 = diff * diff;</span>
+<span class="fc" id="L663">        double var = 0.0;</span>
+<span class="fc bfc" id="L664" title="All 2 branches covered.">        for (int i = 0; i &lt; endPos; i++) {</span>
+<span class="fc" id="L665">            final double value = mWindowedMeasurements[i];</span>
+<span class="fc" id="L666">            final double diff = value - avg;</span>
+<span class="fc" id="L667">            final double diff2 = diff * diff;</span>
 
-<span class="fc" id="L668">            var += diff2;</span>
+<span class="fc" id="L669">            var += diff2;</span>
         }
 
-<span class="fc" id="L671">        final int m = mWindowSize - 1;</span>
+<span class="fc" id="L672">        final int m = mWindowSize - 1;</span>
 
-<span class="fc" id="L673">        var /= m;</span>
+<span class="fc" id="L674">        var /= m;</span>
 
-<span class="fc" id="L675">        mAvg = avg;</span>
-<span class="fc" id="L676">        mVariance = var;</span>
-<span class="fc" id="L677">    }</span>
+<span class="fc" id="L676">        mAvg = avg;</span>
+<span class="fc" id="L677">        mVariance = var;</span>
+<span class="fc" id="L678">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.LMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -107,14 +108,14 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      * lower than the one typically used in RANSAC, and yet the algorithm could
      * still produce even smaller thresholds in estimated results.
      */
-<span class="fc" id="L110">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
+<span class="fc" id="L111">    private double mStopThreshold = DEFAULT_STOP_THRESHOLD;</span>
 
     /**
      * Constructor.
      */
     public LMedSRobustTurntableGyroscopeCalibrator() {
-<span class="fc" id="L116">        super();</span>
-<span class="fc" id="L117">    }</span>
+<span class="fc" id="L117">        super();</span>
+<span class="fc" id="L118">    }</span>
 
     /**
      * Constructor.
@@ -155,9 +156,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L158">        super(position, turntableRotationRate, timeInterval,</span>
+<span class="fc" id="L159">        super(position, turntableRotationRate, timeInterval,</span>
                 measurements, initialBias, initialMg, initialGg);
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L161">    }</span>
 
     /**
      * Constructor.
@@ -201,9 +202,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L204">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L205">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L206">    }</span>
+<span class="fc" id="L207">    }</span>
 
     /**
      * Constructor.
@@ -244,9 +245,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L247">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L248">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L249">    }</span>
+<span class="fc" id="L250">    }</span>
 
     /**
      * Constructor.
@@ -290,9 +291,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L293">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L294">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L295">    }</span>
+<span class="fc" id="L296">    }</span>
 
     /**
      * Constructor.
@@ -341,10 +342,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L344">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L345">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L348">    }</span>
 
     /**
      * Constructor.
@@ -395,10 +396,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L398">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L399">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L401">    }</span>
+<span class="fc" id="L402">    }</span>
 
     /**
      * Constructor.
@@ -447,10 +448,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L450">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L451">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L453">    }</span>
+<span class="fc" id="L454">    }</span>
 
     /**
      * Constructor.
@@ -501,10 +502,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L504">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L505">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L507">    }</span>
+<span class="fc" id="L508">    }</span>
 
     /**
      * Constructor.
@@ -557,10 +558,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L560">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L561">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg);
-<span class="fc" id="L563">    }</span>
+<span class="fc" id="L564">    }</span>
 
     /**
      * Constructor.
@@ -615,10 +616,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L618">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L619">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L621">    }</span>
+<span class="fc" id="L622">    }</span>
 
     /**
      * Constructor.
@@ -672,10 +673,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L675">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L676">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg);
-<span class="fc" id="L678">    }</span>
+<span class="fc" id="L679">    }</span>
 
     /**
      * Constructor.
@@ -732,10 +733,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L735">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L736">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L738">    }</span>
+<span class="fc" id="L739">    }</span>
 
     /**
      * Constructor.
@@ -798,10 +799,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L801">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L802">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L804">    }</span>
+<span class="fc" id="L805">    }</span>
 
     /**
      * Constructor.
@@ -866,10 +867,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L869">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L870">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa, listener);
-<span class="fc" id="L872">    }</span>
+<span class="fc" id="L873">    }</span>
 
     /**
      * Constructor.
@@ -930,10 +931,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L933">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L934">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L936">    }</span>
+<span class="fc" id="L937">    }</span>
 
     /**
      * Constructor.
@@ -997,11 +998,11 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1000">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1001">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L1004">    }</span>
+<span class="fc" id="L1005">    }</span>
 
     /**
      * Constructor.
@@ -1042,9 +1043,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1045">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1046">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L1047">    }</span>
+<span class="fc" id="L1048">    }</span>
 
     /**
      * Constructor.
@@ -1088,9 +1089,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1091">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1092">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L1093">    }</span>
+<span class="fc" id="L1094">    }</span>
 
     /**
      * Constructor.
@@ -1131,9 +1132,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1134">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1135">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg);
-<span class="fc" id="L1136">    }</span>
+<span class="fc" id="L1137">    }</span>
 
     /**
      * Constructor.
@@ -1177,9 +1178,9 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1180">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1181">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, listener);
-<span class="fc" id="L1182">    }</span>
+<span class="fc" id="L1183">    }</span>
 
     /**
      * Constructor.
@@ -1228,10 +1229,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1231">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1232">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L1234">    }</span>
+<span class="fc" id="L1235">    }</span>
 
     /**
      * Constructor.
@@ -1282,10 +1283,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1285">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1286">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L1288">    }</span>
+<span class="fc" id="L1289">    }</span>
 
     /**
      * Constructor.
@@ -1334,10 +1335,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1337">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1338">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa);
-<span class="fc" id="L1340">    }</span>
+<span class="fc" id="L1341">    }</span>
 
     /**
      * Constructor.
@@ -1388,10 +1389,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1391">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1392">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 initialBias, initialMg, initialGg, accelerometerBias,
                 accelerometerMa, listener);
-<span class="fc" id="L1394">    }</span>
+<span class="fc" id="L1395">    }</span>
 
     /**
      * Constructor.
@@ -1444,10 +1445,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1447">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1448">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg);
-<span class="fc" id="L1450">    }</span>
+<span class="fc" id="L1451">    }</span>
 
     /**
      * Constructor.
@@ -1502,10 +1503,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1505">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1506">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L1508">    }</span>
+<span class="fc" id="L1509">    }</span>
 
     /**
      * Constructor.
@@ -1559,10 +1560,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] initialBias,
             final Matrix initialMg,
             final Matrix initialGg) {
-<span class="fc" id="L1562">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1563">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg);
-<span class="fc" id="L1565">    }</span>
+<span class="fc" id="L1566">    }</span>
 
     /**
      * Constructor.
@@ -1619,10 +1620,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialMg,
             final Matrix initialGg,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1622">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1623">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, listener);
-<span class="fc" id="L1625">    }</span>
+<span class="fc" id="L1626">    }</span>
 
     /**
      * Constructor.
@@ -1685,10 +1686,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final double[] accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1688">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1689">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L1691">    }</span>
+<span class="fc" id="L1692">    }</span>
 
     /**
      * Constructor.
@@ -1753,11 +1754,11 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final double[] accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1756">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1757">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L1760">    }</span>
+<span class="fc" id="L1761">    }</span>
 
     /**
      * Constructor.
@@ -1818,10 +1819,10 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix initialGg,
             final Matrix accelerometerBias,
             final Matrix accelerometerMa) {
-<span class="fc" id="L1821">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1822">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa);
-<span class="fc" id="L1824">    }</span>
+<span class="fc" id="L1825">    }</span>
 
     /**
      * Constructor.
@@ -1885,11 +1886,11 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
             final Matrix accelerometerBias,
             final Matrix accelerometerMa,
             final RobustTurntableGyroscopeCalibratorListener listener) {
-<span class="fc" id="L1888">        super(position, turntableRotationRate, timeInterval, measurements,</span>
+<span class="fc" id="L1889">        super(position, turntableRotationRate, timeInterval, measurements,</span>
                 commonAxisUsed, estimateGDependentCrossBiases, initialBias,
                 initialMg, initialGg, accelerometerBias, accelerometerMa,
                 listener);
-<span class="fc" id="L1892">    }</span>
+<span class="fc" id="L1893">    }</span>
 
     /**
      * Returns threshold to be used to keep the algorithm iterating in case that
@@ -1911,7 +1912,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      * accuracy has been reached.
      */
     public double getStopThreshold() {
-<span class="fc" id="L1914">        return mStopThreshold;</span>
+<span class="fc" id="L1915">        return mStopThreshold;</span>
     }
 
     /**
@@ -1936,15 +1937,15 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setStopThreshold(final double stopThreshold) throws LockedException {
-<span class="fc bfc" id="L1939" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1940">            throw new LockedException();</span>
+<span class="fc bfc" id="L1940" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1941">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L1942" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
-<span class="fc" id="L1943">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1943" title="All 2 branches covered.">        if (stopThreshold &lt;= MIN_STOP_THRESHOLD) {</span>
+<span class="fc" id="L1944">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1946">        mStopThreshold = stopThreshold;</span>
-<span class="fc" id="L1947">    }</span>
+<span class="fc" id="L1947">        mStopThreshold = stopThreshold;</span>
+<span class="fc" id="L1948">    }</span>
 
     /**
      * Estimates gyroscope calibration parameters containing bias, scale factors
@@ -1957,108 +1958,110 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
     @Override
     public void calibrate() throws LockedException, NotReadyException,
             CalibrationException {
-<span class="fc bfc" id="L1960" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L1961">            throw new LockedException();</span>
+<span class="fc bfc" id="L1961" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1962">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L1963" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L1964">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L1964" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L1965">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L1967">        final LMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L1968">        final LMedSRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
                 new LMedSRobustEstimator&lt;&gt;(
-<span class="fc" id="L1969">                        new LMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
-                    @Override
-                    public int getTotalSamples() {
-<span class="fc" id="L1972">                        return mMeasurements.size();</span>
-                    }
+<span class="fc" id="L1970">                        new LMedSRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+                            @Override
+                            public int getTotalSamples() {
+<span class="fc" id="L1973">                                return mMeasurements.size();</span>
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-<span class="fc" id="L1977">                        return mPreliminarySubsetSize;</span>
-                    }
+                            @Override
+                            public int getSubsetSize() {
+<span class="fc" id="L1978">                                return mPreliminarySubsetSize;</span>
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L1984">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L1985">                    }</span>
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List&lt;PreliminaryResult&gt; solutions) {
+<span class="fc" id="L1985">                                computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L1986">                            }</span>
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L1990">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation, final int i) {
+<span class="fc" id="L1991">                                return computeError(mMeasurements.get(i), currentEstimation);</span>
+                            }
 
-                    @Override
-                    public boolean isReady() {
-<span class="fc" id="L1995">                        return LMedSRobustTurntableGyroscopeCalibrator.super.isReady();</span>
-                    }
+                            @Override
+                            public boolean isReady() {
+<span class="fc" id="L1996">                                return LMedSRobustTurntableGyroscopeCalibrator.super.isReady();</span>
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L2001">                    }</span>
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L2003">                            }</span>
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L2006">                    }</span>
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
+                                // no action needed
+<span class="fc" id="L2009">                            }</span>
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final int iteration) {
-<span class="pc bpc" id="L2012" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L2013">                            mListener.onCalibrateNextIteration(</span>
-                                    LMedSRobustTurntableGyroscopeCalibrator.this,
-                                    iteration);
-                        }
-<span class="fc" id="L2017">                    }</span>
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final int iteration) {
+<span class="pc bpc" id="L2015" title="1 of 2 branches missed.">                                if (mListener != null) {</span>
+<span class="fc" id="L2016">                                    mListener.onCalibrateNextIteration(</span>
+                                            LMedSRobustTurntableGyroscopeCalibrator.this,
+                                            iteration);
+                                }
+<span class="fc" id="L2020">                            }</span>
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator&lt;PreliminaryResult&gt; estimator,
-                            final float progress) {
-<span class="nc bnc" id="L2023" title="All 2 branches missed.">                        if (mListener != null) {</span>
-<span class="nc" id="L2024">                            mListener.onCalibrateProgressChange(</span>
-                                    LMedSRobustTurntableGyroscopeCalibrator.this,
-                                    progress);
-                        }
-<span class="nc" id="L2028">                    }</span>
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator&lt;PreliminaryResult&gt; estimator,
+                                    final float progress) {
+<span class="nc bnc" id="L2026" title="All 2 branches missed.">                                if (mListener != null) {</span>
+<span class="nc" id="L2027">                                    mListener.onCalibrateProgressChange(</span>
+                                            LMedSRobustTurntableGyroscopeCalibrator.this,
+                                            progress);
+                                }
+<span class="nc" id="L2031">                            }</span>
+                        });
 
         try {
-<span class="fc" id="L2032">            mRunning = true;</span>
+<span class="fc" id="L2035">            mRunning = true;</span>
 
-<span class="pc bpc" id="L2034" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L2035">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L2037" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L2038">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L2038">            mInliersData = null;</span>
-<span class="fc" id="L2039">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L2040">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L2041">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L2042">            innerEstimator.setStopThreshold(mStopThreshold);</span>
-<span class="fc" id="L2043">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L2044">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L2041">            mInliersData = null;</span>
+<span class="fc" id="L2042">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L2043">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L2044">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L2045">            innerEstimator.setStopThreshold(mStopThreshold);</span>
+<span class="fc" id="L2046">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L2047">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L2046">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L2049">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L2048" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L2049">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L2051" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L2052">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L2052">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L2053">            throw new LockedException(e);</span>
-<span class="nc" id="L2054">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L2055">            throw new NotReadyException(e);</span>
-<span class="nc" id="L2056">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L2057">            throw new CalibrationException(e);</span>
+<span class="nc" id="L2055">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L2056">            throw new LockedException(e);</span>
+<span class="nc" id="L2057">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L2058">            throw new NotReadyException(e);</span>
+<span class="nc" id="L2059">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L2060">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L2059">            mRunning = false;</span>
+<span class="fc" id="L2062">            mRunning = false;</span>
         }
-<span class="fc" id="L2061">    }</span>
+<span class="fc" id="L2064">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -2067,7 +2070,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L2070">        return RobustEstimatorMethod.LMedS;</span>
+<span class="fc" id="L2073">        return RobustEstimatorMethod.LMedS;</span>
     }
 
     /**
@@ -2078,7 +2081,7 @@ public class LMedSRobustTurntableGyroscopeCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L2081">        return false;</span>
+<span class="fc" id="L2084">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

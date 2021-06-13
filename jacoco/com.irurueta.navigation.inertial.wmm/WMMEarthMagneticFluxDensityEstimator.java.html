@@ -23,6 +23,7 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -48,8 +49,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * Accuracy is expressed in radians and refers to estimated
      * declination and dip angles.
      */
-<span class="fc" id="L51">    public static final double ANGLE_ACCURACY_RADIANS =</span>
-<span class="fc" id="L52">            Math.toRadians(ANGLE_ACCURACY_DEGREES);</span>
+<span class="fc" id="L52">    public static final double ANGLE_ACCURACY_RADIANS =</span>
+<span class="fc" id="L53">            Math.toRadians(ANGLE_ACCURACY_DEGREES);</span>
 
     /**
      * Guaranteed accuracy of estimated magnetic flux density
@@ -140,27 +141,27 @@ public class WMMEarthMagneticFluxDensityEstimator {
     /**
      * The time adjusted geomagnetic gauss coefficients (nt).
      */
-<span class="fc" id="L143">    private final double[][] mTc = new double[N][N];</span>
+<span class="fc" id="L144">    private final double[][] mTc = new double[N][N];</span>
 
     /**
      * The theta derivative of p(n,m) (un-normalized).
      */
-<span class="fc" id="L148">    private final double[][] mDp = new double[N][N];</span>
+<span class="fc" id="L149">    private final double[][] mDp = new double[N][N];</span>
 
     /**
      * The sine of (m*spherical coord. longitude).
      */
-<span class="fc" id="L153">    private final double[] mSp = new double[N];</span>
+<span class="fc" id="L154">    private final double[] mSp = new double[N];</span>
 
     /**
      * The cosine of (m*spherical coord. longitude).
      */
-<span class="fc" id="L158">    private final double[] mCp = new double[N];</span>
+<span class="fc" id="L159">    private final double[] mCp = new double[N];</span>
 
     /**
      * The associated Legendre polynomials for m=1 (un-normalized).
      */
-<span class="fc" id="L163">    private final double[] mPp = new double[N];</span>
+<span class="fc" id="L164">    private final double[] mPp = new double[N];</span>
 
     /**
      * The north-south field intensity expressed in nano Teslas (nT).
@@ -231,8 +232,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public WMMEarthMagneticFluxDensityEstimator()
             throws IOException {
-<span class="fc" id="L234">        this(WMMLoader.loadFromResource(COEFFICIENTS_FILE));</span>
-<span class="fc" id="L235">    }</span>
+<span class="fc" id="L235">        this(WMMLoader.loadFromResource(COEFFICIENTS_FILE));</span>
+<span class="fc" id="L236">    }</span>
 
     /**
      * Constructor.
@@ -241,32 +242,32 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @throws NullPointerException if provided model is null.
      */
     public WMMEarthMagneticFluxDensityEstimator(
-<span class="fc" id="L244">            final WorldMagneticModel model) {</span>
-<span class="fc bfc" id="L245" title="All 2 branches covered.">        if (model == null) {</span>
-<span class="fc" id="L246">            throw new NullPointerException();</span>
+<span class="fc" id="L245">            final WorldMagneticModel model) {</span>
+<span class="fc bfc" id="L246" title="All 2 branches covered.">        if (model == null) {</span>
+<span class="fc" id="L247">            throw new NullPointerException();</span>
         }
-<span class="fc" id="L248">        mModel = model;</span>
-<span class="fc" id="L249">        mSp[0] = 0.0;</span>
-<span class="fc" id="L250">        mCp[0] = 1.0;</span>
-<span class="fc" id="L251">        mPp[0] = 1.0;</span>
+<span class="fc" id="L249">        mModel = model;</span>
+<span class="fc" id="L250">        mSp[0] = 0.0;</span>
+<span class="fc" id="L251">        mCp[0] = 1.0;</span>
+<span class="fc" id="L252">        mPp[0] = 1.0;</span>
 
         // semi-major axis of WGS-84 ellipsoid, in Km (6378.137 Km).
-<span class="fc" id="L254">        final double a = DistanceConverter.convert(</span>
+<span class="fc" id="L255">        final double a = DistanceConverter.convert(</span>
                 Constants.EARTH_EQUATORIAL_RADIUS_WGS84,
                 DistanceUnit.METER, DistanceUnit.KILOMETER);
 
         // semi-minor axis of WGS-84 ellipsoid, in Km (6356.7523142 Km).
-<span class="fc" id="L259">        final double b = DistanceConverter.convert(</span>
+<span class="fc" id="L260">        final double b = DistanceConverter.convert(</span>
                 Constants.EARTH_POLAR_RADIUS_WGS84,
                 DistanceUnit.METER, DistanceUnit.KILOMETER);
-<span class="fc" id="L262">        mA2 = a * a;</span>
-<span class="fc" id="L263">        mB2 = b * b;</span>
-<span class="fc" id="L264">        mC2 = mA2 - mB2;</span>
-<span class="fc" id="L265">        mA4 = mA2 * mA2;</span>
+<span class="fc" id="L263">        mA2 = a * a;</span>
+<span class="fc" id="L264">        mB2 = b * b;</span>
+<span class="fc" id="L265">        mC2 = mA2 - mB2;</span>
+<span class="fc" id="L266">        mA4 = mA2 * mA2;</span>
 
-<span class="fc" id="L267">        final double b4 = mB2 * mB2;</span>
-<span class="fc" id="L268">        mC4 = mA4 - b4;</span>
-<span class="fc" id="L269">    }</span>
+<span class="fc" id="L268">        final double b4 = mB2 * mB2;</span>
+<span class="fc" id="L269">        mC4 = mA4 - b4;</span>
+<span class="fc" id="L270">    }</span>
 
     /**
      * Gets World Magnetic Model containing all required coefficients.
@@ -274,7 +275,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return World Magnetic Model.
      */
     public WorldMagneticModel getModel() {
-<span class="fc" id="L277">        return mModel;</span>
+<span class="fc" id="L278">        return mModel;</span>
     }
 
     /**
@@ -291,11 +292,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getDeclination(
             final double latitude, final double longitude) {
-<span class="fc" id="L294">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L295">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L296">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L297">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L298">        return Math.toRadians(mDec);</span>
+<span class="fc" id="L299">        return Math.toRadians(mDec);</span>
     }
 
     /**
@@ -312,8 +313,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getDeclination(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L315">        return getDeclination(convertAngle(latitude),</span>
-<span class="fc" id="L316">                convertAngle(longitude));</span>
+<span class="fc" id="L316">        return getDeclination(convertAngle(latitude),</span>
+<span class="fc" id="L317">                convertAngle(longitude));</span>
     }
 
     /**
@@ -332,9 +333,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final double latitude, final double longitude,
             final Angle result) {
-<span class="fc" id="L335">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L336">        result.setValue(getDeclination(latitude, longitude));</span>
-<span class="fc" id="L337">    }</span>
+<span class="fc" id="L336">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L337">        result.setValue(getDeclination(latitude, longitude));</span>
+<span class="fc" id="L338">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -350,7 +351,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDeclinationAsAngle(
             final double latitude, final double longitude) {
-<span class="fc" id="L353">        return new Angle(getDeclination(latitude, longitude),</span>
+<span class="fc" id="L354">        return new Angle(getDeclination(latitude, longitude),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -370,9 +371,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final Angle latitude, final Angle longitude,
             final Angle result) {
-<span class="fc" id="L373">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L374">        result.setValue(getDeclination(latitude, longitude));</span>
-<span class="fc" id="L375">    }</span>
+<span class="fc" id="L374">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L375">        result.setValue(getDeclination(latitude, longitude));</span>
+<span class="fc" id="L376">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -388,7 +389,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDeclinationAsAngle(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L391">        return new Angle(getDeclination(latitude, longitude),</span>
+<span class="fc" id="L392">        return new Angle(getDeclination(latitude, longitude),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -407,12 +408,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDeclination(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L410">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L411">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L413">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L414">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L415">        return Math.toRadians(mDec);</span>
+<span class="fc" id="L416">        return Math.toRadians(mDec);</span>
     }
 
     /**
@@ -431,8 +432,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDeclination(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L434">        return getDeclination(latitude, longitude, height,</span>
-<span class="fc" id="L435">                convertTime(calendar));</span>
+<span class="fc" id="L435">        return getDeclination(latitude, longitude, height,</span>
+<span class="fc" id="L436">                convertTime(calendar));</span>
     }
 
     /**
@@ -451,9 +452,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDeclination(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L454">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L455">        calendar.setTime(time);</span>
-<span class="fc" id="L456">        return getDeclination(latitude, longitude, height, calendar);</span>
+<span class="fc" id="L455">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L456">        calendar.setTime(time);</span>
+<span class="fc" id="L457">        return getDeclination(latitude, longitude, height, calendar);</span>
     }
 
     /**
@@ -471,8 +472,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDeclination(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L474">        return getDeclination(convertAngle(latitude),</span>
-<span class="fc" id="L475">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L475">        return getDeclination(convertAngle(latitude),</span>
+<span class="fc" id="L476">                convertAngle(longitude), convertDistance(height),</span>
                 year);
     }
 
@@ -492,8 +493,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDeclination(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L495">        return getDeclination(convertAngle(latitude),</span>
-<span class="fc" id="L496">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L496">        return getDeclination(convertAngle(latitude),</span>
+<span class="fc" id="L497">                convertAngle(longitude), convertDistance(height),</span>
                 calendar);
     }
 
@@ -513,8 +514,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDeclination(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L516">        return getDeclination(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L517">                convertDistance(height), time);</span>
+<span class="fc" id="L517">        return getDeclination(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L518">                convertDistance(height), time);</span>
     }
 
     /**
@@ -529,8 +530,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getDeclination(
             final NEDPosition position, final double year) {
-<span class="fc" id="L532">        return getDeclination(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L533">                position.getHeight(), year);</span>
+<span class="fc" id="L533">        return getDeclination(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L534">                position.getHeight(), year);</span>
     }
 
     /**
@@ -545,8 +546,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getDeclination(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L548">        return getDeclination(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L549">                position.getHeight(), calendar);</span>
+<span class="fc" id="L549">        return getDeclination(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L550">                position.getHeight(), calendar);</span>
     }
 
     /**
@@ -561,8 +562,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getDeclination(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L564">        return getDeclination(position.getLatitude(),</span>
-<span class="fc" id="L565">                position.getLongitude(), position.getHeight(), time);</span>
+<span class="fc" id="L565">        return getDeclination(position.getLatitude(),</span>
+<span class="fc" id="L566">                position.getLongitude(), position.getHeight(), time);</span>
     }
 
     /**
@@ -581,9 +582,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final double latitude, final double longitude,
             final double height, final double year, final Angle result) {
-<span class="fc" id="L584">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L585">        result.setValue(getDeclination(latitude, longitude, height, year));</span>
-<span class="fc" id="L586">    }</span>
+<span class="fc" id="L585">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L586">        result.setValue(getDeclination(latitude, longitude, height, year));</span>
+<span class="fc" id="L587">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -600,7 +601,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDeclinationAsAngle(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L603">        return new Angle(getDeclination(latitude, longitude, height, year),</span>
+<span class="fc" id="L604">        return new Angle(getDeclination(latitude, longitude, height, year),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -622,10 +623,10 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar,
             final Angle result) {
-<span class="fc" id="L625">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L626">        result.setValue(getDeclination(latitude, longitude, height,</span>
+<span class="fc" id="L626">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L627">        result.setValue(getDeclination(latitude, longitude, height,</span>
                 calendar));
-<span class="fc" id="L628">    }</span>
+<span class="fc" id="L629">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -643,7 +644,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDeclinationAsAngle(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L646">        return new Angle(getDeclination(latitude, longitude, height,</span>
+<span class="fc" id="L647">        return new Angle(getDeclination(latitude, longitude, height,</span>
                 calendar), AngleUnit.RADIANS);
     }
 
@@ -664,9 +665,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final double latitude, final double longitude,
             final double height, final Date time, final Angle result) {
-<span class="fc" id="L667">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L668">        result.setValue(getDeclination(latitude, longitude, height, time));</span>
-<span class="fc" id="L669">    }</span>
+<span class="fc" id="L668">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L669">        result.setValue(getDeclination(latitude, longitude, height, time));</span>
+<span class="fc" id="L670">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -684,7 +685,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDeclinationAsAngle(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L687">        return new Angle(getDeclination(latitude, longitude, height, time),</span>
+<span class="fc" id="L688">        return new Angle(getDeclination(latitude, longitude, height, time),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -704,9 +705,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year, final Angle result) {
-<span class="fc" id="L707">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L708">        result.setValue(getDeclination(latitude, longitude, height, year));</span>
-<span class="fc" id="L709">    }</span>
+<span class="fc" id="L708">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L709">        result.setValue(getDeclination(latitude, longitude, height, year));</span>
+<span class="fc" id="L710">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -723,7 +724,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDeclinationAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L726">        return new Angle(getDeclination(latitude, longitude, height, year),</span>
+<span class="fc" id="L727">        return new Angle(getDeclination(latitude, longitude, height, year),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -745,10 +746,10 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar,
             final Angle result) {
-<span class="fc" id="L748">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L749">        result.setValue(getDeclination(latitude, longitude, height,</span>
+<span class="fc" id="L749">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L750">        result.setValue(getDeclination(latitude, longitude, height,</span>
                 calendar));
-<span class="fc" id="L751">    }</span>
+<span class="fc" id="L752">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -766,7 +767,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDeclinationAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L769">        return new Angle(getDeclination(latitude, longitude, height,</span>
+<span class="fc" id="L770">        return new Angle(getDeclination(latitude, longitude, height,</span>
                 calendar), AngleUnit.RADIANS);
     }
 
@@ -787,9 +788,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time, final Angle result) {
-<span class="fc" id="L790">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L791">        result.setValue(getDeclination(latitude, longitude, height, time));</span>
-<span class="fc" id="L792">    }</span>
+<span class="fc" id="L791">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L792">        result.setValue(getDeclination(latitude, longitude, height, time));</span>
+<span class="fc" id="L793">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -807,7 +808,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDeclinationAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L810">        return new Angle(getDeclination(latitude, longitude, height, time),</span>
+<span class="fc" id="L811">        return new Angle(getDeclination(latitude, longitude, height, time),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -825,9 +826,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final NEDPosition position, final double year,
             final Angle result) {
-<span class="fc" id="L828">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L829">        result.setValue(getDeclination(position, year));</span>
-<span class="fc" id="L830">    }</span>
+<span class="fc" id="L829">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L830">        result.setValue(getDeclination(position, year));</span>
+<span class="fc" id="L831">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -841,7 +842,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDeclinationAsAngle(
             final NEDPosition position, final double year) {
-<span class="fc" id="L844">        return new Angle(getDeclination(position, year), AngleUnit.RADIANS);</span>
+<span class="fc" id="L845">        return new Angle(getDeclination(position, year), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -858,9 +859,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final NEDPosition position, final GregorianCalendar calendar,
             final Angle result) {
-<span class="fc" id="L861">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L862">        result.setValue(getDeclination(position, calendar));</span>
-<span class="fc" id="L863">    }</span>
+<span class="fc" id="L862">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L863">        result.setValue(getDeclination(position, calendar));</span>
+<span class="fc" id="L864">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -874,7 +875,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDeclinationAsAngle(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L877">        return new Angle(getDeclination(position, calendar),</span>
+<span class="fc" id="L878">        return new Angle(getDeclination(position, calendar),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -892,9 +893,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDeclinationAsAngle(
             final NEDPosition position, final Date time,
             final Angle result) {
-<span class="fc" id="L895">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L896">        result.setValue(getDeclination(position, time));</span>
-<span class="fc" id="L897">    }</span>
+<span class="fc" id="L896">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L897">        result.setValue(getDeclination(position, time));</span>
+<span class="fc" id="L898">    }</span>
 
     /**
      * Returns the declination from the Department of Defense geomagnetic
@@ -908,7 +909,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDeclinationAsAngle(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L911">        return new Angle(getDeclination(position, time),</span>
+<span class="fc" id="L912">        return new Angle(getDeclination(position, time),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -923,11 +924,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return the magnetic field dip angle expressed in radians.
      */
     public double getDip(final double latitude, final double longitude) {
-<span class="fc" id="L926">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L927">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L928">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L929">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L930">        return Math.toRadians(mDip);</span>
+<span class="fc" id="L931">        return Math.toRadians(mDip);</span>
     }
 
     /**
@@ -941,7 +942,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return the magnetic field dip angle expressed in radians.
      */
     public double getDip(final Angle latitude, final Angle longitude) {
-<span class="fc" id="L944">        return getDip(convertAngle(latitude), convertAngle(longitude));</span>
+<span class="fc" id="L945">        return getDip(convertAngle(latitude), convertAngle(longitude));</span>
     }
 
     /**
@@ -958,9 +959,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final double latitude, final double longitude,
             final Angle result) {
-<span class="fc" id="L961">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L962">        result.setValue(getDip(latitude, longitude));</span>
-<span class="fc" id="L963">    }</span>
+<span class="fc" id="L962">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L963">        result.setValue(getDip(latitude, longitude));</span>
+<span class="fc" id="L964">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -974,7 +975,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDipAsAngle(
             final double latitude, final double longitude) {
-<span class="fc" id="L977">        return new Angle(getDip(latitude, longitude), AngleUnit.RADIANS);</span>
+<span class="fc" id="L978">        return new Angle(getDip(latitude, longitude), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -991,9 +992,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final Angle latitude, final Angle longitude,
             final Angle result) {
-<span class="fc" id="L994">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L995">        result.setValue(getDip(latitude, longitude));</span>
-<span class="fc" id="L996">    }</span>
+<span class="fc" id="L995">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L996">        result.setValue(getDip(latitude, longitude));</span>
+<span class="fc" id="L997">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1007,7 +1008,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDipAsAngle(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L1010">        return new Angle(getDip(latitude, longitude), AngleUnit.RADIANS);</span>
+<span class="fc" id="L1011">        return new Angle(getDip(latitude, longitude), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -1023,12 +1024,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDip(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L1026">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L1027">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L1029">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1030">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L1031">        return Math.toRadians(mDip);</span>
+<span class="fc" id="L1032">        return Math.toRadians(mDip);</span>
     }
 
     /**
@@ -1044,8 +1045,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDip(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L1047">        return getDip(latitude, longitude, height,</span>
-<span class="fc" id="L1048">                convertTime(calendar));</span>
+<span class="fc" id="L1048">        return getDip(latitude, longitude, height,</span>
+<span class="fc" id="L1049">                convertTime(calendar));</span>
     }
 
     /**
@@ -1061,9 +1062,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDip(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L1064">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L1065">        calendar.setTime(time);</span>
-<span class="fc" id="L1066">        return getDip(latitude, longitude, height, calendar);</span>
+<span class="fc" id="L1065">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1066">        calendar.setTime(time);</span>
+<span class="fc" id="L1067">        return getDip(latitude, longitude, height, calendar);</span>
     }
 
     /**
@@ -1079,8 +1080,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDip(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L1082">        return getDip(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L1083">                convertDistance(height), year);</span>
+<span class="fc" id="L1083">        return getDip(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L1084">                convertDistance(height), year);</span>
     }
 
     /**
@@ -1096,8 +1097,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDip(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L1099">        return getDip(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L1100">                convertDistance(height), calendar);</span>
+<span class="fc" id="L1100">        return getDip(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L1101">                convertDistance(height), calendar);</span>
     }
 
     /**
@@ -1113,8 +1114,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getDip(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L1116">        return getDip(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L1117">                convertDistance(height), time);</span>
+<span class="fc" id="L1117">        return getDip(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L1118">                convertDistance(height), time);</span>
     }
 
     /**
@@ -1126,8 +1127,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return the magnetic field dip angle expressed in radians.
      */
     public double getDip(final NEDPosition position, final double year) {
-<span class="fc" id="L1129">        return getDip(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L1130">                position.getHeight(), year);</span>
+<span class="fc" id="L1130">        return getDip(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1131">                position.getHeight(), year);</span>
     }
 
     /**
@@ -1142,8 +1143,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final NEDPosition position,
             final GregorianCalendar calendar) {
 
-<span class="fc" id="L1145">        return getDip(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L1146">                position.getHeight(), calendar);</span>
+<span class="fc" id="L1146">        return getDip(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1147">                position.getHeight(), calendar);</span>
     }
 
     /**
@@ -1156,8 +1157,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getDip(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L1159">        return getDip(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L1160">                position.getHeight(), time);</span>
+<span class="fc" id="L1160">        return getDip(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1161">                position.getHeight(), time);</span>
     }
 
     /**
@@ -1174,9 +1175,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final double latitude, final double longitude,
             final double height, final double year, final Angle result) {
-<span class="fc" id="L1177">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1178">        result.setValue(getDip(latitude, longitude, height, year));</span>
-<span class="fc" id="L1179">    }</span>
+<span class="fc" id="L1178">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1179">        result.setValue(getDip(latitude, longitude, height, year));</span>
+<span class="fc" id="L1180">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1191,7 +1192,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L1194">        return new Angle(getDip(latitude, longitude, height, year),</span>
+<span class="fc" id="L1195">        return new Angle(getDip(latitude, longitude, height, year),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1210,9 +1211,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar,
             final Angle result) {
-<span class="fc" id="L1213">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1214">        result.setValue(getDip(latitude, longitude, height, calendar));</span>
-<span class="fc" id="L1215">    }</span>
+<span class="fc" id="L1214">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1215">        result.setValue(getDip(latitude, longitude, height, calendar));</span>
+<span class="fc" id="L1216">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1227,7 +1228,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L1230">        return new Angle(getDip(latitude, longitude, height, calendar),</span>
+<span class="fc" id="L1231">        return new Angle(getDip(latitude, longitude, height, calendar),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1245,9 +1246,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final double latitude, final double longitude,
             final double height, final Date time, final Angle result) {
-<span class="fc" id="L1248">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1249">        result.setValue(getDip(latitude, longitude, height, time));</span>
-<span class="fc" id="L1250">    }</span>
+<span class="fc" id="L1249">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1250">        result.setValue(getDip(latitude, longitude, height, time));</span>
+<span class="fc" id="L1251">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1262,7 +1263,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L1265">        return new Angle(getDip(latitude, longitude, height, time),</span>
+<span class="fc" id="L1266">        return new Angle(getDip(latitude, longitude, height, time),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1280,9 +1281,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year, final Angle result) {
-<span class="fc" id="L1283">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1284">        result.setValue(getDip(latitude, longitude, height, year));</span>
-<span class="fc" id="L1285">    }</span>
+<span class="fc" id="L1284">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1285">        result.setValue(getDip(latitude, longitude, height, year));</span>
+<span class="fc" id="L1286">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1297,7 +1298,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L1300">        return new Angle(getDip(latitude, longitude, height, year),</span>
+<span class="fc" id="L1301">        return new Angle(getDip(latitude, longitude, height, year),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1316,9 +1317,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar,
             final Angle result) {
-<span class="fc" id="L1319">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1320">        result.setValue(getDip(latitude, longitude, height, calendar));</span>
-<span class="fc" id="L1321">    }</span>
+<span class="fc" id="L1320">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1321">        result.setValue(getDip(latitude, longitude, height, calendar));</span>
+<span class="fc" id="L1322">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1333,7 +1334,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L1336">        return new Angle(getDip(latitude, longitude, height, calendar),</span>
+<span class="fc" id="L1337">        return new Angle(getDip(latitude, longitude, height, calendar),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1351,9 +1352,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time, final Angle result) {
-<span class="fc" id="L1354">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1355">        result.setValue(getDip(latitude, longitude, height, time));</span>
-<span class="fc" id="L1356">    }</span>
+<span class="fc" id="L1355">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1356">        result.setValue(getDip(latitude, longitude, height, time));</span>
+<span class="fc" id="L1357">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1368,7 +1369,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L1371">        return new Angle(getDip(latitude, longitude, height, time),</span>
+<span class="fc" id="L1372">        return new Angle(getDip(latitude, longitude, height, time),</span>
                 AngleUnit.RADIANS);
     }
 
@@ -1384,9 +1385,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final NEDPosition position, final double year,
             final Angle result) {
-<span class="fc" id="L1387">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1388">        result.setValue(getDip(position, year));</span>
-<span class="fc" id="L1389">    }</span>
+<span class="fc" id="L1388">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1389">        result.setValue(getDip(position, year));</span>
+<span class="fc" id="L1390">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1398,7 +1399,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDipAsAngle(
             final NEDPosition position, final double year) {
-<span class="fc" id="L1401">        return new Angle(getDip(position, year), AngleUnit.RADIANS);</span>
+<span class="fc" id="L1402">        return new Angle(getDip(position, year), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -1413,9 +1414,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final NEDPosition position, final GregorianCalendar calendar,
             final Angle result) {
-<span class="fc" id="L1416">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1417">        result.setValue(getDip(position, calendar));</span>
-<span class="fc" id="L1418">    }</span>
+<span class="fc" id="L1417">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1418">        result.setValue(getDip(position, calendar));</span>
+<span class="fc" id="L1419">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1428,7 +1429,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public Angle getDipAsAngle(
             final NEDPosition position,
             final GregorianCalendar calendar) {
-<span class="fc" id="L1431">        return new Angle(getDip(position, calendar), AngleUnit.RADIANS);</span>
+<span class="fc" id="L1432">        return new Angle(getDip(position, calendar), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -1443,9 +1444,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void getDipAsAngle(
             final NEDPosition position, final Date time,
             final Angle result) {
-<span class="fc" id="L1446">        result.setUnit(AngleUnit.RADIANS);</span>
-<span class="fc" id="L1447">        result.setValue(getDip(position, time));</span>
-<span class="fc" id="L1448">    }</span>
+<span class="fc" id="L1447">        result.setUnit(AngleUnit.RADIANS);</span>
+<span class="fc" id="L1448">        result.setValue(getDip(position, time));</span>
+<span class="fc" id="L1449">    }</span>
 
     /**
      * Returns the magnetic field dip angle from the Department of
@@ -1457,7 +1458,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public Angle getDipAsAngle(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L1460">        return new Angle(getDip(position, time), AngleUnit.RADIANS);</span>
+<span class="fc" id="L1461">        return new Angle(getDip(position, time), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -1472,11 +1473,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getIntensity(
             final double latitude, final double longitude) {
-<span class="fc" id="L1475">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L1476">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L1477">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1478">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L1479">        return mTi * FROM_NANO;</span>
+<span class="fc" id="L1480">        return mTi * FROM_NANO;</span>
     }
 
     /**
@@ -1491,8 +1492,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getIntensity(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L1494">        return getIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1495">                convertAngle(longitude));</span>
+<span class="fc" id="L1495">        return getIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1496">                convertAngle(longitude));</span>
     }
 
     /**
@@ -1508,12 +1509,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getIntensity(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L1511">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L1512">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L1514">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1515">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L1516">        return mTi * FROM_NANO;</span>
+<span class="fc" id="L1517">        return mTi * FROM_NANO;</span>
     }
 
     /**
@@ -1529,8 +1530,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getIntensity(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L1532">        return getIntensity(latitude, longitude, height,</span>
-<span class="fc" id="L1533">                convertTime(calendar));</span>
+<span class="fc" id="L1533">        return getIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L1534">                convertTime(calendar));</span>
     }
 
     /**
@@ -1546,9 +1547,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getIntensity(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L1549">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L1550">        calendar.setTime(time);</span>
-<span class="fc" id="L1551">        return getIntensity(latitude, longitude, height, calendar);</span>
+<span class="fc" id="L1550">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1551">        calendar.setTime(time);</span>
+<span class="fc" id="L1552">        return getIntensity(latitude, longitude, height, calendar);</span>
     }
 
     /**
@@ -1564,8 +1565,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L1567">        return getIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1568">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1568">        return getIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1569">                convertAngle(longitude), convertDistance(height),</span>
                 year);
     }
 
@@ -1582,8 +1583,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L1585">        return getIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1586">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1586">        return getIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1587">                convertAngle(longitude), convertDistance(height),</span>
                 calendar);
     }
 
@@ -1600,8 +1601,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L1603">        return getIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1604">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1604">        return getIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1605">                convertAngle(longitude), convertDistance(height),</span>
                 time);
     }
 
@@ -1615,8 +1616,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getIntensity(
             final NEDPosition position, final double year) {
-<span class="fc" id="L1618">        return getIntensity(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L1619">                position.getHeight(), year);</span>
+<span class="fc" id="L1619">        return getIntensity(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1620">                position.getHeight(), year);</span>
     }
 
     /**
@@ -1629,8 +1630,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getIntensity(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L1632">        return getIntensity(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L1633">                position.getHeight(), calendar);</span>
+<span class="fc" id="L1633">        return getIntensity(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1634">                position.getHeight(), calendar);</span>
     }
 
     /**
@@ -1643,8 +1644,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getIntensity(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L1646">        return getIntensity(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L1647">                position.getHeight(), time);</span>
+<span class="fc" id="L1647">        return getIntensity(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1648">                position.getHeight(), time);</span>
     }
 
     /**
@@ -1661,11 +1662,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getHorizontalIntensity(
             final double latitude, final double longitude) {
-<span class="fc" id="L1664">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L1665">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L1666">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1667">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L1668">        return mBh * FROM_NANO;</span>
+<span class="fc" id="L1669">        return mBh * FROM_NANO;</span>
     }
 
     /**
@@ -1682,8 +1683,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getHorizontalIntensity(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L1685">        return getHorizontalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1686">                convertAngle(longitude));</span>
+<span class="fc" id="L1686">        return getHorizontalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1687">                convertAngle(longitude));</span>
     }
 
     /**
@@ -1701,12 +1702,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getHorizontalIntensity(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L1704">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L1705">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L1707">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1708">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L1709">        return mBh * FROM_NANO;</span>
+<span class="fc" id="L1710">        return mBh * FROM_NANO;</span>
     }
 
     /**
@@ -1724,8 +1725,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getHorizontalIntensity(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L1727">        return getHorizontalIntensity(latitude, longitude, height,</span>
-<span class="fc" id="L1728">                convertTime(calendar));</span>
+<span class="fc" id="L1728">        return getHorizontalIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L1729">                convertTime(calendar));</span>
     }
 
     /**
@@ -1743,9 +1744,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getHorizontalIntensity(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L1746">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L1747">        calendar.setTime(time);</span>
-<span class="fc" id="L1748">        return getHorizontalIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L1747">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1748">        calendar.setTime(time);</span>
+<span class="fc" id="L1749">        return getHorizontalIntensity(latitude, longitude, height,</span>
                 calendar);
     }
 
@@ -1764,8 +1765,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getHorizontalIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L1767">        return getHorizontalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1768">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1768">        return getHorizontalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1769">                convertAngle(longitude), convertDistance(height),</span>
                 year);
     }
 
@@ -1784,8 +1785,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getHorizontalIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L1787">        return getHorizontalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1788">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1788">        return getHorizontalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1789">                convertAngle(longitude), convertDistance(height),</span>
                 calendar);
     }
 
@@ -1804,8 +1805,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getHorizontalIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L1807">        return getHorizontalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1808">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1808">        return getHorizontalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1809">                convertAngle(longitude), convertDistance(height),</span>
                 time);
     }
 
@@ -1821,8 +1822,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getHorizontalIntensity(
             final NEDPosition position, final double year) {
-<span class="fc" id="L1824">        return getHorizontalIntensity(position.getLatitude(),</span>
-<span class="fc" id="L1825">                position.getLongitude(), position.getHeight(), year);</span>
+<span class="fc" id="L1825">        return getHorizontalIntensity(position.getLatitude(),</span>
+<span class="fc" id="L1826">                position.getLongitude(), position.getHeight(), year);</span>
     }
 
     /**
@@ -1837,8 +1838,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getHorizontalIntensity(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L1840">        return getHorizontalIntensity(position.getLatitude(),</span>
-<span class="fc" id="L1841">                position.getLongitude(), position.getHeight(), calendar);</span>
+<span class="fc" id="L1841">        return getHorizontalIntensity(position.getLatitude(),</span>
+<span class="fc" id="L1842">                position.getLongitude(), position.getHeight(), calendar);</span>
     }
 
     /**
@@ -1853,8 +1854,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getHorizontalIntensity(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L1856">        return getHorizontalIntensity(position.getLatitude(),</span>
-<span class="fc" id="L1857">                position.getLongitude(), position.getHeight(), time);</span>
+<span class="fc" id="L1857">        return getHorizontalIntensity(position.getLatitude(),</span>
+<span class="fc" id="L1858">                position.getLongitude(), position.getHeight(), time);</span>
     }
 
     /**
@@ -1871,11 +1872,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getVerticalIntensity(
             final double latitude, final double longitude) {
-<span class="fc" id="L1874">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L1875">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L1876">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1877">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L1878">        return mBz * FROM_NANO;</span>
+<span class="fc" id="L1879">        return mBz * FROM_NANO;</span>
     }
 
     /**
@@ -1892,8 +1893,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getVerticalIntensity(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L1895">        return getVerticalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1896">                convertAngle(longitude));</span>
+<span class="fc" id="L1896">        return getVerticalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1897">                convertAngle(longitude));</span>
     }
 
     /**
@@ -1911,12 +1912,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getVerticalIntensity(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L1914">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L1915">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L1917">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L1918">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L1919">        return mBz * FROM_NANO;</span>
+<span class="fc" id="L1920">        return mBz * FROM_NANO;</span>
     }
 
     /**
@@ -1934,8 +1935,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getVerticalIntensity(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L1937">        return getVerticalIntensity(latitude, longitude, height,</span>
-<span class="fc" id="L1938">                convertTime(calendar));</span>
+<span class="fc" id="L1938">        return getVerticalIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L1939">                convertTime(calendar));</span>
     }
 
     /**
@@ -1953,9 +1954,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getVerticalIntensity(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L1956">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L1957">        calendar.setTime(time);</span>
-<span class="fc" id="L1958">        return getVerticalIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L1957">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L1958">        calendar.setTime(time);</span>
+<span class="fc" id="L1959">        return getVerticalIntensity(latitude, longitude, height,</span>
                 calendar);
     }
 
@@ -1974,8 +1975,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getVerticalIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L1977">        return getVerticalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1978">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1978">        return getVerticalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1979">                convertAngle(longitude), convertDistance(height),</span>
                 year);
     }
 
@@ -1994,8 +1995,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getVerticalIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L1997">        return getVerticalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L1998">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L1998">        return getVerticalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L1999">                convertAngle(longitude), convertDistance(height),</span>
                 calendar);
     }
 
@@ -2014,8 +2015,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getVerticalIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L2017">        return getVerticalIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2018">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L2018">        return getVerticalIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2019">                convertAngle(longitude), convertDistance(height),</span>
                 time);
     }
 
@@ -2031,8 +2032,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getVerticalIntensity(
             final NEDPosition position, final double year) {
-<span class="fc" id="L2034">        return getVerticalIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2035">                position.getLongitude(), position.getHeight(), year);</span>
+<span class="fc" id="L2035">        return getVerticalIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2036">                position.getLongitude(), position.getHeight(), year);</span>
     }
 
     /**
@@ -2047,8 +2048,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getVerticalIntensity(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L2050">        return getVerticalIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2051">                position.getLongitude(), position.getHeight(), calendar);</span>
+<span class="fc" id="L2051">        return getVerticalIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2052">                position.getLongitude(), position.getHeight(), calendar);</span>
     }
 
     /**
@@ -2063,8 +2064,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getVerticalIntensity(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L2066">        return getVerticalIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2067">                position.getLongitude(), position.getHeight(), time);</span>
+<span class="fc" id="L2067">        return getVerticalIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2068">                position.getLongitude(), position.getHeight(), time);</span>
     }
 
     /**
@@ -2081,11 +2082,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getNorthIntensity(
             final double latitude, final double longitude) {
-<span class="fc" id="L2084">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L2085">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L2086">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L2087">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L2088">        return mBx * FROM_NANO;</span>
+<span class="fc" id="L2089">        return mBx * FROM_NANO;</span>
     }
 
     /**
@@ -2102,8 +2103,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getNorthIntensity(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L2105">        return getNorthIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2106">                convertAngle(longitude));</span>
+<span class="fc" id="L2106">        return getNorthIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2107">                convertAngle(longitude));</span>
     }
 
     /**
@@ -2121,12 +2122,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getNorthIntensity(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L2124">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L2125">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L2127">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L2128">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L2129">        return mBx * FROM_NANO;</span>
+<span class="fc" id="L2130">        return mBx * FROM_NANO;</span>
     }
 
     /**
@@ -2144,8 +2145,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getNorthIntensity(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L2147">        return getNorthIntensity(latitude, longitude, height,</span>
-<span class="fc" id="L2148">                convertTime(calendar));</span>
+<span class="fc" id="L2148">        return getNorthIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L2149">                convertTime(calendar));</span>
     }
 
     /**
@@ -2163,9 +2164,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getNorthIntensity(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L2166">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L2167">        calendar.setTime(time);</span>
-<span class="fc" id="L2168">        return getNorthIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L2167">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L2168">        calendar.setTime(time);</span>
+<span class="fc" id="L2169">        return getNorthIntensity(latitude, longitude, height,</span>
                 calendar);
     }
 
@@ -2184,8 +2185,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getNorthIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L2187">        return getNorthIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2188">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L2188">        return getNorthIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2189">                convertAngle(longitude), convertDistance(height),</span>
                 year);
     }
 
@@ -2204,8 +2205,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getNorthIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L2207">        return getNorthIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2208">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L2208">        return getNorthIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2209">                convertAngle(longitude), convertDistance(height),</span>
                 calendar);
     }
 
@@ -2224,8 +2225,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getNorthIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L2227">        return getNorthIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2228">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L2228">        return getNorthIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2229">                convertAngle(longitude), convertDistance(height),</span>
                 time);
     }
 
@@ -2241,8 +2242,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getNorthIntensity(
             final NEDPosition position, final double year) {
-<span class="fc" id="L2244">        return getNorthIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2245">                position.getLongitude(), position.getHeight(), year);</span>
+<span class="fc" id="L2245">        return getNorthIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2246">                position.getLongitude(), position.getHeight(), year);</span>
     }
 
     /**
@@ -2257,8 +2258,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getNorthIntensity(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L2260">        return getNorthIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2261">                position.getLongitude(), position.getHeight(), calendar);</span>
+<span class="fc" id="L2261">        return getNorthIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2262">                position.getLongitude(), position.getHeight(), calendar);</span>
     }
 
     /**
@@ -2273,8 +2274,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getNorthIntensity(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L2276">        return getNorthIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2277">                position.getLongitude(), position.getHeight(), time);</span>
+<span class="fc" id="L2277">        return getNorthIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2278">                position.getLongitude(), position.getHeight(), time);</span>
     }
 
     /**
@@ -2291,11 +2292,11 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getEastIntensity(
             final double latitude, final double longitude) {
-<span class="fc" id="L2294">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L2295">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L2296">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L2297">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L2298">        return mBy * FROM_NANO;</span>
+<span class="fc" id="L2299">        return mBy * FROM_NANO;</span>
     }
 
     /**
@@ -2312,8 +2313,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getEastIntensity(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L2315">        return getEastIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2316">                convertAngle(longitude));</span>
+<span class="fc" id="L2316">        return getEastIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2317">                convertAngle(longitude));</span>
     }
 
     /**
@@ -2331,12 +2332,12 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getEastIntensity(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L2334">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L2335">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L2337">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L2338">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L2339">        return mBy * FROM_NANO;</span>
+<span class="fc" id="L2340">        return mBy * FROM_NANO;</span>
     }
 
     /**
@@ -2354,8 +2355,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getEastIntensity(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L2357">        return getEastIntensity(latitude, longitude, height,</span>
-<span class="fc" id="L2358">                convertTime(calendar));</span>
+<span class="fc" id="L2358">        return getEastIntensity(latitude, longitude, height,</span>
+<span class="fc" id="L2359">                convertTime(calendar));</span>
     }
 
     /**
@@ -2373,9 +2374,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getEastIntensity(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L2376">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L2377">        calendar.setTime(time);</span>
-<span class="fc" id="L2378">        return getEastIntensity(latitude, longitude, height, calendar);</span>
+<span class="fc" id="L2377">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L2378">        calendar.setTime(time);</span>
+<span class="fc" id="L2379">        return getEastIntensity(latitude, longitude, height, calendar);</span>
     }
 
     /**
@@ -2393,8 +2394,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getEastIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L2396">        return getEastIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2397">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L2397">        return getEastIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2398">                convertAngle(longitude), convertDistance(height),</span>
                 year);
     }
 
@@ -2413,9 +2414,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getEastIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L2416">        return getEastIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2417">                convertAngle(longitude),</span>
-<span class="fc" id="L2418">                convertDistance(height), calendar);</span>
+<span class="fc" id="L2417">        return getEastIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2418">                convertAngle(longitude),</span>
+<span class="fc" id="L2419">                convertDistance(height), calendar);</span>
     }
 
     /**
@@ -2433,8 +2434,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public double getEastIntensity(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L2436">        return getEastIntensity(convertAngle(latitude),</span>
-<span class="fc" id="L2437">                convertAngle(longitude), convertDistance(height),</span>
+<span class="fc" id="L2437">        return getEastIntensity(convertAngle(latitude),</span>
+<span class="fc" id="L2438">                convertAngle(longitude), convertDistance(height),</span>
                 time);
     }
 
@@ -2450,8 +2451,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getEastIntensity(
             final NEDPosition position, final double year) {
-<span class="fc" id="L2453">        return getEastIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2454">                position.getLongitude(), position.getHeight(), year);</span>
+<span class="fc" id="L2454">        return getEastIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2455">                position.getLongitude(), position.getHeight(), year);</span>
     }
 
     /**
@@ -2466,8 +2467,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getEastIntensity(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L2469">        return getEastIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2470">                position.getLongitude(), position.getHeight(), calendar);</span>
+<span class="fc" id="L2470">        return getEastIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2471">                position.getLongitude(), position.getHeight(), calendar);</span>
     }
 
     /**
@@ -2482,8 +2483,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public double getEastIntensity(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L2485">        return getEastIntensity(position.getLatitude(),</span>
-<span class="fc" id="L2486">                position.getLongitude(), position.getHeight(), time);</span>
+<span class="fc" id="L2486">        return getEastIntensity(position.getLatitude(),</span>
+<span class="fc" id="L2487">                position.getLongitude(), position.getHeight(), time);</span>
     }
 
     /**
@@ -2499,16 +2500,16 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void estimate(
             final double latitude, final double longitude,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2502">        final double defaultTime = mModel.epoch</span>
+<span class="fc" id="L2503">        final double defaultTime = mModel.epoch</span>
                 + WorldMagneticModel.LIFESPAN / 2.0;
-<span class="fc" id="L2504">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L2505">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 0.0, defaultTime);
-<span class="fc" id="L2506">        final double bn = mBx * FROM_NANO;</span>
-<span class="fc" id="L2507">        final double be = mBy * FROM_NANO;</span>
-<span class="fc" id="L2508">        final double bd = mBz * FROM_NANO;</span>
+<span class="fc" id="L2507">        final double bn = mBx * FROM_NANO;</span>
+<span class="fc" id="L2508">        final double be = mBy * FROM_NANO;</span>
+<span class="fc" id="L2509">        final double bd = mBz * FROM_NANO;</span>
 
-<span class="fc" id="L2510">        result.setCoordinates(bn, be, bd);</span>
-<span class="fc" id="L2511">    }</span>
+<span class="fc" id="L2511">        result.setCoordinates(bn, be, bd);</span>
+<span class="fc" id="L2512">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2521,9 +2522,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public NEDMagneticFluxDensity estimate(
             final double latitude, final double longitude) {
-<span class="fc" id="L2524">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2525">        estimate(latitude, longitude, result);</span>
-<span class="fc" id="L2526">        return result;</span>
+<span class="fc" id="L2525">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2526">        estimate(latitude, longitude, result);</span>
+<span class="fc" id="L2527">        return result;</span>
     }
 
     /**
@@ -2539,9 +2540,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void estimate(
             final Angle latitude, final Angle longitude,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2542">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L2543">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
                 result);
-<span class="fc" id="L2544">    }</span>
+<span class="fc" id="L2545">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2554,7 +2555,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public NEDMagneticFluxDensity estimate(
             final Angle latitude, final Angle longitude) {
-<span class="fc" id="L2557">        return estimate(convertAngle(latitude), convertAngle(longitude));</span>
+<span class="fc" id="L2558">        return estimate(convertAngle(latitude), convertAngle(longitude));</span>
     }
 
     /**
@@ -2572,17 +2573,17 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final double height, final double year,
             final NEDMagneticFluxDensity result) {
 
-<span class="fc" id="L2575">        final double heightKm = DistanceConverter.convert(height,</span>
+<span class="fc" id="L2576">        final double heightKm = DistanceConverter.convert(height,</span>
                 DistanceUnit.METER,
                 DistanceUnit.KILOMETER);
-<span class="fc" id="L2578">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
+<span class="fc" id="L2579">        calcGeoMag(Math.toDegrees(latitude), Math.toDegrees(longitude),</span>
                 heightKm, year);
-<span class="fc" id="L2580">        final double bn = mBx * FROM_NANO;</span>
-<span class="fc" id="L2581">        final double be = mBy * FROM_NANO;</span>
-<span class="fc" id="L2582">        final double bd = mBz * FROM_NANO;</span>
+<span class="fc" id="L2581">        final double bn = mBx * FROM_NANO;</span>
+<span class="fc" id="L2582">        final double be = mBy * FROM_NANO;</span>
+<span class="fc" id="L2583">        final double bd = mBz * FROM_NANO;</span>
 
-<span class="fc" id="L2584">        result.setCoordinates(bn, be, bd);</span>
-<span class="fc" id="L2585">    }</span>
+<span class="fc" id="L2585">        result.setCoordinates(bn, be, bd);</span>
+<span class="fc" id="L2586">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2596,9 +2597,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public NEDMagneticFluxDensity estimate(
             final double latitude, final double longitude,
             final double height, final double year) {
-<span class="fc" id="L2599">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2600">        estimate(latitude, longitude, height, year, result);</span>
-<span class="fc" id="L2601">        return result;</span>
+<span class="fc" id="L2600">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2601">        estimate(latitude, longitude, height, year, result);</span>
+<span class="fc" id="L2602">        return result;</span>
     }
 
     /**
@@ -2615,9 +2616,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2618">        estimate(latitude, longitude, height, convertTime(calendar),</span>
+<span class="fc" id="L2619">        estimate(latitude, longitude, height, convertTime(calendar),</span>
                 result);
-<span class="fc" id="L2620">    }</span>
+<span class="fc" id="L2621">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2631,9 +2632,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public NEDMagneticFluxDensity estimate(
             final double latitude, final double longitude,
             final double height, final GregorianCalendar calendar) {
-<span class="fc" id="L2634">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2635">        estimate(latitude, longitude, height, calendar, result);</span>
-<span class="fc" id="L2636">        return result;</span>
+<span class="fc" id="L2635">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2636">        estimate(latitude, longitude, height, calendar, result);</span>
+<span class="fc" id="L2637">        return result;</span>
     }
 
     /**
@@ -2650,10 +2651,10 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final double latitude, final double longitude,
             final double height, final Date time,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2653">        final GregorianCalendar calendar = new GregorianCalendar();</span>
-<span class="fc" id="L2654">        calendar.setTime(time);</span>
-<span class="fc" id="L2655">        estimate(latitude, longitude, height, calendar, result);</span>
-<span class="fc" id="L2656">    }</span>
+<span class="fc" id="L2654">        final GregorianCalendar calendar = new GregorianCalendar();</span>
+<span class="fc" id="L2655">        calendar.setTime(time);</span>
+<span class="fc" id="L2656">        estimate(latitude, longitude, height, calendar, result);</span>
+<span class="fc" id="L2657">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2667,9 +2668,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public NEDMagneticFluxDensity estimate(
             final double latitude, final double longitude,
             final double height, final Date time) {
-<span class="fc" id="L2670">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2671">        estimate(latitude, longitude, height, time, result);</span>
-<span class="fc" id="L2672">        return result;</span>
+<span class="fc" id="L2671">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2672">        estimate(latitude, longitude, height, time, result);</span>
+<span class="fc" id="L2673">        return result;</span>
     }
 
     /**
@@ -2686,9 +2687,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final Angle latitude, final Angle longitude,
             final Distance height, final double year,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2689">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L2690">                convertDistance(height), year, result);</span>
-<span class="fc" id="L2691">    }</span>
+<span class="fc" id="L2690">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L2691">                convertDistance(height), year, result);</span>
+<span class="fc" id="L2692">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2702,9 +2703,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public NEDMagneticFluxDensity estimate(
             final Angle latitude, final Angle longitude,
             final Distance height, final double year) {
-<span class="fc" id="L2705">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2706">        estimate(latitude, longitude, height, year, result);</span>
-<span class="fc" id="L2707">        return result;</span>
+<span class="fc" id="L2706">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2707">        estimate(latitude, longitude, height, year, result);</span>
+<span class="fc" id="L2708">        return result;</span>
     }
 
     /**
@@ -2721,9 +2722,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2724">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L2725">                convertDistance(height), calendar, result);</span>
-<span class="fc" id="L2726">    }</span>
+<span class="fc" id="L2725">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L2726">                convertDistance(height), calendar, result);</span>
+<span class="fc" id="L2727">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2737,9 +2738,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public NEDMagneticFluxDensity estimate(
             final Angle latitude, final Angle longitude,
             final Distance height, final GregorianCalendar calendar) {
-<span class="fc" id="L2740">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2741">        estimate(latitude, longitude, height, calendar, result);</span>
-<span class="fc" id="L2742">        return result;</span>
+<span class="fc" id="L2741">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2742">        estimate(latitude, longitude, height, calendar, result);</span>
+<span class="fc" id="L2743">        return result;</span>
     }
 
     /**
@@ -2756,9 +2757,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2759">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
-<span class="fc" id="L2760">                convertDistance(height), time, result);</span>
-<span class="fc" id="L2761">    }</span>
+<span class="fc" id="L2760">        estimate(convertAngle(latitude), convertAngle(longitude),</span>
+<span class="fc" id="L2761">                convertDistance(height), time, result);</span>
+<span class="fc" id="L2762">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2772,9 +2773,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public NEDMagneticFluxDensity estimate(
             final Angle latitude, final Angle longitude,
             final Distance height, final Date time) {
-<span class="fc" id="L2775">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2776">        estimate(latitude, longitude, height, time, result);</span>
-<span class="fc" id="L2777">        return result;</span>
+<span class="fc" id="L2776">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2777">        estimate(latitude, longitude, height, time, result);</span>
+<span class="fc" id="L2778">        return result;</span>
     }
 
     /**
@@ -2788,9 +2789,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void estimate(
             final NEDPosition position, final double year,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2791">        estimate(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L2792">                position.getHeight(), year, result);</span>
-<span class="fc" id="L2793">    }</span>
+<span class="fc" id="L2792">        estimate(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L2793">                position.getHeight(), year, result);</span>
+<span class="fc" id="L2794">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2801,9 +2802,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public NEDMagneticFluxDensity estimate(
             final NEDPosition position, final double year) {
-<span class="fc" id="L2804">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2805">        estimate(position, year, result);</span>
-<span class="fc" id="L2806">        return result;</span>
+<span class="fc" id="L2805">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2806">        estimate(position, year, result);</span>
+<span class="fc" id="L2807">        return result;</span>
     }
 
     /**
@@ -2817,9 +2818,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void estimate(
             final NEDPosition position, final GregorianCalendar calendar,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2820">        estimate(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L2821">                position.getHeight(), calendar, result);</span>
-<span class="fc" id="L2822">    }</span>
+<span class="fc" id="L2821">        estimate(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L2822">                position.getHeight(), calendar, result);</span>
+<span class="fc" id="L2823">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2830,9 +2831,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public NEDMagneticFluxDensity estimate(
             final NEDPosition position, final GregorianCalendar calendar) {
-<span class="fc" id="L2833">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2834">        estimate(position, calendar, result);</span>
-<span class="fc" id="L2835">        return result;</span>
+<span class="fc" id="L2834">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2835">        estimate(position, calendar, result);</span>
+<span class="fc" id="L2836">        return result;</span>
     }
 
     /**
@@ -2846,9 +2847,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
     public void estimate(
             final NEDPosition position, final Date time,
             final NEDMagneticFluxDensity result) {
-<span class="fc" id="L2849">        estimate(position.getLatitude(), position.getLongitude(),</span>
-<span class="fc" id="L2850">                position.getHeight(), time, result);</span>
-<span class="fc" id="L2851">    }</span>
+<span class="fc" id="L2850">        estimate(position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L2851">                position.getHeight(), time, result);</span>
+<span class="fc" id="L2852">    }</span>
 
     /**
      * Estimates Earth magnetic flux density.
@@ -2859,9 +2860,9 @@ public class WMMEarthMagneticFluxDensityEstimator {
      */
     public NEDMagneticFluxDensity estimate(
             final NEDPosition position, final Date time) {
-<span class="fc" id="L2862">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
-<span class="fc" id="L2863">        estimate(position, time, result);</span>
-<span class="fc" id="L2864">        return result;</span>
+<span class="fc" id="L2863">        final NEDMagneticFluxDensity result = new NEDMagneticFluxDensity();</span>
+<span class="fc" id="L2864">        estimate(position, time, result);</span>
+<span class="fc" id="L2865">        return result;</span>
     }
 
     /**
@@ -2873,15 +2874,15 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return converted value expressed in decimal years.
      */
     public static double convertTime(final GregorianCalendar calendar) {
-<span class="fc" id="L2876">        final int year = calendar.get(Calendar.YEAR);</span>
+<span class="fc" id="L2877">        final int year = calendar.get(Calendar.YEAR);</span>
         final double daysInYear;
-<span class="fc bfc" id="L2878" title="All 2 branches covered.">        if (calendar.isLeapYear(year)) {</span>
-<span class="fc" id="L2879">            daysInYear = 366.0;</span>
+<span class="fc bfc" id="L2879" title="All 2 branches covered.">        if (calendar.isLeapYear(year)) {</span>
+<span class="fc" id="L2880">            daysInYear = 366.0;</span>
         } else {
-<span class="fc" id="L2881">            daysInYear = 365.0;</span>
+<span class="fc" id="L2882">            daysInYear = 365.0;</span>
         }
 
-<span class="fc" id="L2884">        return year + calendar.get(Calendar.DAY_OF_YEAR) / daysInYear;</span>
+<span class="fc" id="L2885">        return year + calendar.get(Calendar.DAY_OF_YEAR) / daysInYear;</span>
     }
 
     /**
@@ -2896,34 +2897,34 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * British Geological Survey (BGS). The model is based on geomagnetic
      * survey measurements from aircraft, satellite and geomagnetic
      * observatories.
-     *
+     * &lt;p&gt;
      * Accuracy:
      * In ocean areas at the Earth's surface over the entire 5 year life of
      * a degree and order 12 spherical harmonic model such as WMM-95, the
      * estimated RMS errors for the various magnetic components are:
-     *     DEC  - 0.5 degrees
-     *     DIP  - 0.5 degrees
-     *     TI   - 200.0 nano Teslas (nT)
-     *     GV   - 0.5 Degrees
-     *
+     * DEC  - 0.5 degrees
+     * DIP  - 0.5 degrees
+     * TI   - 200.0 nano Teslas (nT)
+     * GV   - 0.5 Degrees
+     * &lt;p&gt;
      * Other magnetic components that can be derived from these four by
      * simple trigonometric relations will have the following approximate
      * errors over ocean areas:
-     *     X    - 140 nT (North)
-     *     Y    - 140 nT (East)
-     *     Z    - 200 nT (Vertical) Positive is down
-     *     H    - 200 nT (Horizontal)
-     *
+     * X    - 140 nT (North)
+     * Y    - 140 nT (East)
+     * Z    - 200 nT (Vertical) Positive is down
+     * H    - 200 nT (Horizontal)
+     * &lt;p&gt;
      * Over land the RMS errors are expected to be somewhat higher, although
      * the RMS errors for DEC, DIP and GV are still estimated to be less than
      * 0.5 degree, for the entire 5-year life of the model at the Earth's
      * surface. The other component errors over land are more difficult to
      * estimate and so are not given.
-     *
+     * &lt;p&gt;
      * The accuracy at any given time of all four geomagnetic parameters
      * depends on the geomagnetic latitude. The errors are least at the
      * equator and greatest at the magnetic poles.
-     *
+     * &lt;p&gt;
      * It is very important to note that a degree and order 12 model, such
      * as WMM-2010 describes only the long wavelength spatial magnetic
      * fluctuations due to Earth's core. Not included in the WMM series
@@ -2938,7 +2939,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * deviations of the geomagnetic field from model values. In arctic and
      * antarctic regions, as well as in equatorial regions, deviations from
      * model values are both frequent and persistent.
-     *
+     * &lt;p&gt;
      * If the required declination accuracy is more stringent than the WMM
      * series of models provide, then the user is advised to request special
      * (regional or local) surveys be performed and models prepared by the
@@ -2955,107 +2956,107 @@ public class WMMEarthMagneticFluxDensityEstimator {
             final double height,
             final double year) {
 
-<span class="fc" id="L2958">        final double dt = year - mModel.epoch;</span>
-<span class="fc" id="L2959">        final double rlon = Math.toRadians(longitude);</span>
-<span class="fc" id="L2960">        final double rlat = Math.toRadians(latitude);</span>
-<span class="fc" id="L2961">        final double srlon = Math.sin(rlon);</span>
-<span class="fc" id="L2962">        final double srlat = Math.sin(rlat);</span>
-<span class="fc" id="L2963">        final double crlon = Math.cos(rlon);</span>
-<span class="fc" id="L2964">        final double crlat = Math.cos(rlat);</span>
-<span class="fc" id="L2965">        final double srlat2 = srlat * srlat;</span>
-<span class="fc" id="L2966">        final double crlat2 = crlat * crlat;</span>
-<span class="fc" id="L2967">        mSp[1] = srlon;</span>
-<span class="fc" id="L2968">        mCp[1] = crlon;</span>
+<span class="fc" id="L2959">        final double dt = year - mModel.epoch;</span>
+<span class="fc" id="L2960">        final double rlon = Math.toRadians(longitude);</span>
+<span class="fc" id="L2961">        final double rlat = Math.toRadians(latitude);</span>
+<span class="fc" id="L2962">        final double srlon = Math.sin(rlon);</span>
+<span class="fc" id="L2963">        final double srlat = Math.sin(rlat);</span>
+<span class="fc" id="L2964">        final double crlon = Math.cos(rlon);</span>
+<span class="fc" id="L2965">        final double crlat = Math.cos(rlat);</span>
+<span class="fc" id="L2966">        final double srlat2 = srlat * srlat;</span>
+<span class="fc" id="L2967">        final double crlat2 = crlat * crlat;</span>
+<span class="fc" id="L2968">        mSp[1] = srlon;</span>
+<span class="fc" id="L2969">        mCp[1] = crlon;</span>
 
         // Convert from geodetic coords to spherical coords.
-<span class="pc bpc" id="L2971" title="1 of 6 branches missed.">        if (mOldHeight == null || height != mOldHeight</span>
-<span class="fc bfc" id="L2972" title="All 2 branches covered.">                || mOldLatitude == null || latitude != mOldLatitude) {</span>
-<span class="fc" id="L2973">            final double q = Math.sqrt(mA2 - mC2 * srlat2);</span>
-<span class="fc" id="L2974">            final double q1 = height * q;</span>
-<span class="fc" id="L2975">            final double q2 = ((q1 + mA2) / (q1 + mB2)) * ((q1 + mA2) / (q1 + mB2));</span>
-<span class="fc" id="L2976">            mCt = srlat / Math.sqrt(q2 * crlat2 + srlat2);</span>
-<span class="fc" id="L2977">            mSt = Math.sqrt(1.0 - (mCt * mCt));</span>
-<span class="fc" id="L2978">            final double r2 = ((height * height) + 2.0 * q1 + (mA4 - mC4 * srlat2) / (q * q));</span>
-<span class="fc" id="L2979">            mR = Math.sqrt(r2);</span>
-<span class="fc" id="L2980">            final double mD = Math.sqrt(mA2 * crlat2 + mB2 * srlat2);</span>
-<span class="fc" id="L2981">            mCa = (height + mD) / mR;</span>
-<span class="fc" id="L2982">            mSa = mC2 * crlat * srlat / (mR * mD);</span>
+<span class="pc bpc" id="L2972" title="1 of 6 branches missed.">        if (mOldHeight == null || height != mOldHeight</span>
+<span class="fc bfc" id="L2973" title="All 2 branches covered.">                || mOldLatitude == null || latitude != mOldLatitude) {</span>
+<span class="fc" id="L2974">            final double q = Math.sqrt(mA2 - mC2 * srlat2);</span>
+<span class="fc" id="L2975">            final double q1 = height * q;</span>
+<span class="fc" id="L2976">            final double q2 = ((q1 + mA2) / (q1 + mB2)) * ((q1 + mA2) / (q1 + mB2));</span>
+<span class="fc" id="L2977">            mCt = srlat / Math.sqrt(q2 * crlat2 + srlat2);</span>
+<span class="fc" id="L2978">            mSt = Math.sqrt(1.0 - (mCt * mCt));</span>
+<span class="fc" id="L2979">            final double r2 = ((height * height) + 2.0 * q1 + (mA4 - mC4 * srlat2) / (q * q));</span>
+<span class="fc" id="L2980">            mR = Math.sqrt(r2);</span>
+<span class="fc" id="L2981">            final double mD = Math.sqrt(mA2 * crlat2 + mB2 * srlat2);</span>
+<span class="fc" id="L2982">            mCa = (height + mD) / mR;</span>
+<span class="fc" id="L2983">            mSa = mC2 * crlat * srlat / (mR * mD);</span>
         }
-<span class="fc bfc" id="L2984" title="All 4 branches covered.">        if (mOldLongitude == null || longitude != mOldLongitude) {</span>
-<span class="fc bfc" id="L2985" title="All 2 branches covered.">            for (int m = 2; m &lt;= WorldMagneticModel.MAX_ORDER; m++) {</span>
-<span class="fc" id="L2986">                mSp[m] = mSp[1] * mCp[m - 1] + mCp[1] * mSp[m - 1];</span>
-<span class="fc" id="L2987">                mCp[m] = mCp[1] * mCp[m - 1] - mSp[1] * mSp[m - 1];</span>
+<span class="fc bfc" id="L2985" title="All 4 branches covered.">        if (mOldLongitude == null || longitude != mOldLongitude) {</span>
+<span class="fc bfc" id="L2986" title="All 2 branches covered.">            for (int m = 2; m &lt;= WorldMagneticModel.MAX_ORDER; m++) {</span>
+<span class="fc" id="L2987">                mSp[m] = mSp[1] * mCp[m - 1] + mCp[1] * mSp[m - 1];</span>
+<span class="fc" id="L2988">                mCp[m] = mCp[1] * mCp[m - 1] - mSp[1] * mSp[m - 1];</span>
             }
         }
 
-<span class="fc" id="L2991">        final double aor = RE_KM / mR;</span>
-<span class="fc" id="L2992">        double ar = aor * aor;</span>
-<span class="fc" id="L2993">        double br = 0, bt = 0, bp = 0, bpp = 0;</span>
+<span class="fc" id="L2992">        final double aor = RE_KM / mR;</span>
+<span class="fc" id="L2993">        double ar = aor * aor;</span>
+<span class="fc" id="L2994">        double br = 0, bt = 0, bp = 0, bpp = 0;</span>
 
-<span class="fc bfc" id="L2995" title="All 2 branches covered.">        for (int n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {</span>
-<span class="fc" id="L2996">            ar = ar * aor;</span>
-<span class="fc bfc" id="L2997" title="All 2 branches covered.">            for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {</span>
+<span class="fc bfc" id="L2996" title="All 2 branches covered.">        for (int n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {</span>
+<span class="fc" id="L2997">            ar = ar * aor;</span>
+<span class="fc bfc" id="L2998" title="All 2 branches covered.">            for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {</span>
 
                 // compute un-normalized associated Legendre polynomials
                 // and derivatives via recursion relations
-<span class="pc bpc" id="L3001" title="1 of 6 branches missed.">                if (mOldHeight == null || height != mOldHeight</span>
-<span class="fc bfc" id="L3002" title="All 2 branches covered.">                        || mOldLatitude == null || latitude != mOldLatitude) {</span>
-<span class="fc bfc" id="L3003" title="All 2 branches covered.">                    if (n == m) {</span>
-<span class="fc" id="L3004">                        mModel.snorm[n + m * N] = mSt * mModel.snorm[n - 1 + (m - 1) * N];</span>
-<span class="fc" id="L3005">                        mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];</span>
+<span class="pc bpc" id="L3002" title="1 of 6 branches missed.">                if (mOldHeight == null || height != mOldHeight</span>
+<span class="fc bfc" id="L3003" title="All 2 branches covered.">                        || mOldLatitude == null || latitude != mOldLatitude) {</span>
+<span class="fc bfc" id="L3004" title="All 2 branches covered.">                    if (n == m) {</span>
+<span class="fc" id="L3005">                        mModel.snorm[n + m * N] = mSt * mModel.snorm[n - 1 + (m - 1) * N];</span>
+<span class="fc" id="L3006">                        mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];</span>
                     }
-<span class="fc bfc" id="L3007" title="All 4 branches covered.">                    if (n == 1 &amp;&amp; m == 0) {</span>
-<span class="fc" id="L3008">                        mModel.snorm[n] = mCt * mModel.snorm[0];</span>
-<span class="fc" id="L3009">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];</span>
+<span class="fc bfc" id="L3008" title="All 4 branches covered.">                    if (n == 1 &amp;&amp; m == 0) {</span>
+<span class="fc" id="L3009">                        mModel.snorm[n] = mCt * mModel.snorm[0];</span>
+<span class="fc" id="L3010">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];</span>
                     }
-<span class="fc bfc" id="L3011" title="All 4 branches covered.">                    if (n &gt; 1 &amp;&amp; n != m) {</span>
-<span class="fc bfc" id="L3012" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
-<span class="fc" id="L3013">                            mModel.snorm[n - 2 + m * N] = 0.0;</span>
+<span class="fc bfc" id="L3012" title="All 4 branches covered.">                    if (n &gt; 1 &amp;&amp; n != m) {</span>
+<span class="fc bfc" id="L3013" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
+<span class="fc" id="L3014">                            mModel.snorm[n - 2 + m * N] = 0.0;</span>
                         }
-<span class="fc bfc" id="L3015" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
-<span class="fc" id="L3016">                            mDp[m][n - 2] = 0.0;</span>
+<span class="fc bfc" id="L3016" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
+<span class="fc" id="L3017">                            mDp[m][n - 2] = 0.0;</span>
                         }
-<span class="fc" id="L3018">                        mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N]</span>
+<span class="fc" id="L3019">                        mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N]</span>
                                 - mModel.k[m][n] * mModel.snorm[n - 2 + m * N];
-<span class="fc" id="L3020">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N]</span>
+<span class="fc" id="L3021">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N]</span>
                                 - mModel.k[m][n] * mDp[m][n - 2];
                     }
                 }
 
                 // time adjust the Gauss coefficients
 
-<span class="fc bfc" id="L3027" title="All 4 branches covered.">                if (mOldTime == null || year != mOldTime) {</span>
-<span class="fc" id="L3028">                    mTc[m][n] = mModel.c[m][n] + dt * mModel.cd[m][n];</span>
+<span class="fc bfc" id="L3028" title="All 4 branches covered.">                if (mOldTime == null || year != mOldTime) {</span>
+<span class="fc" id="L3029">                    mTc[m][n] = mModel.c[m][n] + dt * mModel.cd[m][n];</span>
 
-<span class="fc bfc" id="L3030" title="All 2 branches covered.">                    if (m != 0) {</span>
-<span class="fc" id="L3031">                        mTc[n][m - 1] = mModel.c[n][m - 1] + dt * mModel.cd[n][m - 1];</span>
+<span class="fc bfc" id="L3031" title="All 2 branches covered.">                    if (m != 0) {</span>
+<span class="fc" id="L3032">                        mTc[n][m - 1] = mModel.c[n][m - 1] + dt * mModel.cd[n][m - 1];</span>
                     }
                 }
 
                 // accumulate terms of the spherical harmonic expansions
                 double temp1, temp2;
-<span class="fc" id="L3037">                double par = ar * mModel.snorm[n + m * N];</span>
-<span class="fc bfc" id="L3038" title="All 2 branches covered.">                if (m == 0) {</span>
-<span class="fc" id="L3039">                    temp1 = mTc[m][n] * mCp[m];</span>
-<span class="fc" id="L3040">                    temp2 = mTc[m][n] * mSp[m];</span>
+<span class="fc" id="L3038">                double par = ar * mModel.snorm[n + m * N];</span>
+<span class="fc bfc" id="L3039" title="All 2 branches covered.">                if (m == 0) {</span>
+<span class="fc" id="L3040">                    temp1 = mTc[m][n] * mCp[m];</span>
+<span class="fc" id="L3041">                    temp2 = mTc[m][n] * mSp[m];</span>
                 } else {
-<span class="fc" id="L3042">                    temp1 = mTc[m][n] * mCp[m] + mTc[n][m - 1] * mSp[m];</span>
-<span class="fc" id="L3043">                    temp2 = mTc[m][n] * mSp[m] - mTc[n][m - 1] * mCp[m];</span>
+<span class="fc" id="L3043">                    temp1 = mTc[m][n] * mCp[m] + mTc[n][m - 1] * mSp[m];</span>
+<span class="fc" id="L3044">                    temp2 = mTc[m][n] * mSp[m] - mTc[n][m - 1] * mCp[m];</span>
                 }
 
-<span class="fc" id="L3046">                bt = bt - ar * temp1 * mDp[m][n];</span>
-<span class="fc" id="L3047">                bp += (mModel.fm[m] * temp2 * par);</span>
-<span class="fc" id="L3048">                br += (mModel.fn[n] * temp1 * par);</span>
+<span class="fc" id="L3047">                bt = bt - ar * temp1 * mDp[m][n];</span>
+<span class="fc" id="L3048">                bp += (mModel.fm[m] * temp2 * par);</span>
+<span class="fc" id="L3049">                br += (mModel.fn[n] * temp1 * par);</span>
 
                 // Special case: North/south geographic poles
 
-<span class="pc bpc" id="L3052" title="3 of 4 branches missed.">                if (mSt == 0.0 &amp;&amp; m == 1) {</span>
-<span class="nc bnc" id="L3053" title="All 2 branches missed.">                    if (n == 1)</span>
-<span class="nc" id="L3054">                        mPp[n] = mPp[n - 1];</span>
+<span class="pc bpc" id="L3053" title="3 of 4 branches missed.">                if (mSt == 0.0 &amp;&amp; m == 1) {</span>
+<span class="nc bnc" id="L3054" title="All 2 branches missed.">                    if (n == 1)</span>
+<span class="nc" id="L3055">                        mPp[n] = mPp[n - 1];</span>
                     else
-<span class="nc" id="L3056">                        mPp[n] = mCt * mPp[n - 1] - mModel.k[m][n] * mPp[n - 2];</span>
-<span class="nc" id="L3057">                    double parp = ar * mPp[n];</span>
-<span class="nc" id="L3058">                    bpp += (mModel.fm[m] * temp2 * parp);</span>
+<span class="nc" id="L3057">                        mPp[n] = mCt * mPp[n - 1] - mModel.k[m][n] * mPp[n - 2];</span>
+<span class="nc" id="L3058">                    double parp = ar * mPp[n];</span>
+<span class="nc" id="L3059">                    bpp += (mModel.fm[m] * temp2 * parp);</span>
                 }
 
             }    //for(m...)
@@ -3063,10 +3064,10 @@ public class WMMEarthMagneticFluxDensityEstimator {
         }    //for(n...)
 
 
-<span class="pc bpc" id="L3066" title="1 of 2 branches missed.">        if (mSt == 0.0) {</span>
-<span class="nc" id="L3067">            bp = bpp;</span>
+<span class="pc bpc" id="L3067" title="1 of 2 branches missed.">        if (mSt == 0.0) {</span>
+<span class="nc" id="L3068">            bp = bpp;</span>
         } else {
-<span class="fc" id="L3069">            bp /= mSt;</span>
+<span class="fc" id="L3070">            bp /= mSt;</span>
         }
 
         // Rotate magnetic vector components from spherical to
@@ -3074,24 +3075,24 @@ public class WMMEarthMagneticFluxDensityEstimator {
         // by is the east-west field component
         // bx is the north-south field component
         // bz is the vertical field component.
-<span class="fc" id="L3077">        mBx = -bt * mCa - br * mSa;</span>
-<span class="fc" id="L3078">        mBy = bp;</span>
-<span class="fc" id="L3079">        mBz = bt * mSa - br * mCa;</span>
+<span class="fc" id="L3078">        mBx = -bt * mCa - br * mSa;</span>
+<span class="fc" id="L3079">        mBy = bp;</span>
+<span class="fc" id="L3080">        mBz = bt * mSa - br * mCa;</span>
 
         // Compute declination (DEC), INCLINATION (DIP) and
         // total intensity (TI)
 
-<span class="fc" id="L3084">        mBh = Math.sqrt((mBx * mBx) + (mBy * mBy));</span>
-<span class="fc" id="L3085">        mTi = Math.sqrt((mBh * mBh) + (mBz * mBz));</span>
+<span class="fc" id="L3085">        mBh = Math.sqrt((mBx * mBx) + (mBy * mBy));</span>
+<span class="fc" id="L3086">        mTi = Math.sqrt((mBh * mBh) + (mBz * mBz));</span>
         //	Calculate the declination.
-<span class="fc" id="L3087">        mDec = Math.toDegrees(Math.atan2(mBy, mBx));</span>
-<span class="fc" id="L3088">        mDip = Math.toDegrees(Math.atan2(mBz, mBh));</span>
+<span class="fc" id="L3088">        mDec = Math.toDegrees(Math.atan2(mBy, mBx));</span>
+<span class="fc" id="L3089">        mDip = Math.toDegrees(Math.atan2(mBz, mBh));</span>
 
-<span class="fc" id="L3090">        mOldTime = year;</span>
-<span class="fc" id="L3091">        mOldHeight = height;</span>
-<span class="fc" id="L3092">        mOldLatitude = latitude;</span>
-<span class="fc" id="L3093">        mOldLongitude = longitude;</span>
-<span class="fc" id="L3094">    }</span>
+<span class="fc" id="L3091">        mOldTime = year;</span>
+<span class="fc" id="L3092">        mOldHeight = height;</span>
+<span class="fc" id="L3093">        mOldLatitude = latitude;</span>
+<span class="fc" id="L3094">        mOldLongitude = longitude;</span>
+<span class="fc" id="L3095">    }</span>
 
     /**
      * Converts provided angle instance to radians.
@@ -3100,8 +3101,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return converted value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L3103">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
-<span class="fc" id="L3104">                angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L3104">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
+<span class="fc" id="L3105">                angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -3111,8 +3112,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return converted value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-<span class="fc" id="L3114">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
-<span class="fc" id="L3115">                distance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L3115">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
+<span class="fc" id="L3116">                distance.getUnit(), DistanceUnit.METER);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

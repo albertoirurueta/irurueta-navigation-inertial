@@ -185,7 +185,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * Checks if provided instance has contents similar to this instance up to provided
      * threshold value.
      *
-     * @param other instance to be compared.
+     * @param other     instance to be compared.
      * @param threshold maximum allowed difference between contents.
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
@@ -196,7 +196,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
 <span class="fc" id="L196">            return false;</span>
         }
 
-<span class="pc bpc" id="L199" title="2 of 6 branches missed.">        return  ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
+<span class="pc bpc" id="L199" title="2 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
 <span class="pc bpc" id="L200" title="2 of 8 branches missed.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
                 &amp;&amp; ((other.mMagneticFluxDensity == null &amp;&amp; mMagneticFluxDensity == null)
 <span class="pc bpc" id="L202" title="1 of 2 branches missed.">                || (mMagneticFluxDensity != null &amp;&amp; mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)));</span>
@@ -210,7 +210,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
 <span class="fc bfc" id="L214" title="All 2 branches covered.">        if (this == obj) {</span>
 <span class="fc" id="L215">            return true;</span>
         }

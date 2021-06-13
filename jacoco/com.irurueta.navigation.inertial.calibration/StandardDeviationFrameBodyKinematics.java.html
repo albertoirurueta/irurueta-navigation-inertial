@@ -25,6 +25,7 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
+
 import java.util.Objects;
 
 /**
@@ -49,8 +50,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     /**
      * Constructor.
      */
-<span class="fc" id="L52">    public StandardDeviationFrameBodyKinematics() {</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L53">    public StandardDeviationFrameBodyKinematics() {</span>
+<span class="fc" id="L54">    }</span>
 
     /**
      * Constructor.
@@ -58,8 +59,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @param kinematics current body kinematics measurement.
      */
     public StandardDeviationFrameBodyKinematics(final BodyKinematics kinematics) {
-<span class="fc" id="L61">        super(kinematics);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L62">        super(kinematics);</span>
+<span class="fc" id="L63">    }</span>
 
     /**
      * Constructor.
@@ -67,8 +68,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @param frame current ECEF frame associated to measurement.
      */
     public StandardDeviationFrameBodyKinematics(final ECEFFrame frame) {
-<span class="fc" id="L70">        super(frame);</span>
-<span class="fc" id="L71">    }</span>
+<span class="fc" id="L71">        super(frame);</span>
+<span class="fc" id="L72">    }</span>
 
     /**
      * Constructor.
@@ -77,8 +78,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      *              converted to its corresponding ECEF frame.
      */
     public StandardDeviationFrameBodyKinematics(final NEDFrame frame) {
-<span class="fc" id="L80">        super(frame);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L81">        super(frame);</span>
+<span class="fc" id="L82">    }</span>
 
     /**
      * Constructor.
@@ -88,8 +89,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public StandardDeviationFrameBodyKinematics(final double timeInterval) {
-<span class="fc" id="L91">        super(timeInterval);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L92">        super(timeInterval);</span>
+<span class="fc" id="L93">    }</span>
 
     /**
      * Constructor.
@@ -99,8 +100,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public StandardDeviationFrameBodyKinematics(final Time timeInterval) {
-<span class="fc" id="L102">        super(timeInterval);</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L103">        super(timeInterval);</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Constructor.
@@ -110,8 +111,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public StandardDeviationFrameBodyKinematics(
             final ECEFFrame frame, final ECEFFrame previousFrame) {
-<span class="fc" id="L113">        super(frame, previousFrame);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L114">        super(frame, previousFrame);</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Constructor.
@@ -123,8 +124,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public StandardDeviationFrameBodyKinematics(
             final NEDFrame frame, final NEDFrame previousFrame) {
-<span class="fc" id="L126">        super(frame, previousFrame);</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L127">        super(frame, previousFrame);</span>
+<span class="fc" id="L128">    }</span>
 
     /**
      * Constructor.
@@ -138,8 +139,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final double timeInterval) {
-<span class="fc" id="L141">        super(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L142">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L143">    }</span>
 
     /**
      * Constructor.
@@ -153,8 +154,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final Time timeInterval) {
-<span class="fc" id="L156">        super(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L157">    }</span>
+<span class="fc" id="L157">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L158">    }</span>
 
     /**
      * Constructor.
@@ -170,8 +171,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final NEDFrame frame, final NEDFrame previousFrame,
             final double timeInterval) {
-<span class="fc" id="L173">        super(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L174">    }</span>
+<span class="fc" id="L174">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L175">    }</span>
 
     /**
      * Constructor.
@@ -187,8 +188,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final NEDFrame frame, final NEDFrame previousFrame,
             final Time timeInterval) {
-<span class="fc" id="L190">        super(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L191">        super(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L192">    }</span>
 
     /**
      * Constructor.
@@ -198,8 +199,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final ECEFFrame frame) {
-<span class="fc" id="L201">        super(kinematics, frame);</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L202">        super(kinematics, frame);</span>
+<span class="fc" id="L203">    }</span>
 
     /**
      * Constructor.
@@ -210,8 +211,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final NEDFrame frame) {
-<span class="fc" id="L213">        super(kinematics, frame);</span>
-<span class="fc" id="L214">    }</span>
+<span class="fc" id="L214">        super(kinematics, frame);</span>
+<span class="fc" id="L215">    }</span>
 
     /**
      * Constructor.
@@ -223,8 +224,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final ECEFFrame frame,
             final ECEFFrame previousFrame) {
-<span class="fc" id="L226">        super(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L227">        super(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L228">    }</span>
 
     /**
      * Constructor.
@@ -238,8 +239,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final NEDFrame frame,
             final NEDFrame previousFrame) {
-<span class="fc" id="L241">        super(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L242">        super(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L243">    }</span>
 
     /**
      * Constructor.
@@ -255,8 +256,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final ECEFFrame frame,
             final ECEFFrame previousFrame, final double timeInterval) {
-<span class="fc" id="L258">        super(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L259">    }</span>
+<span class="fc" id="L259">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L260">    }</span>
 
     /**
      * Constructor.
@@ -271,8 +272,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final ECEFFrame frame,
             final ECEFFrame previousFrame, final Time timeInterval) {
-<span class="fc" id="L274">        super(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L275">    }</span>
+<span class="fc" id="L275">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L276">    }</span>
 
     /**
      * Constructor.
@@ -290,8 +291,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final NEDFrame frame,
             final NEDFrame previousFrame, final double timeInterval) {
-<span class="fc" id="L293">        super(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L294">    }</span>
+<span class="fc" id="L294">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L295">    }</span>
 
     /**
      * Constructor.
@@ -308,8 +309,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final NEDFrame frame,
             final NEDFrame previousFrame, final Time timeInterval) {
-<span class="fc" id="L311">        super(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L312">    }</span>
+<span class="fc" id="L312">        super(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L313">    }</span>
 
     /**
      * Constructor.
@@ -324,10 +325,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public StandardDeviationFrameBodyKinematics(
             final double specificForceStandardDeviation,
-<span class="fc" id="L327">            final double angularRateStandardDeviation) {</span>
-<span class="fc" id="L328">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L329">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L330">    }</span>
+<span class="fc" id="L328">            final double angularRateStandardDeviation) {</span>
+<span class="fc" id="L329">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L330">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L331">    }</span>
 
     /**
      * Constructor.
@@ -344,10 +345,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final BodyKinematics kinematics, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L347">        this(kinematics);</span>
-<span class="fc" id="L348">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L349">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L348">        this(kinematics);</span>
+<span class="fc" id="L349">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L350">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L351">    }</span>
 
     /**
      * Constructor.
@@ -364,10 +365,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final ECEFFrame frame, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L367">        this(frame);</span>
-<span class="fc" id="L368">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L369">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L370">    }</span>
+<span class="fc" id="L368">        this(frame);</span>
+<span class="fc" id="L369">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L370">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L371">    }</span>
 
     /**
      * Constructor.
@@ -386,10 +387,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final NEDFrame frame, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L389">        this(frame);</span>
-<span class="fc" id="L390">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L391">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L392">    }</span>
+<span class="fc" id="L390">        this(frame);</span>
+<span class="fc" id="L391">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L392">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L393">    }</span>
 
     /**
      * Constructor.
@@ -407,10 +408,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final double timeInterval, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L410">        this(timeInterval);</span>
-<span class="fc" id="L411">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L412">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L413">    }</span>
+<span class="fc" id="L411">        this(timeInterval);</span>
+<span class="fc" id="L412">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L413">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L414">    }</span>
 
     /**
      * Constructor.
@@ -427,10 +428,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final Time timeInterval, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L430">        this(timeInterval);</span>
-<span class="fc" id="L431">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L432">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L433">    }</span>
+<span class="fc" id="L431">        this(timeInterval);</span>
+<span class="fc" id="L432">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L433">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L434">    }</span>
 
     /**
      * Constructor.
@@ -451,10 +452,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L454">        this(frame, previousFrame);</span>
-<span class="fc" id="L455">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L456">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L457">    }</span>
+<span class="fc" id="L455">        this(frame, previousFrame);</span>
+<span class="fc" id="L456">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L457">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L458">    }</span>
 
     /**
      * Constructor.
@@ -477,10 +478,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame frame, final NEDFrame previousFrame,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L480">        this(frame, previousFrame);</span>
-<span class="fc" id="L481">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L482">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L483">    }</span>
+<span class="fc" id="L481">        this(frame, previousFrame);</span>
+<span class="fc" id="L482">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L483">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L484">    }</span>
 
     /**
      * Constructor.
@@ -505,10 +506,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final double timeInterval, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L508">        this(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L509">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L510">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L511">    }</span>
+<span class="fc" id="L509">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L510">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L511">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L512">    }</span>
 
     /**
      * Constructor.
@@ -533,10 +534,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final Time timeInterval, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L536">        this(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L537">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L538">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L539">    }</span>
+<span class="fc" id="L537">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L538">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L539">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L540">    }</span>
 
     /**
      * Constructor.
@@ -563,10 +564,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame frame, final NEDFrame previousFrame,
             final double timeInterval, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L566">        this(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L567">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L568">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L569">    }</span>
+<span class="fc" id="L567">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L568">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L569">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L570">    }</span>
 
     /**
      * Constructor.
@@ -592,10 +593,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame frame, final NEDFrame previousFrame,
             final Time timeInterval, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L595">        this(frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L596">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L597">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L598">    }</span>
+<span class="fc" id="L596">        this(frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L597">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L598">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L599">    }</span>
 
     /**
      * Constructor.
@@ -614,10 +615,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics, final ECEFFrame frame,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L617">        this(kinematics, frame);</span>
-<span class="fc" id="L618">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L619">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L620">    }</span>
+<span class="fc" id="L618">        this(kinematics, frame);</span>
+<span class="fc" id="L619">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L620">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L621">    }</span>
 
     /**
      * Constructor.
@@ -638,10 +639,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics, final NEDFrame frame,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L641">        this(kinematics, frame);</span>
-<span class="fc" id="L642">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L643">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L644">    }</span>
+<span class="fc" id="L642">        this(kinematics, frame);</span>
+<span class="fc" id="L643">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L644">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L645">    }</span>
 
     /**
      * Constructor.
@@ -663,10 +664,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics, final ECEFFrame frame,
             final ECEFFrame previousFrame, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L666">        this(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L667">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L668">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L669">    }</span>
+<span class="fc" id="L667">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L668">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L669">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L670">    }</span>
 
     /**
      * Constructor.
@@ -690,10 +691,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics, final NEDFrame frame,
             final NEDFrame previousFrame, final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L693">        this(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L694">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L695">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L696">    }</span>
+<span class="fc" id="L694">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L695">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L696">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L697">    }</span>
 
     /**
      * Constructor.
@@ -720,10 +721,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame previousFrame, final double timeInterval,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L723">        this(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L724">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L725">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L726">    }</span>
+<span class="fc" id="L724">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L725">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L726">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L727">    }</span>
 
     /**
      * Constructor.
@@ -749,10 +750,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame previousFrame, final Time timeInterval,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L752">        this(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L753">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L754">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L755">    }</span>
+<span class="fc" id="L753">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L754">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L755">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L756">    }</span>
 
     /**
      * Constructor.
@@ -781,10 +782,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame previousFrame, final double timeInterval,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L784">        this(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L785">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L786">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L787">    }</span>
+<span class="fc" id="L785">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L786">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L787">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L788">    }</span>
 
     /**
      * Constructor.
@@ -812,10 +813,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame previousFrame, final Time timeInterval,
             final double specificForceStandardDeviation,
             final double angularRateStandardDeviation) {
-<span class="fc" id="L815">        this(kinematics, frame, previousFrame, timeInterval);</span>
-<span class="fc" id="L816">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
-<span class="fc" id="L817">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
-<span class="fc" id="L818">    }</span>
+<span class="fc" id="L816">        this(kinematics, frame, previousFrame, timeInterval);</span>
+<span class="fc" id="L817">        setSpecificForceStandardDeviation(specificForceStandardDeviation);</span>
+<span class="fc" id="L818">        setAngularRateStandardDeviation(angularRateStandardDeviation);</span>
+<span class="fc" id="L819">    }</span>
 
     /**
      * Constructor.
@@ -830,9 +831,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L833">        this(convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L834">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L835">    }</span>
+<span class="fc" id="L834">        this(convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L835">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L836">    }</span>
 
     /**
      * Constructor.
@@ -849,9 +850,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L852">        this(kinematics, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L853">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L854">    }</span>
+<span class="fc" id="L853">        this(kinematics, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L854">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L855">    }</span>
 
     /**
      * Constructor.
@@ -867,9 +868,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final ECEFFrame frame, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L870">        this(frame, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L871">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L872">    }</span>
+<span class="fc" id="L871">        this(frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L872">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L873">    }</span>
 
     /**
      * Constructor.
@@ -887,9 +888,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final NEDFrame frame, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L890">        this(frame, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L891">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L892">    }</span>
+<span class="fc" id="L891">        this(frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L892">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L893">    }</span>
 
     /**
      * Constructor.
@@ -907,9 +908,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final double timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L910">        this(timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L911">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L912">    }</span>
+<span class="fc" id="L911">        this(timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L912">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L913">    }</span>
 
     /**
      * Constructor.
@@ -925,9 +926,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
     public StandardDeviationFrameBodyKinematics(
             final Time timeInterval, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L928">        this(timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L929">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L930">    }</span>
+<span class="fc" id="L929">        this(timeInterval, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L930">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L931">    }</span>
 
     /**
      * Constructor.
@@ -947,9 +948,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L950">        this(frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L951">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L952">    }</span>
+<span class="fc" id="L951">        this(frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L952">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L953">    }</span>
 
     /**
      * Constructor.
@@ -971,9 +972,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame frame, final NEDFrame previousFrame,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L974">        this(frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L975">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L976">    }</span>
+<span class="fc" id="L975">        this(frame, previousFrame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L976">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L977">    }</span>
 
     /**
      * Constructor.
@@ -998,10 +999,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final double timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1001">        this(frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1002">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1003">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1004">    }</span>
+<span class="fc" id="L1002">        this(frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1003">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1004">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1005">    }</span>
 
     /**
      * Constructor.
@@ -1025,10 +1026,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame frame, final ECEFFrame previousFrame,
             final Time timeInterval, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1028">        this(frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1029">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1030">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1031">    }</span>
+<span class="fc" id="L1029">        this(frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1030">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1031">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1032">    }</span>
 
     /**
      * Constructor.
@@ -1055,10 +1056,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final double timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1058">        this(frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1059">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1060">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1061">    }</span>
+<span class="fc" id="L1059">        this(frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1060">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1061">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1062">    }</span>
 
     /**
      * Constructor.
@@ -1083,10 +1084,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame frame, final NEDFrame previousFrame,
             final Time timeInterval, final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1086">        this(frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1087">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1088">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1089">    }</span>
+<span class="fc" id="L1087">        this(frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1088">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1089">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1090">    }</span>
 
     /**
      * Constructor.
@@ -1104,9 +1105,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics, final ECEFFrame frame,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1107">        this(kinematics, frame, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1108">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1109">    }</span>
+<span class="fc" id="L1108">        this(kinematics, frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1109">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1110">    }</span>
 
     /**
      * Constructor.
@@ -1126,9 +1127,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final BodyKinematics kinematics, final NEDFrame frame,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1129">        this(kinematics, frame, convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1130">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1131">    }</span>
+<span class="fc" id="L1130">        this(kinematics, frame, convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1131">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1132">    }</span>
 
     /**
      * Constructor.
@@ -1150,10 +1151,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame previousFrame,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1153">        this(kinematics, frame, previousFrame,</span>
-<span class="fc" id="L1154">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1155">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1156">    }</span>
+<span class="fc" id="L1154">        this(kinematics, frame, previousFrame,</span>
+<span class="fc" id="L1155">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1156">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1157">    }</span>
 
     /**
      * Constructor.
@@ -1177,10 +1178,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame previousFrame,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1180">        this(kinematics, frame, previousFrame,</span>
-<span class="fc" id="L1181">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1182">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1183">    }</span>
+<span class="fc" id="L1181">        this(kinematics, frame, previousFrame,</span>
+<span class="fc" id="L1182">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1183">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1184">    }</span>
 
     /**
      * Constructor.
@@ -1206,10 +1207,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame previousFrame, final double timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1209">        this(kinematics, frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1210">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1211">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1212">    }</span>
+<span class="fc" id="L1210">        this(kinematics, frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1211">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1212">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1213">    }</span>
 
     /**
      * Constructor.
@@ -1234,10 +1235,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final ECEFFrame previousFrame, final Time timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1237">        this(kinematics, frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1238">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1239">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1240">    }</span>
+<span class="fc" id="L1238">        this(kinematics, frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1239">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1240">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1241">    }</span>
 
     /**
      * Constructor.
@@ -1265,10 +1266,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame previousFrame, final double timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1268">        this(kinematics, frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1269">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1270">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1271">    }</span>
+<span class="fc" id="L1269">        this(kinematics, frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1270">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1271">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1272">    }</span>
 
     /**
      * Constructor.
@@ -1295,10 +1296,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
             final NEDFrame previousFrame, final Time timeInterval,
             final Acceleration specificForceStandardDeviation,
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1298">        this(kinematics, frame, previousFrame, timeInterval,</span>
-<span class="fc" id="L1299">                convertAcceleration(specificForceStandardDeviation),</span>
-<span class="fc" id="L1300">                convertAngularSpeed(angularRateStandardDeviation));</span>
-<span class="fc" id="L1301">    }</span>
+<span class="fc" id="L1299">        this(kinematics, frame, previousFrame, timeInterval,</span>
+<span class="fc" id="L1300">                convertAcceleration(specificForceStandardDeviation),</span>
+<span class="fc" id="L1301">                convertAngularSpeed(angularRateStandardDeviation));</span>
+<span class="fc" id="L1302">    }</span>
 
     /**
      * Copy constructor.
@@ -1306,9 +1307,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @param input instance to copy data from.
      */
     public StandardDeviationFrameBodyKinematics(
-<span class="fc" id="L1309">            final StandardDeviationFrameBodyKinematics input) {</span>
-<span class="fc" id="L1310">        copyFrom(input);</span>
-<span class="fc" id="L1311">    }</span>
+<span class="fc" id="L1310">            final StandardDeviationFrameBodyKinematics input) {</span>
+<span class="fc" id="L1311">        copyFrom(input);</span>
+<span class="fc" id="L1312">    }</span>
 
     /**
      * Gets standard deviation of measured specific force expressed in meters per squared
@@ -1317,7 +1318,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public double getSpecificForceStandardDeviation() {
-<span class="fc" id="L1320">        return mSpecificForceStandardDeviation;</span>
+<span class="fc" id="L1321">        return mSpecificForceStandardDeviation;</span>
     }
 
     /**
@@ -1329,12 +1330,12 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public void setSpecificForceStandardDeviation(
             final double specificForceStandardDeviation) {
-<span class="fc bfc" id="L1332" title="All 2 branches covered.">        if (specificForceStandardDeviation &lt; 0.0) {</span>
-<span class="fc" id="L1333">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1333" title="All 2 branches covered.">        if (specificForceStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L1334">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1336">        mSpecificForceStandardDeviation = specificForceStandardDeviation;</span>
-<span class="fc" id="L1337">    }</span>
+<span class="fc" id="L1337">        mSpecificForceStandardDeviation = specificForceStandardDeviation;</span>
+<span class="fc" id="L1338">    }</span>
 
     /**
      * Gets standard deviation of measured specific force.
@@ -1342,7 +1343,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured specific force.
      */
     public Acceleration getSpecificForceStandardDeviationAsAcceleration() {
-<span class="fc" id="L1345">        return new Acceleration(mSpecificForceStandardDeviation,</span>
+<span class="fc" id="L1346">        return new Acceleration(mSpecificForceStandardDeviation,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1354,9 +1355,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public void getSpecificForceStandardDeviationAsAcceleration(
             final Acceleration result) {
-<span class="fc" id="L1357">        result.setValue(mSpecificForceStandardDeviation);</span>
-<span class="fc" id="L1358">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1359">    }</span>
+<span class="fc" id="L1358">        result.setValue(mSpecificForceStandardDeviation);</span>
+<span class="fc" id="L1359">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1360">    }</span>
 
     /**
      * Sets standard deviation of measured specific force.
@@ -1366,9 +1367,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public void setSpecificForceStandardDeviation(
             final Acceleration specificForceStandardDeviation) {
-<span class="fc" id="L1369">        setSpecificForceStandardDeviation(convertAcceleration(</span>
+<span class="fc" id="L1370">        setSpecificForceStandardDeviation(convertAcceleration(</span>
                 specificForceStandardDeviation));
-<span class="fc" id="L1371">    }</span>
+<span class="fc" id="L1372">    }</span>
 
     /**
      * Gets standard deviation of measured angular rate expressed in radians per second (rad/s).
@@ -1376,7 +1377,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public double getAngularRateStandardDeviation() {
-<span class="fc" id="L1379">        return mAngularRateStandardDeviation;</span>
+<span class="fc" id="L1380">        return mAngularRateStandardDeviation;</span>
     }
 
     /**
@@ -1386,12 +1387,12 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public void setAngularRateStandardDeviation(final double angularRateStandardDeviation) {
-<span class="fc bfc" id="L1389" title="All 2 branches covered.">        if (angularRateStandardDeviation &lt; 0.0) {</span>
-<span class="fc" id="L1390">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1390" title="All 2 branches covered.">        if (angularRateStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L1391">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1393">        mAngularRateStandardDeviation = angularRateStandardDeviation;</span>
-<span class="fc" id="L1394">    }</span>
+<span class="fc" id="L1394">        mAngularRateStandardDeviation = angularRateStandardDeviation;</span>
+<span class="fc" id="L1395">    }</span>
 
     /**
      * Gets standard deviation of measured angular rate.
@@ -1399,7 +1400,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return standard deviation of measured angular rate.
      */
     public AngularSpeed getAngularRateStandardDeviationAsAngularSpeed() {
-<span class="fc" id="L1402">        return new AngularSpeed(mAngularRateStandardDeviation,</span>
+<span class="fc" id="L1403">        return new AngularSpeed(mAngularRateStandardDeviation,</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1410,9 +1411,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      *               stored.
      */
     public void getAngularRateStandardDeviationAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L1413">        result.setValue(mAngularRateStandardDeviation);</span>
-<span class="fc" id="L1414">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1415">    }</span>
+<span class="fc" id="L1414">        result.setValue(mAngularRateStandardDeviation);</span>
+<span class="fc" id="L1415">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1416">    }</span>
 
     /**
      * Sets standard deviation of measured angular rate.
@@ -1422,9 +1423,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public void setAngularRateStandardDeviation(
             final AngularSpeed angularRateStandardDeviation) {
-<span class="fc" id="L1425">        setAngularRateStandardDeviation(convertAngularSpeed(</span>
+<span class="fc" id="L1426">        setAngularRateStandardDeviation(convertAngularSpeed(</span>
                 angularRateStandardDeviation));
-<span class="fc" id="L1427">    }</span>
+<span class="fc" id="L1428">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -1432,11 +1433,11 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @param input instance to copy data from.
      */
     public void copyFrom(final StandardDeviationFrameBodyKinematics input) {
-<span class="fc" id="L1435">        super.copyFrom(input);</span>
+<span class="fc" id="L1436">        super.copyFrom(input);</span>
 
-<span class="fc" id="L1437">        mSpecificForceStandardDeviation = input.mSpecificForceStandardDeviation;</span>
-<span class="fc" id="L1438">        mAngularRateStandardDeviation = input.mAngularRateStandardDeviation;</span>
-<span class="fc" id="L1439">    }</span>
+<span class="fc" id="L1438">        mSpecificForceStandardDeviation = input.mSpecificForceStandardDeviation;</span>
+<span class="fc" id="L1439">        mAngularRateStandardDeviation = input.mAngularRateStandardDeviation;</span>
+<span class="fc" id="L1440">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -1444,11 +1445,11 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final StandardDeviationFrameBodyKinematics output) {
-<span class="fc" id="L1447">        super.copyTo(output);</span>
+<span class="fc" id="L1448">        super.copyTo(output);</span>
 
-<span class="fc" id="L1449">        output.mSpecificForceStandardDeviation = mSpecificForceStandardDeviation;</span>
-<span class="fc" id="L1450">        output.mAngularRateStandardDeviation = mAngularRateStandardDeviation;</span>
-<span class="fc" id="L1451">    }</span>
+<span class="fc" id="L1450">        output.mSpecificForceStandardDeviation = mSpecificForceStandardDeviation;</span>
+<span class="fc" id="L1451">        output.mAngularRateStandardDeviation = mAngularRateStandardDeviation;</span>
+<span class="fc" id="L1452">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -1458,7 +1459,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L1461">        return Objects.hash(super.hashCode(), mSpecificForceStandardDeviation, mAngularRateStandardDeviation);</span>
+<span class="fc" id="L1462">        return Objects.hash(super.hashCode(), mSpecificForceStandardDeviation, mAngularRateStandardDeviation);</span>
     }
 
     /**
@@ -1468,7 +1469,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final StandardDeviationFrameBodyKinematics other) {
-<span class="fc" id="L1471">        return equals(other, 0.0);</span>
+<span class="fc" id="L1472">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -1482,9 +1483,9 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     public boolean equals(final StandardDeviationFrameBodyKinematics other,
                           final double threshold) {
-<span class="fc bfc" id="L1485" title="All 2 branches covered.">        return super.equals(other, threshold) &amp;&amp;</span>
-<span class="pc bpc" id="L1486" title="1 of 2 branches missed.">                Math.abs(mSpecificForceStandardDeviation - other.mSpecificForceStandardDeviation) &lt;= threshold</span>
-<span class="pc bpc" id="L1487" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAngularRateStandardDeviation - other.mAngularRateStandardDeviation) &lt;= threshold;</span>
+<span class="fc bfc" id="L1486" title="All 2 branches covered.">        return super.equals(other, threshold) &amp;&amp;</span>
+<span class="pc bpc" id="L1487" title="1 of 2 branches missed.">                Math.abs(mSpecificForceStandardDeviation - other.mSpecificForceStandardDeviation) &lt;= threshold</span>
+<span class="pc bpc" id="L1488" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAngularRateStandardDeviation - other.mAngularRateStandardDeviation) &lt;= threshold;</span>
     }
 
     /**
@@ -1498,13 +1499,13 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     @Override
     public boolean equals(final FrameBodyKinematics other, final double threshold) {
-<span class="nc bnc" id="L1501" title="All 2 branches missed.">        if (this == other) {</span>
-<span class="nc" id="L1502">            return true;</span>
+<span class="nc bnc" id="L1502" title="All 2 branches missed.">        if (this == other) {</span>
+<span class="nc" id="L1503">            return true;</span>
         }
-<span class="nc bnc" id="L1504" title="All 4 branches missed.">        if (other == null || getClass() != other.getClass()) {</span>
-<span class="nc" id="L1505">            return false;</span>
+<span class="nc bnc" id="L1505" title="All 4 branches missed.">        if (other == null || getClass() != other.getClass()) {</span>
+<span class="nc" id="L1506">            return false;</span>
         }
-<span class="nc" id="L1507">        return super.equals(other, threshold);</span>
+<span class="nc" id="L1508">        return super.equals(other, threshold);</span>
     }
 
     /**
@@ -1515,16 +1516,16 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
-<span class="fc bfc" id="L1519" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L1520">            return true;</span>
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L1520" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L1521">            return true;</span>
         }
-<span class="fc bfc" id="L1522" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L1523">            return false;</span>
+<span class="fc bfc" id="L1523" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L1524">            return false;</span>
         }
-<span class="fc" id="L1525">        final StandardDeviationFrameBodyKinematics other =</span>
+<span class="fc" id="L1526">        final StandardDeviationFrameBodyKinematics other =</span>
                 (StandardDeviationFrameBodyKinematics) obj;
-<span class="fc" id="L1527">        return equals(other);</span>
+<span class="fc" id="L1528">        return equals(other);</span>
     }
 
     /**
@@ -1535,10 +1536,10 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L1538">        final StandardDeviationFrameBodyKinematics result =</span>
-<span class="fc" id="L1539">                (StandardDeviationFrameBodyKinematics) super.clone();</span>
-<span class="fc" id="L1540">        copyTo(result);</span>
-<span class="fc" id="L1541">        return result;</span>
+<span class="fc" id="L1539">        final StandardDeviationFrameBodyKinematics result =</span>
+<span class="fc" id="L1540">                (StandardDeviationFrameBodyKinematics) super.clone();</span>
+<span class="fc" id="L1541">        copyTo(result);</span>
+<span class="fc" id="L1542">        return result;</span>
     }
 
     /**
@@ -1548,8 +1549,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L1551">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L1552">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1552">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L1553">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
     }
 
     /**
@@ -1559,8 +1560,8 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return converted value.
      */
     private static double convertAngularSpeed(final AngularSpeed angularSpeed) {
-<span class="fc" id="L1562">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),</span>
-<span class="fc" id="L1563">                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1563">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),</span>
+<span class="fc" id="L1564">                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

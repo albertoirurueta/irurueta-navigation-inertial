@@ -31,16 +31,16 @@
 <a class="jxr_linenumber" name="L23" href="#L23">23</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.FrameType;
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDFrame;
-<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
-<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDPosition;
-<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
-<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.CalibrationException;
-<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
-<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
-<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+<a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDPosition;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.CalibrationException;
+<a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
+<a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
+<a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+<a class="jxr_linenumber" name="L33" href="#L33">33</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+<a class="jxr_linenumber" name="L34" href="#L34">34</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+<a class="jxr_linenumber" name="L35" href="#L35">35</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 <a class="jxr_linenumber" name="L36" href="#L36">36</a>  <strong class="jxr_keyword">import</strong> com.irurueta.statistics.GaussianRandomizer;
 <a class="jxr_linenumber" name="L37" href="#L37">37</a>  <strong class="jxr_keyword">import</strong> com.irurueta.statistics.UniformRandomizer;
 <a class="jxr_linenumber" name="L38" href="#L38">38</a>  <strong class="jxr_keyword">import</strong> com.irurueta.units.MagneticFluxDensity;
@@ -17793,485 +17793,488 @@
 <a class="jxr_linenumber" name="L17785" href="#L17785">17785</a>     }
 <a class="jxr_linenumber" name="L17786" href="#L17786">17786</a> 
 <a class="jxr_linenumber" name="L17787" href="#L17787">17787</a>     @Override
-<a class="jxr_linenumber" name="L17788" href="#L17788">17788</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onCalibrateStart(KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
-<a class="jxr_linenumber" name="L17789" href="#L17789">17789</a>         checkLocked(calibrator);
-<a class="jxr_linenumber" name="L17790" href="#L17790">17790</a>         mCalibrateStart++;
-<a class="jxr_linenumber" name="L17791" href="#L17791">17791</a>     }
-<a class="jxr_linenumber" name="L17792" href="#L17792">17792</a> 
-<a class="jxr_linenumber" name="L17793" href="#L17793">17793</a>     @Override
-<a class="jxr_linenumber" name="L17794" href="#L17794">17794</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onCalibrateEnd(KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
-<a class="jxr_linenumber" name="L17795" href="#L17795">17795</a>         checkLocked(calibrator);
-<a class="jxr_linenumber" name="L17796" href="#L17796">17796</a>         mCalibrateEnd++;
-<a class="jxr_linenumber" name="L17797" href="#L17797">17797</a>     }
-<a class="jxr_linenumber" name="L17798" href="#L17798">17798</a> 
-<a class="jxr_linenumber" name="L17799" href="#L17799">17799</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> reset() {
-<a class="jxr_linenumber" name="L17800" href="#L17800">17800</a>         mCalibrateStart = 0;
-<a class="jxr_linenumber" name="L17801" href="#L17801">17801</a>         mCalibrateEnd = 0;
-<a class="jxr_linenumber" name="L17802" href="#L17802">17802</a>     }
-<a class="jxr_linenumber" name="L17803" href="#L17803">17803</a> 
-<a class="jxr_linenumber" name="L17804" href="#L17804">17804</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkLocked(
-<a class="jxr_linenumber" name="L17805" href="#L17805">17805</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
-<a class="jxr_linenumber" name="L17806" href="#L17806">17806</a>         assertTrue(calibrator.isRunning());
-<a class="jxr_linenumber" name="L17807" href="#L17807">17807</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17808" href="#L17808">17808</a>             calibrator.setInitialHardIronX(0.0);
-<a class="jxr_linenumber" name="L17809" href="#L17809">17809</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17810" href="#L17810">17810</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17811" href="#L17811">17811</a>         }
-<a class="jxr_linenumber" name="L17812" href="#L17812">17812</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17813" href="#L17813">17813</a>             calibrator.setInitialHardIronY(0.0);
-<a class="jxr_linenumber" name="L17814" href="#L17814">17814</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17815" href="#L17815">17815</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17816" href="#L17816">17816</a>         }
-<a class="jxr_linenumber" name="L17817" href="#L17817">17817</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17818" href="#L17818">17818</a>             calibrator.setInitialHardIronZ(0.0);
-<a class="jxr_linenumber" name="L17819" href="#L17819">17819</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17820" href="#L17820">17820</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17821" href="#L17821">17821</a>         }
-<a class="jxr_linenumber" name="L17822" href="#L17822">17822</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17823" href="#L17823">17823</a>             calibrator.setInitialHardIronX(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17824" href="#L17824">17824</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17825" href="#L17825">17825</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17826" href="#L17826">17826</a>         }
-<a class="jxr_linenumber" name="L17827" href="#L17827">17827</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17828" href="#L17828">17828</a>             calibrator.setInitialHardIronY(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17829" href="#L17829">17829</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17830" href="#L17830">17830</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17831" href="#L17831">17831</a>         }
-<a class="jxr_linenumber" name="L17832" href="#L17832">17832</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17833" href="#L17833">17833</a>             calibrator.setInitialHardIronZ(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17834" href="#L17834">17834</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17835" href="#L17835">17835</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17836" href="#L17836">17836</a>         }
-<a class="jxr_linenumber" name="L17837" href="#L17837">17837</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17838" href="#L17838">17838</a>             calibrator.setInitialHardIron(
-<a class="jxr_linenumber" name="L17839" href="#L17839">17839</a>                     0.0, 0.0, 0.0);
-<a class="jxr_linenumber" name="L17840" href="#L17840">17840</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17841" href="#L17841">17841</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17842" href="#L17842">17842</a>         }
-<a class="jxr_linenumber" name="L17843" href="#L17843">17843</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17844" href="#L17844">17844</a>             calibrator.setInitialHardIron(
-<a class="jxr_linenumber" name="L17845" href="#L17845">17845</a>                     <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17846" href="#L17846">17846</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17847" href="#L17847">17847</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17848" href="#L17848">17848</a>         }
-<a class="jxr_linenumber" name="L17849" href="#L17849">17849</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17850" href="#L17850">17850</a>             calibrator.setInitialHardIron((MagneticFluxDensityTriad) <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17851" href="#L17851">17851</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17852" href="#L17852">17852</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17853" href="#L17853">17853</a>         }
-<a class="jxr_linenumber" name="L17854" href="#L17854">17854</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17855" href="#L17855">17855</a>             calibrator.setInitialSx(0.0);
-<a class="jxr_linenumber" name="L17856" href="#L17856">17856</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17857" href="#L17857">17857</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17858" href="#L17858">17858</a>         }
-<a class="jxr_linenumber" name="L17859" href="#L17859">17859</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17860" href="#L17860">17860</a>             calibrator.setInitialSy(0.0);
-<a class="jxr_linenumber" name="L17861" href="#L17861">17861</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17862" href="#L17862">17862</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17863" href="#L17863">17863</a>         }
-<a class="jxr_linenumber" name="L17864" href="#L17864">17864</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17865" href="#L17865">17865</a>             calibrator.setInitialSz(0.0);
-<a class="jxr_linenumber" name="L17866" href="#L17866">17866</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17867" href="#L17867">17867</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17868" href="#L17868">17868</a>         }
-<a class="jxr_linenumber" name="L17869" href="#L17869">17869</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17870" href="#L17870">17870</a>             calibrator.setInitialMxy(0.0);
-<a class="jxr_linenumber" name="L17871" href="#L17871">17871</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17872" href="#L17872">17872</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17873" href="#L17873">17873</a>         }
-<a class="jxr_linenumber" name="L17874" href="#L17874">17874</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17875" href="#L17875">17875</a>             calibrator.setInitialMxz(0.0);
-<a class="jxr_linenumber" name="L17876" href="#L17876">17876</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17877" href="#L17877">17877</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17878" href="#L17878">17878</a>         }
-<a class="jxr_linenumber" name="L17879" href="#L17879">17879</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17880" href="#L17880">17880</a>             calibrator.setInitialMyx(0.0);
-<a class="jxr_linenumber" name="L17881" href="#L17881">17881</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17882" href="#L17882">17882</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17883" href="#L17883">17883</a>         }
-<a class="jxr_linenumber" name="L17884" href="#L17884">17884</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17885" href="#L17885">17885</a>             calibrator.setInitialMyz(0.0);
-<a class="jxr_linenumber" name="L17886" href="#L17886">17886</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17887" href="#L17887">17887</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17888" href="#L17888">17888</a>         }
-<a class="jxr_linenumber" name="L17889" href="#L17889">17889</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17890" href="#L17890">17890</a>             calibrator.setInitialMzx(0.0);
-<a class="jxr_linenumber" name="L17891" href="#L17891">17891</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17892" href="#L17892">17892</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17893" href="#L17893">17893</a>         }
-<a class="jxr_linenumber" name="L17894" href="#L17894">17894</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17895" href="#L17895">17895</a>             calibrator.setInitialMzy(0.0);
-<a class="jxr_linenumber" name="L17896" href="#L17896">17896</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17897" href="#L17897">17897</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17898" href="#L17898">17898</a>         }
-<a class="jxr_linenumber" name="L17899" href="#L17899">17899</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17900" href="#L17900">17900</a>             calibrator.setInitialScalingFactors(
-<a class="jxr_linenumber" name="L17901" href="#L17901">17901</a>                     0.0, 0.0, 0.0);
-<a class="jxr_linenumber" name="L17902" href="#L17902">17902</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17903" href="#L17903">17903</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17904" href="#L17904">17904</a>         }
-<a class="jxr_linenumber" name="L17905" href="#L17905">17905</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17906" href="#L17906">17906</a>             calibrator.setInitialCrossCouplingErrors(
-<a class="jxr_linenumber" name="L17907" href="#L17907">17907</a>                     0.0, 0.0, 0.0, 0.0,
-<a class="jxr_linenumber" name="L17908" href="#L17908">17908</a>                     0.0, 0.0);
-<a class="jxr_linenumber" name="L17909" href="#L17909">17909</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17910" href="#L17910">17910</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17911" href="#L17911">17911</a>         }
-<a class="jxr_linenumber" name="L17912" href="#L17912">17912</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17913" href="#L17913">17913</a>             calibrator.setInitialScalingFactorsAndCrossCouplingErrors(
-<a class="jxr_linenumber" name="L17914" href="#L17914">17914</a>                     0.0, 0.0, 0.0,
-<a class="jxr_linenumber" name="L17915" href="#L17915">17915</a>                     0.0, 0.0, 0.0,
-<a class="jxr_linenumber" name="L17916" href="#L17916">17916</a>                     0.0, 0.0, 0.0);
-<a class="jxr_linenumber" name="L17917" href="#L17917">17917</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17918" href="#L17918">17918</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17919" href="#L17919">17919</a>         }
-<a class="jxr_linenumber" name="L17920" href="#L17920">17920</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17921" href="#L17921">17921</a>             calibrator.setInitialHardIron((<strong class="jxr_keyword">double</strong>[]) <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17922" href="#L17922">17922</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17923" href="#L17923">17923</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17924" href="#L17924">17924</a>         }
-<a class="jxr_linenumber" name="L17925" href="#L17925">17925</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17926" href="#L17926">17926</a>             calibrator.setInitialHardIron((Matrix) <strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17927" href="#L17927">17927</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17928" href="#L17928">17928</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17929" href="#L17929">17929</a>         }
-<a class="jxr_linenumber" name="L17930" href="#L17930">17930</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17931" href="#L17931">17931</a>             calibrator.setInitialMm(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17932" href="#L17932">17932</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17933" href="#L17933">17933</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17934" href="#L17934">17934</a>         }
-<a class="jxr_linenumber" name="L17935" href="#L17935">17935</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17936" href="#L17936">17936</a>             calibrator.setMeasurements(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17937" href="#L17937">17937</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17938" href="#L17938">17938</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17939" href="#L17939">17939</a>         }
-<a class="jxr_linenumber" name="L17940" href="#L17940">17940</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17941" href="#L17941">17941</a>             calibrator.setCommonAxisUsed(<strong class="jxr_keyword">true</strong>);
-<a class="jxr_linenumber" name="L17942" href="#L17942">17942</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17943" href="#L17943">17943</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17944" href="#L17944">17944</a>         }
-<a class="jxr_linenumber" name="L17945" href="#L17945">17945</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17946" href="#L17946">17946</a>             calibrator.setListener(<strong class="jxr_keyword">this</strong>);
-<a class="jxr_linenumber" name="L17947" href="#L17947">17947</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17948" href="#L17948">17948</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17949" href="#L17949">17949</a>         }
-<a class="jxr_linenumber" name="L17950" href="#L17950">17950</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17951" href="#L17951">17951</a>             calibrator.setMagneticModel(<strong class="jxr_keyword">null</strong>);
-<a class="jxr_linenumber" name="L17952" href="#L17952">17952</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17953" href="#L17953">17953</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17954" href="#L17954">17954</a>         }
-<a class="jxr_linenumber" name="L17955" href="#L17955">17955</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L17956" href="#L17956">17956</a>             calibrator.calibrate();
-<a class="jxr_linenumber" name="L17957" href="#L17957">17957</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17958" href="#L17958">17958</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
-<a class="jxr_linenumber" name="L17959" href="#L17959">17959</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> Exception e) {
-<a class="jxr_linenumber" name="L17960" href="#L17960">17960</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
-<a class="jxr_linenumber" name="L17961" href="#L17961">17961</a>         }
-<a class="jxr_linenumber" name="L17962" href="#L17962">17962</a>     }
-<a class="jxr_linenumber" name="L17963" href="#L17963">17963</a> 
-<a class="jxr_linenumber" name="L17964" href="#L17964">17964</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertEstimatedResult(
-<a class="jxr_linenumber" name="L17965" href="#L17965">17965</a>             <strong class="jxr_keyword">final</strong> Matrix hardIron, <strong class="jxr_keyword">final</strong> Matrix mm,
-<a class="jxr_linenumber" name="L17966" href="#L17966">17966</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator)
-<a class="jxr_linenumber" name="L17967" href="#L17967">17967</a>             <strong class="jxr_keyword">throws</strong> WrongSizeException {
-<a class="jxr_linenumber" name="L17968" href="#L17968">17968</a> 
-<a class="jxr_linenumber" name="L17969" href="#L17969">17969</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] estimatedHardIron = calibrator.getEstimatedHardIron();
-<a class="jxr_linenumber" name="L17970" href="#L17970">17970</a>         assertArrayEquals(hardIron.getBuffer(), estimatedHardIron, 0.0);
-<a class="jxr_linenumber" name="L17971" href="#L17971">17971</a> 
-<a class="jxr_linenumber" name="L17972" href="#L17972">17972</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] estimatedHardIron2 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[3];
-<a class="jxr_linenumber" name="L17973" href="#L17973">17973</a>         assertTrue(calibrator.getEstimatedHardIron(estimatedHardIron2));
-<a class="jxr_linenumber" name="L17974" href="#L17974">17974</a>         assertArrayEquals(estimatedHardIron, estimatedHardIron2, 0.0);
-<a class="jxr_linenumber" name="L17975" href="#L17975">17975</a> 
-<a class="jxr_linenumber" name="L17976" href="#L17976">17976</a>         <strong class="jxr_keyword">final</strong> Matrix hardIron2 = <strong class="jxr_keyword">new</strong> Matrix(3, 1);
-<a class="jxr_linenumber" name="L17977" href="#L17977">17977</a>         assertTrue(calibrator.getEstimatedHardIronAsMatrix(hardIron2));
-<a class="jxr_linenumber" name="L17978" href="#L17978">17978</a> 
-<a class="jxr_linenumber" name="L17979" href="#L17979">17979</a>         assertEquals(hardIron, hardIron2);
+<a class="jxr_linenumber" name="L17788" href="#L17788">17788</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onCalibrateStart(
+<a class="jxr_linenumber" name="L17789" href="#L17789">17789</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
+<a class="jxr_linenumber" name="L17790" href="#L17790">17790</a>         checkLocked(calibrator);
+<a class="jxr_linenumber" name="L17791" href="#L17791">17791</a>         mCalibrateStart++;
+<a class="jxr_linenumber" name="L17792" href="#L17792">17792</a>     }
+<a class="jxr_linenumber" name="L17793" href="#L17793">17793</a> 
+<a class="jxr_linenumber" name="L17794" href="#L17794">17794</a>     @Override
+<a class="jxr_linenumber" name="L17795" href="#L17795">17795</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onCalibrateEnd(
+<a class="jxr_linenumber" name="L17796" href="#L17796">17796</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
+<a class="jxr_linenumber" name="L17797" href="#L17797">17797</a>         checkLocked(calibrator);
+<a class="jxr_linenumber" name="L17798" href="#L17798">17798</a>         mCalibrateEnd++;
+<a class="jxr_linenumber" name="L17799" href="#L17799">17799</a>     }
+<a class="jxr_linenumber" name="L17800" href="#L17800">17800</a> 
+<a class="jxr_linenumber" name="L17801" href="#L17801">17801</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> reset() {
+<a class="jxr_linenumber" name="L17802" href="#L17802">17802</a>         mCalibrateStart = 0;
+<a class="jxr_linenumber" name="L17803" href="#L17803">17803</a>         mCalibrateEnd = 0;
+<a class="jxr_linenumber" name="L17804" href="#L17804">17804</a>     }
+<a class="jxr_linenumber" name="L17805" href="#L17805">17805</a> 
+<a class="jxr_linenumber" name="L17806" href="#L17806">17806</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkLocked(
+<a class="jxr_linenumber" name="L17807" href="#L17807">17807</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
+<a class="jxr_linenumber" name="L17808" href="#L17808">17808</a>         assertTrue(calibrator.isRunning());
+<a class="jxr_linenumber" name="L17809" href="#L17809">17809</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17810" href="#L17810">17810</a>             calibrator.setInitialHardIronX(0.0);
+<a class="jxr_linenumber" name="L17811" href="#L17811">17811</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17812" href="#L17812">17812</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17813" href="#L17813">17813</a>         }
+<a class="jxr_linenumber" name="L17814" href="#L17814">17814</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17815" href="#L17815">17815</a>             calibrator.setInitialHardIronY(0.0);
+<a class="jxr_linenumber" name="L17816" href="#L17816">17816</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17817" href="#L17817">17817</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17818" href="#L17818">17818</a>         }
+<a class="jxr_linenumber" name="L17819" href="#L17819">17819</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17820" href="#L17820">17820</a>             calibrator.setInitialHardIronZ(0.0);
+<a class="jxr_linenumber" name="L17821" href="#L17821">17821</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17822" href="#L17822">17822</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17823" href="#L17823">17823</a>         }
+<a class="jxr_linenumber" name="L17824" href="#L17824">17824</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17825" href="#L17825">17825</a>             calibrator.setInitialHardIronX(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17826" href="#L17826">17826</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17827" href="#L17827">17827</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17828" href="#L17828">17828</a>         }
+<a class="jxr_linenumber" name="L17829" href="#L17829">17829</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17830" href="#L17830">17830</a>             calibrator.setInitialHardIronY(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17831" href="#L17831">17831</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17832" href="#L17832">17832</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17833" href="#L17833">17833</a>         }
+<a class="jxr_linenumber" name="L17834" href="#L17834">17834</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17835" href="#L17835">17835</a>             calibrator.setInitialHardIronZ(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17836" href="#L17836">17836</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17837" href="#L17837">17837</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17838" href="#L17838">17838</a>         }
+<a class="jxr_linenumber" name="L17839" href="#L17839">17839</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17840" href="#L17840">17840</a>             calibrator.setInitialHardIron(
+<a class="jxr_linenumber" name="L17841" href="#L17841">17841</a>                     0.0, 0.0, 0.0);
+<a class="jxr_linenumber" name="L17842" href="#L17842">17842</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17843" href="#L17843">17843</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17844" href="#L17844">17844</a>         }
+<a class="jxr_linenumber" name="L17845" href="#L17845">17845</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17846" href="#L17846">17846</a>             calibrator.setInitialHardIron(
+<a class="jxr_linenumber" name="L17847" href="#L17847">17847</a>                     <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">null</strong>, <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17848" href="#L17848">17848</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17849" href="#L17849">17849</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17850" href="#L17850">17850</a>         }
+<a class="jxr_linenumber" name="L17851" href="#L17851">17851</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17852" href="#L17852">17852</a>             calibrator.setInitialHardIron((MagneticFluxDensityTriad) <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17853" href="#L17853">17853</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17854" href="#L17854">17854</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17855" href="#L17855">17855</a>         }
+<a class="jxr_linenumber" name="L17856" href="#L17856">17856</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17857" href="#L17857">17857</a>             calibrator.setInitialSx(0.0);
+<a class="jxr_linenumber" name="L17858" href="#L17858">17858</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17859" href="#L17859">17859</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17860" href="#L17860">17860</a>         }
+<a class="jxr_linenumber" name="L17861" href="#L17861">17861</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17862" href="#L17862">17862</a>             calibrator.setInitialSy(0.0);
+<a class="jxr_linenumber" name="L17863" href="#L17863">17863</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17864" href="#L17864">17864</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17865" href="#L17865">17865</a>         }
+<a class="jxr_linenumber" name="L17866" href="#L17866">17866</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17867" href="#L17867">17867</a>             calibrator.setInitialSz(0.0);
+<a class="jxr_linenumber" name="L17868" href="#L17868">17868</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17869" href="#L17869">17869</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17870" href="#L17870">17870</a>         }
+<a class="jxr_linenumber" name="L17871" href="#L17871">17871</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17872" href="#L17872">17872</a>             calibrator.setInitialMxy(0.0);
+<a class="jxr_linenumber" name="L17873" href="#L17873">17873</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17874" href="#L17874">17874</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17875" href="#L17875">17875</a>         }
+<a class="jxr_linenumber" name="L17876" href="#L17876">17876</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17877" href="#L17877">17877</a>             calibrator.setInitialMxz(0.0);
+<a class="jxr_linenumber" name="L17878" href="#L17878">17878</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17879" href="#L17879">17879</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17880" href="#L17880">17880</a>         }
+<a class="jxr_linenumber" name="L17881" href="#L17881">17881</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17882" href="#L17882">17882</a>             calibrator.setInitialMyx(0.0);
+<a class="jxr_linenumber" name="L17883" href="#L17883">17883</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17884" href="#L17884">17884</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17885" href="#L17885">17885</a>         }
+<a class="jxr_linenumber" name="L17886" href="#L17886">17886</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17887" href="#L17887">17887</a>             calibrator.setInitialMyz(0.0);
+<a class="jxr_linenumber" name="L17888" href="#L17888">17888</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17889" href="#L17889">17889</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17890" href="#L17890">17890</a>         }
+<a class="jxr_linenumber" name="L17891" href="#L17891">17891</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17892" href="#L17892">17892</a>             calibrator.setInitialMzx(0.0);
+<a class="jxr_linenumber" name="L17893" href="#L17893">17893</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17894" href="#L17894">17894</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17895" href="#L17895">17895</a>         }
+<a class="jxr_linenumber" name="L17896" href="#L17896">17896</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17897" href="#L17897">17897</a>             calibrator.setInitialMzy(0.0);
+<a class="jxr_linenumber" name="L17898" href="#L17898">17898</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17899" href="#L17899">17899</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17900" href="#L17900">17900</a>         }
+<a class="jxr_linenumber" name="L17901" href="#L17901">17901</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17902" href="#L17902">17902</a>             calibrator.setInitialScalingFactors(
+<a class="jxr_linenumber" name="L17903" href="#L17903">17903</a>                     0.0, 0.0, 0.0);
+<a class="jxr_linenumber" name="L17904" href="#L17904">17904</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17905" href="#L17905">17905</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17906" href="#L17906">17906</a>         }
+<a class="jxr_linenumber" name="L17907" href="#L17907">17907</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17908" href="#L17908">17908</a>             calibrator.setInitialCrossCouplingErrors(
+<a class="jxr_linenumber" name="L17909" href="#L17909">17909</a>                     0.0, 0.0, 0.0, 0.0,
+<a class="jxr_linenumber" name="L17910" href="#L17910">17910</a>                     0.0, 0.0);
+<a class="jxr_linenumber" name="L17911" href="#L17911">17911</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17912" href="#L17912">17912</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17913" href="#L17913">17913</a>         }
+<a class="jxr_linenumber" name="L17914" href="#L17914">17914</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17915" href="#L17915">17915</a>             calibrator.setInitialScalingFactorsAndCrossCouplingErrors(
+<a class="jxr_linenumber" name="L17916" href="#L17916">17916</a>                     0.0, 0.0, 0.0,
+<a class="jxr_linenumber" name="L17917" href="#L17917">17917</a>                     0.0, 0.0, 0.0,
+<a class="jxr_linenumber" name="L17918" href="#L17918">17918</a>                     0.0, 0.0, 0.0);
+<a class="jxr_linenumber" name="L17919" href="#L17919">17919</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17920" href="#L17920">17920</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17921" href="#L17921">17921</a>         }
+<a class="jxr_linenumber" name="L17922" href="#L17922">17922</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17923" href="#L17923">17923</a>             calibrator.setInitialHardIron((<strong class="jxr_keyword">double</strong>[]) <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17924" href="#L17924">17924</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17925" href="#L17925">17925</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17926" href="#L17926">17926</a>         }
+<a class="jxr_linenumber" name="L17927" href="#L17927">17927</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17928" href="#L17928">17928</a>             calibrator.setInitialHardIron((Matrix) <strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17929" href="#L17929">17929</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17930" href="#L17930">17930</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17931" href="#L17931">17931</a>         }
+<a class="jxr_linenumber" name="L17932" href="#L17932">17932</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17933" href="#L17933">17933</a>             calibrator.setInitialMm(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17934" href="#L17934">17934</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17935" href="#L17935">17935</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17936" href="#L17936">17936</a>         }
+<a class="jxr_linenumber" name="L17937" href="#L17937">17937</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17938" href="#L17938">17938</a>             calibrator.setMeasurements(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17939" href="#L17939">17939</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17940" href="#L17940">17940</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17941" href="#L17941">17941</a>         }
+<a class="jxr_linenumber" name="L17942" href="#L17942">17942</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17943" href="#L17943">17943</a>             calibrator.setCommonAxisUsed(<strong class="jxr_keyword">true</strong>);
+<a class="jxr_linenumber" name="L17944" href="#L17944">17944</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17945" href="#L17945">17945</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17946" href="#L17946">17946</a>         }
+<a class="jxr_linenumber" name="L17947" href="#L17947">17947</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17948" href="#L17948">17948</a>             calibrator.setListener(<strong class="jxr_keyword">this</strong>);
+<a class="jxr_linenumber" name="L17949" href="#L17949">17949</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17950" href="#L17950">17950</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17951" href="#L17951">17951</a>         }
+<a class="jxr_linenumber" name="L17952" href="#L17952">17952</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17953" href="#L17953">17953</a>             calibrator.setMagneticModel(<strong class="jxr_keyword">null</strong>);
+<a class="jxr_linenumber" name="L17954" href="#L17954">17954</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17955" href="#L17955">17955</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17956" href="#L17956">17956</a>         }
+<a class="jxr_linenumber" name="L17957" href="#L17957">17957</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L17958" href="#L17958">17958</a>             calibrator.calibrate();
+<a class="jxr_linenumber" name="L17959" href="#L17959">17959</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17960" href="#L17960">17960</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L17961" href="#L17961">17961</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> Exception e) {
+<a class="jxr_linenumber" name="L17962" href="#L17962">17962</a>             fail(<span class="jxr_string">"LockedException expected but not thrown"</span>);
+<a class="jxr_linenumber" name="L17963" href="#L17963">17963</a>         }
+<a class="jxr_linenumber" name="L17964" href="#L17964">17964</a>     }
+<a class="jxr_linenumber" name="L17965" href="#L17965">17965</a> 
+<a class="jxr_linenumber" name="L17966" href="#L17966">17966</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertEstimatedResult(
+<a class="jxr_linenumber" name="L17967" href="#L17967">17967</a>             <strong class="jxr_keyword">final</strong> Matrix hardIron, <strong class="jxr_keyword">final</strong> Matrix mm,
+<a class="jxr_linenumber" name="L17968" href="#L17968">17968</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator)
+<a class="jxr_linenumber" name="L17969" href="#L17969">17969</a>             <strong class="jxr_keyword">throws</strong> WrongSizeException {
+<a class="jxr_linenumber" name="L17970" href="#L17970">17970</a> 
+<a class="jxr_linenumber" name="L17971" href="#L17971">17971</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] estimatedHardIron = calibrator.getEstimatedHardIron();
+<a class="jxr_linenumber" name="L17972" href="#L17972">17972</a>         assertArrayEquals(hardIron.getBuffer(), estimatedHardIron, 0.0);
+<a class="jxr_linenumber" name="L17973" href="#L17973">17973</a> 
+<a class="jxr_linenumber" name="L17974" href="#L17974">17974</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] estimatedHardIron2 = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[3];
+<a class="jxr_linenumber" name="L17975" href="#L17975">17975</a>         assertTrue(calibrator.getEstimatedHardIron(estimatedHardIron2));
+<a class="jxr_linenumber" name="L17976" href="#L17976">17976</a>         assertArrayEquals(estimatedHardIron, estimatedHardIron2, 0.0);
+<a class="jxr_linenumber" name="L17977" href="#L17977">17977</a> 
+<a class="jxr_linenumber" name="L17978" href="#L17978">17978</a>         <strong class="jxr_keyword">final</strong> Matrix hardIron2 = <strong class="jxr_keyword">new</strong> Matrix(3, 1);
+<a class="jxr_linenumber" name="L17979" href="#L17979">17979</a>         assertTrue(calibrator.getEstimatedHardIronAsMatrix(hardIron2));
 <a class="jxr_linenumber" name="L17980" href="#L17980">17980</a> 
-<a class="jxr_linenumber" name="L17981" href="#L17981">17981</a>         assertEquals(hardIron.getElementAtIndex(0),
-<a class="jxr_linenumber" name="L17982" href="#L17982">17982</a>                 calibrator.getEstimatedHardIronX(), 0.0);
-<a class="jxr_linenumber" name="L17983" href="#L17983">17983</a>         assertEquals(hardIron.getElementAtIndex(1),
-<a class="jxr_linenumber" name="L17984" href="#L17984">17984</a>                 calibrator.getEstimatedHardIronY(), 0.0);
-<a class="jxr_linenumber" name="L17985" href="#L17985">17985</a>         assertEquals(hardIron.getElementAtIndex(2),
-<a class="jxr_linenumber" name="L17986" href="#L17986">17986</a>                 calibrator.getEstimatedHardIronZ(), 0.0);
-<a class="jxr_linenumber" name="L17987" href="#L17987">17987</a> 
-<a class="jxr_linenumber" name="L17988" href="#L17988">17988</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad bTriad1 = calibrator.getEstimatedHardIronAsTriad();
-<a class="jxr_linenumber" name="L17989" href="#L17989">17989</a>         assertEquals(calibrator.getEstimatedHardIronX(), bTriad1.getValueX(), 0.0);
-<a class="jxr_linenumber" name="L17990" href="#L17990">17990</a>         assertEquals(calibrator.getEstimatedHardIronY(), bTriad1.getValueY(), 0.0);
-<a class="jxr_linenumber" name="L17991" href="#L17991">17991</a>         assertEquals(calibrator.getEstimatedHardIronZ(), bTriad1.getValueZ(), 0.0);
-<a class="jxr_linenumber" name="L17992" href="#L17992">17992</a>         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
-<a class="jxr_linenumber" name="L17993" href="#L17993">17993</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad bTriad2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad();
-<a class="jxr_linenumber" name="L17994" href="#L17994">17994</a>         calibrator.getEstimatedHardIronAsTriad(bTriad2);
-<a class="jxr_linenumber" name="L17995" href="#L17995">17995</a>         assertEquals(bTriad1, bTriad2);
-<a class="jxr_linenumber" name="L17996" href="#L17996">17996</a> 
-<a class="jxr_linenumber" name="L17997" href="#L17997">17997</a>         assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(),
-<a class="jxr_linenumber" name="L17998" href="#L17998">17998</a>                 0.0);
-<a class="jxr_linenumber" name="L17999" href="#L17999">17999</a>         assertEquals(mm.getElementAt(1, 1), calibrator.getEstimatedSy(),
+<a class="jxr_linenumber" name="L17981" href="#L17981">17981</a>         assertEquals(hardIron, hardIron2);
+<a class="jxr_linenumber" name="L17982" href="#L17982">17982</a> 
+<a class="jxr_linenumber" name="L17983" href="#L17983">17983</a>         assertEquals(hardIron.getElementAtIndex(0),
+<a class="jxr_linenumber" name="L17984" href="#L17984">17984</a>                 calibrator.getEstimatedHardIronX(), 0.0);
+<a class="jxr_linenumber" name="L17985" href="#L17985">17985</a>         assertEquals(hardIron.getElementAtIndex(1),
+<a class="jxr_linenumber" name="L17986" href="#L17986">17986</a>                 calibrator.getEstimatedHardIronY(), 0.0);
+<a class="jxr_linenumber" name="L17987" href="#L17987">17987</a>         assertEquals(hardIron.getElementAtIndex(2),
+<a class="jxr_linenumber" name="L17988" href="#L17988">17988</a>                 calibrator.getEstimatedHardIronZ(), 0.0);
+<a class="jxr_linenumber" name="L17989" href="#L17989">17989</a> 
+<a class="jxr_linenumber" name="L17990" href="#L17990">17990</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad bTriad1 = calibrator.getEstimatedHardIronAsTriad();
+<a class="jxr_linenumber" name="L17991" href="#L17991">17991</a>         assertEquals(calibrator.getEstimatedHardIronX(), bTriad1.getValueX(), 0.0);
+<a class="jxr_linenumber" name="L17992" href="#L17992">17992</a>         assertEquals(calibrator.getEstimatedHardIronY(), bTriad1.getValueY(), 0.0);
+<a class="jxr_linenumber" name="L17993" href="#L17993">17993</a>         assertEquals(calibrator.getEstimatedHardIronZ(), bTriad1.getValueZ(), 0.0);
+<a class="jxr_linenumber" name="L17994" href="#L17994">17994</a>         assertEquals(MagneticFluxDensityUnit.TESLA, bTriad1.getUnit());
+<a class="jxr_linenumber" name="L17995" href="#L17995">17995</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad bTriad2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad();
+<a class="jxr_linenumber" name="L17996" href="#L17996">17996</a>         calibrator.getEstimatedHardIronAsTriad(bTriad2);
+<a class="jxr_linenumber" name="L17997" href="#L17997">17997</a>         assertEquals(bTriad1, bTriad2);
+<a class="jxr_linenumber" name="L17998" href="#L17998">17998</a> 
+<a class="jxr_linenumber" name="L17999" href="#L17999">17999</a>         assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(),
 <a class="jxr_linenumber" name="L18000" href="#L18000">18000</a>                 0.0);
-<a class="jxr_linenumber" name="L18001" href="#L18001">18001</a>         assertEquals(mm.getElementAt(2, 2), calibrator.getEstimatedSz(),
+<a class="jxr_linenumber" name="L18001" href="#L18001">18001</a>         assertEquals(mm.getElementAt(1, 1), calibrator.getEstimatedSy(),
 <a class="jxr_linenumber" name="L18002" href="#L18002">18002</a>                 0.0);
-<a class="jxr_linenumber" name="L18003" href="#L18003">18003</a>         assertEquals(mm.getElementAt(0, 1), calibrator.getEstimatedMxy(),
+<a class="jxr_linenumber" name="L18003" href="#L18003">18003</a>         assertEquals(mm.getElementAt(2, 2), calibrator.getEstimatedSz(),
 <a class="jxr_linenumber" name="L18004" href="#L18004">18004</a>                 0.0);
-<a class="jxr_linenumber" name="L18005" href="#L18005">18005</a>         assertEquals(mm.getElementAt(0, 2), calibrator.getEstimatedMxz(),
+<a class="jxr_linenumber" name="L18005" href="#L18005">18005</a>         assertEquals(mm.getElementAt(0, 1), calibrator.getEstimatedMxy(),
 <a class="jxr_linenumber" name="L18006" href="#L18006">18006</a>                 0.0);
-<a class="jxr_linenumber" name="L18007" href="#L18007">18007</a>         assertEquals(mm.getElementAt(1, 0), calibrator.getEstimatedMyx(),
+<a class="jxr_linenumber" name="L18007" href="#L18007">18007</a>         assertEquals(mm.getElementAt(0, 2), calibrator.getEstimatedMxz(),
 <a class="jxr_linenumber" name="L18008" href="#L18008">18008</a>                 0.0);
-<a class="jxr_linenumber" name="L18009" href="#L18009">18009</a>         assertEquals(mm.getElementAt(1, 2), calibrator.getEstimatedMyz(),
+<a class="jxr_linenumber" name="L18009" href="#L18009">18009</a>         assertEquals(mm.getElementAt(1, 0), calibrator.getEstimatedMyx(),
 <a class="jxr_linenumber" name="L18010" href="#L18010">18010</a>                 0.0);
-<a class="jxr_linenumber" name="L18011" href="#L18011">18011</a>         assertEquals(mm.getElementAt(2, 0), calibrator.getEstimatedMzx(),
+<a class="jxr_linenumber" name="L18011" href="#L18011">18011</a>         assertEquals(mm.getElementAt(1, 2), calibrator.getEstimatedMyz(),
 <a class="jxr_linenumber" name="L18012" href="#L18012">18012</a>                 0.0);
-<a class="jxr_linenumber" name="L18013" href="#L18013">18013</a>         assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(),
+<a class="jxr_linenumber" name="L18013" href="#L18013">18013</a>         assertEquals(mm.getElementAt(2, 0), calibrator.getEstimatedMzx(),
 <a class="jxr_linenumber" name="L18014" href="#L18014">18014</a>                 0.0);
-<a class="jxr_linenumber" name="L18015" href="#L18015">18015</a> 
-<a class="jxr_linenumber" name="L18016" href="#L18016">18016</a>         assertCovariance(calibrator);
-<a class="jxr_linenumber" name="L18017" href="#L18017">18017</a>     }
-<a class="jxr_linenumber" name="L18018" href="#L18018">18018</a> 
-<a class="jxr_linenumber" name="L18019" href="#L18019">18019</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertCovariance(
-<a class="jxr_linenumber" name="L18020" href="#L18020">18020</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
-<a class="jxr_linenumber" name="L18021" href="#L18021">18021</a>         assertNotNull(calibrator.getEstimatedHardIronXVariance());
-<a class="jxr_linenumber" name="L18022" href="#L18022">18022</a>         assertNotNull(calibrator.getEstimatedHardIronXStandardDeviation());
-<a class="jxr_linenumber" name="L18023" href="#L18023">18023</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBx1 = calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity();
-<a class="jxr_linenumber" name="L18024" href="#L18024">18024</a>         assertNotNull(stdBx1);
-<a class="jxr_linenumber" name="L18025" href="#L18025">18025</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBx2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
-<a class="jxr_linenumber" name="L18026" href="#L18026">18026</a>         assertTrue(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity(stdBx2));
-<a class="jxr_linenumber" name="L18027" href="#L18027">18027</a>         assertEquals(stdBx1, stdBx2);
-<a class="jxr_linenumber" name="L18028" href="#L18028">18028</a> 
-<a class="jxr_linenumber" name="L18029" href="#L18029">18029</a>         assertNotNull(calibrator.getEstimatedHardIronYVariance());
-<a class="jxr_linenumber" name="L18030" href="#L18030">18030</a>         assertNotNull(calibrator.getEstimatedHardIronYStandardDeviation());
-<a class="jxr_linenumber" name="L18031" href="#L18031">18031</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBy1 = calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity();
-<a class="jxr_linenumber" name="L18032" href="#L18032">18032</a>         assertNotNull(stdBy1);
-<a class="jxr_linenumber" name="L18033" href="#L18033">18033</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBy2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
-<a class="jxr_linenumber" name="L18034" href="#L18034">18034</a>         assertTrue(calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity(stdBy2));
-<a class="jxr_linenumber" name="L18035" href="#L18035">18035</a>         assertEquals(stdBy1, stdBy2);
-<a class="jxr_linenumber" name="L18036" href="#L18036">18036</a> 
-<a class="jxr_linenumber" name="L18037" href="#L18037">18037</a>         assertNotNull(calibrator.getEstimatedHardIronZVariance());
-<a class="jxr_linenumber" name="L18038" href="#L18038">18038</a>         assertNotNull(calibrator.getEstimatedHardIronZStandardDeviation());
-<a class="jxr_linenumber" name="L18039" href="#L18039">18039</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBz1 = calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity();
-<a class="jxr_linenumber" name="L18040" href="#L18040">18040</a>         assertNotNull(stdBz1);
-<a class="jxr_linenumber" name="L18041" href="#L18041">18041</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBz2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
-<a class="jxr_linenumber" name="L18042" href="#L18042">18042</a>         assertTrue(calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity(stdBz2));
-<a class="jxr_linenumber" name="L18043" href="#L18043">18043</a>         assertEquals(stdBz1, stdBz2);
-<a class="jxr_linenumber" name="L18044" href="#L18044">18044</a> 
-<a class="jxr_linenumber" name="L18045" href="#L18045">18045</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad std1 = calibrator.getEstimatedHardIronStandardDeviation();
-<a class="jxr_linenumber" name="L18046" href="#L18046">18046</a>         assertEquals(calibrator.getEstimatedHardIronXStandardDeviation(), std1.getValueX(), 0.0);
-<a class="jxr_linenumber" name="L18047" href="#L18047">18047</a>         assertEquals(calibrator.getEstimatedHardIronYStandardDeviation(), std1.getValueY(), 0.0);
-<a class="jxr_linenumber" name="L18048" href="#L18048">18048</a>         assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
-<a class="jxr_linenumber" name="L18049" href="#L18049">18049</a>         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
-<a class="jxr_linenumber" name="L18050" href="#L18050">18050</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad std2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad();
-<a class="jxr_linenumber" name="L18051" href="#L18051">18051</a>         assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
-<a class="jxr_linenumber" name="L18052" href="#L18052">18052</a> 
-<a class="jxr_linenumber" name="L18053" href="#L18053">18053</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
-<a class="jxr_linenumber" name="L18054" href="#L18054">18054</a>                 calibrator.getEstimatedHardIronYStandardDeviation() +
-<a class="jxr_linenumber" name="L18055" href="#L18055">18055</a>                 calibrator.getEstimatedHardIronZStandardDeviation()) / 3.0;
-<a class="jxr_linenumber" name="L18056" href="#L18056">18056</a>         assertEquals(avgStd, calibrator.getEstimatedHardIronStandardDeviationAverage(), 0.0);
-<a class="jxr_linenumber" name="L18057" href="#L18057">18057</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity avg1 = calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity();
-<a class="jxr_linenumber" name="L18058" href="#L18058">18058</a>         assertEquals(avgStd, avg1.getValue().doubleValue(), 0.0);
-<a class="jxr_linenumber" name="L18059" href="#L18059">18059</a>         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
-<a class="jxr_linenumber" name="L18060" href="#L18060">18060</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity avg2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
-<a class="jxr_linenumber" name="L18061" href="#L18061">18061</a>         calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity(avg2);
-<a class="jxr_linenumber" name="L18062" href="#L18062">18062</a>         assertEquals(avg1, avg2);
-<a class="jxr_linenumber" name="L18063" href="#L18063">18063</a> 
-<a class="jxr_linenumber" name="L18064" href="#L18064">18064</a>         assertEquals(std1.getNorm(), calibrator.getEstimatedHardIronStandardDeviationNorm(), ABSOLUTE_ERROR);
-<a class="jxr_linenumber" name="L18065" href="#L18065">18065</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity norm1 = calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity();
-<a class="jxr_linenumber" name="L18066" href="#L18066">18066</a>         assertEquals(std1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
-<a class="jxr_linenumber" name="L18067" href="#L18067">18067</a>         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
-<a class="jxr_linenumber" name="L18068" href="#L18068">18068</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity norm2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
-<a class="jxr_linenumber" name="L18069" href="#L18069">18069</a>         calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(norm2);
-<a class="jxr_linenumber" name="L18070" href="#L18070">18070</a>         assertEquals(norm1, norm2);
-<a class="jxr_linenumber" name="L18071" href="#L18071">18071</a>     }
-<a class="jxr_linenumber" name="L18072" href="#L18072">18072</a> 
-<a class="jxr_linenumber" name="L18073" href="#L18073">18073</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkCommonAxisCovariance(<strong class="jxr_keyword">final</strong> Matrix covariance) {
-<a class="jxr_linenumber" name="L18074" href="#L18074">18074</a>         assertEquals(covariance.getRows(), 12);
-<a class="jxr_linenumber" name="L18075" href="#L18075">18075</a>         assertEquals(covariance.getColumns(), 12);
-<a class="jxr_linenumber" name="L18076" href="#L18076">18076</a> 
-<a class="jxr_linenumber" name="L18077" href="#L18077">18077</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> j = 0; j &lt; 12; j++) {
-<a class="jxr_linenumber" name="L18078" href="#L18078">18078</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> colIsZero = j == 8 || j == 10 || j == 11;
-<a class="jxr_linenumber" name="L18079" href="#L18079">18079</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 12; i++) {
-<a class="jxr_linenumber" name="L18080" href="#L18080">18080</a>                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> rowIsZero = i == 8 || i == 10 || i == 11;
-<a class="jxr_linenumber" name="L18081" href="#L18081">18081</a>                 <strong class="jxr_keyword">if</strong> (colIsZero || rowIsZero) {
-<a class="jxr_linenumber" name="L18082" href="#L18082">18082</a>                     assertEquals(covariance.getElementAt(i, j), 0.0, 0.0);
-<a class="jxr_linenumber" name="L18083" href="#L18083">18083</a>                 }
-<a class="jxr_linenumber" name="L18084" href="#L18084">18084</a>             }
-<a class="jxr_linenumber" name="L18085" href="#L18085">18085</a>         }
-<a class="jxr_linenumber" name="L18086" href="#L18086">18086</a>     }
-<a class="jxr_linenumber" name="L18087" href="#L18087">18087</a> 
-<a class="jxr_linenumber" name="L18088" href="#L18088">18088</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkGeneralCovariance(<strong class="jxr_keyword">final</strong> Matrix covariance) {
-<a class="jxr_linenumber" name="L18089" href="#L18089">18089</a>         assertEquals(covariance.getRows(), 12);
-<a class="jxr_linenumber" name="L18090" href="#L18090">18090</a>         assertEquals(covariance.getColumns(), 12);
-<a class="jxr_linenumber" name="L18091" href="#L18091">18091</a> 
-<a class="jxr_linenumber" name="L18092" href="#L18092">18092</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 12; i++) {
-<a class="jxr_linenumber" name="L18093" href="#L18093">18093</a>             assertNotEquals(covariance.getElementAt(i, i), 0.0);
-<a class="jxr_linenumber" name="L18094" href="#L18094">18094</a>         }
-<a class="jxr_linenumber" name="L18095" href="#L18095">18095</a>     }
-<a class="jxr_linenumber" name="L18096" href="#L18096">18096</a> 
-<a class="jxr_linenumber" name="L18097" href="#L18097">18097</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; generateMeasurementsMultipleOrientationsWithSamePosition(
-<a class="jxr_linenumber" name="L18098" href="#L18098">18098</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L18099" href="#L18099">18099</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numberOfMeasurements,
-<a class="jxr_linenumber" name="L18100" href="#L18100">18100</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L18101" href="#L18101">18101</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L18102" href="#L18102">18102</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer)
-<a class="jxr_linenumber" name="L18103" href="#L18103">18103</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L18104" href="#L18104">18104</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
-<a class="jxr_linenumber" name="L18105" href="#L18105">18105</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
-<a class="jxr_linenumber" name="L18106" href="#L18106">18106</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L18107" href="#L18107">18107</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; numberOfMeasurements; i++) {
-<a class="jxr_linenumber" name="L18108" href="#L18108">18108</a>             result.add(generateMeasureAtPosition(hardIron, softIron,
-<a class="jxr_linenumber" name="L18109" href="#L18109">18109</a>                     wmmEstimator, randomizer, noiseRandomizer, position));
-<a class="jxr_linenumber" name="L18110" href="#L18110">18110</a>         }
-<a class="jxr_linenumber" name="L18111" href="#L18111">18111</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L18112" href="#L18112">18112</a>     }
-<a class="jxr_linenumber" name="L18113" href="#L18113">18113</a> 
-<a class="jxr_linenumber" name="L18114" href="#L18114">18114</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;
-<a class="jxr_linenumber" name="L18115" href="#L18115">18115</a>     generateMeasurementsMultiplePositionsWithSameOrientation(
-<a class="jxr_linenumber" name="L18116" href="#L18116">18116</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L18117" href="#L18117">18117</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L18118" href="#L18118">18118</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer)
-<a class="jxr_linenumber" name="L18119" href="#L18119">18119</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L18120" href="#L18120">18120</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = <strong class="jxr_keyword">new</strong> CoordinateTransformation(
-<a class="jxr_linenumber" name="L18121" href="#L18121">18121</a>                 FrameType.LOCAL_NAVIGATION_FRAME,
-<a class="jxr_linenumber" name="L18122" href="#L18122">18122</a>                 FrameType.BODY_FRAME);
-<a class="jxr_linenumber" name="L18123" href="#L18123">18123</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
-<a class="jxr_linenumber" name="L18124" href="#L18124">18124</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
-<a class="jxr_linenumber" name="L18125" href="#L18125">18125</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
-<a class="jxr_linenumber" name="L18126" href="#L18126">18126</a>             result.add(generateMeasureAtOrientation(hardIron, softIron,
-<a class="jxr_linenumber" name="L18127" href="#L18127">18127</a>                     wmmEstimator, randomizer, cnb));
-<a class="jxr_linenumber" name="L18128" href="#L18128">18128</a>         }
-<a class="jxr_linenumber" name="L18129" href="#L18129">18129</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L18130" href="#L18130">18130</a>     }
-<a class="jxr_linenumber" name="L18131" href="#L18131">18131</a> 
-<a class="jxr_linenumber" name="L18132" href="#L18132">18132</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtOrientation(
-<a class="jxr_linenumber" name="L18133" href="#L18133">18133</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L18134" href="#L18134">18134</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L18135" href="#L18135">18135</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L18136" href="#L18136">18136</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
-<a class="jxr_linenumber" name="L18137" href="#L18137">18137</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L18138" href="#L18138">18138</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
-<a class="jxr_linenumber" name="L18139" href="#L18139">18139</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
-<a class="jxr_linenumber" name="L18140" href="#L18140">18140</a>                 randomizer, <strong class="jxr_keyword">null</strong>, position, cnb);
-<a class="jxr_linenumber" name="L18141" href="#L18141">18141</a>     }
-<a class="jxr_linenumber" name="L18142" href="#L18142">18142</a> 
-<a class="jxr_linenumber" name="L18143" href="#L18143">18143</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtPosition(
-<a class="jxr_linenumber" name="L18144" href="#L18144">18144</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L18145" href="#L18145">18145</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L18146" href="#L18146">18146</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L18147" href="#L18147">18147</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
-<a class="jxr_linenumber" name="L18148" href="#L18148">18148</a>             <strong class="jxr_keyword">final</strong> NEDPosition position)
-<a class="jxr_linenumber" name="L18149" href="#L18149">18149</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L18150" href="#L18150">18150</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = generateBodyC(randomizer);
-<a class="jxr_linenumber" name="L18151" href="#L18151">18151</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
-<a class="jxr_linenumber" name="L18152" href="#L18152">18152</a>                 randomizer, noiseRandomizer, position, cnb);
-<a class="jxr_linenumber" name="L18153" href="#L18153">18153</a>     }
-<a class="jxr_linenumber" name="L18154" href="#L18154">18154</a> 
-<a class="jxr_linenumber" name="L18155" href="#L18155">18155</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasure(
-<a class="jxr_linenumber" name="L18156" href="#L18156">18156</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
-<a class="jxr_linenumber" name="L18157" href="#L18157">18157</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
-<a class="jxr_linenumber" name="L18158" href="#L18158">18158</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
-<a class="jxr_linenumber" name="L18159" href="#L18159">18159</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
-<a class="jxr_linenumber" name="L18160" href="#L18160">18160</a>             <strong class="jxr_keyword">final</strong> NEDPosition position,
-<a class="jxr_linenumber" name="L18161" href="#L18161">18161</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
-<a class="jxr_linenumber" name="L18162" href="#L18162">18162</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
-<a class="jxr_linenumber" name="L18163" href="#L18163">18163</a> 
-<a class="jxr_linenumber" name="L18164" href="#L18164">18164</a>         <strong class="jxr_keyword">final</strong> Date timestamp = <strong class="jxr_keyword">new</strong> Date(createTimestamp(randomizer));
-<a class="jxr_linenumber" name="L18165" href="#L18165">18165</a>         <strong class="jxr_keyword">final</strong> NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-<a class="jxr_linenumber" name="L18166" href="#L18166">18166</a>                 position, timestamp);
-<a class="jxr_linenumber" name="L18167" href="#L18167">18167</a> 
-<a class="jxr_linenumber" name="L18168" href="#L18168">18168</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity truthMagnetic =
-<a class="jxr_linenumber" name="L18169" href="#L18169">18169</a>                 BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
-<a class="jxr_linenumber" name="L18170" href="#L18170">18170</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity measuredMagnetic =
-<a class="jxr_linenumber" name="L18171" href="#L18171">18171</a>                 generateMeasuredMagneticFluxDensity(truthMagnetic,
-<a class="jxr_linenumber" name="L18172" href="#L18172">18172</a>                         hardIron, softIron);
-<a class="jxr_linenumber" name="L18173" href="#L18173">18173</a> 
-<a class="jxr_linenumber" name="L18174" href="#L18174">18174</a>         <strong class="jxr_keyword">if</strong> (noiseRandomizer != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L18175" href="#L18175">18175</a>             measuredMagnetic.setBx(measuredMagnetic.getBx()
-<a class="jxr_linenumber" name="L18176" href="#L18176">18176</a>                     + noiseRandomizer.nextDouble());
-<a class="jxr_linenumber" name="L18177" href="#L18177">18177</a>             measuredMagnetic.setBy(measuredMagnetic.getBy()
-<a class="jxr_linenumber" name="L18178" href="#L18178">18178</a>                     + noiseRandomizer.nextDouble());
-<a class="jxr_linenumber" name="L18179" href="#L18179">18179</a>             measuredMagnetic.setBz(measuredMagnetic.getBz()
-<a class="jxr_linenumber" name="L18180" href="#L18180">18180</a>                     + noiseRandomizer.nextDouble());
-<a class="jxr_linenumber" name="L18181" href="#L18181">18181</a>         }
-<a class="jxr_linenumber" name="L18182" href="#L18182">18182</a> 
-<a class="jxr_linenumber" name="L18183" href="#L18183">18183</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
-<a class="jxr_linenumber" name="L18184" href="#L18184">18184</a>         <strong class="jxr_keyword">final</strong> NEDFrame frame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
+<a class="jxr_linenumber" name="L18015" href="#L18015">18015</a>         assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(),
+<a class="jxr_linenumber" name="L18016" href="#L18016">18016</a>                 0.0);
+<a class="jxr_linenumber" name="L18017" href="#L18017">18017</a> 
+<a class="jxr_linenumber" name="L18018" href="#L18018">18018</a>         assertCovariance(calibrator);
+<a class="jxr_linenumber" name="L18019" href="#L18019">18019</a>     }
+<a class="jxr_linenumber" name="L18020" href="#L18020">18020</a> 
+<a class="jxr_linenumber" name="L18021" href="#L18021">18021</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> assertCovariance(
+<a class="jxr_linenumber" name="L18022" href="#L18022">18022</a>             <strong class="jxr_keyword">final</strong> KnownFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator) {
+<a class="jxr_linenumber" name="L18023" href="#L18023">18023</a>         assertNotNull(calibrator.getEstimatedHardIronXVariance());
+<a class="jxr_linenumber" name="L18024" href="#L18024">18024</a>         assertNotNull(calibrator.getEstimatedHardIronXStandardDeviation());
+<a class="jxr_linenumber" name="L18025" href="#L18025">18025</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBx1 = calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity();
+<a class="jxr_linenumber" name="L18026" href="#L18026">18026</a>         assertNotNull(stdBx1);
+<a class="jxr_linenumber" name="L18027" href="#L18027">18027</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBx2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+<a class="jxr_linenumber" name="L18028" href="#L18028">18028</a>         assertTrue(calibrator.getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity(stdBx2));
+<a class="jxr_linenumber" name="L18029" href="#L18029">18029</a>         assertEquals(stdBx1, stdBx2);
+<a class="jxr_linenumber" name="L18030" href="#L18030">18030</a> 
+<a class="jxr_linenumber" name="L18031" href="#L18031">18031</a>         assertNotNull(calibrator.getEstimatedHardIronYVariance());
+<a class="jxr_linenumber" name="L18032" href="#L18032">18032</a>         assertNotNull(calibrator.getEstimatedHardIronYStandardDeviation());
+<a class="jxr_linenumber" name="L18033" href="#L18033">18033</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBy1 = calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity();
+<a class="jxr_linenumber" name="L18034" href="#L18034">18034</a>         assertNotNull(stdBy1);
+<a class="jxr_linenumber" name="L18035" href="#L18035">18035</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBy2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+<a class="jxr_linenumber" name="L18036" href="#L18036">18036</a>         assertTrue(calibrator.getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity(stdBy2));
+<a class="jxr_linenumber" name="L18037" href="#L18037">18037</a>         assertEquals(stdBy1, stdBy2);
+<a class="jxr_linenumber" name="L18038" href="#L18038">18038</a> 
+<a class="jxr_linenumber" name="L18039" href="#L18039">18039</a>         assertNotNull(calibrator.getEstimatedHardIronZVariance());
+<a class="jxr_linenumber" name="L18040" href="#L18040">18040</a>         assertNotNull(calibrator.getEstimatedHardIronZStandardDeviation());
+<a class="jxr_linenumber" name="L18041" href="#L18041">18041</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBz1 = calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity();
+<a class="jxr_linenumber" name="L18042" href="#L18042">18042</a>         assertNotNull(stdBz1);
+<a class="jxr_linenumber" name="L18043" href="#L18043">18043</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity stdBz2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+<a class="jxr_linenumber" name="L18044" href="#L18044">18044</a>         assertTrue(calibrator.getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity(stdBz2));
+<a class="jxr_linenumber" name="L18045" href="#L18045">18045</a>         assertEquals(stdBz1, stdBz2);
+<a class="jxr_linenumber" name="L18046" href="#L18046">18046</a> 
+<a class="jxr_linenumber" name="L18047" href="#L18047">18047</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad std1 = calibrator.getEstimatedHardIronStandardDeviation();
+<a class="jxr_linenumber" name="L18048" href="#L18048">18048</a>         assertEquals(calibrator.getEstimatedHardIronXStandardDeviation(), std1.getValueX(), 0.0);
+<a class="jxr_linenumber" name="L18049" href="#L18049">18049</a>         assertEquals(calibrator.getEstimatedHardIronYStandardDeviation(), std1.getValueY(), 0.0);
+<a class="jxr_linenumber" name="L18050" href="#L18050">18050</a>         assertEquals(calibrator.getEstimatedHardIronZStandardDeviation(), std1.getValueZ(), 0.0);
+<a class="jxr_linenumber" name="L18051" href="#L18051">18051</a>         assertEquals(MagneticFluxDensityUnit.TESLA, std1.getUnit());
+<a class="jxr_linenumber" name="L18052" href="#L18052">18052</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensityTriad std2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensityTriad();
+<a class="jxr_linenumber" name="L18053" href="#L18053">18053</a>         assertTrue(calibrator.getEstimatedHardIronStandardDeviation(std2));
+<a class="jxr_linenumber" name="L18054" href="#L18054">18054</a> 
+<a class="jxr_linenumber" name="L18055" href="#L18055">18055</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> avgStd = (calibrator.getEstimatedHardIronXStandardDeviation() +
+<a class="jxr_linenumber" name="L18056" href="#L18056">18056</a>                 calibrator.getEstimatedHardIronYStandardDeviation() +
+<a class="jxr_linenumber" name="L18057" href="#L18057">18057</a>                 calibrator.getEstimatedHardIronZStandardDeviation()) / 3.0;
+<a class="jxr_linenumber" name="L18058" href="#L18058">18058</a>         assertEquals(avgStd, calibrator.getEstimatedHardIronStandardDeviationAverage(), 0.0);
+<a class="jxr_linenumber" name="L18059" href="#L18059">18059</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity avg1 = calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity();
+<a class="jxr_linenumber" name="L18060" href="#L18060">18060</a>         assertEquals(avgStd, avg1.getValue().doubleValue(), 0.0);
+<a class="jxr_linenumber" name="L18061" href="#L18061">18061</a>         assertEquals(MagneticFluxDensityUnit.TESLA, avg1.getUnit());
+<a class="jxr_linenumber" name="L18062" href="#L18062">18062</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity avg2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+<a class="jxr_linenumber" name="L18063" href="#L18063">18063</a>         calibrator.getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity(avg2);
+<a class="jxr_linenumber" name="L18064" href="#L18064">18064</a>         assertEquals(avg1, avg2);
+<a class="jxr_linenumber" name="L18065" href="#L18065">18065</a> 
+<a class="jxr_linenumber" name="L18066" href="#L18066">18066</a>         assertEquals(std1.getNorm(), calibrator.getEstimatedHardIronStandardDeviationNorm(), ABSOLUTE_ERROR);
+<a class="jxr_linenumber" name="L18067" href="#L18067">18067</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity norm1 = calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity();
+<a class="jxr_linenumber" name="L18068" href="#L18068">18068</a>         assertEquals(std1.getNorm(), norm1.getValue().doubleValue(), ABSOLUTE_ERROR);
+<a class="jxr_linenumber" name="L18069" href="#L18069">18069</a>         assertEquals(MagneticFluxDensityUnit.TESLA, norm1.getUnit());
+<a class="jxr_linenumber" name="L18070" href="#L18070">18070</a>         <strong class="jxr_keyword">final</strong> MagneticFluxDensity norm2 = <strong class="jxr_keyword">new</strong> MagneticFluxDensity(1.0, MagneticFluxDensityUnit.TESLA);
+<a class="jxr_linenumber" name="L18071" href="#L18071">18071</a>         calibrator.getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(norm2);
+<a class="jxr_linenumber" name="L18072" href="#L18072">18072</a>         assertEquals(norm1, norm2);
+<a class="jxr_linenumber" name="L18073" href="#L18073">18073</a>     }
+<a class="jxr_linenumber" name="L18074" href="#L18074">18074</a> 
+<a class="jxr_linenumber" name="L18075" href="#L18075">18075</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkCommonAxisCovariance(<strong class="jxr_keyword">final</strong> Matrix covariance) {
+<a class="jxr_linenumber" name="L18076" href="#L18076">18076</a>         assertEquals(covariance.getRows(), 12);
+<a class="jxr_linenumber" name="L18077" href="#L18077">18077</a>         assertEquals(covariance.getColumns(), 12);
+<a class="jxr_linenumber" name="L18078" href="#L18078">18078</a> 
+<a class="jxr_linenumber" name="L18079" href="#L18079">18079</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> j = 0; j &lt; 12; j++) {
+<a class="jxr_linenumber" name="L18080" href="#L18080">18080</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> colIsZero = j == 8 || j == 10 || j == 11;
+<a class="jxr_linenumber" name="L18081" href="#L18081">18081</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 12; i++) {
+<a class="jxr_linenumber" name="L18082" href="#L18082">18082</a>                 <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> rowIsZero = i == 8 || i == 10 || i == 11;
+<a class="jxr_linenumber" name="L18083" href="#L18083">18083</a>                 <strong class="jxr_keyword">if</strong> (colIsZero || rowIsZero) {
+<a class="jxr_linenumber" name="L18084" href="#L18084">18084</a>                     assertEquals(covariance.getElementAt(i, j), 0.0, 0.0);
+<a class="jxr_linenumber" name="L18085" href="#L18085">18085</a>                 }
+<a class="jxr_linenumber" name="L18086" href="#L18086">18086</a>             }
+<a class="jxr_linenumber" name="L18087" href="#L18087">18087</a>         }
+<a class="jxr_linenumber" name="L18088" href="#L18088">18088</a>     }
+<a class="jxr_linenumber" name="L18089" href="#L18089">18089</a> 
+<a class="jxr_linenumber" name="L18090" href="#L18090">18090</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">void</strong> checkGeneralCovariance(<strong class="jxr_keyword">final</strong> Matrix covariance) {
+<a class="jxr_linenumber" name="L18091" href="#L18091">18091</a>         assertEquals(covariance.getRows(), 12);
+<a class="jxr_linenumber" name="L18092" href="#L18092">18092</a>         assertEquals(covariance.getColumns(), 12);
+<a class="jxr_linenumber" name="L18093" href="#L18093">18093</a> 
+<a class="jxr_linenumber" name="L18094" href="#L18094">18094</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; 12; i++) {
+<a class="jxr_linenumber" name="L18095" href="#L18095">18095</a>             assertNotEquals(covariance.getElementAt(i, i), 0.0);
+<a class="jxr_linenumber" name="L18096" href="#L18096">18096</a>         }
+<a class="jxr_linenumber" name="L18097" href="#L18097">18097</a>     }
+<a class="jxr_linenumber" name="L18098" href="#L18098">18098</a> 
+<a class="jxr_linenumber" name="L18099" href="#L18099">18099</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;
+<a class="jxr_linenumber" name="L18100" href="#L18100">18100</a>     generateMeasurementsMultipleOrientationsWithSamePosition(
+<a class="jxr_linenumber" name="L18101" href="#L18101">18101</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L18102" href="#L18102">18102</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">int</strong> numberOfMeasurements,
+<a class="jxr_linenumber" name="L18103" href="#L18103">18103</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L18104" href="#L18104">18104</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L18105" href="#L18105">18105</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer)
+<a class="jxr_linenumber" name="L18106" href="#L18106">18106</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L18107" href="#L18107">18107</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
+<a class="jxr_linenumber" name="L18108" href="#L18108">18108</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
+<a class="jxr_linenumber" name="L18109" href="#L18109">18109</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L18110" href="#L18110">18110</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; numberOfMeasurements; i++) {
+<a class="jxr_linenumber" name="L18111" href="#L18111">18111</a>             result.add(generateMeasureAtPosition(hardIron, softIron,
+<a class="jxr_linenumber" name="L18112" href="#L18112">18112</a>                     wmmEstimator, randomizer, noiseRandomizer, position));
+<a class="jxr_linenumber" name="L18113" href="#L18113">18113</a>         }
+<a class="jxr_linenumber" name="L18114" href="#L18114">18114</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L18115" href="#L18115">18115</a>     }
+<a class="jxr_linenumber" name="L18116" href="#L18116">18116</a> 
+<a class="jxr_linenumber" name="L18117" href="#L18117">18117</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt;
+<a class="jxr_linenumber" name="L18118" href="#L18118">18118</a>     generateMeasurementsMultiplePositionsWithSameOrientation(
+<a class="jxr_linenumber" name="L18119" href="#L18119">18119</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L18120" href="#L18120">18120</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L18121" href="#L18121">18121</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer)
+<a class="jxr_linenumber" name="L18122" href="#L18122">18122</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L18123" href="#L18123">18123</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = <strong class="jxr_keyword">new</strong> CoordinateTransformation(
+<a class="jxr_linenumber" name="L18124" href="#L18124">18124</a>                 FrameType.LOCAL_NAVIGATION_FRAME,
+<a class="jxr_linenumber" name="L18125" href="#L18125">18125</a>                 FrameType.BODY_FRAME);
+<a class="jxr_linenumber" name="L18126" href="#L18126">18126</a>         <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; result =
+<a class="jxr_linenumber" name="L18127" href="#L18127">18127</a>                 <strong class="jxr_keyword">new</strong> ArrayList&lt;&gt;();
+<a class="jxr_linenumber" name="L18128" href="#L18128">18128</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> i = 0; i &lt; KnownFrameMagnetometerLinearLeastSquaresCalibrator.MINIMUM_MEASUREMENTS; i++) {
+<a class="jxr_linenumber" name="L18129" href="#L18129">18129</a>             result.add(generateMeasureAtOrientation(hardIron, softIron,
+<a class="jxr_linenumber" name="L18130" href="#L18130">18130</a>                     wmmEstimator, randomizer, cnb));
+<a class="jxr_linenumber" name="L18131" href="#L18131">18131</a>         }
+<a class="jxr_linenumber" name="L18132" href="#L18132">18132</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L18133" href="#L18133">18133</a>     }
+<a class="jxr_linenumber" name="L18134" href="#L18134">18134</a> 
+<a class="jxr_linenumber" name="L18135" href="#L18135">18135</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtOrientation(
+<a class="jxr_linenumber" name="L18136" href="#L18136">18136</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L18137" href="#L18137">18137</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L18138" href="#L18138">18138</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L18139" href="#L18139">18139</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
+<a class="jxr_linenumber" name="L18140" href="#L18140">18140</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L18141" href="#L18141">18141</a>         <strong class="jxr_keyword">final</strong> NEDPosition position = createPosition(randomizer);
+<a class="jxr_linenumber" name="L18142" href="#L18142">18142</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
+<a class="jxr_linenumber" name="L18143" href="#L18143">18143</a>                 randomizer, <strong class="jxr_keyword">null</strong>, position, cnb);
+<a class="jxr_linenumber" name="L18144" href="#L18144">18144</a>     }
+<a class="jxr_linenumber" name="L18145" href="#L18145">18145</a> 
+<a class="jxr_linenumber" name="L18146" href="#L18146">18146</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasureAtPosition(
+<a class="jxr_linenumber" name="L18147" href="#L18147">18147</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L18148" href="#L18148">18148</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L18149" href="#L18149">18149</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L18150" href="#L18150">18150</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
+<a class="jxr_linenumber" name="L18151" href="#L18151">18151</a>             <strong class="jxr_keyword">final</strong> NEDPosition position)
+<a class="jxr_linenumber" name="L18152" href="#L18152">18152</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L18153" href="#L18153">18153</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb = generateBodyC(randomizer);
+<a class="jxr_linenumber" name="L18154" href="#L18154">18154</a>         <strong class="jxr_keyword">return</strong> generateMeasure(hardIron, softIron, wmmEstimator,
+<a class="jxr_linenumber" name="L18155" href="#L18155">18155</a>                 randomizer, noiseRandomizer, position, cnb);
+<a class="jxr_linenumber" name="L18156" href="#L18156">18156</a>     }
+<a class="jxr_linenumber" name="L18157" href="#L18157">18157</a> 
+<a class="jxr_linenumber" name="L18158" href="#L18158">18158</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> StandardDeviationFrameBodyMagneticFluxDensity generateMeasure(
+<a class="jxr_linenumber" name="L18159" href="#L18159">18159</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron, <strong class="jxr_keyword">final</strong> Matrix softIron,
+<a class="jxr_linenumber" name="L18160" href="#L18160">18160</a>             <strong class="jxr_keyword">final</strong> WMMEarthMagneticFluxDensityEstimator wmmEstimator,
+<a class="jxr_linenumber" name="L18161" href="#L18161">18161</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer,
+<a class="jxr_linenumber" name="L18162" href="#L18162">18162</a>             <strong class="jxr_keyword">final</strong> GaussianRandomizer noiseRandomizer,
+<a class="jxr_linenumber" name="L18163" href="#L18163">18163</a>             <strong class="jxr_keyword">final</strong> NEDPosition position,
+<a class="jxr_linenumber" name="L18164" href="#L18164">18164</a>             <strong class="jxr_keyword">final</strong> CoordinateTransformation cnb)
+<a class="jxr_linenumber" name="L18165" href="#L18165">18165</a>             <strong class="jxr_keyword">throws</strong> InvalidSourceAndDestinationFrameTypeException {
+<a class="jxr_linenumber" name="L18166" href="#L18166">18166</a> 
+<a class="jxr_linenumber" name="L18167" href="#L18167">18167</a>         <strong class="jxr_keyword">final</strong> Date timestamp = <strong class="jxr_keyword">new</strong> Date(createTimestamp(randomizer));
+<a class="jxr_linenumber" name="L18168" href="#L18168">18168</a>         <strong class="jxr_keyword">final</strong> NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
+<a class="jxr_linenumber" name="L18169" href="#L18169">18169</a>                 position, timestamp);
+<a class="jxr_linenumber" name="L18170" href="#L18170">18170</a> 
+<a class="jxr_linenumber" name="L18171" href="#L18171">18171</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity truthMagnetic =
+<a class="jxr_linenumber" name="L18172" href="#L18172">18172</a>                 BodyMagneticFluxDensityEstimator.estimate(earthB, cnb);
+<a class="jxr_linenumber" name="L18173" href="#L18173">18173</a>         <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity measuredMagnetic =
+<a class="jxr_linenumber" name="L18174" href="#L18174">18174</a>                 generateMeasuredMagneticFluxDensity(truthMagnetic,
+<a class="jxr_linenumber" name="L18175" href="#L18175">18175</a>                         hardIron, softIron);
+<a class="jxr_linenumber" name="L18176" href="#L18176">18176</a> 
+<a class="jxr_linenumber" name="L18177" href="#L18177">18177</a>         <strong class="jxr_keyword">if</strong> (noiseRandomizer != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L18178" href="#L18178">18178</a>             measuredMagnetic.setBx(measuredMagnetic.getBx()
+<a class="jxr_linenumber" name="L18179" href="#L18179">18179</a>                     + noiseRandomizer.nextDouble());
+<a class="jxr_linenumber" name="L18180" href="#L18180">18180</a>             measuredMagnetic.setBy(measuredMagnetic.getBy()
+<a class="jxr_linenumber" name="L18181" href="#L18181">18181</a>                     + noiseRandomizer.nextDouble());
+<a class="jxr_linenumber" name="L18182" href="#L18182">18182</a>             measuredMagnetic.setBz(measuredMagnetic.getBz()
+<a class="jxr_linenumber" name="L18183" href="#L18183">18183</a>                     + noiseRandomizer.nextDouble());
+<a class="jxr_linenumber" name="L18184" href="#L18184">18184</a>         }
 <a class="jxr_linenumber" name="L18185" href="#L18185">18185</a> 
-<a class="jxr_linenumber" name="L18186" href="#L18186">18186</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> std = noiseRandomizer != <strong class="jxr_keyword">null</strong> ?
-<a class="jxr_linenumber" name="L18187" href="#L18187">18187</a>                 noiseRandomizer.getStandardDeviation() :
-<a class="jxr_linenumber" name="L18188" href="#L18188">18188</a>                 MAGNETOMETER_NOISE_STD;
-<a class="jxr_linenumber" name="L18189" href="#L18189">18189</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyMagneticFluxDensity(
-<a class="jxr_linenumber" name="L18190" href="#L18190">18190</a>                 measuredMagnetic, frame, timestamp, std);
-<a class="jxr_linenumber" name="L18191" href="#L18191">18191</a>     }
-<a class="jxr_linenumber" name="L18192" href="#L18192">18192</a> 
-<a class="jxr_linenumber" name="L18193" href="#L18193">18193</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> CoordinateTransformation generateBodyC(
-<a class="jxr_linenumber" name="L18194" href="#L18194">18194</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L18186" href="#L18186">18186</a>         <strong class="jxr_keyword">final</strong> CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+<a class="jxr_linenumber" name="L18187" href="#L18187">18187</a>         <strong class="jxr_keyword">final</strong> NEDFrame frame = <strong class="jxr_keyword">new</strong> NEDFrame(position, cbn);
+<a class="jxr_linenumber" name="L18188" href="#L18188">18188</a> 
+<a class="jxr_linenumber" name="L18189" href="#L18189">18189</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> std = noiseRandomizer != <strong class="jxr_keyword">null</strong> ?
+<a class="jxr_linenumber" name="L18190" href="#L18190">18190</a>                 noiseRandomizer.getStandardDeviation() :
+<a class="jxr_linenumber" name="L18191" href="#L18191">18191</a>                 MAGNETOMETER_NOISE_STD;
+<a class="jxr_linenumber" name="L18192" href="#L18192">18192</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> StandardDeviationFrameBodyMagneticFluxDensity(
+<a class="jxr_linenumber" name="L18193" href="#L18193">18193</a>                 measuredMagnetic, frame, timestamp, std);
+<a class="jxr_linenumber" name="L18194" href="#L18194">18194</a>     }
 <a class="jxr_linenumber" name="L18195" href="#L18195">18195</a> 
-<a class="jxr_linenumber" name="L18196" href="#L18196">18196</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toRadians(
-<a class="jxr_linenumber" name="L18197" href="#L18197">18197</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
-<a class="jxr_linenumber" name="L18198" href="#L18198">18198</a>                         MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L18199" href="#L18199">18199</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toRadians(
+<a class="jxr_linenumber" name="L18196" href="#L18196">18196</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> CoordinateTransformation generateBodyC(
+<a class="jxr_linenumber" name="L18197" href="#L18197">18197</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L18198" href="#L18198">18198</a> 
+<a class="jxr_linenumber" name="L18199" href="#L18199">18199</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> roll = Math.toRadians(
 <a class="jxr_linenumber" name="L18200" href="#L18200">18200</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
 <a class="jxr_linenumber" name="L18201" href="#L18201">18201</a>                         MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L18202" href="#L18202">18202</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw1 = Math.toRadians(
+<a class="jxr_linenumber" name="L18202" href="#L18202">18202</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> pitch = Math.toRadians(
 <a class="jxr_linenumber" name="L18203" href="#L18203">18203</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
 <a class="jxr_linenumber" name="L18204" href="#L18204">18204</a>                         MAX_ANGLE_DEGREES));
-<a class="jxr_linenumber" name="L18205" href="#L18205">18205</a> 
-<a class="jxr_linenumber" name="L18206" href="#L18206">18206</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> CoordinateTransformation(
-<a class="jxr_linenumber" name="L18207" href="#L18207">18207</a>                 roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-<a class="jxr_linenumber" name="L18208" href="#L18208">18208</a>                 FrameType.BODY_FRAME);
-<a class="jxr_linenumber" name="L18209" href="#L18209">18209</a>     }
-<a class="jxr_linenumber" name="L18210" href="#L18210">18210</a> 
-<a class="jxr_linenumber" name="L18211" href="#L18211">18211</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
-<a class="jxr_linenumber" name="L18212" href="#L18212">18212</a>             <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity input, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron,
-<a class="jxr_linenumber" name="L18213" href="#L18213">18213</a>             <strong class="jxr_keyword">final</strong> Matrix softIron) {
-<a class="jxr_linenumber" name="L18214" href="#L18214">18214</a>         <strong class="jxr_keyword">return</strong> BodyMagneticFluxDensityGenerator.generate(input, hardIron,
-<a class="jxr_linenumber" name="L18215" href="#L18215">18215</a>                 softIron);
-<a class="jxr_linenumber" name="L18216" href="#L18216">18216</a>     }
-<a class="jxr_linenumber" name="L18217" href="#L18217">18217</a> 
-<a class="jxr_linenumber" name="L18218" href="#L18218">18218</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong>[] generateHardIron(
-<a class="jxr_linenumber" name="L18219" href="#L18219">18219</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L18220" href="#L18220">18220</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] result = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[BodyMagneticFluxDensity.COMPONENTS];
-<a class="jxr_linenumber" name="L18221" href="#L18221">18221</a>         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
-<a class="jxr_linenumber" name="L18222" href="#L18222">18222</a>         <strong class="jxr_keyword">return</strong> result;
-<a class="jxr_linenumber" name="L18223" href="#L18223">18223</a>     }
-<a class="jxr_linenumber" name="L18224" href="#L18224">18224</a> 
-<a class="jxr_linenumber" name="L18225" href="#L18225">18225</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronGeneral() {
-<a class="jxr_linenumber" name="L18226" href="#L18226">18226</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L18227" href="#L18227">18227</a>             <strong class="jxr_keyword">return</strong> Matrix.createWithUniformRandomValues(
-<a class="jxr_linenumber" name="L18228" href="#L18228">18228</a>                     BodyMagneticFluxDensity.COMPONENTS,
-<a class="jxr_linenumber" name="L18229" href="#L18229">18229</a>                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
-<a class="jxr_linenumber" name="L18230" href="#L18230">18230</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> WrongSizeException ignore) {
-<a class="jxr_linenumber" name="L18231" href="#L18231">18231</a>             <em class="jxr_comment">// never happens</em>
-<a class="jxr_linenumber" name="L18232" href="#L18232">18232</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L18233" href="#L18233">18233</a>         }
-<a class="jxr_linenumber" name="L18234" href="#L18234">18234</a>     }
-<a class="jxr_linenumber" name="L18235" href="#L18235">18235</a> 
-<a class="jxr_linenumber" name="L18236" href="#L18236">18236</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronCommonAxis() {
-<a class="jxr_linenumber" name="L18237" href="#L18237">18237</a>         <strong class="jxr_keyword">final</strong> Matrix mm = generateSoftIronGeneral();
-<a class="jxr_linenumber" name="L18238" href="#L18238">18238</a>         assertNotNull(mm);
-<a class="jxr_linenumber" name="L18239" href="#L18239">18239</a> 
-<a class="jxr_linenumber" name="L18240" href="#L18240">18240</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> col = 0; col &lt; mm.getColumns(); col++) {
-<a class="jxr_linenumber" name="L18241" href="#L18241">18241</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> row = 0; row &lt; mm.getRows(); row++) {
-<a class="jxr_linenumber" name="L18242" href="#L18242">18242</a>                 <strong class="jxr_keyword">if</strong> (row &gt; col) {
-<a class="jxr_linenumber" name="L18243" href="#L18243">18243</a>                     mm.setElementAt(row, col, 0.0);
-<a class="jxr_linenumber" name="L18244" href="#L18244">18244</a>                 }
-<a class="jxr_linenumber" name="L18245" href="#L18245">18245</a>             }
-<a class="jxr_linenumber" name="L18246" href="#L18246">18246</a>         }
-<a class="jxr_linenumber" name="L18247" href="#L18247">18247</a>         <strong class="jxr_keyword">return</strong> mm;
-<a class="jxr_linenumber" name="L18248" href="#L18248">18248</a>     }
-<a class="jxr_linenumber" name="L18249" href="#L18249">18249</a> 
-<a class="jxr_linenumber" name="L18250" href="#L18250">18250</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> NEDPosition createPosition(
-<a class="jxr_linenumber" name="L18251" href="#L18251">18251</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L18252" href="#L18252">18252</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L18253" href="#L18253">18253</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-<a class="jxr_linenumber" name="L18254" href="#L18254">18254</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
-<a class="jxr_linenumber" name="L18255" href="#L18255">18255</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
-<a class="jxr_linenumber" name="L18256" href="#L18256">18256</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(
-<a class="jxr_linenumber" name="L18257" href="#L18257">18257</a>                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
-<a class="jxr_linenumber" name="L18258" href="#L18258">18258</a> 
-<a class="jxr_linenumber" name="L18259" href="#L18259">18259</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDPosition(latitude, longitude, height);
-<a class="jxr_linenumber" name="L18260" href="#L18260">18260</a>     }
+<a class="jxr_linenumber" name="L18205" href="#L18205">18205</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> yaw1 = Math.toRadians(
+<a class="jxr_linenumber" name="L18206" href="#L18206">18206</a>                 randomizer.nextDouble(MIN_ANGLE_DEGREES,
+<a class="jxr_linenumber" name="L18207" href="#L18207">18207</a>                         MAX_ANGLE_DEGREES));
+<a class="jxr_linenumber" name="L18208" href="#L18208">18208</a> 
+<a class="jxr_linenumber" name="L18209" href="#L18209">18209</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> CoordinateTransformation(
+<a class="jxr_linenumber" name="L18210" href="#L18210">18210</a>                 roll, pitch, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+<a class="jxr_linenumber" name="L18211" href="#L18211">18211</a>                 FrameType.BODY_FRAME);
+<a class="jxr_linenumber" name="L18212" href="#L18212">18212</a>     }
+<a class="jxr_linenumber" name="L18213" href="#L18213">18213</a> 
+<a class="jxr_linenumber" name="L18214" href="#L18214">18214</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> BodyMagneticFluxDensity generateMeasuredMagneticFluxDensity(
+<a class="jxr_linenumber" name="L18215" href="#L18215">18215</a>             <strong class="jxr_keyword">final</strong> BodyMagneticFluxDensity input, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] hardIron,
+<a class="jxr_linenumber" name="L18216" href="#L18216">18216</a>             <strong class="jxr_keyword">final</strong> Matrix softIron) {
+<a class="jxr_linenumber" name="L18217" href="#L18217">18217</a>         <strong class="jxr_keyword">return</strong> BodyMagneticFluxDensityGenerator.generate(input, hardIron,
+<a class="jxr_linenumber" name="L18218" href="#L18218">18218</a>                 softIron);
+<a class="jxr_linenumber" name="L18219" href="#L18219">18219</a>     }
+<a class="jxr_linenumber" name="L18220" href="#L18220">18220</a> 
+<a class="jxr_linenumber" name="L18221" href="#L18221">18221</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong>[] generateHardIron(
+<a class="jxr_linenumber" name="L18222" href="#L18222">18222</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L18223" href="#L18223">18223</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] result = <strong class="jxr_keyword">new</strong> <strong class="jxr_keyword">double</strong>[BodyMagneticFluxDensity.COMPONENTS];
+<a class="jxr_linenumber" name="L18224" href="#L18224">18224</a>         randomizer.fill(result, MIN_HARD_IRON, MAX_HARD_IRON);
+<a class="jxr_linenumber" name="L18225" href="#L18225">18225</a>         <strong class="jxr_keyword">return</strong> result;
+<a class="jxr_linenumber" name="L18226" href="#L18226">18226</a>     }
+<a class="jxr_linenumber" name="L18227" href="#L18227">18227</a> 
+<a class="jxr_linenumber" name="L18228" href="#L18228">18228</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronGeneral() {
+<a class="jxr_linenumber" name="L18229" href="#L18229">18229</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L18230" href="#L18230">18230</a>             <strong class="jxr_keyword">return</strong> Matrix.createWithUniformRandomValues(
+<a class="jxr_linenumber" name="L18231" href="#L18231">18231</a>                     BodyMagneticFluxDensity.COMPONENTS,
+<a class="jxr_linenumber" name="L18232" href="#L18232">18232</a>                     BodyMagneticFluxDensity.COMPONENTS, MIN_SOFT_IRON, MAX_SOFT_IRON);
+<a class="jxr_linenumber" name="L18233" href="#L18233">18233</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> WrongSizeException ignore) {
+<a class="jxr_linenumber" name="L18234" href="#L18234">18234</a>             <em class="jxr_comment">// never happens</em>
+<a class="jxr_linenumber" name="L18235" href="#L18235">18235</a>             <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L18236" href="#L18236">18236</a>         }
+<a class="jxr_linenumber" name="L18237" href="#L18237">18237</a>     }
+<a class="jxr_linenumber" name="L18238" href="#L18238">18238</a> 
+<a class="jxr_linenumber" name="L18239" href="#L18239">18239</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> Matrix generateSoftIronCommonAxis() {
+<a class="jxr_linenumber" name="L18240" href="#L18240">18240</a>         <strong class="jxr_keyword">final</strong> Matrix mm = generateSoftIronGeneral();
+<a class="jxr_linenumber" name="L18241" href="#L18241">18241</a>         assertNotNull(mm);
+<a class="jxr_linenumber" name="L18242" href="#L18242">18242</a> 
+<a class="jxr_linenumber" name="L18243" href="#L18243">18243</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> col = 0; col &lt; mm.getColumns(); col++) {
+<a class="jxr_linenumber" name="L18244" href="#L18244">18244</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> row = 0; row &lt; mm.getRows(); row++) {
+<a class="jxr_linenumber" name="L18245" href="#L18245">18245</a>                 <strong class="jxr_keyword">if</strong> (row &gt; col) {
+<a class="jxr_linenumber" name="L18246" href="#L18246">18246</a>                     mm.setElementAt(row, col, 0.0);
+<a class="jxr_linenumber" name="L18247" href="#L18247">18247</a>                 }
+<a class="jxr_linenumber" name="L18248" href="#L18248">18248</a>             }
+<a class="jxr_linenumber" name="L18249" href="#L18249">18249</a>         }
+<a class="jxr_linenumber" name="L18250" href="#L18250">18250</a>         <strong class="jxr_keyword">return</strong> mm;
+<a class="jxr_linenumber" name="L18251" href="#L18251">18251</a>     }
+<a class="jxr_linenumber" name="L18252" href="#L18252">18252</a> 
+<a class="jxr_linenumber" name="L18253" href="#L18253">18253</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> NEDPosition createPosition(
+<a class="jxr_linenumber" name="L18254" href="#L18254">18254</a>             <strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L18255" href="#L18255">18255</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> latitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L18256" href="#L18256">18256</a>                 MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+<a class="jxr_linenumber" name="L18257" href="#L18257">18257</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> longitude = Math.toRadians(randomizer.nextDouble(
+<a class="jxr_linenumber" name="L18258" href="#L18258">18258</a>                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+<a class="jxr_linenumber" name="L18259" href="#L18259">18259</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> height = randomizer.nextDouble(
+<a class="jxr_linenumber" name="L18260" href="#L18260">18260</a>                 MIN_HEIGHT_METERS, MAX_HEIGHT_METERS);
 <a class="jxr_linenumber" name="L18261" href="#L18261">18261</a> 
-<a class="jxr_linenumber" name="L18262" href="#L18262">18262</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> createTimestamp(<strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
-<a class="jxr_linenumber" name="L18263" href="#L18263">18263</a>         <strong class="jxr_keyword">return</strong> randomizer.nextLong(
-<a class="jxr_linenumber" name="L18264" href="#L18264">18264</a>                 START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
-<a class="jxr_linenumber" name="L18265" href="#L18265">18265</a>     }
-<a class="jxr_linenumber" name="L18266" href="#L18266">18266</a> }
+<a class="jxr_linenumber" name="L18262" href="#L18262">18262</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> NEDPosition(latitude, longitude, height);
+<a class="jxr_linenumber" name="L18263" href="#L18263">18263</a>     }
+<a class="jxr_linenumber" name="L18264" href="#L18264">18264</a> 
+<a class="jxr_linenumber" name="L18265" href="#L18265">18265</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">long</strong> createTimestamp(<strong class="jxr_keyword">final</strong> UniformRandomizer randomizer) {
+<a class="jxr_linenumber" name="L18266" href="#L18266">18266</a>         <strong class="jxr_keyword">return</strong> randomizer.nextLong(
+<a class="jxr_linenumber" name="L18267" href="#L18267">18267</a>                 START_TIMESTAMP_MILLIS, END_TIMESTAMP_MILLIS);
+<a class="jxr_linenumber" name="L18268" href="#L18268">18268</a>     }
+<a class="jxr_linenumber" name="L18269" href="#L18269">18269</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

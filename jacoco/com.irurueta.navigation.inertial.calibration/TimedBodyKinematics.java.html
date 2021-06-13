@@ -19,6 +19,7 @@ import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -45,35 +46,35 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
     /**
      * Constructor.
      */
-<span class="fc" id="L48">    public TimedBodyKinematics() {</span>
-<span class="fc" id="L49">    }</span>
+<span class="fc" id="L49">    public TimedBodyKinematics() {</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Constructor.
      *
      * @param kinematics current body kinematics measurement.
      */
-<span class="fc" id="L56">    public TimedBodyKinematics(final BodyKinematics kinematics) {</span>
-<span class="fc" id="L57">        mKinematics = kinematics;</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L57">    public TimedBodyKinematics(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L58">        mKinematics = kinematics;</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Constructor.
      *
      * @param timestampSeconds timestamp value expressed in seconds.
      */
-<span class="fc" id="L65">    public TimedBodyKinematics(final double timestampSeconds) {</span>
-<span class="fc" id="L66">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L66">    public TimedBodyKinematics(final double timestampSeconds) {</span>
+<span class="fc" id="L67">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L68">    }</span>
 
     /**
      * Constructor.
      *
      * @param timestamp timestamp value.
      */
-<span class="fc" id="L74">    public TimedBodyKinematics(final Time timestamp) {</span>
-<span class="fc" id="L75">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L76">    }</span>
+<span class="fc" id="L75">    public TimedBodyKinematics(final Time timestamp) {</span>
+<span class="fc" id="L76">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L77">    }</span>
 
     /**
      * Constructor.
@@ -83,9 +84,9 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     public TimedBodyKinematics(final BodyKinematics kinematics,
                                final double timestampSeconds) {
-<span class="fc" id="L86">        this(kinematics);</span>
-<span class="fc" id="L87">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L88">    }</span>
+<span class="fc" id="L87">        this(kinematics);</span>
+<span class="fc" id="L88">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L89">    }</span>
 
     /**
      * Constructor.
@@ -95,18 +96,18 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     public TimedBodyKinematics(final BodyKinematics kinematics,
                                final Time timestamp) {
-<span class="fc" id="L98">        this(timestamp);</span>
-<span class="fc" id="L99">        mKinematics = kinematics;</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L99">        this(timestamp);</span>
+<span class="fc" id="L100">        mKinematics = kinematics;</span>
+<span class="fc" id="L101">    }</span>
 
     /**
      * Constructor.
      *
      * @param input instance to copy data from.
      */
-<span class="fc" id="L107">    public TimedBodyKinematics(final TimedBodyKinematics input) {</span>
-<span class="fc" id="L108">        copyFrom(input);</span>
-<span class="fc" id="L109">    }</span>
+<span class="fc" id="L108">    public TimedBodyKinematics(final TimedBodyKinematics input) {</span>
+<span class="fc" id="L109">        copyFrom(input);</span>
+<span class="fc" id="L110">    }</span>
 
     /**
      * Gets current body kinematics measurement. Contains accelerometer and gyroscope
@@ -115,7 +116,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return current body kinematics measurement.
      */
     public BodyKinematics getKinematics() {
-<span class="fc" id="L118">        return mKinematics;</span>
+<span class="fc" id="L119">        return mKinematics;</span>
     }
 
     /**
@@ -125,8 +126,8 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement to be set.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-<span class="fc" id="L128">        mKinematics = kinematics;</span>
-<span class="fc" id="L129">    }</span>
+<span class="fc" id="L129">        mKinematics = kinematics;</span>
+<span class="fc" id="L130">    }</span>
 
     /**
      * Gets timestamp value expressed in seconds.
@@ -134,7 +135,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return timestamp value expressed in seconds.
      */
     public double getTimestampSeconds() {
-<span class="fc" id="L137">        return mTimestampSeconds;</span>
+<span class="fc" id="L138">        return mTimestampSeconds;</span>
     }
 
     /**
@@ -143,8 +144,8 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param timestampSeconds timestamp value expressed in seconds.
      */
     public void setTimestampSeconds(final double timestampSeconds) {
-<span class="fc" id="L146">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L147">    }</span>
+<span class="fc" id="L147">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L148">    }</span>
 
     /**
      * Gets timestamp value.
@@ -152,7 +153,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return a new timestamp instance.
      */
     public Time getTimestamp() {
-<span class="fc" id="L155">        return new Time(mTimestampSeconds, TimeUnit.SECOND);</span>
+<span class="fc" id="L156">        return new Time(mTimestampSeconds, TimeUnit.SECOND);</span>
     }
 
     /**
@@ -161,9 +162,9 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param result instance where result data will be stored.
      */
     public void getTimestamp(final Time result) {
-<span class="fc" id="L164">        result.setValue(mTimestampSeconds);</span>
-<span class="fc" id="L165">        result.setUnit(TimeUnit.SECOND);</span>
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L165">        result.setValue(mTimestampSeconds);</span>
+<span class="fc" id="L166">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L167">    }</span>
 
     /**
      * Sets timestamp.
@@ -171,8 +172,8 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param timestamp timestamp to be set.
      */
     public void setTimestamp(final Time timestamp) {
-<span class="fc" id="L174">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L175">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L176">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -180,18 +181,18 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final TimedBodyKinematics input) {
-<span class="fc bfc" id="L183" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
-<span class="fc bfc" id="L184" title="All 2 branches covered.">            if (mKinematics == null) {</span>
-<span class="fc" id="L185">                mKinematics = new BodyKinematics(input.mKinematics);</span>
+<span class="fc bfc" id="L184" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
+<span class="fc bfc" id="L185" title="All 2 branches covered.">            if (mKinematics == null) {</span>
+<span class="fc" id="L186">                mKinematics = new BodyKinematics(input.mKinematics);</span>
             } else {
-<span class="fc" id="L187">                mKinematics.copyFrom(input.mKinematics);</span>
+<span class="fc" id="L188">                mKinematics.copyFrom(input.mKinematics);</span>
             }
         } else {
-<span class="fc" id="L190">            mKinematics = null;</span>
+<span class="fc" id="L191">            mKinematics = null;</span>
         }
 
-<span class="fc" id="L193">        mTimestampSeconds = input.mTimestampSeconds;</span>
-<span class="fc" id="L194">    }</span>
+<span class="fc" id="L194">        mTimestampSeconds = input.mTimestampSeconds;</span>
+<span class="fc" id="L195">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -199,8 +200,8 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final TimedBodyKinematics output) {
-<span class="fc" id="L202">        output.copyFrom(this);</span>
-<span class="fc" id="L203">    }</span>
+<span class="fc" id="L203">        output.copyFrom(this);</span>
+<span class="fc" id="L204">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -210,7 +211,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L213">        return Objects.hash(mKinematics, mTimestampSeconds);</span>
+<span class="fc" id="L214">        return Objects.hash(mKinematics, mTimestampSeconds);</span>
     }
 
     /**
@@ -220,7 +221,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final TimedBodyKinematics other) {
-<span class="fc" id="L223">        return equals(other, 0.0);</span>
+<span class="fc" id="L224">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -233,13 +234,13 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * threshold), false otherwise.
      */
     public boolean equals(final TimedBodyKinematics other, final double threshold) {
-<span class="fc bfc" id="L236" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L237">            return false;</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L238">            return false;</span>
         }
 
-<span class="pc bpc" id="L240" title="4 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
-<span class="fc bfc" id="L241" title="All 2 branches covered.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
-<span class="pc bpc" id="L242" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimestampSeconds - mTimestampSeconds) &lt;= threshold;</span>
+<span class="pc bpc" id="L241" title="4 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
+<span class="fc bfc" id="L242" title="All 2 branches covered.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
+<span class="pc bpc" id="L243" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimestampSeconds - mTimestampSeconds) &lt;= threshold;</span>
     }
 
     /**
@@ -251,14 +252,14 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L254" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L255">            return true;</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L256">            return true;</span>
         }
-<span class="fc bfc" id="L257" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L258">            return false;</span>
+<span class="fc bfc" id="L258" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L259">            return false;</span>
         }
-<span class="fc" id="L260">        final TimedBodyKinematics other = (TimedBodyKinematics) obj;</span>
-<span class="fc" id="L261">        return equals(other);</span>
+<span class="fc" id="L261">        final TimedBodyKinematics other = (TimedBodyKinematics) obj;</span>
+<span class="fc" id="L262">        return equals(other);</span>
     }
 
     /**
@@ -269,9 +270,9 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L272">        final TimedBodyKinematics result = (TimedBodyKinematics) super.clone();</span>
-<span class="fc" id="L273">        copyTo(result);</span>
-<span class="fc" id="L274">        return result;</span>
+<span class="fc" id="L273">        final TimedBodyKinematics result = (TimedBodyKinematics) super.clone();</span>
+<span class="fc" id="L274">        copyTo(result);</span>
+<span class="fc" id="L275">        return result;</span>
     }
 
     /**
@@ -281,7 +282,7 @@ public class TimedBodyKinematics implements Serializable, Cloneable {
      * @return converted value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-<span class="fc" id="L284">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+<span class="fc" id="L285">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

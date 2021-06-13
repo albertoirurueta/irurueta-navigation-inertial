@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -70,13 +71,13 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * Threshold to determine whether samples are inliers or not when
      * testing possible estimation solutions.
      */
-<span class="fc" id="L73">    private double mThreshold = DEFAULT_THRESHOLD;</span>
+<span class="fc" id="L74">    private double mThreshold = DEFAULT_THRESHOLD;</span>
 
     /**
      * Constructor.
      */
-<span class="fc" id="L78">    public MSACRobustKnownBiasAndPositionAccelerometerCalibrator() {</span>
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L79">    public MSACRobustKnownBiasAndPositionAccelerometerCalibrator() {</span>
+<span class="fc" id="L80">    }</span>
 
     /**
      * Constructor.
@@ -86,8 +87,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L89">        super(listener);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L90">        super(listener);</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Constructor.
@@ -98,8 +99,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L101">        super(measurements);</span>
-<span class="fc" id="L102">    }</span>
+<span class="fc" id="L102">        super(measurements);</span>
+<span class="fc" id="L103">    }</span>
 
     /**
      * Constructor.
@@ -109,8 +110,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final boolean commonAxisUsed) {
-<span class="fc" id="L112">        super(commonAxisUsed);</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L113">        super(commonAxisUsed);</span>
+<span class="fc" id="L114">    }</span>
 
     /**
      * Constructor.
@@ -121,8 +122,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final double[] bias) {
-<span class="fc" id="L124">        super(bias);</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L125">        super(bias);</span>
+<span class="fc" id="L126">    }</span>
 
     /**
      * Constructor.
@@ -132,8 +133,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final Matrix bias) {
-<span class="fc" id="L135">        super(bias);</span>
-<span class="fc" id="L136">    }</span>
+<span class="fc" id="L136">        super(bias);</span>
+<span class="fc" id="L137">    }</span>
 
     /**
      * Constructor.
@@ -145,8 +146,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final Matrix bias, final Matrix initialMa) {
-<span class="fc" id="L148">        super(bias, initialMa);</span>
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L149">        super(bias, initialMa);</span>
+<span class="fc" id="L150">    }</span>
 
     /**
      * Constructor.
@@ -155,8 +156,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position) {
-<span class="fc" id="L158">        super(position);</span>
-<span class="fc" id="L159">    }</span>
+<span class="fc" id="L159">        super(position);</span>
+<span class="fc" id="L160">    }</span>
 
     /**
      * Constructor.
@@ -169,8 +170,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L172">        super(position, measurements);</span>
-<span class="fc" id="L173">    }</span>
+<span class="fc" id="L173">        super(position, measurements);</span>
+<span class="fc" id="L174">    }</span>
 
     /**
      * Constructor.
@@ -186,8 +187,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L189">        super(position, measurements, listener);</span>
-<span class="fc" id="L190">    }</span>
+<span class="fc" id="L190">        super(position, measurements, listener);</span>
+<span class="fc" id="L191">    }</span>
 
     /**
      * Constructor.
@@ -203,8 +204,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L206">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L207">    }</span>
+<span class="fc" id="L207">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Constructor.
@@ -223,8 +224,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L226">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L227">    }</span>
+<span class="fc" id="L227">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L228">    }</span>
 
     /**
      * Constructor.
@@ -241,8 +242,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] bias) {
-<span class="fc" id="L244">        super(position, measurements, bias);</span>
-<span class="fc" id="L245">    }</span>
+<span class="fc" id="L245">        super(position, measurements, bias);</span>
+<span class="fc" id="L246">    }</span>
 
     /**
      * Constructor.
@@ -261,8 +262,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L264">        super(position, measurements, bias, listener);</span>
-<span class="fc" id="L265">    }</span>
+<span class="fc" id="L265">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L266">    }</span>
 
     /**
      * Constructor.
@@ -281,8 +282,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] bias) {
-<span class="fc" id="L284">        super(position, measurements, commonAxisUsed, bias);</span>
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L285">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L286">    }</span>
 
     /**
      * Constructor.
@@ -304,8 +305,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L307">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
-<span class="fc" id="L308">    }</span>
+<span class="fc" id="L308">        super(position, measurements, commonAxisUsed, initialBias, listener);</span>
+<span class="fc" id="L309">    }</span>
 
     /**
      * Constructor.
@@ -321,8 +322,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias) {
-<span class="fc" id="L324">        super(position, measurements, bias);</span>
-<span class="fc" id="L325">    }</span>
+<span class="fc" id="L325">        super(position, measurements, bias);</span>
+<span class="fc" id="L326">    }</span>
 
     /**
      * Constructor.
@@ -340,8 +341,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L343">        super(position, measurements, bias, listener);</span>
-<span class="fc" id="L344">    }</span>
+<span class="fc" id="L344">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Constructor.
@@ -359,8 +360,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix bias) {
-<span class="fc" id="L362">        super(position, measurements, commonAxisUsed, bias);</span>
-<span class="fc" id="L363">    }</span>
+<span class="fc" id="L363">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L364">    }</span>
 
     /**
      * Constructor.
@@ -380,8 +381,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L383">        super(position, measurements, commonAxisUsed, bias, listener);</span>
-<span class="fc" id="L384">    }</span>
+<span class="fc" id="L384">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L385">    }</span>
 
     /**
      * Constructor.
@@ -399,8 +400,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final ECEFPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias, final Matrix initialMa) {
-<span class="fc" id="L402">        super(position, measurements, bias, initialMa);</span>
-<span class="fc" id="L403">    }</span>
+<span class="fc" id="L403">        super(position, measurements, bias, initialMa);</span>
+<span class="fc" id="L404">    }</span>
 
     /**
      * Constructor.
@@ -420,8 +421,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L423">        super(position, measurements, bias, initialMa, listener);</span>
-<span class="fc" id="L424">    }</span>
+<span class="fc" id="L424">        super(position, measurements, bias, initialMa, listener);</span>
+<span class="fc" id="L425">    }</span>
 
     /**
      * Constructor.
@@ -442,8 +443,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
-<span class="fc" id="L445">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
-<span class="fc" id="L446">    }</span>
+<span class="fc" id="L446">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
+<span class="fc" id="L447">    }</span>
 
     /**
      * Constructor.
@@ -466,8 +467,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L469">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
-<span class="fc" id="L470">    }</span>
+<span class="fc" id="L470">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
+<span class="fc" id="L471">    }</span>
 
     /**
      * Constructor.
@@ -476,8 +477,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position) {
-<span class="fc" id="L479">        super(position);</span>
-<span class="fc" id="L480">    }</span>
+<span class="fc" id="L480">        super(position);</span>
+<span class="fc" id="L481">    }</span>
 
     /**
      * Constructor.
@@ -490,8 +491,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
     public MSACRobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements) {
-<span class="fc" id="L493">        super(position, measurements);</span>
-<span class="fc" id="L494">    }</span>
+<span class="fc" id="L494">        super(position, measurements);</span>
+<span class="fc" id="L495">    }</span>
 
     /**
      * Constructor.
@@ -507,8 +508,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L510">        super(position, measurements, listener);</span>
-<span class="fc" id="L511">    }</span>
+<span class="fc" id="L511">        super(position, measurements, listener);</span>
+<span class="fc" id="L512">    }</span>
 
     /**
      * Constructor.
@@ -524,8 +525,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
-<span class="fc" id="L527">        super(position, measurements, commonAxisUsed);</span>
-<span class="fc" id="L528">    }</span>
+<span class="fc" id="L528">        super(position, measurements, commonAxisUsed);</span>
+<span class="fc" id="L529">    }</span>
 
     /**
      * Constructor.
@@ -544,8 +545,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L547">        super(position, measurements, commonAxisUsed, listener);</span>
-<span class="fc" id="L548">    }</span>
+<span class="fc" id="L548">        super(position, measurements, commonAxisUsed, listener);</span>
+<span class="fc" id="L549">    }</span>
 
     /**
      * Constructor.
@@ -562,8 +563,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] bias) {
-<span class="fc" id="L565">        super(position, measurements, bias);</span>
-<span class="fc" id="L566">    }</span>
+<span class="fc" id="L566">        super(position, measurements, bias);</span>
+<span class="fc" id="L567">    }</span>
 
     /**
      * Constructor.
@@ -582,8 +583,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L585">        super(position, measurements, bias, listener);</span>
-<span class="fc" id="L586">    }</span>
+<span class="fc" id="L586">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L587">    }</span>
 
     /**
      * Constructor.
@@ -602,8 +603,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] bias) {
-<span class="fc" id="L605">        super(position, measurements, commonAxisUsed, bias);</span>
-<span class="fc" id="L606">    }</span>
+<span class="fc" id="L606">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L607">    }</span>
 
     /**
      * Constructor.
@@ -624,8 +625,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L627">        super(position, measurements, commonAxisUsed, bias, listener);</span>
-<span class="fc" id="L628">    }</span>
+<span class="fc" id="L628">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L629">    }</span>
 
     /**
      * Constructor.
@@ -641,8 +642,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias) {
-<span class="fc" id="L644">        super(position, measurements, bias);</span>
-<span class="fc" id="L645">    }</span>
+<span class="fc" id="L645">        super(position, measurements, bias);</span>
+<span class="fc" id="L646">    }</span>
 
     /**
      * Constructor.
@@ -660,8 +661,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L663">        super(position, measurements, bias, listener);</span>
-<span class="fc" id="L664">    }</span>
+<span class="fc" id="L664">        super(position, measurements, bias, listener);</span>
+<span class="fc" id="L665">    }</span>
 
     /**
      * Constructor.
@@ -679,8 +680,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix bias) {
-<span class="fc" id="L682">        super(position, measurements, commonAxisUsed, bias);</span>
-<span class="fc" id="L683">    }</span>
+<span class="fc" id="L683">        super(position, measurements, commonAxisUsed, bias);</span>
+<span class="fc" id="L684">    }</span>
 
     /**
      * Constructor.
@@ -700,8 +701,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L703">        super(position, measurements, commonAxisUsed, bias, listener);</span>
-<span class="fc" id="L704">    }</span>
+<span class="fc" id="L704">        super(position, measurements, commonAxisUsed, bias, listener);</span>
+<span class="fc" id="L705">    }</span>
 
     /**
      * Constructor.
@@ -719,8 +720,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final NEDPosition position,
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias, final Matrix initialMa) {
-<span class="fc" id="L722">        super(position, measurements, bias, initialMa);</span>
-<span class="fc" id="L723">    }</span>
+<span class="fc" id="L723">        super(position, measurements, bias, initialMa);</span>
+<span class="fc" id="L724">    }</span>
 
     /**
      * Constructor.
@@ -740,8 +741,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix bias, final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L743">        super(position, measurements, bias, initialMa, listener);</span>
-<span class="fc" id="L744">    }</span>
+<span class="fc" id="L744">        super(position, measurements, bias, initialMa, listener);</span>
+<span class="fc" id="L745">    }</span>
 
     /**
      * Constructor.
@@ -762,8 +763,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final List&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa) {
-<span class="fc" id="L765">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
-<span class="fc" id="L766">    }</span>
+<span class="fc" id="L766">        super(position, measurements, commonAxisUsed, bias, initialMa);</span>
+<span class="fc" id="L767">    }</span>
 
     /**
      * Constructor.
@@ -786,8 +787,8 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
             final boolean commonAxisUsed, final Matrix bias,
             final Matrix initialMa,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
-<span class="fc" id="L789">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
-<span class="fc" id="L790">    }</span>
+<span class="fc" id="L790">        super(position, measurements, commonAxisUsed, bias, initialMa, listener);</span>
+<span class="fc" id="L791">    }</span>
 
     /**
      * Returns threshold to determine whether samples are inliers or not.
@@ -795,7 +796,7 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @return threshold to determine whether samples are inliers or not.
      */
     public double getThreshold() {
-<span class="fc" id="L798">        return mThreshold;</span>
+<span class="fc" id="L799">        return mThreshold;</span>
     }
 
     /**
@@ -807,14 +808,14 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      * @throws LockedException          if calibrator is currently running.
      */
     public void setThreshold(final double threshold) throws LockedException {
-<span class="fc bfc" id="L810" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L811">            throw new LockedException();</span>
+<span class="fc bfc" id="L811" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L812">            throw new LockedException();</span>
         }
-<span class="fc bfc" id="L813" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
-<span class="fc" id="L814">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L814" title="All 2 branches covered.">        if (threshold &lt;= MIN_THRESHOLD) {</span>
+<span class="fc" id="L815">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L816">        mThreshold = threshold;</span>
-<span class="fc" id="L817">    }</span>
+<span class="fc" id="L817">        mThreshold = threshold;</span>
+<span class="fc" id="L818">    }</span>
 
     /**
      * Estimates accelerometer calibration parameters containing scale factors
@@ -827,111 +828,113 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     @Override
     public void calibrate() throws LockedException, NotReadyException, CalibrationException {
-<span class="fc bfc" id="L830" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L831">            throw new LockedException();</span>
+<span class="fc bfc" id="L831" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L832">            throw new LockedException();</span>
         }
-<span class="pc bpc" id="L833" title="1 of 2 branches missed.">        if (!isReady()) {</span>
-<span class="nc" id="L834">            throw new NotReadyException();</span>
+<span class="pc bpc" id="L834" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L835">            throw new NotReadyException();</span>
         }
 
-<span class="fc" id="L837">        mGravityNorm = computeGravityNorm();</span>
+<span class="fc" id="L838">        mGravityNorm = computeGravityNorm();</span>
 
-<span class="fc" id="L839">        final MSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
-<span class="fc" id="L840">                new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
+<span class="fc" id="L840">        final MSACRobustEstimator&lt;PreliminaryResult&gt; innerEstimator =</span>
+<span class="fc" id="L841">                new MSACRobustEstimator&lt;&gt;(new MSACRobustEstimatorListener&lt;PreliminaryResult&gt;() {</span>
                     @Override
                     public double getThreshold() {
-<span class="fc" id="L843">                        return mThreshold;</span>
+<span class="fc" id="L844">                        return mThreshold;</span>
                     }
 
                     @Override
                     public int getTotalSamples() {
-<span class="fc" id="L848">                        return mMeasurements.size();</span>
+<span class="fc" id="L849">                        return mMeasurements.size();</span>
                     }
 
                     @Override
                     public int getSubsetSize() {
-<span class="fc" id="L853">                        return mPreliminarySubsetSize;</span>
+<span class="fc" id="L854">                        return mPreliminarySubsetSize;</span>
                     }
 
                     @Override
                     public void estimatePreliminarSolutions(
                             final int[] samplesIndices,
                             final List&lt;PreliminaryResult&gt; solutions) {
-<span class="fc" id="L860">                        computePreliminarySolutions(samplesIndices, solutions);</span>
-<span class="fc" id="L861">                    }</span>
+<span class="fc" id="L861">                        computePreliminarySolutions(samplesIndices, solutions);</span>
+<span class="fc" id="L862">                    }</span>
 
                     @Override
                     public double computeResidual(
                             final PreliminaryResult currentEstimation, final int i) {
-<span class="fc" id="L866">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
+<span class="fc" id="L867">                        return computeError(mMeasurements.get(i), currentEstimation);</span>
                     }
 
                     @Override
                     public boolean isReady() {
-<span class="fc" id="L871">                        return MSACRobustKnownBiasAndPositionAccelerometerCalibrator.super.isReady();</span>
+<span class="fc" id="L872">                        return MSACRobustKnownBiasAndPositionAccelerometerCalibrator.super.isReady();</span>
                     }
 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L877">                    }</span>
+                        // no action needed
+<span class="fc" id="L879">                    }</span>
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator) {
-<span class="fc" id="L882">                    }</span>
+                        // no action needed
+<span class="fc" id="L885">                    }</span>
 
                     @Override
                     public void onEstimateNextIteration(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final int iteration) {
-<span class="pc bpc" id="L888" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L889">                            mListener.onCalibrateNextIteration(</span>
+<span class="pc bpc" id="L891" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L892">                            mListener.onCalibrateNextIteration(</span>
                                     MSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, iteration);
                         }
-<span class="fc" id="L892">                    }</span>
+<span class="fc" id="L895">                    }</span>
 
                     @Override
                     public void onEstimateProgressChange(
                             final RobustEstimator&lt;PreliminaryResult&gt; estimator,
                             final float progress) {
-<span class="pc bpc" id="L898" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
-<span class="fc" id="L899">                            mListener.onCalibrateProgressChange(</span>
+<span class="pc bpc" id="L901" title="1 of 2 branches missed.">                        if (mListener != null) {</span>
+<span class="fc" id="L902">                            mListener.onCalibrateProgressChange(</span>
                                     MSACRobustKnownBiasAndPositionAccelerometerCalibrator.this, progress);
                         }
-<span class="fc" id="L902">                    }</span>
+<span class="fc" id="L905">                    }</span>
                 });
 
         try {
-<span class="fc" id="L906">            mRunning = true;</span>
+<span class="fc" id="L909">            mRunning = true;</span>
 
-<span class="pc bpc" id="L908" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L909">                mListener.onCalibrateStart(this);</span>
+<span class="pc bpc" id="L911" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L912">                mListener.onCalibrateStart(this);</span>
             }
 
-<span class="fc" id="L912">            mInliersData = null;</span>
-<span class="fc" id="L913">            innerEstimator.setConfidence(mConfidence);</span>
-<span class="fc" id="L914">            innerEstimator.setMaxIterations(mMaxIterations);</span>
-<span class="fc" id="L915">            innerEstimator.setProgressDelta(mProgressDelta);</span>
-<span class="fc" id="L916">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
-<span class="fc" id="L917">            mInliersData = innerEstimator.getInliersData();</span>
+<span class="fc" id="L915">            mInliersData = null;</span>
+<span class="fc" id="L916">            innerEstimator.setConfidence(mConfidence);</span>
+<span class="fc" id="L917">            innerEstimator.setMaxIterations(mMaxIterations);</span>
+<span class="fc" id="L918">            innerEstimator.setProgressDelta(mProgressDelta);</span>
+<span class="fc" id="L919">            final PreliminaryResult preliminaryResult = innerEstimator.estimate();</span>
+<span class="fc" id="L920">            mInliersData = innerEstimator.getInliersData();</span>
 
-<span class="fc" id="L919">            attemptRefine(preliminaryResult);</span>
+<span class="fc" id="L922">            attemptRefine(preliminaryResult);</span>
 
-<span class="pc bpc" id="L921" title="1 of 2 branches missed.">            if (mListener != null) {</span>
-<span class="fc" id="L922">                mListener.onCalibrateEnd(this);</span>
+<span class="pc bpc" id="L924" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L925">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L925">        } catch (final com.irurueta.numerical.LockedException e) {</span>
-<span class="nc" id="L926">            throw new LockedException(e);</span>
-<span class="nc" id="L927">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
-<span class="nc" id="L928">            throw new NotReadyException(e);</span>
-<span class="nc" id="L929">        } catch (final RobustEstimatorException e) {</span>
-<span class="nc" id="L930">            throw new CalibrationException(e);</span>
+<span class="nc" id="L928">        } catch (final com.irurueta.numerical.LockedException e) {</span>
+<span class="nc" id="L929">            throw new LockedException(e);</span>
+<span class="nc" id="L930">        } catch (final com.irurueta.numerical.NotReadyException e) {</span>
+<span class="nc" id="L931">            throw new NotReadyException(e);</span>
+<span class="nc" id="L932">        } catch (final RobustEstimatorException e) {</span>
+<span class="nc" id="L933">            throw new CalibrationException(e);</span>
         } finally {
-<span class="fc" id="L932">            mRunning = false;</span>
+<span class="fc" id="L935">            mRunning = false;</span>
         }
-<span class="fc" id="L934">    }</span>
+<span class="fc" id="L937">    }</span>
 
     /**
      * Returns method being used for robust estimation.
@@ -940,7 +943,7 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public RobustEstimatorMethod getMethod() {
-<span class="fc" id="L943">        return RobustEstimatorMethod.MSAC;</span>
+<span class="fc" id="L946">        return RobustEstimatorMethod.MSAC;</span>
     }
 
     /**
@@ -951,7 +954,7 @@ public class MSACRobustKnownBiasAndPositionAccelerometerCalibrator extends
      */
     @Override
     public boolean isQualityScoresRequired() {
-<span class="fc" id="L954">        return false;</span>
+<span class="fc" id="L957">        return false;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

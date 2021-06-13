@@ -18,6 +18,7 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -100,8 +101,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
     /**
      * Constructor.
      */
-<span class="fc" id="L103">    public BodyKinematicsSequence() {</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L104">    public BodyKinematicsSequence() {</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Constructor.
@@ -109,9 +110,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param items list of items containing body kinematics to be kept into
      *              this sequence.
      */
-<span class="fc" id="L112">    public BodyKinematicsSequence(final List&lt;T&gt; items) {</span>
-<span class="fc" id="L113">        mItems = items;</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L113">    public BodyKinematicsSequence(final List&lt;T&gt; items) {</span>
+<span class="fc" id="L114">        mItems = items;</span>
+<span class="fc" id="L115">    }</span>
 
     /**
      * Constructor.
@@ -141,12 +142,12 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final double beforeMeanFz,
             final double afterMeanFx,
             final double afterMeanFy,
-<span class="fc" id="L144">            final double afterMeanFz) {</span>
-<span class="fc" id="L145">        setBeforeMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L145">            final double afterMeanFz) {</span>
+<span class="fc" id="L146">        setBeforeMeanSpecificForceCoordinates(</span>
                 beforeMeanFx, beforeMeanFy, beforeMeanFz);
-<span class="fc" id="L147">        setAfterMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L148">        setAfterMeanSpecificForceCoordinates(</span>
                 afterMeanFx, afterMeanFy, afterMeanFz);
-<span class="fc" id="L149">    }</span>
+<span class="fc" id="L150">    }</span>
 
     /**
      * Constructor.
@@ -176,16 +177,16 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final Acceleration beforeMeanSpecificForceZ,
             final Acceleration afterMeanSpecificForceX,
             final Acceleration afterMeanSpecificForceY,
-<span class="fc" id="L179">            final Acceleration afterMeanSpecificForceZ) {</span>
-<span class="fc" id="L180">        setBeforeMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L180">            final Acceleration afterMeanSpecificForceZ) {</span>
+<span class="fc" id="L181">        setBeforeMeanSpecificForceCoordinates(</span>
                 beforeMeanSpecificForceX,
                 beforeMeanSpecificForceY,
                 beforeMeanSpecificForceZ);
-<span class="fc" id="L184">        setAfterMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L185">        setAfterMeanSpecificForceCoordinates(</span>
                 afterMeanSpecificForceX,
                 afterMeanSpecificForceY,
                 afterMeanSpecificForceZ);
-<span class="fc" id="L188">    }</span>
+<span class="fc" id="L189">    }</span>
 
     /**
      * @param items        list of items containing body kinematics to be kept into
@@ -217,12 +218,12 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final double afterMeanFx,
             final double afterMeanFy,
             final double afterMeanFz) {
-<span class="fc" id="L220">        this(items);</span>
-<span class="fc" id="L221">        setBeforeMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L221">        this(items);</span>
+<span class="fc" id="L222">        setBeforeMeanSpecificForceCoordinates(</span>
                 beforeMeanFx, beforeMeanFy, beforeMeanFz);
-<span class="fc" id="L223">        setAfterMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L224">        setAfterMeanSpecificForceCoordinates(</span>
                 afterMeanFx, afterMeanFy, afterMeanFz);
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L226">    }</span>
 
     /**
      * Constructor.
@@ -256,16 +257,16 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final Acceleration afterMeanSpecificForceX,
             final Acceleration afterMeanSpecificForceY,
             final Acceleration afterMeanSpecificForceZ) {
-<span class="fc" id="L259">        this(items);</span>
-<span class="fc" id="L260">        setBeforeMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L260">        this(items);</span>
+<span class="fc" id="L261">        setBeforeMeanSpecificForceCoordinates(</span>
                 beforeMeanSpecificForceX,
                 beforeMeanSpecificForceY,
                 beforeMeanSpecificForceZ);
-<span class="fc" id="L264">        setAfterMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L265">        setAfterMeanSpecificForceCoordinates(</span>
                 afterMeanSpecificForceX,
                 afterMeanSpecificForceY,
                 afterMeanSpecificForceZ);
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L269">    }</span>
 
     /**
      * Constructor.
@@ -273,9 +274,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param input instance to copy data from.
      */
     public BodyKinematicsSequence(
-<span class="fc" id="L276">            final BodyKinematicsSequence&lt;T&gt; input) {</span>
-<span class="fc" id="L277">        copyFrom(input);</span>
-<span class="fc" id="L278">    }</span>
+<span class="fc" id="L277">            final BodyKinematicsSequence&lt;T&gt; input) {</span>
+<span class="fc" id="L278">        copyFrom(input);</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Gets items in this sequence ordered by ascending timestamp.
@@ -286,29 +287,29 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public boolean getSortedItems(final List&lt;T&gt; result) {
         // already sorted items are available.
-<span class="fc bfc" id="L289" title="All 2 branches covered.">        if (mSortedItems != null) {</span>
-<span class="fc" id="L290">            result.clear();</span>
-<span class="fc" id="L291">            result.addAll(mSortedItems);</span>
-<span class="fc" id="L292">            return true;</span>
+<span class="fc bfc" id="L290" title="All 2 branches covered.">        if (mSortedItems != null) {</span>
+<span class="fc" id="L291">            result.clear();</span>
+<span class="fc" id="L292">            result.addAll(mSortedItems);</span>
+<span class="fc" id="L293">            return true;</span>
         }
 
-<span class="fc bfc" id="L295" title="All 2 branches covered.">        if (mItems != null) {</span>
-<span class="fc" id="L296">            mSortedItems = new ArrayList&lt;&gt;(mItems);</span>
-<span class="fc" id="L297">            Collections.sort(mSortedItems, new Comparator&lt;T&gt;() {</span>
+<span class="fc bfc" id="L296" title="All 2 branches covered.">        if (mItems != null) {</span>
+<span class="fc" id="L297">            mSortedItems = new ArrayList&lt;&gt;(mItems);</span>
+<span class="fc" id="L298">            Collections.sort(mSortedItems, new Comparator&lt;T&gt;() {</span>
                 @Override
                 public int compare(final T o1, final T o2) {
-<span class="fc" id="L300">                    final double t1 = o1.getTimestampSeconds();</span>
-<span class="fc" id="L301">                    final double t2 = o2.getTimestampSeconds();</span>
-<span class="fc" id="L302">                    return Double.compare(t1, t2);</span>
+<span class="fc" id="L301">                    final double t1 = o1.getTimestampSeconds();</span>
+<span class="fc" id="L302">                    final double t2 = o2.getTimestampSeconds();</span>
+<span class="fc" id="L303">                    return Double.compare(t1, t2);</span>
                 }
             });
 
-<span class="fc" id="L306">            result.clear();</span>
-<span class="fc" id="L307">            result.addAll(mSortedItems);</span>
-<span class="fc" id="L308">            return true;</span>
+<span class="fc" id="L307">            result.clear();</span>
+<span class="fc" id="L308">            result.addAll(mSortedItems);</span>
+<span class="fc" id="L309">            return true;</span>
         }
 
-<span class="fc" id="L311">        return false;</span>
+<span class="fc" id="L312">        return false;</span>
     }
 
     /**
@@ -318,11 +319,11 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * could not be retrieved..
      */
     public List&lt;T&gt; getSortedItems() {
-<span class="fc" id="L321">        final List&lt;T&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L322" title="All 2 branches covered.">        if (getSortedItems(result)) {</span>
-<span class="fc" id="L323">            return result;</span>
+<span class="fc" id="L322">        final List&lt;T&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L323" title="All 2 branches covered.">        if (getSortedItems(result)) {</span>
+<span class="fc" id="L324">            return result;</span>
         } else {
-<span class="fc" id="L325">            return null;</span>
+<span class="fc" id="L326">            return null;</span>
         }
     }
 
@@ -333,9 +334,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param items items to be kept.
      */
     public void setItems(final List&lt;T&gt; items) {
-<span class="fc" id="L336">        mItems = items;</span>
-<span class="fc" id="L337">        mSortedItems = null;</span>
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L337">        mItems = items;</span>
+<span class="fc" id="L338">        mSortedItems = null;</span>
+<span class="fc" id="L339">    }</span>
 
     /**
      * Gets number of items in this sequence.
@@ -343,7 +344,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return number of items in this sequence.
      */
     public int getItemsCount() {
-<span class="fc bfc" id="L346" title="All 2 branches covered.">        return mItems != null ? mItems.size() : 0;</span>
+<span class="fc bfc" id="L347" title="All 2 branches covered.">        return mItems != null ? mItems.size() : 0;</span>
     }
 
     /**
@@ -354,7 +355,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return x-coordinate of mean specific force.
      */
     public double getBeforeMeanFx() {
-<span class="fc" id="L357">        return mBeforeMeanFx;</span>
+<span class="fc" id="L358">        return mBeforeMeanFx;</span>
     }
 
     /**
@@ -365,8 +366,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param beforeMeanFx x-coordinate of mean specific force.
      */
     public void setBeforeMeanFx(final double beforeMeanFx) {
-<span class="fc" id="L368">        mBeforeMeanFx = beforeMeanFx;</span>
-<span class="fc" id="L369">    }</span>
+<span class="fc" id="L369">        mBeforeMeanFx = beforeMeanFx;</span>
+<span class="fc" id="L370">    }</span>
 
     /**
      * Gets y-coordinate of mean specific force during the static period
@@ -376,7 +377,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return y-coordinate of mean specific force.
      */
     public double getBeforeMeanFy() {
-<span class="fc" id="L379">        return mBeforeMeanFy;</span>
+<span class="fc" id="L380">        return mBeforeMeanFy;</span>
     }
 
     /**
@@ -387,8 +388,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param beforeMeanFy y-coordinate of mean specific force.
      */
     public void setBeforeMeanFy(final double beforeMeanFy) {
-<span class="fc" id="L390">        mBeforeMeanFy = beforeMeanFy;</span>
-<span class="fc" id="L391">    }</span>
+<span class="fc" id="L391">        mBeforeMeanFy = beforeMeanFy;</span>
+<span class="fc" id="L392">    }</span>
 
     /**
      * Gets z-coordinate of mean specific force during the static period
@@ -398,7 +399,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return z-coordinate of mean specific force.
      */
     public double getBeforeMeanFz() {
-<span class="fc" id="L401">        return mBeforeMeanFz;</span>
+<span class="fc" id="L402">        return mBeforeMeanFz;</span>
     }
 
     /**
@@ -409,8 +410,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param beforeMeanFz z-coordinate of mean specific force.
      */
     public void setBeforeMeanFz(final double beforeMeanFz) {
-<span class="fc" id="L412">        mBeforeMeanFz = beforeMeanFz;</span>
-<span class="fc" id="L413">    }</span>
+<span class="fc" id="L413">        mBeforeMeanFz = beforeMeanFz;</span>
+<span class="fc" id="L414">    }</span>
 
     /**
      * Sets coordinates of mean specific force during the static period
@@ -425,10 +426,10 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final double beforeMeanFx,
             final double beforeMeanFy,
             final double beforeMeanFz) {
-<span class="fc" id="L428">        mBeforeMeanFx = beforeMeanFx;</span>
-<span class="fc" id="L429">        mBeforeMeanFy = beforeMeanFy;</span>
-<span class="fc" id="L430">        mBeforeMeanFz = beforeMeanFz;</span>
-<span class="fc" id="L431">    }</span>
+<span class="fc" id="L429">        mBeforeMeanFx = beforeMeanFx;</span>
+<span class="fc" id="L430">        mBeforeMeanFy = beforeMeanFy;</span>
+<span class="fc" id="L431">        mBeforeMeanFz = beforeMeanFz;</span>
+<span class="fc" id="L432">    }</span>
 
     /**
      * Gets x-coordinate of mean specific force during the static period
@@ -437,9 +438,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param result x-coordinate of mean specific force.
      */
     public void getBeforeMeanSpecificForceX(final Acceleration result) {
-<span class="fc" id="L440">        result.setValue(mBeforeMeanFx);</span>
-<span class="fc" id="L441">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L442">    }</span>
+<span class="fc" id="L441">        result.setValue(mBeforeMeanFx);</span>
+<span class="fc" id="L442">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L443">    }</span>
 
     /**
      * Gets x-coordinate of mean specific force during the static period
@@ -448,7 +449,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return x-coordinate of mean specific force.
      */
     public Acceleration getBeforeMeanSpecificForceX() {
-<span class="fc" id="L451">        return new Acceleration(mBeforeMeanFx,</span>
+<span class="fc" id="L452">        return new Acceleration(mBeforeMeanFx,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -460,8 +461,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public void setBeforeMeanSpecificForceX(
             final Acceleration beforeMeanSpecificForceX) {
-<span class="fc" id="L463">        mBeforeMeanFx = convertAcceleration(beforeMeanSpecificForceX);</span>
-<span class="fc" id="L464">    }</span>
+<span class="fc" id="L464">        mBeforeMeanFx = convertAcceleration(beforeMeanSpecificForceX);</span>
+<span class="fc" id="L465">    }</span>
 
     /**
      * Gets y-coordinate of mean specific force during the static period
@@ -470,9 +471,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param result y-coordinate of mean specific force.
      */
     public void getBeforeMeanSpecificForceY(final Acceleration result) {
-<span class="fc" id="L473">        result.setValue(mBeforeMeanFy);</span>
-<span class="fc" id="L474">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L475">    }</span>
+<span class="fc" id="L474">        result.setValue(mBeforeMeanFy);</span>
+<span class="fc" id="L475">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L476">    }</span>
 
     /**
      * Gets y-coordinate of mean specific force during the static period
@@ -481,7 +482,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return y-coordinate of mean specific force.
      */
     public Acceleration getBeforeMeanSpecificForceY() {
-<span class="fc" id="L484">        return new Acceleration(mBeforeMeanFy,</span>
+<span class="fc" id="L485">        return new Acceleration(mBeforeMeanFy,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -493,8 +494,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public void setBeforeMeanSpecificForceY(
             final Acceleration beforeMeanSpecificForceY) {
-<span class="fc" id="L496">        mBeforeMeanFy = convertAcceleration(beforeMeanSpecificForceY);</span>
-<span class="fc" id="L497">    }</span>
+<span class="fc" id="L497">        mBeforeMeanFy = convertAcceleration(beforeMeanSpecificForceY);</span>
+<span class="fc" id="L498">    }</span>
 
     /**
      * Gets z-coordinate of mean specific force during the static period
@@ -503,9 +504,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param result z-coordinate of mean specific force.
      */
     public void getBeforeMeanSpecificForceZ(final Acceleration result) {
-<span class="fc" id="L506">        result.setValue(mBeforeMeanFz);</span>
-<span class="fc" id="L507">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L508">    }</span>
+<span class="fc" id="L507">        result.setValue(mBeforeMeanFz);</span>
+<span class="fc" id="L508">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L509">    }</span>
 
     /**
      * Gets z-coordinate of mean specific force during the static period
@@ -514,7 +515,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return z-coordinate of mean specific force.
      */
     public Acceleration getBeforeMeanSpecificForceZ() {
-<span class="fc" id="L517">        return new Acceleration(mBeforeMeanFz,</span>
+<span class="fc" id="L518">        return new Acceleration(mBeforeMeanFz,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -526,8 +527,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public void setBeforeMeanSpecificForceZ(
             final Acceleration beforeMeanSpecificForceZ) {
-<span class="fc" id="L529">        mBeforeMeanFz = convertAcceleration(beforeMeanSpecificForceZ);</span>
-<span class="fc" id="L530">    }</span>
+<span class="fc" id="L530">        mBeforeMeanFz = convertAcceleration(beforeMeanSpecificForceZ);</span>
+<span class="fc" id="L531">    }</span>
 
     /**
      * Sets coordinates of mean specific force during the static period
@@ -541,10 +542,10 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final Acceleration beforeMeanSpecificForceX,
             final Acceleration beforeMeanSpecificForceY,
             final Acceleration beforeMeanSpecificForceZ) {
-<span class="fc" id="L544">        setBeforeMeanSpecificForceX(beforeMeanSpecificForceX);</span>
-<span class="fc" id="L545">        setBeforeMeanSpecificForceY(beforeMeanSpecificForceY);</span>
-<span class="fc" id="L546">        setBeforeMeanSpecificForceZ(beforeMeanSpecificForceZ);</span>
-<span class="fc" id="L547">    }</span>
+<span class="fc" id="L545">        setBeforeMeanSpecificForceX(beforeMeanSpecificForceX);</span>
+<span class="fc" id="L546">        setBeforeMeanSpecificForceY(beforeMeanSpecificForceY);</span>
+<span class="fc" id="L547">        setBeforeMeanSpecificForceZ(beforeMeanSpecificForceZ);</span>
+<span class="fc" id="L548">    }</span>
 
     /**
      * Gets x-coordinate of mean specific force during the static period
@@ -554,7 +555,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return x-coordinate of mean specific force.
      */
     public double getAfterMeanFx() {
-<span class="fc" id="L557">        return mAfterMeanFx;</span>
+<span class="fc" id="L558">        return mAfterMeanFx;</span>
     }
 
     /**
@@ -565,8 +566,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param afterMeanFx x-coordinate of mean specific force.
      */
     public void setAfterMeanFx(final double afterMeanFx) {
-<span class="fc" id="L568">        mAfterMeanFx = afterMeanFx;</span>
-<span class="fc" id="L569">    }</span>
+<span class="fc" id="L569">        mAfterMeanFx = afterMeanFx;</span>
+<span class="fc" id="L570">    }</span>
 
     /**
      * Gets y-coordinate of mean specific force during the static period
@@ -576,7 +577,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return y-coordinate of mean specific force.
      */
     public double getAfterMeanFy() {
-<span class="fc" id="L579">        return mAfterMeanFy;</span>
+<span class="fc" id="L580">        return mAfterMeanFy;</span>
     }
 
     /**
@@ -587,8 +588,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param afterMeanFy y-coordinate of mean specific force.
      */
     public void setAfterMeanFy(final double afterMeanFy) {
-<span class="fc" id="L590">        mAfterMeanFy = afterMeanFy;</span>
-<span class="fc" id="L591">    }</span>
+<span class="fc" id="L591">        mAfterMeanFy = afterMeanFy;</span>
+<span class="fc" id="L592">    }</span>
 
     /**
      * Gets z-coordinate of mean specific force during the static period
@@ -598,7 +599,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return z-coordinate of mean specific force.
      */
     public double getAfterMeanFz() {
-<span class="fc" id="L601">        return mAfterMeanFz;</span>
+<span class="fc" id="L602">        return mAfterMeanFz;</span>
     }
 
     /**
@@ -609,8 +610,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param afterMeanFz z-coordinate of mean specific force.
      */
     public void setAfterMeanFz(final double afterMeanFz) {
-<span class="fc" id="L612">        mAfterMeanFz = afterMeanFz;</span>
-<span class="fc" id="L613">    }</span>
+<span class="fc" id="L613">        mAfterMeanFz = afterMeanFz;</span>
+<span class="fc" id="L614">    }</span>
 
     /**
      * Sets coordinates of mean specific force during the static period
@@ -625,10 +626,10 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final double afterMeanFx,
             final double afterMeanFy,
             final double afterMeanFz) {
-<span class="fc" id="L628">        mAfterMeanFx = afterMeanFx;</span>
-<span class="fc" id="L629">        mAfterMeanFy = afterMeanFy;</span>
-<span class="fc" id="L630">        mAfterMeanFz = afterMeanFz;</span>
-<span class="fc" id="L631">    }</span>
+<span class="fc" id="L629">        mAfterMeanFx = afterMeanFx;</span>
+<span class="fc" id="L630">        mAfterMeanFy = afterMeanFy;</span>
+<span class="fc" id="L631">        mAfterMeanFz = afterMeanFz;</span>
+<span class="fc" id="L632">    }</span>
 
     /**
      * Gets x-coordinate of mean specific force during the static period
@@ -637,9 +638,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param result x-coordinate of mean specific force.
      */
     public void getAfterMeanSpecificForceX(final Acceleration result) {
-<span class="fc" id="L640">        result.setValue(mAfterMeanFx);</span>
-<span class="fc" id="L641">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L642">    }</span>
+<span class="fc" id="L641">        result.setValue(mAfterMeanFx);</span>
+<span class="fc" id="L642">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L643">    }</span>
 
     /**
      * Gets x-coordinate of mean specific force during the static period
@@ -648,7 +649,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return x-coordinate of mean specific force.
      */
     public Acceleration getAfterMeanSpecificForceX() {
-<span class="fc" id="L651">        return new Acceleration(mAfterMeanFx,</span>
+<span class="fc" id="L652">        return new Acceleration(mAfterMeanFx,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -660,8 +661,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public void setAfterMeanSpecificForceX(
             final Acceleration afterMeanSpecificForceX) {
-<span class="fc" id="L663">        mAfterMeanFx = convertAcceleration(afterMeanSpecificForceX);</span>
-<span class="fc" id="L664">    }</span>
+<span class="fc" id="L664">        mAfterMeanFx = convertAcceleration(afterMeanSpecificForceX);</span>
+<span class="fc" id="L665">    }</span>
 
     /**
      * Gets y-coordinate of mean specific force during the static period
@@ -670,9 +671,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param result y-coordinate of mean specific force.
      */
     public void getAfterMeanSpecificForceY(final Acceleration result) {
-<span class="fc" id="L673">        result.setValue(mAfterMeanFy);</span>
-<span class="fc" id="L674">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L675">    }</span>
+<span class="fc" id="L674">        result.setValue(mAfterMeanFy);</span>
+<span class="fc" id="L675">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L676">    }</span>
 
     /**
      * Gets y-coordinate of mean specific force during the static period
@@ -681,7 +682,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return y-coordinate of mean specific force.
      */
     public Acceleration getAfterMeanSpecificForceY() {
-<span class="fc" id="L684">        return new Acceleration(mAfterMeanFy,</span>
+<span class="fc" id="L685">        return new Acceleration(mAfterMeanFy,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -693,8 +694,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public void setAfterMeanSpecificForceY(
             final Acceleration afterMeanSpecificForceY) {
-<span class="fc" id="L696">        mAfterMeanFy = convertAcceleration(afterMeanSpecificForceY);</span>
-<span class="fc" id="L697">    }</span>
+<span class="fc" id="L697">        mAfterMeanFy = convertAcceleration(afterMeanSpecificForceY);</span>
+<span class="fc" id="L698">    }</span>
 
     /**
      * Gets z-coordinate of mean specific force during the static period
@@ -703,9 +704,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param result z-coordinate of mean specific force.
      */
     public void getAfterMeanSpecificForceZ(final Acceleration result) {
-<span class="fc" id="L706">        result.setValue(mAfterMeanFz);</span>
-<span class="fc" id="L707">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L708">    }</span>
+<span class="fc" id="L707">        result.setValue(mAfterMeanFz);</span>
+<span class="fc" id="L708">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L709">    }</span>
 
     /**
      * Gets z-coordinate of mean specific force during the static period
@@ -714,7 +715,7 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return z-coordinate of mean specific force.
      */
     public Acceleration getAfterMeanSpecificForceZ() {
-<span class="fc" id="L717">        return new Acceleration(mAfterMeanFz,</span>
+<span class="fc" id="L718">        return new Acceleration(mAfterMeanFz,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -726,8 +727,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     public void setAfterMeanSpecificForceZ(
             final Acceleration afterMeanSpecificForceZ) {
-<span class="fc" id="L729">        mAfterMeanFz = convertAcceleration(afterMeanSpecificForceZ);</span>
-<span class="fc" id="L730">    }</span>
+<span class="fc" id="L730">        mAfterMeanFz = convertAcceleration(afterMeanSpecificForceZ);</span>
+<span class="fc" id="L731">    }</span>
 
     /**
      * Sets coordinates of mean specific force during the static period
@@ -741,10 +742,10 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
             final Acceleration afterMeanSpecificForceX,
             final Acceleration afterMeanSpecificForceY,
             final Acceleration afterMeanSpecificForceZ) {
-<span class="fc" id="L744">        setAfterMeanSpecificForceX(afterMeanSpecificForceX);</span>
-<span class="fc" id="L745">        setAfterMeanSpecificForceY(afterMeanSpecificForceY);</span>
-<span class="fc" id="L746">        setAfterMeanSpecificForceZ(afterMeanSpecificForceZ);</span>
-<span class="fc" id="L747">    }</span>
+<span class="fc" id="L745">        setAfterMeanSpecificForceX(afterMeanSpecificForceX);</span>
+<span class="fc" id="L746">        setAfterMeanSpecificForceY(afterMeanSpecificForceY);</span>
+<span class="fc" id="L747">        setAfterMeanSpecificForceZ(afterMeanSpecificForceZ);</span>
+<span class="fc" id="L748">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -752,25 +753,25 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param input instance to copy data from.
      */
     public void copyFrom(final BodyKinematicsSequence&lt;T&gt; input) {
-<span class="fc bfc" id="L755" title="All 2 branches covered.">        if (input.mItems != null) {</span>
-<span class="fc" id="L756">            mItems = cloneList(input.mItems);</span>
+<span class="fc bfc" id="L756" title="All 2 branches covered.">        if (input.mItems != null) {</span>
+<span class="fc" id="L757">            mItems = cloneList(input.mItems);</span>
         } else {
-<span class="fc" id="L758">            mItems = null;</span>
+<span class="fc" id="L759">            mItems = null;</span>
         }
-<span class="fc bfc" id="L760" title="All 2 branches covered.">        if (input.mSortedItems != null) {</span>
-<span class="fc" id="L761">            mSortedItems = cloneList(input.mSortedItems);</span>
+<span class="fc bfc" id="L761" title="All 2 branches covered.">        if (input.mSortedItems != null) {</span>
+<span class="fc" id="L762">            mSortedItems = cloneList(input.mSortedItems);</span>
         } else {
-<span class="fc" id="L763">            mSortedItems = null;</span>
+<span class="fc" id="L764">            mSortedItems = null;</span>
         }
 
-<span class="fc" id="L766">        mBeforeMeanFx = input.mBeforeMeanFx;</span>
-<span class="fc" id="L767">        mBeforeMeanFy = input.mBeforeMeanFy;</span>
-<span class="fc" id="L768">        mBeforeMeanFz = input.mBeforeMeanFz;</span>
+<span class="fc" id="L767">        mBeforeMeanFx = input.mBeforeMeanFx;</span>
+<span class="fc" id="L768">        mBeforeMeanFy = input.mBeforeMeanFy;</span>
+<span class="fc" id="L769">        mBeforeMeanFz = input.mBeforeMeanFz;</span>
 
-<span class="fc" id="L770">        mAfterMeanFx = input.mAfterMeanFx;</span>
-<span class="fc" id="L771">        mAfterMeanFy = input.mAfterMeanFy;</span>
-<span class="fc" id="L772">        mAfterMeanFz = input.mAfterMeanFz;</span>
-<span class="fc" id="L773">    }</span>
+<span class="fc" id="L771">        mAfterMeanFx = input.mAfterMeanFx;</span>
+<span class="fc" id="L772">        mAfterMeanFy = input.mAfterMeanFy;</span>
+<span class="fc" id="L773">        mAfterMeanFz = input.mAfterMeanFz;</span>
+<span class="fc" id="L774">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -778,8 +779,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final BodyKinematicsSequence&lt;T&gt; output) {
-<span class="fc" id="L781">        output.copyFrom(this);</span>
-<span class="fc" id="L782">    }</span>
+<span class="fc" id="L782">        output.copyFrom(this);</span>
+<span class="fc" id="L783">    }</span>
 
     /***
      * Checks if provided instance is a BodyKinematicsSequence2 having exactly
@@ -790,17 +791,22 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     @Override
     public boolean equals(Object o) {
-<span class="pc bpc" id="L793" title="1 of 2 branches missed.">        if (this == o) return true;</span>
-<span class="pc bpc" id="L794" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) return false;</span>
-<span class="fc" id="L795">        final BodyKinematicsSequence&lt;?&gt; that = (BodyKinematicsSequence&lt;?&gt;) o;</span>
-<span class="fc bfc" id="L796" title="All 2 branches covered.">        return Double.compare(that.mBeforeMeanFx, mBeforeMeanFx) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L797" title="1 of 2 branches missed.">                Double.compare(that.mBeforeMeanFy, mBeforeMeanFy) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L798" title="1 of 2 branches missed.">                Double.compare(that.mBeforeMeanFz, mBeforeMeanFz) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L799" title="1 of 2 branches missed.">                Double.compare(that.mAfterMeanFx, mAfterMeanFx) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L800" title="1 of 2 branches missed.">                Double.compare(that.mAfterMeanFy, mAfterMeanFy) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L801" title="1 of 2 branches missed.">                Double.compare(that.mAfterMeanFz, mAfterMeanFz) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L802" title="1 of 2 branches missed.">                Objects.equals(mItems, that.mItems) &amp;&amp;</span>
-<span class="pc bpc" id="L803" title="1 of 2 branches missed.">                Objects.equals(mSortedItems, that.mSortedItems);</span>
+<span class="pc bpc" id="L794" title="1 of 2 branches missed.">        if (this == o) {</span>
+<span class="nc" id="L795">            return true;</span>
+        }
+<span class="pc bpc" id="L797" title="2 of 4 branches missed.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="nc" id="L798">            return false;</span>
+        }
+
+<span class="fc" id="L801">        final BodyKinematicsSequence&lt;?&gt; that = (BodyKinematicsSequence&lt;?&gt;) o;</span>
+<span class="fc bfc" id="L802" title="All 2 branches covered.">        return Double.compare(that.mBeforeMeanFx, mBeforeMeanFx) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L803" title="1 of 2 branches missed.">                Double.compare(that.mBeforeMeanFy, mBeforeMeanFy) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L804" title="1 of 2 branches missed.">                Double.compare(that.mBeforeMeanFz, mBeforeMeanFz) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L805" title="1 of 2 branches missed.">                Double.compare(that.mAfterMeanFx, mAfterMeanFx) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L806" title="1 of 2 branches missed.">                Double.compare(that.mAfterMeanFy, mAfterMeanFy) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L807" title="1 of 2 branches missed.">                Double.compare(that.mAfterMeanFz, mAfterMeanFz) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L808" title="1 of 2 branches missed.">                Objects.equals(mItems, that.mItems) &amp;&amp;</span>
+<span class="pc bpc" id="L809" title="1 of 2 branches missed.">                Objects.equals(mSortedItems, that.mSortedItems);</span>
     }
 
     /**
@@ -811,9 +817,9 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L814">        return Objects.hash(mItems, mSortedItems,</span>
-<span class="fc" id="L815">                mBeforeMeanFx, mBeforeMeanFy, mBeforeMeanFz,</span>
-<span class="fc" id="L816">                mAfterMeanFx, mAfterMeanFy, mAfterMeanFz);</span>
+<span class="fc" id="L820">        return Objects.hash(mItems, mSortedItems,</span>
+<span class="fc" id="L821">                mBeforeMeanFx, mBeforeMeanFy, mBeforeMeanFz,</span>
+<span class="fc" id="L822">                mAfterMeanFx, mAfterMeanFy, mAfterMeanFz);</span>
     }
 
     /**
@@ -825,10 +831,10 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
     @Override
     protected Object clone() throws CloneNotSupportedException {
         //noinspection unchecked
-<span class="fc" id="L828">        final BodyKinematicsSequence&lt;T&gt; result =</span>
-<span class="fc" id="L829">                (BodyKinematicsSequence&lt;T&gt;) super.clone();</span>
-<span class="fc" id="L830">        copyTo(result);</span>
-<span class="fc" id="L831">        return result;</span>
+<span class="fc" id="L834">        final BodyKinematicsSequence&lt;T&gt; result =</span>
+<span class="fc" id="L835">                (BodyKinematicsSequence&lt;T&gt;) super.clone();</span>
+<span class="fc" id="L836">        copyTo(result);</span>
+<span class="fc" id="L837">        return result;</span>
     }
 
     /**
@@ -844,21 +850,21 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
         // ArrayList is publicly Cloneable, so we clone it to get copies
         // of the elements contained within.
 
-<span class="fc" id="L847">        final ArrayList&lt;T&gt; result = new ArrayList&lt;&gt;();</span>
-<span class="fc bfc" id="L848" title="All 2 branches covered.">        for (final T item : list) {</span>
-<span class="pc bpc" id="L849" title="1 of 2 branches missed.">            if (item instanceof StandardDeviationTimedBodyKinematics) {</span>
-<span class="fc" id="L850">                final StandardDeviationTimedBodyKinematics newItem =</span>
+<span class="fc" id="L853">        final ArrayList&lt;T&gt; result = new ArrayList&lt;&gt;();</span>
+<span class="fc bfc" id="L854" title="All 2 branches covered.">        for (final T item : list) {</span>
+<span class="pc bpc" id="L855" title="1 of 2 branches missed.">            if (item instanceof StandardDeviationTimedBodyKinematics) {</span>
+<span class="fc" id="L856">                final StandardDeviationTimedBodyKinematics newItem =</span>
                         new StandardDeviationTimedBodyKinematics();
-<span class="fc" id="L852">                newItem.copyFrom(item);</span>
-<span class="fc" id="L853">                result.add((T) newItem);</span>
-<span class="fc" id="L854">            } else {</span>
-<span class="nc" id="L855">                final TimedBodyKinematics newItem =</span>
+<span class="fc" id="L858">                newItem.copyFrom(item);</span>
+<span class="fc" id="L859">                result.add((T) newItem);</span>
+<span class="fc" id="L860">            } else {</span>
+<span class="nc" id="L861">                final TimedBodyKinematics newItem =</span>
                         new TimedBodyKinematics(item);
-<span class="nc" id="L857">                result.add((T) newItem);</span>
+<span class="nc" id="L863">                result.add((T) newItem);</span>
             }
-<span class="fc" id="L859">        }</span>
+<span class="fc" id="L865">        }</span>
 
-<span class="fc" id="L861">        return result;</span>
+<span class="fc" id="L867">        return result;</span>
     }
 
     /**
@@ -869,8 +875,8 @@ public class BodyKinematicsSequence&lt;T extends TimedBodyKinematics&gt;
      * @return converted value.
      */
     private static double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L872">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L873">                acceleration.getUnit(),</span>
+<span class="fc" id="L878">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L879">                acceleration.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 }

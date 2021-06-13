@@ -32,9 +32,9 @@
 <a class="jxr_linenumber" name="L24" href="#L24">24</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.FrameType;
 <a class="jxr_linenumber" name="L25" href="#L25">25</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 <a class="jxr_linenumber" name="L26" href="#L26">26</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDFrame;
-<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.BodyKinematics;
-<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDPosition;
+<a class="jxr_linenumber" name="L27" href="#L27">27</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.NEDPosition;
+<a class="jxr_linenumber" name="L28" href="#L28">28</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+<a class="jxr_linenumber" name="L29" href="#L29">29</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.BodyKinematics;
 <a class="jxr_linenumber" name="L30" href="#L30">30</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 <a class="jxr_linenumber" name="L31" href="#L31">31</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 <a class="jxr_linenumber" name="L32" href="#L32">32</a>  <strong class="jxr_keyword">import</strong> com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -11437,7 +11437,7 @@
 <a class="jxr_linenumber" name="L11429" href="#L11429">11429</a>     }
 <a class="jxr_linenumber" name="L11430" href="#L11430">11430</a> 
 <a class="jxr_linenumber" name="L11431" href="#L11431">11431</a>     @Test
-<a class="jxr_linenumber" name="L11432" href="#L11432">11432</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetSetInitialMx() <strong class="jxr_keyword">throws</strong> WrongSizeException, LockedException {
+<a class="jxr_linenumber" name="L11432" href="#L11432">11432</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> testGetSetInitialMxy() <strong class="jxr_keyword">throws</strong> WrongSizeException, LockedException {
 <a class="jxr_linenumber" name="L11433" href="#L11433">11433</a>         <strong class="jxr_keyword">final</strong> KnownFrameAccelerometerNonLinearLeastSquaresCalibrator calibrator =
 <a class="jxr_linenumber" name="L11434" href="#L11434">11434</a>                 <strong class="jxr_keyword">new</strong> KnownFrameAccelerometerNonLinearLeastSquaresCalibrator();
 <a class="jxr_linenumber" name="L11435" href="#L11435">11435</a> 
@@ -12513,7 +12513,7 @@
 <a class="jxr_linenumber" name="L12505" href="#L12505">12505</a> 
 <a class="jxr_linenumber" name="L12506" href="#L12506">12506</a>     @Override
 <a class="jxr_linenumber" name="L12507" href="#L12507">12507</a>     <strong class="jxr_keyword">public</strong> <strong class="jxr_keyword">void</strong> onCalibrateStart(
-<a class="jxr_linenumber" name="L12508" href="#L12508">12508</a>             KnownFrameAccelerometerNonLinearLeastSquaresCalibrator calibrator) {
+<a class="jxr_linenumber" name="L12508" href="#L12508">12508</a>             <strong class="jxr_keyword">final</strong> KnownFrameAccelerometerNonLinearLeastSquaresCalibrator calibrator) {
 <a class="jxr_linenumber" name="L12509" href="#L12509">12509</a>         checkLocked(calibrator);
 <a class="jxr_linenumber" name="L12510" href="#L12510">12510</a>         mCalibrateStart++;
 <a class="jxr_linenumber" name="L12511" href="#L12511">12511</a>     }

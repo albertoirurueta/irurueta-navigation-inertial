@@ -60,10 +60,10 @@
 <a class="jxr_linenumber" name="L52" href="#L52">52</a>          assertNull(tkb.getKinematics());
 <a class="jxr_linenumber" name="L53" href="#L53">53</a>          assertNull(tkb.getMagneticFluxDensity());
 <a class="jxr_linenumber" name="L54" href="#L54">54</a>          assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-<a class="jxr_linenumber" name="L55" href="#L55">55</a>          Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L55" href="#L55">55</a>          <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L56" href="#L56">56</a>          assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
 <a class="jxr_linenumber" name="L57" href="#L57">57</a>          assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L58" href="#L58">58</a>          Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L58" href="#L58">58</a>          <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L59" href="#L59">59</a>          tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L60" href="#L60">60</a>          assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L61" href="#L61">61</a>  
@@ -82,10 +82,10 @@
 <a class="jxr_linenumber" name="L74" href="#L74">74</a>          assertSame(tkb.getKinematics(), kinematics);
 <a class="jxr_linenumber" name="L75" href="#L75">75</a>          assertNull(tkb.getMagneticFluxDensity());
 <a class="jxr_linenumber" name="L76" href="#L76">76</a>          assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-<a class="jxr_linenumber" name="L77" href="#L77">77</a>          Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L77" href="#L77">77</a>          <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L78" href="#L78">78</a>          assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>          assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L80" href="#L80">80</a>          Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L80" href="#L80">80</a>          <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>          tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L82" href="#L82">82</a>          assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>  
@@ -103,10 +103,10 @@
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>          assertNull(tkb.getKinematics());
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>          assertSame(tkb.getMagneticFluxDensity(), b);
 <a class="jxr_linenumber" name="L97" href="#L97">97</a>          assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-<a class="jxr_linenumber" name="L98" href="#L98">98</a>          Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L98" href="#L98">98</a>          <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L99" href="#L99">99</a>          assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
 <a class="jxr_linenumber" name="L100" href="#L100">100</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L101" href="#L101">101</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L101" href="#L101">101</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L102" href="#L102">102</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L103" href="#L103">103</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L104" href="#L104">104</a> 
@@ -126,10 +126,10 @@
 <a class="jxr_linenumber" name="L118" href="#L118">118</a>         assertSame(tkb.getKinematics(), kinematics);
 <a class="jxr_linenumber" name="L119" href="#L119">119</a>         assertSame(tkb.getMagneticFluxDensity(), b);
 <a class="jxr_linenumber" name="L120" href="#L120">120</a>         assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-<a class="jxr_linenumber" name="L121" href="#L121">121</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L121" href="#L121">121</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L122" href="#L122">122</a>         assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
 <a class="jxr_linenumber" name="L123" href="#L123">123</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L124" href="#L124">124</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L124" href="#L124">124</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L125" href="#L125">125</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L126" href="#L126">126</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L127" href="#L127">127</a> 
@@ -150,10 +150,10 @@
 <a class="jxr_linenumber" name="L142" href="#L142">142</a>         assertNull(tkb.getKinematics());
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         assertNull(tkb.getMagneticFluxDensity());
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L145" href="#L145">145</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L145" href="#L145">145</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L146" href="#L146">146</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L147" href="#L147">147</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L148" href="#L148">148</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L148" href="#L148">148</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L149" href="#L149">149</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L150" href="#L150">150</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L151" href="#L151">151</a> 
@@ -175,10 +175,10 @@
 <a class="jxr_linenumber" name="L167" href="#L167">167</a>         assertNull(tkb.getKinematics());
 <a class="jxr_linenumber" name="L168" href="#L168">168</a>         assertNull(tkb.getMagneticFluxDensity());
 <a class="jxr_linenumber" name="L169" href="#L169">169</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L170" href="#L170">170</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L170" href="#L170">170</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L171" href="#L171">171</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L172" href="#L172">172</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L173" href="#L173">173</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L173" href="#L173">173</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L174" href="#L174">174</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L175" href="#L175">175</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L176" href="#L176">176</a> 
@@ -200,10 +200,10 @@
 <a class="jxr_linenumber" name="L192" href="#L192">192</a>         assertSame(tkb.getKinematics(), kinematics);
 <a class="jxr_linenumber" name="L193" href="#L193">193</a>         assertNull(tkb.getMagneticFluxDensity());
 <a class="jxr_linenumber" name="L194" href="#L194">194</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L195" href="#L195">195</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L195" href="#L195">195</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L196" href="#L196">196</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L197" href="#L197">197</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L198" href="#L198">198</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L198" href="#L198">198</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L199" href="#L199">199</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L200" href="#L200">200</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L201" href="#L201">201</a> 
@@ -226,10 +226,10 @@
 <a class="jxr_linenumber" name="L218" href="#L218">218</a>         assertSame(tkb.getKinematics(), kinematics);
 <a class="jxr_linenumber" name="L219" href="#L219">219</a>         assertNull(tkb.getMagneticFluxDensity());
 <a class="jxr_linenumber" name="L220" href="#L220">220</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L221" href="#L221">221</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L221" href="#L221">221</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L222" href="#L222">222</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L223" href="#L223">223</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L224" href="#L224">224</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L224" href="#L224">224</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L225" href="#L225">225</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L226" href="#L226">226</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L227" href="#L227">227</a> 
@@ -251,10 +251,10 @@
 <a class="jxr_linenumber" name="L243" href="#L243">243</a>         assertNull(tkb.getKinematics());
 <a class="jxr_linenumber" name="L244" href="#L244">244</a>         assertSame(tkb.getMagneticFluxDensity(), b);
 <a class="jxr_linenumber" name="L245" href="#L245">245</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L246" href="#L246">246</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L246" href="#L246">246</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L247" href="#L247">247</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L248" href="#L248">248</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L249" href="#L249">249</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L249" href="#L249">249</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L250" href="#L250">250</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L251" href="#L251">251</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L252" href="#L252">252</a> 
@@ -277,10 +277,10 @@
 <a class="jxr_linenumber" name="L269" href="#L269">269</a>         assertNull(tkb.getKinematics());
 <a class="jxr_linenumber" name="L270" href="#L270">270</a>         assertSame(tkb.getMagneticFluxDensity(), b);
 <a class="jxr_linenumber" name="L271" href="#L271">271</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L272" href="#L272">272</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L272" href="#L272">272</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L273" href="#L273">273</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L274" href="#L274">274</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L275" href="#L275">275</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L275" href="#L275">275</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L276" href="#L276">276</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L277" href="#L277">277</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L278" href="#L278">278</a> 
@@ -303,10 +303,10 @@
 <a class="jxr_linenumber" name="L295" href="#L295">295</a>         assertSame(tkb.getKinematics(), kinematics);
 <a class="jxr_linenumber" name="L296" href="#L296">296</a>         assertSame(tkb.getMagneticFluxDensity(), b);
 <a class="jxr_linenumber" name="L297" href="#L297">297</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L298" href="#L298">298</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L298" href="#L298">298</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L299" href="#L299">299</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L300" href="#L300">300</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L301" href="#L301">301</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L301" href="#L301">301</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L302" href="#L302">302</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L303" href="#L303">303</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L304" href="#L304">304</a> 
@@ -330,10 +330,10 @@
 <a class="jxr_linenumber" name="L322" href="#L322">322</a>         assertSame(tkb.getKinematics(), kinematics);
 <a class="jxr_linenumber" name="L323" href="#L323">323</a>         assertSame(tkb.getMagneticFluxDensity(), b);
 <a class="jxr_linenumber" name="L324" href="#L324">324</a>         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>         Time time1 = tkb.getTimestamp();
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>         <strong class="jxr_keyword">final</strong> Time time1 = tkb.getTimestamp();
 <a class="jxr_linenumber" name="L326" href="#L326">326</a>         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
 <a class="jxr_linenumber" name="L327" href="#L327">327</a>         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>         Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>         <strong class="jxr_keyword">final</strong> Time time2 = <strong class="jxr_keyword">new</strong> Time(0.0, TimeUnit.HOUR);
 <a class="jxr_linenumber" name="L329" href="#L329">329</a>         tkb.getTimestamp(time2);
 <a class="jxr_linenumber" name="L330" href="#L330">330</a>         assertEquals(time1, time2);
 <a class="jxr_linenumber" name="L331" href="#L331">331</a> 
@@ -644,7 +644,7 @@
 <a class="jxr_linenumber" name="L636" href="#L636">636</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> bz = randomizer.nextDouble(
 <a class="jxr_linenumber" name="L637" href="#L637">637</a>                 MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
 <a class="jxr_linenumber" name="L638" href="#L638">638</a> 
-<a class="jxr_linenumber" name="L639" href="#L639">639</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BodyMagneticFluxDensity(bx, by,bz);
+<a class="jxr_linenumber" name="L639" href="#L639">639</a>         <strong class="jxr_keyword">return</strong> <strong class="jxr_keyword">new</strong> BodyMagneticFluxDensity(bx, by, bz);
 <a class="jxr_linenumber" name="L640" href="#L640">640</a>     }
 <a class="jxr_linenumber" name="L641" href="#L641">641</a> }
 </pre>
