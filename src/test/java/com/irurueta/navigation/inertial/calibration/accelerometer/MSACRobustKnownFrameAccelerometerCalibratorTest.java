@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -164,7 +164,7 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        Assert.assertEquals(calibrator.getProgressDelta(),
+        assertEquals(calibrator.getProgressDelta(),
                 RobustKnownFrameAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
@@ -1830,7 +1830,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
         final double initialMzx = ma2.getElementAt(2, 0);
         final double initialMzy = ma2.getElementAt(2, 1);
 
-
         // check
         final Matrix ma3 = calibrator.getInitialMa();
         final Matrix ma4 = new Matrix(3, 3);
@@ -2111,7 +2110,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -2158,7 +2156,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                 measuredKinematics = BodyKinematicsGenerator
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -2232,7 +2229,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -2279,7 +2275,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                 measuredKinematics = BodyKinematicsGenerator
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -2358,7 +2353,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2405,7 +2399,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2496,7 +2489,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2543,7 +2535,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2631,7 +2622,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
             final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
-
 
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -2770,7 +2760,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2817,7 +2806,6 @@ public class MSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

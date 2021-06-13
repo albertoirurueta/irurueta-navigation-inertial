@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -122,7 +122,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
 
-
         // test constructor with listener
         calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
                 this);
@@ -167,7 +166,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
-
 
         // test constructor with measurements
         final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
@@ -216,7 +214,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
 
-
         // test constructor with measurements and listener
         calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
                 measurements, this);
@@ -262,7 +259,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
 
-
         // test constructor with common axis used
         calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
                 true);
@@ -305,7 +301,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
-
 
         // test constructor with common axis used and listener
         calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
@@ -350,7 +345,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
 
-
         // test constructor with measurements and common axis used
         calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(
                 measurements, true);
@@ -393,7 +387,6 @@ public class KnownFrameGyroscopeLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedGg());
-
 
         // test constructor with measurements, common axis used and listener
         calibrator = new KnownFrameGyroscopeLinearLeastSquaresCalibrator(

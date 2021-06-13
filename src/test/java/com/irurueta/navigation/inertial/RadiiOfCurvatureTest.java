@@ -43,7 +43,6 @@ public class RadiiOfCurvatureTest {
         assertEquals(radii.getRnDistance().getValue().doubleValue(), 0.0, 0.0);
         assertEquals(radii.getReDistance().getValue().doubleValue(), 0.0, 0.0);
 
-
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double rn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -57,7 +56,6 @@ public class RadiiOfCurvatureTest {
 
         assertEquals(radii.getRnDistance().getValue().doubleValue(), rn, 0.0);
         assertEquals(radii.getReDistance().getValue().doubleValue(), re, 0.0);
-
 
         // test constructor with distance values
         final Distance rnDistance = new Distance(rn, DistanceUnit.METER);

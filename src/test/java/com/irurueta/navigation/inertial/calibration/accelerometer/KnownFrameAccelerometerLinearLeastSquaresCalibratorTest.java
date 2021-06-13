@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -122,7 +122,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with listener
         calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(this);
 
@@ -167,7 +166,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with measurements
         final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
@@ -214,7 +212,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements and listener
         calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
                 this);
@@ -259,7 +256,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with common axis flag
         calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(
                 true);
@@ -301,7 +297,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with common axis flag and listener
         calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(
@@ -345,7 +340,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements and common axis flag
         calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(measurements,
                 true);
@@ -387,7 +381,6 @@ public class KnownFrameAccelerometerLinearLeastSquaresCalibratorTest implements
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with measurements, common axis flag and listener
         calibrator = new KnownFrameAccelerometerLinearLeastSquaresCalibrator(measurements,

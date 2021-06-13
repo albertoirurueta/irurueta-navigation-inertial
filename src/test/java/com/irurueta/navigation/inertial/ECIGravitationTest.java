@@ -48,7 +48,6 @@ public class ECIGravitationTest {
         assertEquals(gravitation.getNorm(), 0.0, 0.0);
         assertEquals(gravitation.getNormAsAcceleration().getValue().doubleValue(), 0.0, 0.0);
 
-
         // test constructor with gravitation coordinates
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -67,7 +66,6 @@ public class ECIGravitationTest {
         assertEquals(gravitation.getGzAsAcceleration().getValue().doubleValue(), gz, 0.0);
         assertEquals(gravitation.getNorm(), g, 0.0);
         assertEquals(gravitation.getNormAsAcceleration().getValue().doubleValue(), g, 0.0);
-
 
         // test constructor with acceleration coordinates
         final Acceleration gravitationX = new Acceleration(gx,
@@ -88,7 +86,6 @@ public class ECIGravitationTest {
         assertEquals(gravitation.getGzAsAcceleration().getValue().doubleValue(), gz, 0.0);
         assertEquals(gravitation.getNorm(), g, 0.0);
         assertEquals(gravitation.getNormAsAcceleration().getValue().doubleValue(), g, 0.0);
-
 
         // test constructor from another gravitation
         final ECIGravitation gravitation2 = new ECIGravitation(gravitation);
@@ -212,7 +209,6 @@ public class ECIGravitationTest {
 
         // check default value
         assertEquals(gravitation.getGyAsAcceleration().getValue().doubleValue(), 0.0, 0.0);
-
 
         // set new value
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());

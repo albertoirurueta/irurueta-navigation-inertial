@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -37,7 +37,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -164,7 +163,7 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        Assert.assertEquals(calibrator.getProgressDelta(),
+        assertEquals(calibrator.getProgressDelta(),
                 RobustKnownBiasAndFrameAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
@@ -190,7 +189,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(this);
@@ -294,7 +292,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements
         final List<StandardDeviationFrameBodyKinematics> measurements =
@@ -402,7 +399,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, this);
@@ -506,7 +502,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -612,7 +607,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with common axis used and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 true, this);
@@ -716,7 +710,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -822,7 +815,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and common axis used and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, true, this);
@@ -926,7 +918,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with bias coordinates
         final Matrix ba = generateBa();
@@ -1037,7 +1028,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with bias coordinates and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 biasX, biasY, biasZ, this);
@@ -1141,7 +1131,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements and bias coordinates
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -1247,7 +1236,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements, bias coordinates and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, biasX, biasY, biasZ, this);
@@ -1351,7 +1339,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with bias coordinates and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -1457,7 +1444,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with bias coordinates, common axis used and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 biasX, biasY, biasZ, true, this);
@@ -1561,7 +1547,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements, bias coordinates and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -1667,7 +1652,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements, bias coordinates and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, biasX, biasY, biasZ, true,
@@ -1772,7 +1756,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with bias coordinates as acceleration
         final Acceleration bax = new Acceleration(biasX,
@@ -1884,7 +1867,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with bias coordinates as acceleration and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 bax, bay, baz, this);
@@ -1988,7 +1970,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements and bias coordinates as acceleration
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -2094,7 +2075,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements, bias coordinates as acceleration and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, bax, bay, baz, this);
@@ -2199,7 +2179,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with bias coordinates as acceleration and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 bax, bay, baz, true);
@@ -2303,7 +2282,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with bias coordinates as acceleration, common axis used
         // and listener
@@ -2410,7 +2388,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements, bias coordinates as acceleration and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, bax, bay, baz, true);
@@ -2515,7 +2492,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements, bias coordinates as acceleration and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, bax, bay, baz, true, this);
@@ -2619,7 +2595,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 RobustKnownBiasAndFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with bias array
         final double[] biasArray = ba.getBuffer();
@@ -2736,7 +2711,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with bias array and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 biasArray, this);
@@ -2850,7 +2824,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with measurements and bias array
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -2966,7 +2939,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with measurements, bias array and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, biasArray, this);
@@ -3080,7 +3052,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with bias array and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3196,7 +3167,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with bias array, common axis used and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 biasArray, true, this);
@@ -3310,7 +3280,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with measurements, bias array and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3426,7 +3395,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with measurements, bias array and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, biasArray, true, this);
@@ -3540,7 +3508,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with bias matrix
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(ba);
@@ -3661,7 +3628,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with bias matrix and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(ba, this);
 
@@ -3780,7 +3746,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with measurements and bias matrix
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
@@ -3902,7 +3867,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with measurements, bias matrix and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(
                 measurements, ba, this);
@@ -4022,7 +3986,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with bias matrix and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(ba,
@@ -4144,7 +4107,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with bias matrix, common axis used and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(ba,
                 true, this);
@@ -4265,7 +4227,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with measurements, bias matrix and common axis used
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, ba,
                 true);
@@ -4385,7 +4346,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with measurements, bias matrix, common axis used and listener
         calibrator = new MSACRobustKnownBiasAndFrameAccelerometerCalibrator(measurements, ba,
@@ -5127,7 +5087,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         final double initialMzx = ma2.getElementAt(2, 0);
         final double initialMzy = ma2.getElementAt(2, 1);
 
-
         // check
         final Matrix ma3 = calibrator.getInitialMa();
         final Matrix ma4 = new Matrix(3, 3);
@@ -5408,7 +5367,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -5455,7 +5413,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 measuredKinematics = BodyKinematicsGenerator
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -5535,7 +5492,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -5582,7 +5538,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -5669,7 +5624,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -5716,7 +5670,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -5800,7 +5753,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -5847,7 +5799,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 measuredKinematics = BodyKinematicsGenerator
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -5925,7 +5876,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -5972,7 +5922,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -6059,7 +6008,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -6106,7 +6054,6 @@ public class MSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

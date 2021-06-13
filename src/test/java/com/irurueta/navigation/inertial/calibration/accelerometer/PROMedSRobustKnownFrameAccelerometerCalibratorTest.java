@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -361,7 +361,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements
         final List<StandardDeviationFrameBodyKinematics> measurements =
                 Collections.emptyList();
@@ -502,7 +501,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and listener
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(measurements,
                 this);
@@ -641,7 +639,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with common axis used
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(
@@ -782,7 +779,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with common axis used and listener
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(
                 true, this);
@@ -921,7 +917,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements and common axis used
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(
@@ -1062,7 +1057,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements, common axis used and listener
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(
                 measurements, true, this);
@@ -1201,7 +1195,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with quality scores
         final double[] qualityScores = new double[
@@ -1353,7 +1346,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with quality scores and listener
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(
                 qualityScores, this);
@@ -1502,7 +1494,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with quality scores and measurements
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
@@ -1653,7 +1644,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with quality scores, measurements and listener
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
                 measurements, this);
@@ -1802,7 +1792,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with quality scores and common axis used
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
@@ -1953,7 +1942,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with quality scores, common axis used and listener
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
                 true, this);
@@ -2103,7 +2091,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         }
         assertNull(calibrator);
 
-
         // test constructor with quality scores, measurements and common axis used
         calibrator = new PROMedSRobustKnownFrameAccelerometerCalibrator(qualityScores,
                 measurements, true);
@@ -2252,7 +2239,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
 
         // test constructor with quality scores, measurements, common axis used and
         // listener
@@ -3318,7 +3304,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -3371,7 +3356,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
                 error = Math.abs(errorRandomizer.nextDouble());
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -3501,7 +3485,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
                 error = Math.abs(errorRandomizer.nextDouble());
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -3581,7 +3564,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -3634,7 +3616,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -3728,7 +3709,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -3781,7 +3761,6 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -3855,25 +3834,27 @@ public class PROMedSRobustKnownFrameAccelerometerCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownFrameAccelerometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownFrameAccelerometerCalibrator calibrator) {
         checkLocked((PROMedSRobustKnownFrameAccelerometerCalibrator) calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownFrameAccelerometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownFrameAccelerometerCalibrator calibrator) {
         checkLocked((PROMedSRobustKnownFrameAccelerometerCalibrator) calibrator);
         mCalibrateEnd++;
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownFrameAccelerometerCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownFrameAccelerometerCalibrator calibrator, final int iteration) {
         checkLocked((PROMedSRobustKnownFrameAccelerometerCalibrator) calibrator);
         mCalibrateNextIteration++;
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownFrameAccelerometerCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownFrameAccelerometerCalibrator calibrator, final float progress) {
         checkLocked((PROMedSRobustKnownFrameAccelerometerCalibrator) calibrator);
         mCalibrateProgressChange++;
     }

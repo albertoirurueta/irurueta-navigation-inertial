@@ -72,7 +72,7 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      * @param valueX x coordinate value.
      * @param valueY y coordinate value.
      * @param valueZ z coordinate value.
-     * @param unit unit.
+     * @param unit   unit.
      * @return created triad.
      */
     @Override
@@ -96,11 +96,11 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override
-    protected AngularSpeed createMeasurement(double value, AngularSpeedUnit unit) {
+    protected AngularSpeed createMeasurement(final double value, final AngularSpeedUnit unit) {
         return new AngularSpeed(value, unit);
     }
 
@@ -108,11 +108,11 @@ public class AccumulatedAngularSpeedTriadNoiseEstimator extends
      * Converts provided value and unit into default unit.
      *
      * @param value measurement value to be converted.
-     * @param unit unit of measurement value to be converted.
+     * @param unit  unit of measurement value to be converted.
      * @return converted value.
      */
     @Override
-    protected double convertToDefaultUnit(double value, AngularSpeedUnit unit) {
+    protected double convertToDefaultUnit(final double value, final AngularSpeedUnit unit) {
         return AngularSpeedConverter.convert(value, unit, getDefaultUnit());
     }
 

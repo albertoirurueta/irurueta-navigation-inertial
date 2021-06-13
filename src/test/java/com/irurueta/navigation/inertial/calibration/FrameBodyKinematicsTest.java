@@ -79,7 +79,6 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
 
-
         // test constructor with kinematics
         final BodyKinematics kinematics = new BodyKinematics();
         frameBodyKinematics = new FrameBodyKinematics(kinematics);
@@ -98,7 +97,6 @@ public class FrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
-
 
         // test constructor with ECEF frame
         final NEDFrame nedFrame = new NEDFrame();
@@ -123,7 +121,6 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
 
-
         // test constructor with NED frame
         frameBodyKinematics = new FrameBodyKinematics(nedFrame);
 
@@ -143,7 +140,6 @@ public class FrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
-
 
         // test constructor with time interval seconds
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -175,7 +171,6 @@ public class FrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with time interval
         final Time timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
 
@@ -204,7 +199,6 @@ public class FrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame
         final NEDFrame previousNedFrame = new NEDFrame();
         final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
@@ -231,7 +225,6 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
 
-
         // test constructor with current and previous NED frame
         frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame);
 
@@ -253,7 +246,6 @@ public class FrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
-
 
         // test constructor with current and previous ECEF frame and time interval seconds
         frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame,
@@ -289,7 +281,6 @@ public class FrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame and time interval
         frameBodyKinematics = new FrameBodyKinematics(ecefFrame, previousEcefFrame,
                 timeInterval2);
@@ -323,7 +314,6 @@ public class FrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with current and previous NED frame and time interval seconds
         frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame,
@@ -359,7 +349,6 @@ public class FrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous NED frame and time interval
         frameBodyKinematics = new FrameBodyKinematics(nedFrame, previousNedFrame,
                 timeInterval2);
@@ -394,7 +383,6 @@ public class FrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics and ECEF frame
         frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame);
 
@@ -415,7 +403,6 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
 
-
         // test constructor with body kinematics and NED frame
         frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame);
 
@@ -435,7 +422,6 @@ public class FrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
-
 
         // test constructor with body kinematics, current and previous ECEF frame
         frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
@@ -460,7 +446,6 @@ public class FrameBodyKinematicsTest {
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
 
-
         // test constructor with body kinematics, current and previous NED frame
         frameBodyKinematics = new FrameBodyKinematics(kinematics, nedFrame,
                 previousNedFrame);
@@ -483,7 +468,6 @@ public class FrameBodyKinematicsTest {
         timeInterval = new Time(0.0, TimeUnit.MILLISECOND);
         frameBodyKinematics.getTimeIntervalAsTime(timeInterval);
         assertEquals(timeInterval, new Time(0.0, TimeUnit.SECOND));
-
 
         // test constructor with body kinematics, current and previous ECEF frame and
         // time interval seconds
@@ -520,7 +504,6 @@ public class FrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous ECEF frame and
         // time interval
         frameBodyKinematics = new FrameBodyKinematics(kinematics, ecefFrame,
@@ -555,7 +538,6 @@ public class FrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous NED frame and
         // time interval seconds
@@ -911,7 +893,6 @@ public class FrameBodyKinematicsTest {
         final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics();
         final FrameBodyKinematics frameBodyKinematics2 = new FrameBodyKinematics(
                 kinematics, ecefFrame, previousEcefFrame, timeInterval);
-
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 

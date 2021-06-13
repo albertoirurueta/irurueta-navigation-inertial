@@ -15,9 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.algebra.DecomposerException;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.RankDeficientMatrixException;
@@ -48,8 +45,12 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class NEDKinematicsEstimatorTest {
 
@@ -1750,9 +1751,9 @@ public class NEDKinematicsEstimatorTest {
             final Matrix AlphaIbb = Utils.skewMatrix(alphaIbb);
             final Matrix aveCbn;
             if (magAlpha > ALPHA_THRESHOLD) {
-                //aveCbn = oldCbn * (I + (1 - cos(magAlpha))/magAlpha^2*AlphaIbb +
-                //  (1 - sin(magAlpha)/magAlpha)/magAlpha^2*AlphaIbb*AlphaIbb)
-                //  -0.5 * skew(oldOmegaEnn + omegaIen)*oldCbn
+                // aveCbn = oldCbn * (I + (1 - cos(magAlpha))/magAlpha^2*AlphaIbb +
+                //   (1 - sin(magAlpha)/magAlpha)/magAlpha^2*AlphaIbb*AlphaIbb)
+                //   -0.5 * skew(oldOmegaEnn + omegaIen)*oldCbn
                 aveCbn = oldCbn.multiplyAndReturnNew(
                         Matrix.identity(3, 3).addAndReturnNew(
                                 AlphaIbb.multiplyByScalarAndReturnNew(

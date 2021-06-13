@@ -72,7 +72,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
 
-
         // test create with listener and method
 
         // RANSAC
@@ -114,7 +113,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getListener(), this);
-
 
         // test create with measurements and method
         final List<StandardDeviationFrameBodyKinematics> measurements =
@@ -159,7 +157,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, listener and method
 
@@ -208,7 +205,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with common axis used and method
 
         // RANSAC
@@ -250,7 +246,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with common axis used, listener and method
 
@@ -299,7 +294,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, common axis used and method
 
         // RANSAC
@@ -346,7 +340,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, common axis used, listener and method
 
@@ -399,7 +392,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
-
 
         // test create with bias coordinates and method
         final Matrix bg = generateBg();
@@ -456,7 +448,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasX(), biasX, 0.0);
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-
 
         // test create with bias coordinates, listener and method
 
@@ -515,7 +506,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias coordinates and method
 
         // RANSAC
@@ -572,7 +562,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasX(), biasX, 0.0);
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-
 
         // test create with measurements, bias, listener and method
 
@@ -636,7 +625,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with bias coordinates, common axis used and method
 
         // RANSAC
@@ -693,7 +681,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with bias coordinates, common axis used, listener and method
 
@@ -762,7 +749,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias coordinates, common axis used and method
 
         // RANSAC
@@ -824,7 +810,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, bias coordinates, common axis used, listener and
         // method
@@ -957,7 +942,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
 
-
         // test create with bias coordinates as angular speed, listener and method
 
         // RANSAC
@@ -1067,7 +1051,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
 
-
         // test create with measurements, bias coordinates as angular speed, listener and
         // method
 
@@ -1131,7 +1114,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with bias coordinates as angular speed, common axis used and
         // method
 
@@ -1189,7 +1171,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with bias coordinates angular speed, common axis used, listener
         // and method
@@ -1254,7 +1235,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias coordinates as angular speed, common axis
         // used and method
 
@@ -1317,7 +1297,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, bias coordinates as angular speed, common axis
         // used, listener and method
@@ -1392,7 +1371,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with bias array and method
         final double[] bias = bg.getBuffer();
 
@@ -1435,7 +1413,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // test create with bias array, listener and method
 
@@ -1484,7 +1461,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias array and method
 
         // RANSAC
@@ -1531,7 +1507,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // test create with measurements, bias coordinates array, listener and method
 
@@ -1585,7 +1560,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with bias coordinates array, common axis used and method
 
         // RANSAC
@@ -1632,7 +1606,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with bias coordinates array, common axis used, listener and method
 
@@ -1686,7 +1659,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias coordinates array, common axis used and
         // method
 
@@ -1739,7 +1711,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, bias, common axis used, listener and method
 
@@ -1798,7 +1769,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with bias matrix and method
 
         // RANSAC
@@ -1840,7 +1810,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
-
 
         // test create with bias matrix, listener and method
 
@@ -1889,7 +1858,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias matrix and method
 
         // RANSAC
@@ -1936,7 +1904,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
-
 
         // test create with measurements, bias matrix, listener and method
 
@@ -1990,7 +1957,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with bias matrix, common axis used and method
 
         // RANSAC
@@ -2037,7 +2003,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with bias matrix, common axis used, listener and method
 
@@ -2091,7 +2056,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, bias matrix, common axis used and method
 
         // RANSAC
@@ -2143,7 +2107,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, bias matrix, common axis used, listener and
         // method
@@ -2252,7 +2215,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
 
-
         // test create with quality scores, measures, listener and method
 
         // RANSAC
@@ -2305,7 +2267,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, common axis used and method
 
         // RANSAC
@@ -2357,7 +2318,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, common axis used, listener and
         // method
@@ -2422,7 +2382,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, bias coordinates and method
 
         // RANSAC
@@ -2480,7 +2439,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
 
-
         // test create with quality scores, bias coordinates, listener and method
 
         // RANSAC
@@ -2537,7 +2495,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasX(), biasX, 0.0);
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-
 
         // test create with quality scores, measurements, bias coordinates and method
 
@@ -2600,7 +2557,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasX(), biasX, 0.0);
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
-
 
         // test create with quality scores, measurements, bias coordinates, listener and
         // method
@@ -2670,7 +2626,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
 
-
         // test create with quality scores, bias coordinates, common axis used and method
 
         // RANSAC
@@ -2732,7 +2687,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, bias coordinates, common axis used, listener
         // and method
@@ -2806,7 +2760,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
-
 
         // test create with quality scores, measurements, bias coordinates,
         // common axis used and method
@@ -3032,7 +2985,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
 
-
         // test create with quality scores, bias coordinates as angular speed and
         // method
 
@@ -3090,7 +3042,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedX(), bx);
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
-
 
         // test create with quality scores, bias coordinates as angular speed, listener
         // and method
@@ -3155,7 +3106,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, bias coordinates as angular
         // speed and method
 
@@ -3218,7 +3168,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedX(), bx);
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
-
 
         // test create with quality scores, measurements, bias coordinates as angular speed,
         // listener and method
@@ -3288,7 +3237,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, bias coordinates as angular speed,
         // common axis used and method
 
@@ -3357,7 +3305,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
 
-
         // test create with quality scores, bias coordinates as angular speed,
         // common axis used, listener and method
 
@@ -3402,7 +3349,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
-
 
         // test create with quality scores, measurements, bias coordinates as angular
         // speed, common axis used and method
@@ -3628,7 +3574,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
 
-
         // test create with quality scores, bias array and method
 
         // RANSAC
@@ -3675,7 +3620,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // test create with quality scores, bias array, listener and method
 
@@ -3729,7 +3673,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, bias array and method
 
         // RANSAC
@@ -3781,7 +3724,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // test create with quality scores, measurements, bias array,
         // listener and method
@@ -3841,7 +3783,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, bias array, common axis used and method
 
         // RANSAC
@@ -3893,7 +3834,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, bias, common axis used, listener and method
 
@@ -3952,7 +3892,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, bias array, common axis used
         // and method
 
@@ -4010,7 +3949,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, bias array, common axis used,
         // listener and method
@@ -4080,7 +4018,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, bias matrix and method
 
         // RANSAC
@@ -4127,7 +4064,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndFrameGyroscopeCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
-
 
         // test create with quality scores, bias matrix, listener and method
 
@@ -4181,7 +4117,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, bias matrix and method
 
         // RANSAC
@@ -4233,7 +4168,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
-
 
         // test create with quality scores, measurements, bias matrix, listener
         // and method
@@ -4293,7 +4227,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, bias matrix, common axis used and method
 
         // RANSAC
@@ -4345,7 +4278,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, bias matrix, common axis used, listener
         // and method
@@ -4405,7 +4337,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, bias matrix, common axis used
         // and method
 
@@ -4463,7 +4394,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, bias matrix, common axis used,
         // listener and method
@@ -4542,13 +4472,11 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(this);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getListener(), this);
-
 
         final List<StandardDeviationFrameBodyKinematics> measurements =
                 Collections.emptyList();
@@ -4558,7 +4486,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 this);
 
@@ -4567,13 +4494,11 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(true);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 true, this);
@@ -4583,7 +4508,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 measurements, true);
 
@@ -4591,7 +4515,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 measurements, true, this);
@@ -4601,7 +4524,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
-
 
         final Matrix bg = generateBg();
         final double biasX = bg.getElementAtIndex(0);
@@ -4616,7 +4538,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 biasX, biasY, biasZ, this);
 
@@ -4626,7 +4547,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertSame(calibrator.getListener(), this);
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 biasX, biasY, biasZ);
@@ -4638,7 +4558,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 biasX, biasY, biasZ, this);
 
@@ -4650,7 +4569,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 biasX, biasY, biasZ, true);
 
@@ -4660,7 +4578,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 biasX, biasY, biasZ, true, this);
@@ -4673,7 +4590,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 measurements, biasX, biasY, biasZ, true);
 
@@ -4684,7 +4600,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasY(), biasY, 0.0);
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(
                 measurements, biasX, biasY, biasZ, true, this);
@@ -4697,7 +4612,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasZ(), biasZ, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
-
 
         final AngularSpeed bx = new AngularSpeed(biasX,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -4714,7 +4628,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bx, by, bz,
                 this);
 
@@ -4724,7 +4637,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertSame(calibrator.getListener(), this);
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bx, by, bz);
@@ -4736,7 +4648,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bx, by, bz, this);
 
@@ -4747,7 +4658,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bx, by, bz,
                 true);
 
@@ -4757,7 +4667,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bx, by, bz,
                 true, this);
@@ -4770,7 +4679,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bx, by, bz, true);
 
@@ -4781,7 +4689,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAngularSpeedY(), by);
         assertEquals(calibrator.getBiasAngularSpeedZ(), bz);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bx, by, bz, true, this);
@@ -4795,14 +4702,12 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         final double[] bias = bg.getBuffer();
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bias);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bias,
                 this);
@@ -4812,7 +4717,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bias);
 
@@ -4820,7 +4724,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bias, this);
@@ -4831,7 +4734,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bias,
                 true);
 
@@ -4839,7 +4741,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bias,
                 true, this);
@@ -4850,7 +4751,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bias, true);
 
@@ -4859,7 +4759,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bias, true, this);
@@ -4871,13 +4770,11 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bg);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bg, this);
 
@@ -4886,7 +4783,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bg);
 
@@ -4894,7 +4790,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bg, this);
@@ -4905,7 +4800,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bg,
                 true);
 
@@ -4913,7 +4807,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(bg,
                 true, this);
@@ -4924,7 +4817,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bg, true);
 
@@ -4933,7 +4825,6 @@ public class RobustKnownBiasAndFrameGyroscopeCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), bg);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         calibrator = RobustKnownBiasAndFrameGyroscopeCalibrator.create(measurements,
                 bg, true, this);

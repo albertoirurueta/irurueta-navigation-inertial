@@ -77,7 +77,7 @@ public class WindowedMagneticFluxDensityMeasurementNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override

@@ -3555,18 +3555,20 @@ public class RobustKnownBiasEasyGyroscopeCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownBiasEasyGyroscopeCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownBiasEasyGyroscopeCalibrator calibrator, final int iteration) {
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownBiasEasyGyroscopeCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownBiasEasyGyroscopeCalibrator calibrator, final float progress) {
     }
 }

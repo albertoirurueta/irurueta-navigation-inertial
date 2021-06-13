@@ -17,6 +17,7 @@ package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.FrameBodyKinematics;
+
 import java.util.Collection;
 
 /**

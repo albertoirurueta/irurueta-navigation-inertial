@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -229,7 +229,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with listener
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(this);
 
@@ -371,7 +370,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements
         final List<StandardDeviationFrameBodyKinematics> measurements =
@@ -517,7 +515,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and listener
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(measurements,
                 this);
@@ -660,7 +657,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with common axis used
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(
@@ -805,7 +801,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with common axis used and listener
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(
                 true, this);
@@ -949,7 +944,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and common axis used
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(
                 measurements, true);
@@ -1092,7 +1086,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements and common axis used
         calibrator = new RANSACRobustKnownFrameAccelerometerCalibrator(
@@ -1891,7 +1884,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
         final double initialMzx = ma2.getElementAt(2, 0);
         final double initialMzy = ma2.getElementAt(2, 1);
 
-
         // check
         final Matrix ma3 = calibrator.getInitialMa();
         final Matrix ma4 = new Matrix(3, 3);
@@ -2172,7 +2164,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -2219,7 +2210,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 measuredKinematics = BodyKinematicsGenerator
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -2293,7 +2283,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -2340,7 +2329,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                 measuredKinematics = BodyKinematicsGenerator
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -2419,7 +2407,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2466,7 +2453,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2557,7 +2543,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2604,7 +2589,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2740,7 +2724,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2831,7 +2814,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2878,7 +2860,6 @@ public class RANSACRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

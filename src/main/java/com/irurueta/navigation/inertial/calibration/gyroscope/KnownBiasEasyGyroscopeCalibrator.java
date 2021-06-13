@@ -42,6 +42,7 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -3359,24 +3360,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // at this point covariance is expressed in terms of M and G, and must
         // be expressed in terms of Mg and Gg.
         // We know that:
-        //Mg = M - I
-        //Gg = M * G
+        // Mg = M - I
+        // Gg = M * G
 
-        //M = [m11  m12  m13]
-        //    [0    m22  m23]
-        //    [0    0    m33]
+        // M = [m11  m12  m13]
+        //     [0    m22  m23]
+        //     [0    0    m33]
 
-        //G = [g11  g12  g13]
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13]
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [0          m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [0          0           m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
-        //     [gg21  gg22  gg23]   [0    m22  m23][g21  g22  g23]
-        //     [gg31  gg32  gg33]   [0    0    m33][g31  g32  g33]
+        // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
+        //      [gg21  gg22  gg23]   [0    m22  m23][g21  g22  g23]
+        //      [gg31  gg32  gg33]   [0    0    m33][g31  g32  g33]
 
         // Defining the linear application:
         // F(M, G) = F(m11, m12, m22, m32=0, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33)
@@ -3401,24 +3402,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // [gg33]   [                        m33 * g33]
 
         // Then the Jacobian of F(M, G) is:
-        //J = [1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
-        //    [0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [g11  g21  0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
-        //    [0    0    g21  0    g31  0    0    m22  m23  0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    g31  0    0    m33  0    0    0    0    0    0  ]
-        //    [g12  g22  0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
-        //    [0    0    g22  0    g32  0    0    0    0    0    m22  m23  0    0    0  ]
-        //    [0    0    0    0    0    g32  0    0    0    0    0    m33  0    0    0  ]
-        //    [g13  g23  0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
-        //    [0    0    g23  0    g33  0    0    0    0    0    0    0    0    m22  m23]
-        //    [0    0    0    0    0    g33  0    0    0    0    0    0    0    0    m33]
+        // J = [1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
+        //     [0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [g11  g21  0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
+        //     [0    0    g21  0    g31  0    0    m22  m23  0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    g31  0    0    m33  0    0    0    0    0    0  ]
+        //     [g12  g22  0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
+        //     [0    0    g22  0    g32  0    0    0    0    0    m22  m23  0    0    0  ]
+        //     [0    0    0    0    0    g32  0    0    0    0    0    m33  0    0    0  ]
+        //     [g13  g23  0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
+        //     [0    0    g23  0    g33  0    0    0    0    0    0    0    0    m22  m23]
+        //     [0    0    0    0    0    g33  0    0    0    0    0    0    0    0    m33]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES);
@@ -3643,24 +3644,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // at this point covariance is expressed in terms of M and G, and must
         // be expressed in terms of Mg and Gg.
         // We know that:
-        //Mg = M - I
-        //Gg = M * G
+        // Mg = M - I
+        // Gg = M * G
 
-        //M = [m11  m12  m13]
-        //    [m21  m22  m23]
-        //    [m31  m32  m33]
+        // M = [m11  m12  m13]
+        //     [m21  m22  m23]
+        //     [m31  m32  m33]
 
-        //G = [g11  g12  g13]
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13]
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [m21        m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [m31        m32         m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
-        //     [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
-        //     [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
+        // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
+        //      [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
+        //      [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
 
         // Defining the linear application:
         // F(M, G) = F(m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33)
@@ -3685,24 +3686,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // [gg33]   [m31 * g13 + m32 * g23 + m33 * g33]
 
         // Then the Jacobian of F(M, G) is:
-        //J = [1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [g11  0    0    g21  0    0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
-        //    [0    g11  0    0    g21  0    0    g31  0    m21  m22  m23  0    0    0    0    0    0  ]
-        //    [0    0    g11  0    0    g21  0    0    g31  m31  m32  m33  0    0    0    0    0    0  ]
-        //    [g12  0    0    g22  0    0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
-        //    [0    g12  0    0    g22  0    0    g32  0    0    0    0    m21  m22  m23  0    0    0  ]
-        //    [0    0    g12  0    0    g22  0    0    g32  0    0    0    m31  m32  m33  0    0    0  ]
-        //    [g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
-        //    [0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    m21  m22  m23]
-        //    [0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    m31  m32  m33]
+        // J = [1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [g11  0    0    g21  0    0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
+        //     [0    g11  0    0    g21  0    0    g31  0    m21  m22  m23  0    0    0    0    0    0  ]
+        //     [0    0    g11  0    0    g21  0    0    g31  m31  m32  m33  0    0    0    0    0    0  ]
+        //     [g12  0    0    g22  0    0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
+        //     [0    g12  0    0    g22  0    0    g32  0    0    0    0    m21  m22  m23  0    0    0  ]
+        //     [0    0    g12  0    0    g22  0    0    g32  0    0    0    m31  m32  m33  0    0    0  ]
+        //     [g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
+        //     [0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    m21  m22  m23]
+        //     [0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    m31  m32  m33]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, GENERAL_UNKNOWNS_AND_CROSS_BIASES);
@@ -3932,24 +3933,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // at this point covariance is expressed in terms of M, and must
         // be expressed in terms of Mg.
         // We know that:
-        //Mg = M - I
-        //Gg = M * G
+        // Mg = M - I
+        // Gg = M * G
 
-        //M = [m11  m12  m13]
-        //    [0    m22  m23]
-        //    [0    0    m33]
+        // M = [m11  m12  m13]
+        //     [0    m22  m23]
+        //     [0    0    m33]
 
-        //G = [g11  g12  g13] = 0
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13] = 0
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [0          m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [0          0           m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
-        //     [gg21  gg22  gg23]   [0    m22  m23][g21  g22  g23]
-        //     [gg31  gg32  gg33]   [0    0    m33][g31  g32  g33]
+        // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
+        //      [gg21  gg22  gg23]   [0    m22  m23][g21  g22  g23]
+        //      [gg31  gg32  gg33]   [0    0    m33][g31  g32  g33]
 
         // Defining the linear application:
         // F(M) = F(m11, m12, m22, m32=0, m13, m23, m33)
@@ -3974,24 +3975,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // [gg33]   [0]
 
         // Then the Jacobian of F(M) is:
-        //J = [1    0    0    0    0    0]
-        //    [0    0    1    0    0    0]
-        //    [0    0    0    0    0    1]
-        //    [0    1    0    0    0    0]
-        //    [0    0    0    1    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    1    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
-        //    [0    0    0    0    0    0]
+        // J = [1    0    0    0    0    0]
+        //     [0    0    1    0    0    0]
+        //     [0    0    0    0    0    1]
+        //     [0    1    0    0    0    0]
+        //     [0    0    0    1    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    1    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
+        //     [0    0    0    0    0    0]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, COMMON_Z_AXIS_UNKNOWNS);
@@ -4134,24 +4135,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // at this point covariance is expressed in terms of M, and must
         // be expressed in terms of Mg.
         // We know that:
-        //Mg = M - I
-        //Gg = M * G
+        // Mg = M - I
+        // Gg = M * G
 
-        //M = [m11  m12  m13]
-        //    [m21  m22  m23]
-        //    [m31  m32  m33]
+        // M = [m11  m12  m13]
+        //     [m21  m22  m23]
+        //     [m31  m32  m33]
 
-        //G = [g11  g12  g13] = 0
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13] = 0
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [m21        m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [m31        m32         m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
-        //     [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
-        //     [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
+        // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
+        //      [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
+        //      [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
 
         // Defining the linear application:
         // F(M) = F(m11, m21, m31, m12, m22, m32, m13, m23, m33)
@@ -4176,24 +4177,24 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
         // [gg33]   [0]
 
         // Then the Jacobian of F(M) is:
-        //J = [1    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    1    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    1]
-        //    [0    0    0    1    0    0    0    0    0]
-        //    [0    0    0    0    0    0    1    0    0]
-        //    [0    1    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    1    0]
-        //    [0    0    1    0    0    0    0    0    0]
-        //    [0    0    0    0    0    1    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
-        //    [0    0    0    0    0    0    0    0    0]
+        // J = [1    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    1    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    1]
+        //     [0    0    0    1    0    0    0    0    0]
+        //     [0    0    0    0    0    0    1    0    0]
+        //     [0    1    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    1    0]
+        //     [0    0    1    0    0    0    0    0    0]
+        //     [0    0    0    0    0    1    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
+        //     [0    0    0    0    0    0    0    0    0]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, GENERAL_UNKNOWNS);
@@ -4321,7 +4322,7 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
      * Converts angular speed instance to radians per second (rad/s).
      *
      * @param value angular speed value.
-     * @param unit unit of angular speed value.
+     * @param unit  unit of angular speed value.
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {

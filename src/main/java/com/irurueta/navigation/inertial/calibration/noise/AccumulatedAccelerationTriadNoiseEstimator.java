@@ -73,7 +73,7 @@ public class AccumulatedAccelerationTriadNoiseEstimator extends
      * @param valueX x coordinate value.
      * @param valueY y coordinate value.
      * @param valueZ z coordinate value.
-     * @param unit unit.
+     * @param unit   unit.
      * @return created triad.
      */
     @Override
@@ -97,7 +97,7 @@ public class AccumulatedAccelerationTriadNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override
@@ -110,7 +110,7 @@ public class AccumulatedAccelerationTriadNoiseEstimator extends
      * Converts provided value and unit into default unit.
      *
      * @param value measurement value to be converted.
-     * @param unit unit of measurement value to be converted.
+     * @param unit  unit of measurement value to be converted.
      * @return converted value.
      */
     @Override

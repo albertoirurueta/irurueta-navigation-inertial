@@ -80,7 +80,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimator extends
      * @return created measurement.
      */
     @Override
-    protected Acceleration createMeasurement(double value, AccelerationUnit unit) {
+    protected Acceleration createMeasurement(final double value, final AccelerationUnit unit) {
         return new Acceleration(value, unit);
     }
 
@@ -91,7 +91,7 @@ public class AccumulatedAccelerationMeasurementNoiseEstimator extends
      * @return converted value.
      */
     @Override
-    protected double convertToDefaultUnit(Acceleration value) {
+    protected double convertToDefaultUnit(final Acceleration value) {
         return AccelerationConverter.convert(value.getValue().doubleValue(),
                 value.getUnit(), getDefaultUnit());
     }

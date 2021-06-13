@@ -13046,7 +13046,6 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
             final List<StandardDeviationBodyMagneticFluxDensity> measurements =
@@ -13137,7 +13136,6 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
@@ -13232,7 +13230,6 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
             final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
@@ -13333,7 +13330,6 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
             final List<StandardDeviationBodyMagneticFluxDensity> measurements =
@@ -13426,7 +13422,6 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));

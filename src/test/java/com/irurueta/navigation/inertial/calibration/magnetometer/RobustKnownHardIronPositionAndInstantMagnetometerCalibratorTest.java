@@ -1,14 +1,29 @@
+/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.irurueta.navigation.inertial.calibration.magnetometer;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
-import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
+import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
@@ -6058,8 +6073,7 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
     @Test
     public void testCreateWithDefaultMethod2() {
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        this);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(this);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);
@@ -6085,8 +6099,7 @@ public class RobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest imp
     @Test
     public void testCreateWithDefaultMethod4() {
         final RobustKnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(
-                        true);
+                RobustKnownHardIronPositionAndInstantMagnetometerCalibrator.create(true);
 
         // check
         assertTrue(calibrator instanceof LMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator);

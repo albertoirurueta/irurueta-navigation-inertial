@@ -1,6 +1,19 @@
+/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.irurueta.navigation.inertial.estimators;
-
-import static org.junit.Assert.assertEquals;
 
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
@@ -14,8 +27,11 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class NEDVelocityEstimatorTest {
 
@@ -31,7 +47,6 @@ public class NEDVelocityEstimatorTest {
     private static final double MAX_VELOCITY_VALUE = 2.0;
 
     private static final double ABSOLUTE_ERROR = 1e-8;
-    private static final int TIMES = 100;
 
     @Test
     public void testEstimate() {
@@ -704,29 +719,26 @@ public class NEDVelocityEstimatorTest {
 
     @Test
     public void testWhenNoPositionChange() {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double oldLatitude = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldLongitude = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double oldLatitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double oldLongitude = Math.toRadians(
-                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
-            final double oldHeight = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+        final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
+                MAX_VELOCITY_VALUE);
+        final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
+                MAX_VELOCITY_VALUE);
+        final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
+                MAX_VELOCITY_VALUE);
 
-            final double oldVn = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                    MAX_VELOCITY_VALUE);
-            final double oldVe = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                    MAX_VELOCITY_VALUE);
-            final double oldVd = randomizer.nextDouble(MIN_VELOCITY_VALUE,
-                    MAX_VELOCITY_VALUE);
+        final NEDVelocity result = NEDVelocityEstimator.estimateVelocityAndReturnNew(
+                TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
+                oldVn, oldVe, oldVd, oldLatitude, oldLongitude, oldHeight);
 
-            final NEDVelocity result = NEDVelocityEstimator.estimateVelocityAndReturnNew(
-                    TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, oldHeight,
-                    oldVn, oldVe, oldVd, oldLatitude, oldLongitude, oldHeight);
-
-            assertEquals(result.getVn(), -oldVn, ABSOLUTE_ERROR);
-            assertEquals(result.getVe(), -oldVe, ABSOLUTE_ERROR);
-            assertEquals(result.getVd(), -oldVd, ABSOLUTE_ERROR);
-        }
+        assertEquals(result.getVn(), -oldVn, ABSOLUTE_ERROR);
+        assertEquals(result.getVe(), -oldVe, ABSOLUTE_ERROR);
+        assertEquals(result.getVd(), -oldVd, ABSOLUTE_ERROR);
     }
 }

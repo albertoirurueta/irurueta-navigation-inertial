@@ -766,7 +766,6 @@ public class INSLooselyCoupledKalmanEpochEstimator {
             phiMatrix.setElementAt(6 + i, 3 + i, propagationInterval);
         }
 
-
         // 2. Determine approximate system noise covariance matrix using (14.82)
         final Matrix qPrimeMatrix = new Matrix(
                 INSLooselyCoupledKalmanState.NUM_PARAMS,
@@ -796,7 +795,6 @@ public class INSLooselyCoupledKalmanEpochEstimator {
             qPrimeMatrix.setElementAt(i, i, gyroBiasValue);
         }
 
-
         // 3. Propagate state estimates using (3.14) noting that all states are zero
         // due to closed-loop correction.
         // x_est_propagated(1:15, 1) = 0;
@@ -814,7 +812,6 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         pMatrixPropagated.add(qPrimeMatrix);
 
-
         // MEASUREMENT UPDATE PHASE
 
         // 5. Set-up measurement matrix using (14.115)
@@ -822,7 +819,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
                 INSLooselyCoupledKalmanState.NUM_PARAMS);
         for (int i = 0; i < 3; i++) {
             h.setElementAt(i, POS_AND_VEL_COMPONENTS + i, -1.0);
-            int j = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS + i;
+            final int j = com.irurueta.navigation.frames.ECEFPosition.COMPONENTS + i;
             h.setElementAt(j, j, -1.0);
         }
 
@@ -913,7 +910,6 @@ public class INSLooselyCoupledKalmanEpochEstimator {
                 + xEstNew.getElementAtIndex(13);
         final double newGyroBiasZ = previousState.getGyroBiasZ()
                 + xEstNew.getElementAtIndex(14);
-
 
         // set result values
         result.setBodyToEcefCoordinateTransformationMatrix(estCbeNew);

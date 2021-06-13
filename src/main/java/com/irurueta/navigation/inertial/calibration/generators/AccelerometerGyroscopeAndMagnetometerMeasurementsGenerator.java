@@ -200,86 +200,86 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator implemen
      */
     private final MagnetometerMeasurementsGeneratorListener mMagnetometerListener =
             new MagnetometerMeasurementsGeneratorListener() {
-        @Override
-        public void onInitializationStarted(
-                final MagnetometerMeasurementsGenerator generator) {
-            if (mListener != null) {
-                mListener.onInitializationStarted(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-        }
+                @Override
+                public void onInitializationStarted(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    if (mListener != null) {
+                        mListener.onInitializationStarted(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+                }
 
-        @Override
-        public void onInitializationCompleted(
-                final MagnetometerMeasurementsGenerator generator,
-                final double baseNoiseLevel) {
-            if (mListener != null) {
-                mListener.onInitializationCompleted(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
-                        baseNoiseLevel);
-            }
-        }
+                @Override
+                public void onInitializationCompleted(
+                        final MagnetometerMeasurementsGenerator generator,
+                        final double baseNoiseLevel) {
+                    if (mListener != null) {
+                        mListener.onInitializationCompleted(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
+                                baseNoiseLevel);
+                    }
+                }
 
-        @Override
-        public void onError(
-                final MagnetometerMeasurementsGenerator generator,
-                final TriadStaticIntervalDetector.ErrorReason reason) {
-            // no action required
-        }
+                @Override
+                public void onError(
+                        final MagnetometerMeasurementsGenerator generator,
+                        final TriadStaticIntervalDetector.ErrorReason reason) {
+                    // no action required
+                }
 
-        @Override
-        public void onStaticIntervalDetected(
-                final MagnetometerMeasurementsGenerator generator) {
-            if (mListener != null) {
-                mListener.onStaticIntervalDetected(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-        }
+                @Override
+                public void onStaticIntervalDetected(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    if (mListener != null) {
+                        mListener.onStaticIntervalDetected(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+                }
 
-        @Override
-        public void onDynamicIntervalDetected(
-                final MagnetometerMeasurementsGenerator generator) {
-            if (mListener != null) {
-                mListener.onDynamicIntervalDetected(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-        }
+                @Override
+                public void onDynamicIntervalDetected(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    if (mListener != null) {
+                        mListener.onDynamicIntervalDetected(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+                }
 
-        @Override
-        public void onStaticIntervalSkipped(
-                final MagnetometerMeasurementsGenerator generator) {
-            if (mListener != null) {
-                mListener.onStaticIntervalSkipped(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-        }
+                @Override
+                public void onStaticIntervalSkipped(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    if (mListener != null) {
+                        mListener.onStaticIntervalSkipped(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+                }
 
-        @Override
-        public void onDynamicIntervalSkipped(
-                final MagnetometerMeasurementsGenerator generator) {
-            if (mListener != null) {
-                mListener.onDynamicIntervalSkipped(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
-            }
-        }
+                @Override
+                public void onDynamicIntervalSkipped(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    if (mListener != null) {
+                        mListener.onDynamicIntervalSkipped(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this);
+                    }
+                }
 
-        @Override
-        public void onGeneratedMeasurement(
-                final MagnetometerMeasurementsGenerator generator,
-                final StandardDeviationBodyMagneticFluxDensity measurement) {
-            if (mListener != null) {
-                mListener.onGeneratedMagnetometerMeasurement(
-                        AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
-                        measurement);
-            }
-        }
+                @Override
+                public void onGeneratedMeasurement(
+                        final MagnetometerMeasurementsGenerator generator,
+                        final StandardDeviationBodyMagneticFluxDensity measurement) {
+                    if (mListener != null) {
+                        mListener.onGeneratedMagnetometerMeasurement(
+                                AccelerometerGyroscopeAndMagnetometerMeasurementsGenerator.this,
+                                measurement);
+                    }
+                }
 
-        @Override
-        public void onReset(
-                final MagnetometerMeasurementsGenerator generator) {
-            // no action required
-        }
-    };
+                @Override
+                public void onReset(
+                        final MagnetometerMeasurementsGenerator generator) {
+                    // no action required
+                }
+            };
 
     /**
      * Internal accelerometer measurements generator.

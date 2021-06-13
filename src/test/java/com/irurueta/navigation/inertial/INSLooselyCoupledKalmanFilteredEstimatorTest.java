@@ -152,7 +152,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
 
-
         // test constructor 3
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double epochInterval = randomizer.nextDouble(
@@ -195,7 +194,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 4
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(this);
 
@@ -225,7 +223,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 5
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -270,7 +267,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 6
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
                 this);
@@ -303,7 +299,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 7
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
@@ -345,7 +340,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 8
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -390,7 +384,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 9
         epochIntervalTime = new Time(epochInterval, TimeUnit.SECOND);
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime);
@@ -421,7 +414,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 10
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
@@ -467,7 +459,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 11
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, this);
@@ -508,7 +499,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 12
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
@@ -553,7 +543,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 13
         final double roll = Math.toRadians(
                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
@@ -580,11 +569,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                 MAX_USER_VELOCITY_VALUE);
         final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                 MAX_USER_VELOCITY_VALUE);
-        final com.irurueta.navigation.frames.NEDVelocity
-            nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+        final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-        final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+        final ECEFPosition ecefUserPosition = new ECEFPosition();
+        final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -621,7 +609,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
 
-
         // test constructor 14
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig, frame);
 
@@ -654,7 +641,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isPropagateReady());
-
 
         // test constructor 15
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
@@ -699,7 +685,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 16
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(frame, this);
 
@@ -731,7 +716,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 17
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -778,7 +762,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 18
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
                 frame, this);
@@ -812,7 +795,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isPropagateReady());
-
 
         // test constructor 19
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
@@ -856,7 +838,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 20
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -903,7 +884,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 21
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, frame);
@@ -946,7 +926,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 22
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -993,7 +972,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 23
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochIntervalTime,
                 frame, this);
@@ -1036,7 +1014,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 24
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1083,7 +1060,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 25
         final INSLooselyCoupledKalmanInitializerConfig initialConfig =
                 generateInitConfig();
@@ -1119,7 +1095,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
 
-
         // test constructor 26
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig);
@@ -1154,7 +1129,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 27
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
@@ -1199,7 +1173,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 28
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig,
                 this);
@@ -1232,7 +1205,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 29
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1279,7 +1251,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 30
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig, this);
@@ -1314,7 +1285,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 31
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
@@ -1358,7 +1328,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 32
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1405,7 +1374,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 33
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig);
@@ -1448,7 +1416,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 34
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1495,7 +1462,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 35
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig, this);
@@ -1538,7 +1504,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 36
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1585,7 +1550,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 37
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig,
                 frame);
@@ -1620,7 +1584,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 38
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1657,7 +1620,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isPropagateReady());
-
 
         // test constructor 39
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
@@ -1703,7 +1665,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 40
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(initialConfig,
                 frame, this);
@@ -1738,7 +1699,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 41
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1786,7 +1746,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 42
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig, frame, this);
@@ -1822,7 +1781,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isPropagateReady());
-
 
         // test constructor 43
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(epochInterval,
@@ -1867,7 +1825,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 44
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1915,7 +1872,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 45
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig, frame);
@@ -1959,7 +1915,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 46
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -2007,7 +1962,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 47
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig, frame, this);
@@ -2051,7 +2005,6 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 48
         estimator = new INSLooselyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -2213,11 +2166,11 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                 MAX_USER_VELOCITY_VALUE);
         final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                 MAX_USER_VELOCITY_VALUE);
-        final com.irurueta.navigation.frames.NEDVelocity
-            nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+        final NEDVelocity
+                nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-        final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+        final ECEFPosition ecefUserPosition = new ECEFPosition();
+        final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2291,11 +2244,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2360,8 +2312,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimator.getFrame(), state1.getFrame());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition1 = state1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
+            final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
             final CoordinateTransformation estimatedC1 = state1.getC();
 
             assertEquals(estimatedPosition1, ecefUserPosition);
@@ -2390,8 +2342,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state4 = estimator.getState();
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition4 = state4.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
+            final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
+            final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition4.getX());
@@ -2454,11 +2406,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2529,8 +2480,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimator.getFrame(), state1.getFrame());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition1 = state1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
+            final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
             final CoordinateTransformation estimatedC1 = state1.getC();
 
             assertEquals(estimatedPosition1, ecefUserPosition);
@@ -2559,8 +2510,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state4 = estimator.getState();
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition4 = state4.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
+            final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
+            final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition4.getX());
@@ -2624,11 +2575,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2702,8 +2652,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimator.getFrame(), state1.getFrame());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition1 = state1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
+            final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
             final CoordinateTransformation estimatedC1 = state1.getC();
 
             assertEquals(estimatedPosition1, ecefUserPosition);
@@ -2732,8 +2682,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state4 = estimator.getState();
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition4 = state4.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
+            final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
+            final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition4.getX());
@@ -2797,11 +2747,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2879,8 +2828,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimator.getFrame(), state1.getFrame());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition1 = state1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
+            final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
             final CoordinateTransformation estimatedC1 = state1.getC();
 
             assertEquals(estimatedPosition1, ecefUserPosition);
@@ -2909,8 +2858,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
             assertNotNull(estimator.getCorrectedKinematics());
 
             final INSLooselyCoupledKalmanState state4 = estimator.getState();
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition4 = state4.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
+            final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
+            final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition4.getX());
@@ -2983,11 +2932,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                 MAX_USER_VELOCITY_VALUE);
         final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                 MAX_USER_VELOCITY_VALUE);
-        final com.irurueta.navigation.frames.NEDVelocity
-            nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+        final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-        final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+        final ECEFPosition ecefUserPosition = new ECEFPosition();
+        final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -3052,8 +3000,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
 
         assertEquals(estimator.getFrame(), state1.getFrame());
 
-        final com.irurueta.navigation.frames.ECEFPosition estimatedPosition1 = state1.getEcefPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
+        final ECEFPosition estimatedPosition1 = state1.getEcefPosition();
+        final ECEFVelocity estimatedVelocity1 = state1.getEcefVelocity();
         final CoordinateTransformation estimatedC1 = state1.getC();
 
         assertEquals(estimatedPosition1, ecefUserPosition);
@@ -3072,8 +3020,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
         assertNotNull(estimator.getCorrectedKinematics());
 
         final INSLooselyCoupledKalmanState state3 = estimator.getState();
-        final com.irurueta.navigation.frames.ECEFPosition estimatedPosition3 = state3.getEcefPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity3 = state3.getEcefVelocity();
+        final ECEFPosition estimatedPosition3 = state3.getEcefPosition();
+        final ECEFVelocity estimatedVelocity3 = state3.getEcefVelocity();
         final CoordinateTransformation estimatedC3 = state3.getC();
 
         assertEquals(estimatedPosition3, ecefUserPosition);
@@ -3094,8 +3042,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                 new Time(2.0 * timeSeconds, TimeUnit.SECOND)));
 
         final INSLooselyCoupledKalmanState state4 = estimator.getState();
-        final com.irurueta.navigation.frames.ECEFPosition estimatedPosition4 = state4.getEcefPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
+        final ECEFPosition estimatedPosition4 = state4.getEcefPosition();
+        final ECEFVelocity estimatedVelocity4 = state4.getEcefVelocity();
         final CoordinateTransformation estimatedC4 = state4.getC();
 
         assertEquals(estimatedPosition4, ecefUserPosition);
@@ -3122,8 +3070,8 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
     }
 
     @Test
-    public void testReset() throws InvalidSourceAndDestinationFrameTypeException, LockedException, NotReadyException, INSException, InvalidRotationMatrixException {
-
+    public void testReset() throws InvalidSourceAndDestinationFrameTypeException, LockedException,
+            NotReadyException, INSException, InvalidRotationMatrixException {
 
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
@@ -3143,10 +3091,10 @@ public class INSLooselyCoupledKalmanFilteredEstimatorTest implements
                 MAX_USER_VELOCITY_VALUE);
         final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                 MAX_USER_VELOCITY_VALUE);
-        final com.irurueta.navigation.frames.NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
+        final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-        final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-        final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+        final ECEFPosition ecefUserPosition = new ECEFPosition();
+        final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
         NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                 nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 

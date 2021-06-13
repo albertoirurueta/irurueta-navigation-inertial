@@ -15,15 +15,16 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.statistics.UniformRandomizer;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertTrue;
 
 public class LevelingEstimator2Test {
 

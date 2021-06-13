@@ -37,6 +37,7 @@ import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
+
 import java.io.IOException;
 import java.util.Collection;
 
@@ -2182,34 +2183,34 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
         // mBmeas = bm + (I + Mm) * mBtrue
 
         // Hence:
-        //  [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [mBtruex]
-        //  [mBmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [mBtruey]
-        //  [mBmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [mBtruez]
+        // [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [mBtruex]
+        // [mBmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [mBtruey]
+        // [mBmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [mBtruez]
 
         // where myx = mzx = mzy = 0
 
         // Hence:
-        //  [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [mBtruex]
-        //  [mBmeasy] = [by]     [0  1   0]   [0     sy  myz]    [mBtruey]
-        //  [mBmeasz] = [bz]     [0  0   1]   [0     0   sz ]    [mBtruez]
+        // [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [mBtruex]
+        // [mBmeasy] = [by]     [0  1   0]   [0     sy  myz]    [mBtruey]
+        // [mBmeasz] = [bz]     [0  0   1]   [0     0   sz ]    [mBtruez]
 
-        //  [mBmeasx] = [bx] +   [1+sx   mxy     mxz ][mBtruex]
-        //  [mBmeasy]   [by]     [0      1+sy    myz ][mBtruey]
-        //  [mBmeasz]   [bz]     [0      0       1+sz][mBtruez]
+        // [mBmeasx] = [bx] +   [1+sx   mxy     mxz ][mBtruex]
+        // [mBmeasy]   [by]     [0      1+sy    myz ][mBtruey]
+        // [mBmeasz]   [bz]     [0      0       1+sz][mBtruez]
 
-        //  mBmeasx = bx + (1+sx) * mBtruex + mxy * mBtruey + mxz * mBtruez
-        //  mBmeasy = by + (1+sy) * mBtruey + myz * mBtruez
-        //  mBmeasz = bz + (1+sz) * mBtruez
+        // mBmeasx = bx + (1+sx) * mBtruex + mxy * mBtruey + mxz * mBtruez
+        // mBmeasy = by + (1+sy) * mBtruey + myz * mBtruez
+        // mBmeasz = bz + (1+sz) * mBtruez
 
         // Where the unknowns are: sx, sy, sz, mxy mxz, myz
         // Reordering:
-        //  mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
-        //  mBmeasy = by + mBtruey + sy * mBtruey + myz * mBtruez
-        //  mBmeasz = bz + mBtruez + sz * mBtruez
+        // mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
+        // mBmeasy = by + mBtruey + sy * mBtruey + myz * mBtruez
+        // mBmeasz = bz + mBtruez + sz * mBtruez
 
-        //  mBmeasx - mBtruex - bx = sx * mBtruex + mxy * mBtruey + mxz * mBtruez
-        //  mBmeasy - mBtruey - by = sy * mBtruey + myz * mBtruez
-        //  mBmeasz - mBtruez - bz = sz * mBtruez
+        // mBmeasx - mBtruex - bx = sx * mBtruex + mxy * mBtruey + mxz * mBtruez
+        // mBmeasy - mBtruey - by = sy * mBtruey + myz * mBtruez
+        // mBmeasz - mBtruez - bz = sz * mBtruez
 
         // [mBtruex  0        0        mBtruey  mBtruez  0      ][sx ] = [mBmeasx - mBtruex - bx]
         // [0        mBtruey  0        0        0        mBtruez][sy ]   [mBmeasy - mBtruey - by]
@@ -2328,27 +2329,27 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
         // mBmeas = bm + (I + Mm) * mBtrue
 
         // Hence:
-        //  [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [mBtruex]
-        //  [mBmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [mBtruey]
-        //  [mBmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [mBtruez]
+        // [mBmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [mBtruex]
+        // [mBmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [mBtruey]
+        // [mBmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [mBtruez]
 
-        //  [mBmeasx] = [bx] +   [1+sx   mxy     mxz ][mBtruex]
-        //  [mBmeasy]   [by]     [myx    1+sy    myz ][mBtruey]
-        //  [mBmeasz]   [bz]     [mzx    mzy     1+sz][mBtruez]
+        // [mBmeasx] = [bx] +   [1+sx   mxy     mxz ][mBtruex]
+        // [mBmeasy]   [by]     [myx    1+sy    myz ][mBtruey]
+        // [mBmeasz]   [bz]     [mzx    mzy     1+sz][mBtruez]
 
-        //  mBmeasx = bx + (1+sx) * mBtruex + mxy * mBtruey + mxz * mBtruez
-        //  mBmeasy = by + myx * mBtruex + (1+sy) * mBtruey + myz * mBtruez
-        //  mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + (1+sz) * mBtruez
+        // mBmeasx = bx + (1+sx) * mBtruex + mxy * mBtruey + mxz * mBtruez
+        // mBmeasy = by + myx * mBtruex + (1+sy) * mBtruey + myz * mBtruez
+        // mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + (1+sz) * mBtruez
 
         // Where the unknowns are: bx, by, bz, sx, sy, sz, mxy mxz, myx, myz, mzx, mzy
         // Reordering:
-        //  mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
-        //  mBmeasy = by + myx * mBtruex + mBtruey + sy * mBtruey + myz * mBtruez
-        //  mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + mBtruez + sz * mBtruez
+        // mBmeasx = bx + mBtruex + sx * mBtruex + mxy * mBtruey + mxz * mBtruez
+        // mBmeasy = by + myx * mBtruex + mBtruey + sy * mBtruey + myz * mBtruez
+        // mBmeasz = bz + mzx * mBtruex + mzy * mBtruey + mBtruez + sz * mBtruez
 
-        //  mBmeasx - mBtruex - bx = sx * mBtruex + mxy * mBtruey + mxz * mBtruez
-        //  mBmeasy - mBtruey - by = myx * mBtruex + sy * mBtruey + myz * mBtruez
-        //  mBmeasz - mBtruez - bz = mzx * mBtruex + mzy * mBtruey + sz * mBtruez
+        // mBmeasx - mBtruex - bx = sx * mBtruex + mxy * mBtruey + mxz * mBtruez
+        // mBmeasy - mBtruey - by = myx * mBtruex + sy * mBtruey + myz * mBtruez
+        // mBmeasz - mBtruez - bz = mzx * mBtruex + mzy * mBtruey + sz * mBtruez
 
         // [mBtruex  0        0        mBtruey  mBtruez  0        0        0        0      ][sx ] = [mBmeasx - mBtruex - bx]
         // [0        mBtruey  0        0        0        mBtruex  mBtruez  0        0      ][sy ]   [mBmeasy - mBtruey - by]
@@ -2423,7 +2424,6 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
             a.setElementAt(i, 7, 0.0);
             a.setElementAt(i, 8, 0.0);
 
-
             b.setElementAtIndex(i, bMeasX - bTrueX - mHardIronX);
             i++;
 
@@ -2436,7 +2436,6 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
             a.setElementAt(i, 6, bTrueZ);
             a.setElementAt(i, 7, 0.0);
             a.setElementAt(i, 8, 0.0);
-
 
             b.setElementAtIndex(i, bMeasY - bTrueY - mHardIronY);
             i++;
@@ -2510,7 +2509,7 @@ public class KnownHardIronAndFrameMagnetometerLinearLeastSquaresCalibrator imple
      * Converts magnetic flux density value and unit to Teslas.
      *
      * @param value magnetic flux density value.
-     * @param unit unit of magnetic flux density value.
+     * @param unit  unit of magnetic flux density value.
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {

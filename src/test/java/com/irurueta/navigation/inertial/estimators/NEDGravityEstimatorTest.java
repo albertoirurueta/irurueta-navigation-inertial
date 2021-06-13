@@ -15,8 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertEquals;
-
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.geodesic.Constants;
@@ -26,8 +24,11 @@ import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class NEDGravityEstimatorTest {
     private static final double LATITUDE_DEGREES = 41.3825;

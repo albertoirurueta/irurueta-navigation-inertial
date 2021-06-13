@@ -31,24 +31,7 @@ import com.irurueta.navigation.inertial.NEDGravity;
 import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.navigation.inertial.estimators.NEDGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.RadiiOfCurvatureEstimator;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleConverter;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeConverter;
-import com.irurueta.units.TimeUnit;
+import com.irurueta.units.*;
 
 /**
  * Runs precision local-navigation-frame inertial navigation equations.
@@ -6136,7 +6119,8 @@ public class NEDInertialNavigator {
                                          final AngularSpeed angularRateY,
                                          final AngularSpeed angularRateZ)
             throws InertialNavigatorException, InvalidSourceAndDestinationFrameTypeException {
-        return navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+        return navigateNEDAndReturnNew(timeInterval, oldLatitude, oldLongitude, oldHeight, oldC, oldVelocity,
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
     }
 
     /**
@@ -15618,7 +15602,7 @@ public class NEDInertialNavigator {
      * @param time time instance to be converted.
      * @return converted value expressed in seconds.
      */
-    private static double convertTimeToDouble(final com.irurueta.units.Time time) {
+    private static double convertTimeToDouble(final Time time) {
         return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(),
                 TimeUnit.SECOND);
     }

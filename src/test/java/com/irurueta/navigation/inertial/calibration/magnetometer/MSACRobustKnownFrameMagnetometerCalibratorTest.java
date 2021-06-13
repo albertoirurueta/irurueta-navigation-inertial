@@ -23,16 +23,16 @@ import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
@@ -2165,8 +2165,7 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralNoNoiseInlier()
-            throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws IOException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException,
             WrongSizeException {
 
@@ -2183,7 +2182,6 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2256,8 +2254,7 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisNoNoiseInlier()
-            throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws IOException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException,
             WrongSizeException {
 
@@ -2274,7 +2271,6 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2347,8 +2343,7 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralWithInlierNoise()
-            throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws IOException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException,
             WrongSizeException {
 
@@ -2368,7 +2363,6 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
             final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2441,8 +2435,7 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisWithInlierNoise()
-            throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws IOException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException,
             WrongSizeException {
 
@@ -2462,7 +2455,6 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
             final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2535,8 +2527,7 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralNoRefinement()
-            throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws IOException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException,
             WrongSizeException {
 
@@ -2553,7 +2544,6 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2627,8 +2617,7 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralNonLinearWithInitialValue()
-            throws IOException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws IOException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException,
             WrongSizeException {
 
@@ -2645,7 +2634,6 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
 
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2721,25 +2709,27 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownFrameMagnetometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownFrameMagnetometerCalibrator calibrator) {
         checkLocked((MSACRobustKnownFrameMagnetometerCalibrator) calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownFrameMagnetometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownFrameMagnetometerCalibrator calibrator) {
         checkLocked((MSACRobustKnownFrameMagnetometerCalibrator) calibrator);
         mCalibrateEnd++;
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownFrameMagnetometerCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownFrameMagnetometerCalibrator calibrator, final int iteration) {
         checkLocked((MSACRobustKnownFrameMagnetometerCalibrator) calibrator);
         mCalibrateNextIteration++;
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownFrameMagnetometerCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownFrameMagnetometerCalibrator calibrator, final float progress) {
         checkLocked((MSACRobustKnownFrameMagnetometerCalibrator) calibrator);
         mCalibrateProgressChange++;
     }
@@ -3100,7 +3090,8 @@ public class MSACRobustKnownFrameMagnetometerCalibratorTest implements
         }
     }
 
-    private static List<StandardDeviationFrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
+    private static List<StandardDeviationFrameBodyMagneticFluxDensity>
+    generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
             final UniformRandomizer randomizer)

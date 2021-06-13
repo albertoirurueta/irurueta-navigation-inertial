@@ -15,9 +15,6 @@
  */
 package com.irurueta.navigation.inertial.navigators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
@@ -38,19 +35,13 @@ import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.statistics.UniformRandomizer;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeUnit;
-import java.util.Random;
+import com.irurueta.units.*;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class ECIInertialNavigatorTest {
     private static final double TIME_INTERVAL_SECONDS = 0.02;

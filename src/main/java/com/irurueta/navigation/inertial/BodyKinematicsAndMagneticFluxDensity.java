@@ -185,7 +185,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * Checks if provided instance has contents similar to this instance up to provided
      * threshold value.
      *
-     * @param other instance to be compared.
+     * @param other     instance to be compared.
      * @param threshold maximum allowed difference between contents.
      * @return true if both instances are considered to be equal (up to provided
      * threshold), false otherwise.
@@ -196,7 +196,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
             return false;
         }
 
-        return  ((other.mKinematics == null && mKinematics == null)
+        return ((other.mKinematics == null && mKinematics == null)
                 || (mKinematics != null && mKinematics.equals(other.mKinematics, threshold)))
                 && ((other.mMagneticFluxDensity == null && mMagneticFluxDensity == null)
                 || (mMagneticFluxDensity != null && mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)));
@@ -210,7 +210,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

@@ -48,7 +48,6 @@ public class NEDGravityTest {
         assertEquals(gravity.getNorm(), 0.0, 0.0);
         assertEquals(gravity.getNormAsAcceleration().getValue().doubleValue(), 0.0, 0.0);
 
-
         // test constructor with gravity coordinates
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -67,7 +66,6 @@ public class NEDGravityTest {
         assertEquals(gravity.getNorm(), g, 0.0);
         assertEquals(gravity.getNormAsAcceleration().getValue().doubleValue(), g, 0.0);
 
-
         // test constructor with acceleration coordinates
         final Acceleration gravityN = new Acceleration(gn,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
@@ -85,7 +83,6 @@ public class NEDGravityTest {
         assertEquals(gravity.getGdAsAcceleration().getValue().doubleValue(), gd, 0.0);
         assertEquals(gravity.getNorm(), g, 0.0);
         assertEquals(gravity.getNormAsAcceleration().getValue().doubleValue(), g, 0.0);
-
 
         // test constructor from another gravity
         final NEDGravity gravity2 = new NEDGravity(gravity);

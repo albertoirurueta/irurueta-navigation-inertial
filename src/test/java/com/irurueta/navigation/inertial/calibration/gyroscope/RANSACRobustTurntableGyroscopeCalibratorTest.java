@@ -25,17 +25,17 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -11689,7 +11689,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
         assertEquals(calibrator.getAccelerometerBiasY(), 0.0, 0.0);
         assertEquals(calibrator.getAccelerometerBiasZ(), 0.0, 0.0);
 
-
         // set new values
         final Matrix ba = generateBa();
         final double bax = ba.getElementAtIndex(0);
@@ -13149,8 +13148,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13239,7 +13237,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -13310,8 +13307,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13400,7 +13396,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -13471,8 +13466,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13561,7 +13555,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -13643,8 +13636,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13733,7 +13725,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -13805,8 +13796,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13896,7 +13886,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -13976,8 +13965,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesDisabledWithInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -14067,7 +14055,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -14144,8 +14131,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledWithInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -14235,7 +14221,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -14313,8 +14298,7 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesEnabledWithInlierNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -14404,7 +14388,6 @@ public class RANSACRobustTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

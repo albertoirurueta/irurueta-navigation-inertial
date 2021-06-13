@@ -18,6 +18,7 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -152,7 +152,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 this);
@@ -226,7 +225,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with measurements
         final Collection<FrameBodyKinematics> measurements = Collections.emptyList();
@@ -304,7 +302,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, this);
@@ -379,7 +376,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with common axis used flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 true);
@@ -451,7 +447,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with common axis used flag and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
@@ -525,7 +520,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements and common axis flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, true);
@@ -598,7 +592,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements, common axis flag and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, true, this);
@@ -670,7 +663,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with bias
         final Matrix ba = generateBa();
@@ -751,7 +743,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with bias and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 biasX, biasY, biasZ, this);
@@ -825,7 +816,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with measurements and bias
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
@@ -901,7 +891,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements, bias and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, biasX, biasY, biasZ, this);
@@ -976,7 +965,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with bias and common axis flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 biasX, biasY, biasZ, true);
@@ -1048,7 +1036,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with bias, common axis flag and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
@@ -1122,7 +1109,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements, bias and common axis flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, biasX, biasY, biasZ, true);
@@ -1195,7 +1181,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements, bias, common axis flag and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, biasX, biasY, biasZ, true, this);
@@ -1267,7 +1252,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with bias as acceleration
         final Acceleration biasXAcceleration = new Acceleration(biasX,
@@ -1350,7 +1334,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with bias as acceleration and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 biasXAcceleration, biasYAcceleration, biasZAcceleration, this);
@@ -1425,7 +1408,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements and bias as acceleration
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 measurements, biasXAcceleration, biasYAcceleration, biasZAcceleration);
@@ -1499,7 +1481,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with measurements, bias as acceleration and listener
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
@@ -1576,7 +1557,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with bias as acceleration and common axis used flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
                 biasXAcceleration, biasYAcceleration, biasZAcceleration,
@@ -1649,7 +1629,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with bias as acceleration and common axis used flag and
         // listener
@@ -1725,7 +1704,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
 
-
         // test constructor with measurements, bias as acceleration and common axis
         // flag
         calibrator = new KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator(
@@ -1799,7 +1777,6 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
         assertNull(calibrator.getEstimatedMyz());
         assertNull(calibrator.getEstimatedMzx());
         assertNull(calibrator.getEstimatedMzy());
-
 
         // test constructor with measurements, bias as acceleration, common axis
         // flag and listener
@@ -3008,13 +2985,13 @@ public class KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibratorTest impl
     }
 
     @Override
-    public void onCalibrateStart(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
+    public void onCalibrateStart(final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
+    public void onCalibrateEnd(final KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateEnd++;
     }

@@ -15,21 +15,17 @@
  */
 package com.irurueta.navigation.inertial.wmm;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.*;
 
 public class NEDMagneticFluxDensityTest {
 
@@ -374,7 +370,7 @@ public class NEDMagneticFluxDensityTest {
         b.getBdAsMagneticFluxDensity(bd4);
 
         assertEquals(bd2, bd3);
-        assertEquals(bd2,bd4);
+        assertEquals(bd2, bd4);
     }
 
     @Test

@@ -1139,7 +1139,7 @@ public class INSLooselyCoupledKalmanFilteredEstimator {
      *               parameters will be stored.
      * @return true if result instance is updated, false otherwise.
      */
-    public boolean getConfig(INSLooselyCoupledKalmanConfig result) {
+    public boolean getConfig(final INSLooselyCoupledKalmanConfig result) {
         if (mConfig != null) {
             result.copyFrom(mConfig);
             return true;

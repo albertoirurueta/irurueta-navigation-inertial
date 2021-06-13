@@ -20,21 +20,21 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.FrameType;
-import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.frames.ECEFPosition;
 import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
+import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
@@ -805,7 +805,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double myz = mm.getElementAt(1, 2);
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
-
 
         KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
                 new KnownHardIronPositionAndInstantMagnetometerCalibrator(
@@ -6169,7 +6168,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
             final Matrix mm = generateSoftIronGeneral();
             assertNotNull(mm);
 
-
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));
             final List<StandardDeviationBodyMagneticFluxDensity> measurements =
@@ -6307,7 +6305,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
             final Matrix hardIron = Matrix.newFromArray(generateHardIron(randomizer));
             final Matrix mm = generateSoftIronCommonAxis();
             assertNotNull(mm);
-
 
             final NEDPosition position = createPosition(randomizer);
             final Date timestamp = new Date(createTimestamp(randomizer));

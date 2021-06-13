@@ -86,13 +86,12 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
             final double userVe = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
             final double userVd = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
 
-            final com.irurueta.navigation.frames.NEDPosition userNedPosition = new com.irurueta.navigation.frames.NEDPosition(
+            final NEDPosition userNedPosition = new NEDPosition(
                     userLatitude, userLongitude, userHeight);
-            final com.irurueta.navigation.frames.NEDVelocity
-                userNedVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity userNedVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition userEcefPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity userEcefVelocity = new ECEFVelocity();
+            final ECEFPosition userEcefPosition = new ECEFPosition();
+            final ECEFVelocity userEcefVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     userNedPosition, userNedVelocity,
                     userEcefPosition, userEcefVelocity);
@@ -108,7 +107,7 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                     roll, pitch, yaw, FrameType.BODY_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
 
-            final com.irurueta.navigation.frames.ECEFPosition previousPosition = new ECEFPosition(
+            final ECEFPosition previousPosition = new ECEFPosition(
                     userEcefPosition.getX() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVx(),
                     userEcefPosition.getY() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVy(),
                     userEcefPosition.getZ() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVz());
@@ -150,8 +149,8 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                     userEcefVelocity, TIME_INTERVAL_SECONDS, previousState,
                     bodyKinematics, config, newState2);
 
-            final com.irurueta.navigation.frames.NEDPosition previousNedPosition = new NEDPosition();
-            final com.irurueta.navigation.frames.NEDVelocity previousNedVelocity = new NEDVelocity();
+            final NEDPosition previousNedPosition = new NEDPosition();
+            final NEDVelocity previousNedVelocity = new NEDVelocity();
             ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(previousPosition,
                     userEcefVelocity, previousNedPosition, previousNedVelocity);
             final double previousLatitude = previousNedPosition.getLatitude();
@@ -523,7 +522,7 @@ public class INSLooselyCoupledKalmanEpochEstimatorTest {
                             previousState, bodyKinematics, previousLatitudeAngle,
                             config);
 
-            final INSLooselyCoupledKalmanState newState83= new INSLooselyCoupledKalmanState();
+            final INSLooselyCoupledKalmanState newState83 = new INSLooselyCoupledKalmanState();
             INSLooselyCoupledKalmanEpochEstimator.estimate(userPosition, userEcefVelocity,
                     TIME_INTERVAL_SECONDS, previousState, bodyKinematics, previousLatitudeAngle,
                     config, newState83);

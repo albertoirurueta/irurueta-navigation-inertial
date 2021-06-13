@@ -79,11 +79,11 @@ public class WindowedAngularSpeedMeasurementNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override
-    protected AngularSpeed createMeasurement(double value, AngularSpeedUnit unit) {
+    protected AngularSpeed createMeasurement(final double value, final AngularSpeedUnit unit) {
         return new AngularSpeed(value, unit);
     }
 
@@ -94,7 +94,7 @@ public class WindowedAngularSpeedMeasurementNoiseEstimator extends
      * @return converted value.
      */
     @Override
-    protected double convertToDefaultUnit(AngularSpeed value) {
+    protected double convertToDefaultUnit(final AngularSpeed value) {
         return AngularSpeedConverter.convert(value.getValue().doubleValue(),
                 value.getUnit(), getDefaultUnit());
     }

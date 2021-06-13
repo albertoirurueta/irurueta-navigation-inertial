@@ -124,7 +124,7 @@ public class MagneticFluxDensityTriadTest {
         final double valueY = randomizer.nextDouble();
         final double valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(
@@ -135,7 +135,7 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityTriad.DEFAULT_UNIT, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -177,7 +177,7 @@ public class MagneticFluxDensityTriadTest {
         final double valueY = randomizer.nextDouble();
         final double valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(
@@ -188,7 +188,7 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityUnit.NANOTESLA, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -237,7 +237,7 @@ public class MagneticFluxDensityTriadTest {
         final MagneticFluxDensity bz = new MagneticFluxDensity(
                 valueZ, MagneticFluxDensityUnit.TESLA);
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final MagneticFluxDensityTriad triad = new MagneticFluxDensityTriad(bx, by, bz);
@@ -247,7 +247,7 @@ public class MagneticFluxDensityTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(MagneticFluxDensityTriad.DEFAULT_UNIT, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);

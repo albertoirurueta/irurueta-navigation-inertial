@@ -23,16 +23,16 @@ import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
@@ -2036,7 +2036,6 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
-
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
                     new ArrayList<>();
@@ -2121,7 +2120,6 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
             final GaussianRandomizer outlierNoiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2208,7 +2206,6 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
                     new Random(), 0.0,
                     OUTLIER_ERROR_FACTOR * MAGNETOMETER_NOISE_STD);
 
-
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
                     new ArrayList<>();
@@ -2290,7 +2287,6 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
 
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2374,7 +2370,6 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
 
             final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
                     new Random(), 0.0, MAGNETOMETER_NOISE_STD);
-
 
             final NEDPosition position = createPosition(randomizer);
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
@@ -2733,7 +2728,8 @@ public class RANSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
         }
     }
 
-    private static List<StandardDeviationFrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
+    private static List<StandardDeviationFrameBodyMagneticFluxDensity>
+    generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,
             final UniformRandomizer randomizer)

@@ -23,9 +23,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
@@ -107,7 +107,6 @@ public class QuaternionIntegratorTest {
             // assume that body kinematics are constant during the time interval of 1 second
             final BodyKinematics kinematics = ECEFKinematicsEstimator
                     .estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2, ecefFrame1);
-
 
             final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
             final ECEFFrame currentFrame = new ECEFFrame();
@@ -201,7 +200,6 @@ public class QuaternionIntegratorTest {
             final BodyKinematics kinematics = ECEFKinematicsEstimator
                     .estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2, ecefFrame1);
 
-
             final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(
@@ -291,7 +289,6 @@ public class QuaternionIntegratorTest {
             final BodyKinematics kinematics = ECEFKinematicsEstimator
                     .estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2, ecefFrame1);
 
-
             final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity ad initial attitude
             previousFrame.setCoordinateTransformation(
@@ -380,7 +377,6 @@ public class QuaternionIntegratorTest {
             // assume that body kinematics are constant during the time interval of 1 second
             final BodyKinematics kinematics = ECEFKinematicsEstimator
                     .estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2, ecefFrame1);
-
 
             final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
             final ECEFFrame currentFrame = new ECEFFrame();
@@ -472,7 +468,6 @@ public class QuaternionIntegratorTest {
             // assume that body kinematics are constant during the time interval of 1 second
             final BodyKinematics kinematics = ECEFKinematicsEstimator
                     .estimateKinematicsAndReturnNew(TIME_INTERVAL, ecefFrame2, ecefFrame1);
-
 
             final ECEFFrame previousFrame = new ECEFFrame(ecefFrame1);
             // set the identity as initial attitude

@@ -142,7 +142,7 @@ public class AccelerationTriadTest {
         final double valueY = randomizer.nextDouble();
         final double valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final AccelerationTriad triad = new AccelerationTriad(
@@ -153,7 +153,7 @@ public class AccelerationTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AccelerationTriad.DEFAULT_UNIT, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -201,7 +201,7 @@ public class AccelerationTriadTest {
         final double valueY = randomizer.nextDouble();
         final double valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final AccelerationTriad triad = new AccelerationTriad(
@@ -214,7 +214,7 @@ public class AccelerationTriadTest {
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AccelerationUnit.FEET_PER_SQUARED_SECOND,
                 triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -269,7 +269,7 @@ public class AccelerationTriadTest {
         final Acceleration mz = new Acceleration(valueZ,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final AccelerationTriad triad = new AccelerationTriad(
@@ -280,7 +280,7 @@ public class AccelerationTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AccelerationTriad.DEFAULT_UNIT, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -822,7 +822,7 @@ public class AccelerationTriadTest {
 
         final AccelerationTriad triad1 = new AccelerationTriad(
                 valueX, valueY, valueZ);
-        final AccelerationTriad triad2 = (AccelerationTriad)triad1.clone();
+        final AccelerationTriad triad2 = (AccelerationTriad) triad1.clone();
 
         assertEquals(triad1, triad2);
     }

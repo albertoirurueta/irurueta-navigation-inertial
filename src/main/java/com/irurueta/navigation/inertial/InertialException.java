@@ -20,7 +20,6 @@ import com.irurueta.navigation.NavigationException;
 /**
  * Base exception for all inertial related exceptions.
  */
-@SuppressWarnings("WeakerAccess")
 public class InertialException extends NavigationException {
 
     /**

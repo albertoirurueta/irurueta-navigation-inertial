@@ -80,7 +80,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), 0.0, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-
         // test constructor with specific force
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
@@ -124,7 +123,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularRateNorm(), 0.0, 0.0);
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), 0.0, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-
 
         // test constructor with specific force and angular rate
         final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
@@ -173,7 +171,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), angularRateNorm, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-
         // test constructor with specific forces accelerations
         final Acceleration specificForceX = new Acceleration(fx, AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration specificForceY = new Acceleration(fy, AccelerationUnit.METERS_PER_SQUARED_SECOND);
@@ -215,7 +212,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularRateNorm(), 0.0, 0.0);
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), 0.0, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-
 
         // test constructor with angular speeds
         final AngularSpeed angularSpeedX = new AngularSpeed(angularRateX, AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -259,7 +255,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), angularRateNorm, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-
         // test constructor with specific forces accelerations and angular speeds
         k = new BodyKinematics(specificForceX, specificForceY, specificForceZ,
                 angularSpeedX, angularSpeedY, angularSpeedZ);
@@ -299,7 +294,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), angularRateNorm, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
 
-
         // test constructor with triads
         k = new BodyKinematics(triad1, triad2);
 
@@ -337,7 +331,6 @@ public class BodyKinematicsTest {
         assertEquals(k.getAngularRateNorm(), angularRateNorm, 0.0);
         assertEquals(k.getAngularSpeedNorm().getValue().doubleValue(), angularRateNorm, 0.0);
         assertEquals(k.getAngularSpeedNorm().getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);
-
 
         // test copy constructor
         final BodyKinematics k2 = new BodyKinematics(k);

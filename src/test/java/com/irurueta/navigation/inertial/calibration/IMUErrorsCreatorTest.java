@@ -26,11 +26,11 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECEFGravity;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.accelerometer.KnownFrameAccelerometerLinearLeastSquaresCalibrator;
 import com.irurueta.navigation.inertial.calibration.accelerometer.KnownGravityNormAccelerometerCalibrator;
 import com.irurueta.navigation.inertial.calibration.generators.AccelerometerAndGyroscopeMeasurementsGenerator;
@@ -322,45 +322,38 @@ public class IMUErrorsCreatorTest {
                                 @Override
                                 public void onInitializationStarted(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-
                                 }
 
                                 @Override
                                 public void onInitializationCompleted(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator,
                                         final double accelerometerBaseNoiseLevel) {
-
                                 }
 
                                 @Override
                                 public void onError(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator,
                                         final TriadStaticIntervalDetector.ErrorReason reason) {
-
                                 }
 
                                 @Override
                                 public void onStaticIntervalDetected(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-
                                 }
 
                                 @Override
                                 public void onDynamicIntervalDetected(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-
                                 }
 
                                 @Override
                                 public void onStaticIntervalSkipped(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-
                                 }
 
                                 @Override
                                 public void onDynamicIntervalSkipped(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-
                                 }
 
                                 @Override
@@ -380,7 +373,6 @@ public class IMUErrorsCreatorTest {
                                 @Override
                                 public void onReset(
                                         final AccelerometerAndGyroscopeMeasurementsGenerator generator) {
-
                                 }
                             });
 

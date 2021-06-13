@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -2240,7 +2240,6 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2377,7 +2376,6 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2518,7 +2516,6 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2656,7 +2653,6 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2793,7 +2789,6 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2931,7 +2926,6 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -3004,25 +2998,27 @@ public class LMedSRobustKnownFrameGyroscopeCalibratorTest
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownFrameGyroscopeCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownFrameGyroscopeCalibrator calibrator) {
         checkLocked((LMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownFrameGyroscopeCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownFrameGyroscopeCalibrator calibrator) {
         checkLocked((LMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateEnd++;
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownFrameGyroscopeCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownFrameGyroscopeCalibrator calibrator, final int iteration) {
         checkLocked((LMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateNextIteration++;
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownFrameGyroscopeCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownFrameGyroscopeCalibrator calibrator, final float progress) {
         checkLocked((LMedSRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateProgressChange++;
     }

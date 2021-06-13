@@ -33,7 +33,6 @@ import com.irurueta.units.DistanceUnit;
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Gravity_NED.m
  */
-@SuppressWarnings("WeakerAccess")
 public class NEDGravityEstimator {
 
     /**

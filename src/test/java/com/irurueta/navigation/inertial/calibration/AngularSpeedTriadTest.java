@@ -140,7 +140,7 @@ public class AngularSpeedTriadTest {
         final double valueY = randomizer.nextDouble();
         final double valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final AngularSpeedTriad triad = new AngularSpeedTriad(
@@ -151,7 +151,7 @@ public class AngularSpeedTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedTriad.DEFAULT_UNIT, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -199,7 +199,7 @@ public class AngularSpeedTriadTest {
         final double valueY = randomizer.nextDouble();
         final double valueZ = randomizer.nextDouble();
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final AngularSpeedTriad triad = new AngularSpeedTriad(
@@ -211,7 +211,7 @@ public class AngularSpeedTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.DEGREES_PER_SECOND, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -266,7 +266,7 @@ public class AngularSpeedTriadTest {
         final AngularSpeed mz = new AngularSpeed(valueZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
 
-        final double[] values1 = new double[]{ valueX, valueY, valueZ };
+        final double[] values1 = new double[]{valueX, valueY, valueZ};
         final Matrix v1 = Matrix.newFromArray(values1);
 
         final AngularSpeedTriad triad = new AngularSpeedTriad(
@@ -277,7 +277,7 @@ public class AngularSpeedTriadTest {
         assertEquals(valueY, triad.getValueY(), 0.0);
         assertEquals(valueZ, triad.getValueZ(), 0.0);
         assertEquals(AngularSpeedUnit.RADIANS_PER_SECOND, triad.getUnit());
-        assertArrayEquals(new double[]{ valueX, valueY, valueZ },
+        assertArrayEquals(new double[]{valueX, valueY, valueZ},
                 triad.getValuesAsArray(), 0.0);
         final double[] values2 = new double[3];
         triad.getValuesAsArray(values2);
@@ -803,7 +803,7 @@ public class AngularSpeedTriadTest {
 
         final AngularSpeedTriad triad1 = new AngularSpeedTriad(
                 valueX, valueY, valueZ);
-        final AngularSpeedTriad triad2 = (AngularSpeedTriad)triad1.clone();
+        final AngularSpeedTriad triad2 = (AngularSpeedTriad) triad1.clone();
 
         assertEquals(triad1, triad2);
     }

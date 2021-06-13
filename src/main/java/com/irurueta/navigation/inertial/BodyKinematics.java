@@ -25,6 +25,7 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -35,7 +36,7 @@ import java.util.Objects;
  * of travel, z is the down axis, pointing in the usual direction of gravity, and y is the right axis,
  * completing the orthogonal set.
  */
-@SuppressWarnings({"WeakerAccess", "DuplicatedCode"})
+@SuppressWarnings("DuplicatedCode")
 public class BodyKinematics implements Serializable, Cloneable {
     /**
      * Number of components of specific force or angular rate.
@@ -520,7 +521,8 @@ public class BodyKinematics implements Serializable, Cloneable {
      *                     z-axis, averaged over time interval and expressed in radians per second (rad/s).
      */
     public void setAngularRateCoordinates(final double angularRateX,
-                                          final double angularRateY, final double angularRateZ) {
+                                          final double angularRateY,
+                                          final double angularRateZ) {
         mAngularRateX = angularRateX;
         mAngularRateY = angularRateY;
         mAngularRateZ = angularRateZ;
@@ -959,7 +961,7 @@ public class BodyKinematics implements Serializable, Cloneable {
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

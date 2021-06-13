@@ -23,6 +23,7 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
@@ -2896,34 +2897,34 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * British Geological Survey (BGS). The model is based on geomagnetic
      * survey measurements from aircraft, satellite and geomagnetic
      * observatories.
-     *
+     * <p>
      * Accuracy:
      * In ocean areas at the Earth's surface over the entire 5 year life of
      * a degree and order 12 spherical harmonic model such as WMM-95, the
      * estimated RMS errors for the various magnetic components are:
-     *     DEC  - 0.5 degrees
-     *     DIP  - 0.5 degrees
-     *     TI   - 200.0 nano Teslas (nT)
-     *     GV   - 0.5 Degrees
-     *
+     * DEC  - 0.5 degrees
+     * DIP  - 0.5 degrees
+     * TI   - 200.0 nano Teslas (nT)
+     * GV   - 0.5 Degrees
+     * <p>
      * Other magnetic components that can be derived from these four by
      * simple trigonometric relations will have the following approximate
      * errors over ocean areas:
-     *     X    - 140 nT (North)
-     *     Y    - 140 nT (East)
-     *     Z    - 200 nT (Vertical) Positive is down
-     *     H    - 200 nT (Horizontal)
-     *
+     * X    - 140 nT (North)
+     * Y    - 140 nT (East)
+     * Z    - 200 nT (Vertical) Positive is down
+     * H    - 200 nT (Horizontal)
+     * <p>
      * Over land the RMS errors are expected to be somewhat higher, although
      * the RMS errors for DEC, DIP and GV are still estimated to be less than
      * 0.5 degree, for the entire 5-year life of the model at the Earth's
      * surface. The other component errors over land are more difficult to
      * estimate and so are not given.
-     *
+     * <p>
      * The accuracy at any given time of all four geomagnetic parameters
      * depends on the geomagnetic latitude. The errors are least at the
      * equator and greatest at the magnetic poles.
-     *
+     * <p>
      * It is very important to note that a degree and order 12 model, such
      * as WMM-2010 describes only the long wavelength spatial magnetic
      * fluctuations due to Earth's core. Not included in the WMM series
@@ -2938,7 +2939,7 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * deviations of the geomagnetic field from model values. In arctic and
      * antarctic regions, as well as in equatorial regions, deviations from
      * model values are both frequent and persistent.
-     *
+     * <p>
      * If the required declination accuracy is more stringent than the WMM
      * series of models provide, then the user is advised to request special
      * (regional or local) surveys be performed and models prepared by the

@@ -17,7 +17,7 @@ package com.irurueta.navigation.inertial.wmm;
 
 /**
  * Contains data defining the World Magnetic Model (WWM).
- *
+ * <p>
  * The WWM defines the Earth's magnetic field in geodetic coordinates
  * (latitude, longitude and height) respect the WGS84 spheroid from
  * the coefficients of the current official Department of Defense (DOD)
@@ -26,7 +26,7 @@ package com.irurueta.navigation.inertial.wmm;
  * those years, which are divisible by 5 (i.e. 1980, 1985, 1990, etc.)
  * by the Naval Oceanographic Office in cooperation with the
  * British Geological Survey (BGS).
- *
+ * <p>
  * The model is based on geomagnetic survey measurements from aircraft,
  * satellite and geomagnetic observatories.
  */

@@ -48,7 +48,6 @@ public class ECEFGravityTest {
         assertEquals(gravity.getNorm(), 0.0, 0.0);
         assertEquals(gravity.getNormAsAcceleration().getValue().doubleValue(), 0.0, 0.0);
 
-
         // test constructor with gravity coordinates
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -67,7 +66,6 @@ public class ECEFGravityTest {
         assertEquals(gravity.getGzAsAcceleration().getValue().doubleValue(), gz, 0.0);
         assertEquals(gravity.getNorm(), g, 0.0);
         assertEquals(gravity.getNormAsAcceleration().getValue().doubleValue(), g, 0.0);
-
 
         // test constructor with acceleration coordinates
         final Acceleration gravityX = new Acceleration(gx,
@@ -88,7 +86,6 @@ public class ECEFGravityTest {
         assertEquals(gravity.getGzAsAcceleration().getValue().doubleValue(), gz, 0.0);
         assertEquals(gravity.getNorm(), g, 0.0);
         assertEquals(gravity.getNormAsAcceleration().getValue().doubleValue(), g, 0.0);
-
 
         // test constructor from another gravity
         final ECEFGravity gravity2 = new ECEFGravity(gravity);

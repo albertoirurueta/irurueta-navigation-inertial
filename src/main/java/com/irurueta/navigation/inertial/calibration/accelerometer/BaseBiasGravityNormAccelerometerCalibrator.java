@@ -34,6 +34,7 @@ import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEv
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.util.Collection;
 
 /**
@@ -66,7 +67,7 @@ import java.util.Collection;
  */
 public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         C extends BaseBiasGravityNormAccelerometerCalibrator<?, ?>,
-        L extends BaseBiasGravityNormAccelerometerCalibratorListener<C>> implements AccelerometerNonLinearCalibrator, 
+        L extends BaseBiasGravityNormAccelerometerCalibratorListener<C>> implements AccelerometerNonLinearCalibrator,
         KnownBiasAccelerometerCalibrator, UnorderedStandardDeviationBodyKinematicsAccelerometerCalibrator {
 
     /**
@@ -5274,7 +5275,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         // fmeas = M*(ftrue + b)
         // fmeas = M*ftrue + M*b
 
-        //where:
+        // where:
         // M = I + Ma
         // ba = M*b = (I + Ma)*b --> b = M^-1*ba
 
@@ -5307,7 +5308,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         final GradientEstimator gradientEstimator = new GradientEstimator(
                 new MultiDimensionFunctionEvaluatorListener() {
                     @Override
-                    public double evaluate(double[] point) throws EvaluationException {
+                    public double evaluate(final double[] point) throws EvaluationException {
                         return evaluateGeneral(point);
                     }
                 });
@@ -5402,7 +5403,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         // fmeas = M*(ftrue + b)
         // fmeas = M*ftrue + M*b
 
-        //where:
+        // where:
         // M = I + Ma
         // ba = M*b = (I + Ma)*b --> b = M^-1*ba
 
@@ -5435,7 +5436,7 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
         final GradientEstimator gradientEstimator = new GradientEstimator(
                 new MultiDimensionFunctionEvaluatorListener() {
                     @Override
-                    public double evaluate(double[] point) throws EvaluationException {
+                    public double evaluate(final double[] point) throws EvaluationException {
                         return evaluateCommonAxis(point);
                     }
                 });
@@ -5530,15 +5531,15 @@ public abstract class BaseBiasGravityNormAccelerometerCalibrator<
 
         // We define a lineal function mapping original parameters for the
         // common axis case to the general case
-        //[sx'] = [1  0  0  0  0  0][sx ]
-        //[sy']   [0  0  1  0  0  0][mxy]
-        //[sz']   [0  0  0  0  0  1][sy ]
-        //[mxy']  [0  1  0  0  0  0][mxz]
-        //[mxz']  [0  0  0  1  0  0][myz]
-        //[myx']  [0  0  0  0  0  0][sz ]
-        //[myz']  [0  0  0  0  1  0]
-        //[mzx']  [0  0  0  0  0  0]
-        //[mzy']  [0  0  0  0  0  0]
+        // [sx'] = [1  0  0  0  0  0][sx ]
+        // [sy']   [0  0  1  0  0  0][mxy]
+        // [sz']   [0  0  0  0  0  1][sy ]
+        // [mxy']  [0  1  0  0  0  0][mxz]
+        // [mxz']  [0  0  0  1  0  0][myz]
+        // [myx']  [0  0  0  0  0  0][sz ]
+        // [myz']  [0  0  0  0  1  0]
+        // [mzx']  [0  0  0  0  0  0]
+        // [mzy']  [0  0  0  0  0  0]
 
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown

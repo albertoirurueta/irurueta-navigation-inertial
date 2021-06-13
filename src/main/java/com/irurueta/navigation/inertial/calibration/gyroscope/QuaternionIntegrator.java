@@ -22,6 +22,7 @@ import com.irurueta.geometry.Quaternion;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationTimedBodyKinematics;
+
 import java.util.List;
 
 /**

@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -10945,11 +10945,7 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibratorTest imple
             assertEquals(mCalibrateStart, 0);
             assertEquals(mCalibrateEnd, 0);
 
-            //try {
             calibrator.calibrate();
-            //} catch (final CalibrationException e) {
-            //continue;
-            //}
 
             // check
             assertTrue(calibrator.isReady());
@@ -11186,11 +11182,7 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibratorTest imple
             assertEquals(mCalibrateStart, 0);
             assertEquals(mCalibrateEnd, 0);
 
-            //try {
             calibrator.calibrate();
-            //} catch (final CalibrationException e) {
-            //continue;
-            //}
 
             // check
             assertTrue(calibrator.isReady());

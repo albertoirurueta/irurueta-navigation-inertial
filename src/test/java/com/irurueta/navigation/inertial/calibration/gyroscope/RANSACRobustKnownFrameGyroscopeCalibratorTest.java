@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -37,7 +37,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -172,7 +171,7 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
         assertFalse(calibrator.isRunning());
         assertTrue(calibrator.isLinearCalibratorUsed());
         assertFalse(calibrator.isPreliminarySolutionRefined());
-        Assert.assertEquals(calibrator.getProgressDelta(),
+        assertEquals(calibrator.getProgressDelta(),
                 RobustKnownFrameGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
@@ -2303,7 +2302,6 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2440,7 +2438,6 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2581,7 +2578,6 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2719,7 +2715,6 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2856,7 +2851,6 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2994,7 +2988,6 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -3067,25 +3060,27 @@ public class RANSACRobustKnownFrameGyroscopeCalibratorTest
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownFrameGyroscopeCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownFrameGyroscopeCalibrator calibrator) {
         checkLocked((RANSACRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownFrameGyroscopeCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownFrameGyroscopeCalibrator calibrator) {
         checkLocked((RANSACRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateEnd++;
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownFrameGyroscopeCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownFrameGyroscopeCalibrator calibrator, final int iteration) {
         checkLocked((RANSACRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateNextIteration++;
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownFrameGyroscopeCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownFrameGyroscopeCalibrator calibrator, final float progress) {
         checkLocked((RANSACRobustKnownFrameGyroscopeCalibrator) calibrator);
         mCalibrateProgressChange++;
     }

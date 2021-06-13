@@ -59,6 +59,7 @@ import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.Collection;
 
 /**
@@ -3861,7 +3862,7 @@ public class TurntableGyroscopeCalibrator implements
      *
      * @param result instance where result will be stored.
      */
-    public void getInitialBiasAsTriad(AngularSpeedTriad result) {
+    public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
         result.setValueCoordinatesAndUnit(
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -3873,7 +3874,7 @@ public class TurntableGyroscopeCalibrator implements
      * @param initialBias initial bias coordinates to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBias(AngularSpeedTriad initialBias) throws LockedException {
+    public void setInitialBias(final AngularSpeedTriad initialBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -5375,29 +5376,29 @@ public class TurntableGyroscopeCalibrator implements
         // Mg = M - I
         // Gg = M * G
 
-        //b = [bx]
-        //    [by]
-        //    [bz]
+        // b = [bx]
+        //     [by]
+        //     [bz]
 
-        //M = [m11  m12  m13]
-        //    [0    m22  m23]
-        //    [0    0    m33]
+        // M = [m11  m12  m13]
+        //     [0    m22  m23]
+        //     [0    0    m33]
 
-        //G = [g11  g12  g13]
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13]
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
-        //     [0    m22  m23][by]   [           m22 * by + m23 * bz]   [bgy]
-        //     [0    0    m33][bz]   [                      m33 * bz]   [bgz]
+        // bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
+        //      [0    m22  m23][by]   [           m22 * by + m23 * bz]   [bgy]
+        //      [0    0    m33][bz]   [                      m33 * bz]   [bgz]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [0          m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [0          0           m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
-        //     [gg21  gg22  gg23]   [0    m22  m23][g21  g22  g23]
-        //     [gg31  gg32  gg33]   [0    0    m33][g31  g32  g33]
+        // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
+        //      [gg21  gg22  gg23]   [0    m22  m23][g21  g22  g23]
+        //      [gg31  gg32  gg33]   [0    0    m33][g31  g32  g33]
 
         // Defining the linear application:
         // F(b, M, G) = F(bx, by, bz, m11, m12, m22, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33)
@@ -5425,27 +5426,27 @@ public class TurntableGyroscopeCalibrator implements
         // [gg33]   [                        m33 * g33]
 
         // Then the Jacobian of F(b, M, G) is:
-        //J = [m11  m12  m13  bx   by   0    bz   0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    m22  m23  0    0    by   0    bz   0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    m33  0    0    0    0    0    bz   0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    g11  g21  0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    g21  0    g31  0    0    m22  m23  0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    g31  0    0    m33  0    0    0    0    0    0  ]
-        //    [0    0    0    g12  g22  0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
-        //    [0    0    0    0    0    g22  0    g32  0    0    0    0    0    m22  m23  0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    g32  0    0    0    0    0    m33  0    0    0  ]
-        //    [0    0    0    g13  g23  0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
-        //    [0    0    0    0    0    g23  0    g33  0    0    0    0    0    0    0    0    m22  m23]
-        //    [0    0    0    0    0    0    0    0    g33  0    0    0    0    0    0    0    0    m33]
+        // J = [m11  m12  m13  bx   by   0    bz   0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    m22  m23  0    0    by   0    bz   0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    m33  0    0    0    0    0    bz   0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    g11  g21  0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    g21  0    g31  0    0    m22  m23  0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    g31  0    0    m33  0    0    0    0    0    0  ]
+        //     [0    0    0    g12  g22  0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
+        //     [0    0    0    0    0    g22  0    g32  0    0    0    0    0    m22  m23  0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    g32  0    0    0    0    0    m33  0    0    0  ]
+        //     [0    0    0    g13  g23  0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
+        //     [0    0    0    0    0    g23  0    g33  0    0    0    0    0    0    0    0    m22  m23]
+        //     [0    0    0    0    0    0    0    0    g33  0    0    0    0    0    0    0    0    m33]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, COMMON_Z_AXIS_UNKNOWNS_AND_CROSS_BIASES);
@@ -5735,29 +5736,29 @@ public class TurntableGyroscopeCalibrator implements
         // Mg = M - I
         // Gg = M * G
 
-        //b = [bx]
-        //    [by]
-        //    [bz]
+        // b = [bx]
+        //     [by]
+        //     [bz]
 
-        //M = [m11  m12  m13]
-        //    [m21  m22  m23]
-        //    [m31  m32  m33]
+        // M = [m11  m12  m13]
+        //     [m21  m22  m23]
+        //     [m31  m32  m33]
 
-        //G = [g11  g12  g13]
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13]
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
-        //     [m21  m22  m23][by]   [m21 * bx + m22 * by + m23 * bz]   [bgy]
-        //     [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
+        // bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
+        //      [m21  m22  m23][by]   [m21 * bx + m22 * by + m23 * bz]   [bgy]
+        //      [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [m21        m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [m31        m32         m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
-        //     [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
-        //     [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
+        // Gg = [gg11  gg12  gg13] = [m11  m12  m13][g11  g12  g13]
+        //      [gg21  gg22  gg23]   [m21  m22  m23][g21  g22  g23]
+        //      [gg31  gg32  gg33]   [m31  m32  m33][g31  g32  g33]
 
         // Defining the linear application:
         // F(b, M, G) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33, g11, g21, g31, g12, g22, g32, g13, g23, g33)
@@ -5785,27 +5786,27 @@ public class TurntableGyroscopeCalibrator implements
         // [gg33]   [m31 * g13 + m32 * g23 + m33 * g33]
 
         // Then the Jacobian of F(b, M, G) is:
-        //J = [m11  m12  m13  bx   0    0    by   0    0    bz   0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [m21  m22  m23  0    bx   0    0    by   0    0    bz   0    0    0    0    0    0    0    0    0    0  ]
-        //    [m31  m32  m33  0    0    bx   0    0    by   0    0    bz   0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    g11  0    0    g21  0    0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
-        //    [0    0    0    0    g11  0    0    g21  0    0    g31  0    m21  m22  m23  0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    g11  0    0    g21  0    0    g31  m31  m32  m33  0    0    0    0    0    0  ]
-        //    [0    0    0    g12  0    0    g22  0    0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
-        //    [0    0    0    0    g12  0    0    g22  0    0    g32  0    0    0    0    m21  m22  m23  0    0    0  ]
-        //    [0    0    0    0    0    g12  0    0    g22  0    0    g32  0    0    0    m31  m32  m33  0    0    0  ]
-        //    [0    0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
-        //    [0    0    0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    m21  m22  m23]
-        //    [0    0    0    0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    m31  m32  m33]
+        // J = [m11  m12  m13  bx   0    0    by   0    0    bz   0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [m21  m22  m23  0    bx   0    0    by   0    0    bz   0    0    0    0    0    0    0    0    0    0  ]
+        //     [m31  m32  m33  0    0    bx   0    0    by   0    0    bz   0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    1    0    0    0    0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    g11  0    0    g21  0    0    g31  0    0    m11  m12  m13  0    0    0    0    0    0  ]
+        //     [0    0    0    0    g11  0    0    g21  0    0    g31  0    m21  m22  m23  0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    g11  0    0    g21  0    0    g31  m31  m32  m33  0    0    0    0    0    0  ]
+        //     [0    0    0    g12  0    0    g22  0    0    g32  0    0    0    0    0    m11  m12  m13  0    0    0  ]
+        //     [0    0    0    0    g12  0    0    g22  0    0    g32  0    0    0    0    m21  m22  m23  0    0    0  ]
+        //     [0    0    0    0    0    g12  0    0    g22  0    0    g32  0    0    0    m31  m32  m33  0    0    0  ]
+        //     [0    0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    0    m11  m12  m13]
+        //     [0    0    0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    0    m21  m22  m23]
+        //     [0    0    0    0    0    g13  0    0    g23  0    0    g33  0    0    0    0    0    0    m31  m32  m33]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, GENERAL_UNKNOWNS_AND_CROSS_BIASES);
@@ -6087,25 +6088,25 @@ public class TurntableGyroscopeCalibrator implements
         // Mg = M - I
         // Gg = M * G = 0
 
-        //b = [bx]
-        //    [by]
-        //    [bz]
+        // b = [bx]
+        //     [by]
+        //     [bz]
 
-        //M = [m11  m12  m13]
-        //    [0    m22  m23]
-        //    [0    0    m33]
+        // M = [m11  m12  m13]
+        //     [0    m22  m23]
+        //     [0    0    m33]
 
-        //G = [g11  g12  g13] = 0
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13] = 0
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
-        //     [0    m22  m23][by]   [           m22 * by + m23 * bz]   [bgy]
-        //     [0    0    m33][bz]   [                      m33 * bz]   [bgz]
+        // bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
+        //      [0    m22  m23][by]   [           m22 * by + m23 * bz]   [bgy]
+        //      [0    0    m33][bz]   [                      m33 * bz]   [bgz]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [0          m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [0          0           m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [0          m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [0          0           m33 - 1 ]
 
         //Gg = [gg11  gg12  gg13] = 0
         //     [gg21  gg22  gg23]
@@ -6137,27 +6138,27 @@ public class TurntableGyroscopeCalibrator implements
         // [gg33]   [0]
 
         // Then the Jacobian of F(b, M) is:
-        //J = [m11  m12  m13  bx   by   0    bz   0    0  ]
-        //    [0    m22  m23  0    0    by   0    bz   0  ]
-        //    [0    0    m33  0    0    0    0    0    bz ]
-        //    [0    0    0    1    0    0    0    0    0  ]
-        //    [0    0    0    0    0    1    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    1  ]
-        //    [0    0    0    0    1    0    0    0    0  ]
-        //    [0    0    0    0    0    0    1    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    1    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
-        //    [0    0    0    0    0    0    0    0    0  ]
+        // J = [m11  m12  m13  bx   by   0    bz   0    0  ]
+        //     [0    m22  m23  0    0    by   0    bz   0  ]
+        //     [0    0    m33  0    0    0    0    0    bz ]
+        //     [0    0    0    1    0    0    0    0    0  ]
+        //     [0    0    0    0    0    1    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    1  ]
+        //     [0    0    0    0    1    0    0    0    0  ]
+        //     [0    0    0    0    0    0    1    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    1    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
+        //     [0    0    0    0    0    0    0    0    0  ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, COMMON_Z_AXIS_UNKNOWNS);
@@ -6360,29 +6361,29 @@ public class TurntableGyroscopeCalibrator implements
         // Mg = M - I
         // Gg = M * G = 0
 
-        //b = [bx]
-        //    [by]
-        //    [bz]
+        // b = [bx]
+        //     [by]
+        //     [bz]
 
-        //M = [m11  m12  m13]
-        //    [m21  m22  m23]
-        //    [m31  m32  m33]
+        // M = [m11  m12  m13]
+        //     [m21  m22  m23]
+        //     [m31  m32  m33]
 
-        //G = [g11  g12  g13] = 0
-        //    [g21  g22  g23]
-        //    [g31  g32  g33]
+        // G = [g11  g12  g13] = 0
+        //     [g21  g22  g23]
+        //     [g31  g32  g33]
 
-        //bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
-        //     [m21  m22  m23][by]   [m21 * bx + m22 * by + m23 * bz]   [bgy]
-        //     [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
+        // bg = [m11  m12  m13][bx] = [m11 * bx + m12 * by + m13 * bz] = [bgx]
+        //      [m21  m22  m23][by]   [m21 * bx + m22 * by + m23 * bz]   [bgy]
+        //      [m31  m32  m33][bz]   [m31 * bx + m32 * by + m33 * bz]   [bgz]
 
-        //Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
-        //     [myx	sy	 myz]   [m21        m22 - 1     m23     ]
-        //     [mzx	mzy  sz ]   [m31        m32         m33 - 1 ]
+        // Mg = [sx  mxy  mxz] = [m11 - 1    m12         m13     ]
+        //      [myx sy	  myz]   [m21        m22 - 1     m23     ]
+        //      [mzx mzy  sz ]   [m31        m32         m33 - 1 ]
 
-        //Gg = [gg11  gg12  gg13] = 0
-        //     [gg21  gg22  gg23]
-        //     [gg31  gg32  gg33]
+        // Gg = [gg11  gg12  gg13] = 0
+        //      [gg21  gg22  gg23]
+        //      [gg31  gg32  gg33]
 
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33)
@@ -6410,27 +6411,27 @@ public class TurntableGyroscopeCalibrator implements
         // [gg33]   [0]
 
         // Then the Jacobian of F(b, M) is:
-        //J = [m11  m12  m13  bx   0    0    by   0    0    bz   0    0 ]
-        //    [m21  m22  m23  0    bx   0    0    by   0    0    bz   0 ]
-        //    [m31  m32  m33  0    0    bx   0    0    by   0    0    bz]
-        //    [0    0    0    1    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    1    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    1 ]
-        //    [0    0    0    0    0    0    1    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    1    0    0 ]
-        //    [0    0    0    0    1    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    1    0 ]
-        //    [0    0    0    0    0    1    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    1    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
-        //    [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        // J = [m11  m12  m13  bx   0    0    by   0    0    bz   0    0 ]
+        //     [m21  m22  m23  0    bx   0    0    by   0    0    bz   0 ]
+        //     [m31  m32  m33  0    0    bx   0    0    by   0    0    bz]
+        //     [0    0    0    1    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    1    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    1 ]
+        //     [0    0    0    0    0    0    1    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    1    0    0 ]
+        //     [0    0    0    0    1    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    1    0 ]
+        //     [0    0    0    0    0    1    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    1    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
+        //     [0    0    0    0    0    0    0    0    0    0    0    0 ]
 
         // We know that the propagated covariance is J * Cov * J', hence:
         final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS_AND_CROSS_BIASES, GENERAL_UNKNOWNS);
@@ -6636,7 +6637,7 @@ public class TurntableGyroscopeCalibrator implements
      * Converts angular speed value and unit to radians per second.
      *
      * @param value angular speed value.
-     * @param unit unit of angular speed value.
+     * @param unit  unit of angular speed value.
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {

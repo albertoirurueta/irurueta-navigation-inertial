@@ -18,18 +18,7 @@ package com.irurueta.navigation.inertial.estimators;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.RadiiOfCurvature;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleConverter;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeConverter;
-import com.irurueta.units.TimeUnit;
+import com.irurueta.units.*;
 
 /**
  * Estimates curvilinear position by integrating the velocity.
@@ -37,7 +26,6 @@ import com.irurueta.units.TimeUnit;
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Update_curvilinear_position.m
  */
-@SuppressWarnings("WeakerAccess")
 public class NEDPositionEstimator {
 
     /**

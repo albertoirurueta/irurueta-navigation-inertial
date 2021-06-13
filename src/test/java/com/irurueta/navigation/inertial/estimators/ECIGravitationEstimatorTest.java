@@ -15,8 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertEquals;
-
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Point3D;
 import com.irurueta.navigation.frames.ECEFFrame;
@@ -29,8 +27,11 @@ import com.irurueta.navigation.inertial.ECIGravitation;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class ECIGravitationEstimatorTest {
     private static final double LATITUDE_DEGREES = 41.3825;
@@ -47,8 +48,6 @@ public class ECIGravitationEstimatorTest {
     private static final double MAX_LONGITUDE_DEGREES = 180.0;
 
     private static final double TIME_INTERVAL_SECONDS = 0.02;
-
-    private static final int TIMES = 100;
 
     @Test
     public void testConstants() {
@@ -266,28 +265,26 @@ public class ECIGravitationEstimatorTest {
 
     @Test
     public void testEstimateForMultipleLatitudesAndLongitudes() {
-        for (int t = 0; t < TIMES; t++) {
-            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-            final double latitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
-            final double longitude = Math.toRadians(randomizer.nextDouble(
-                    MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double latitude = Math.toRadians(randomizer.nextDouble(
+                MIN_LATITUDE_DEGREES, MAX_LATITUDE_DEGREES));
+        final double longitude = Math.toRadians(randomizer.nextDouble(
+                MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
 
-            final NEDFrame nedFrame = new NEDFrame(latitude, longitude, HEIGHT);
-            final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
-                    nedFrame);
-            final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
-                    TIME_INTERVAL_SECONDS, ecefFrame);
+        final NEDFrame nedFrame = new NEDFrame(latitude, longitude, HEIGHT);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(
+                nedFrame);
+        final ECIFrame eciFrame = ECEFtoECIFrameConverter.convertECEFtoECIAndReturnNew(
+                TIME_INTERVAL_SECONDS, ecefFrame);
 
-            final ECIGravitation gravitation = ECIGravitationEstimator
-                    .estimateGravitationAndReturnNew(eciFrame);
+        final ECIGravitation gravitation = ECIGravitationEstimator
+                .estimateGravitationAndReturnNew(eciFrame);
 
-            final double g = Math.sqrt(Math.pow(gravitation.getGx(), 2.0) +
-                    Math.pow(gravitation.getGy(), 2.0) +
-                    Math.pow(gravitation.getGz(), 2.0));
+        final double g = Math.sqrt(Math.pow(gravitation.getGx(), 2.0) +
+                Math.pow(gravitation.getGy(), 2.0) +
+                Math.pow(gravitation.getGz(), 2.0));
 
-            assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
-        }
+        assertEquals(g, GRAVITATION, ABSOLUTE_ERROR);
     }
 
     @Test

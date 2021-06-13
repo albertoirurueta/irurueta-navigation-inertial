@@ -25,6 +25,7 @@ import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -497,77 +498,79 @@ public class PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator extends
         final PROSACRobustEstimator<Matrix> innerEstimator =
                 new PROSACRobustEstimator<>(
                         new PROSACRobustEstimatorListener<Matrix>() {
-                    @Override
-                    public double[] getQualityScores() {
-                        return mQualityScores;
-                    }
+                            @Override
+                            public double[] getQualityScores() {
+                                return mQualityScores;
+                            }
 
-                    @Override
-                    public double getThreshold() {
-                        return mThreshold;
-                    }
+                            @Override
+                            public double getThreshold() {
+                                return mThreshold;
+                            }
 
-                    @Override
-                    public int getTotalSamples() {
-                        return mMeasurements.size();
-                    }
+                            @Override
+                            public int getTotalSamples() {
+                                return mMeasurements.size();
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
+                            @Override
+                            public int getSubsetSize() {
+                                return mPreliminarySubsetSize;
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<Matrix> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List<Matrix> solutions) {
+                                computePreliminarySolutions(samplesIndices, solutions);
+                            }
 
-                    @Override
-                    public double computeResidual(
-                            final Matrix currentEstimation,
-                            final int i) {
-                        return computeError(mMeasurements.get(i), currentEstimation);
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final Matrix currentEstimation,
+                                    final int i) {
+                                return computeError(mMeasurements.get(i), currentEstimation);
+                            }
 
-                    @Override
-                    public boolean isReady() {
-                        return PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this.isReady();
-                    }
+                            @Override
+                            public boolean isReady() {
+                                return PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this.isReady();
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<Matrix> estimator) {
-                    }
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator<Matrix> estimator) {
+                                // no action needed
+                            }
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<Matrix> estimator) {
-                    }
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator<Matrix> estimator) {
+                                // no action needed
+                            }
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<Matrix> estimator,
-                            final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
-                                    iteration);
-                        }
-                    }
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator<Matrix> estimator,
+                                    final int iteration) {
+                                if (mListener != null) {
+                                    mListener.onCalibrateNextIteration(
+                                            PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
+                                            iteration);
+                                }
+                            }
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<Matrix> estimator,
-                            final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
-                                    progress);
-                        }
-                    }
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator<Matrix> estimator,
+                                    final float progress) {
+                                if (mListener != null) {
+                                    mListener.onCalibrateProgressChange(
+                                            PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator.this,
+                                            progress);
+                                }
+                            }
+                        });
 
         try {
             mRunning = true;

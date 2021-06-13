@@ -21,6 +21,7 @@ import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -524,7 +525,7 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
      * Converts magnetic flux density to Teslas.
      *
      * @param value value to be converted.
-     * @param unit unit of value to be converted
+     * @param unit  unit of value to be converted
      * @return converted value.
      */
     private double convertMagneticFluxDensity(

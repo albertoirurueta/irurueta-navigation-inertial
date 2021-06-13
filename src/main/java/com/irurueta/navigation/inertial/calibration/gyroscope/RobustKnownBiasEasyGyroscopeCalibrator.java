@@ -38,6 +38,7 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -6248,7 +6249,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
                 mEstimatedMg = mInnerCalibrator.getEstimatedMg();
                 mEstimatedGg = mInnerCalibrator.getEstimatedGg();
 
-                if(mKeepCovariance) {
+                if (mKeepCovariance) {
                     mEstimatedCovariance = mInnerCalibrator.getEstimatedCovariance();
                 } else {
                     mEstimatedCovariance = null;
@@ -6288,7 +6289,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * Converts angular speed instance to radians per second (rad/s).
      *
      * @param value angular speed value.
-     * @param unit unit of angular speed value.
+     * @param unit  unit of angular speed value.
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {

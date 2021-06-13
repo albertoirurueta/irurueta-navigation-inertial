@@ -15,14 +15,14 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.RadiiOfCurvature;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import org.junit.Test;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class RadiiOfCurvatureEstimatorTest {
     private static final double LATITUDE_DEGREES = 41.3825;

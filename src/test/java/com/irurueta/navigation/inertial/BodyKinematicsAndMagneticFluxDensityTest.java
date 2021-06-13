@@ -362,6 +362,6 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
         final double bz = randomizer.nextDouble(
                 MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
 
-        return new BodyMagneticFluxDensity(bx, by,bz);
+        return new BodyMagneticFluxDensity(bx, by, bz);
     }
 }

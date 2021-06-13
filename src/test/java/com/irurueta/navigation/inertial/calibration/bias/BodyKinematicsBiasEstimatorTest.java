@@ -15,13 +15,6 @@
  */
 package com.irurueta.navigation.inertial.calibration.bias;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
@@ -43,18 +36,12 @@ import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.IMUErrors;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeUnit;
-import java.util.Random;
+import com.irurueta.units.*;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.*;
 
 public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstimatorListener {
 
@@ -130,7 +117,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator();
@@ -359,7 +345,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(nedC);
@@ -592,7 +577,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 latitude, longitude, height);
@@ -778,7 +762,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES), AngleUnit.DEGREES);
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -815,7 +798,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -1003,7 +985,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final Distance height = new Distance(
                 randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT), DistanceUnit.METER);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -1040,7 +1021,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -1235,7 +1215,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final double yaw = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -1273,7 +1252,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(nedPosition1, nedC);
@@ -1479,7 +1457,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
             final double yaw = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
             final Acceleration acceleration1 = new Acceleration(0.0,
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             final Acceleration acceleration2 = new Acceleration(0.0,
@@ -1517,7 +1494,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                             BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                             ecefPosition1);
-
 
             // test constructor
             BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -1761,7 +1737,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(this);
 
@@ -1989,7 +1964,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -2224,7 +2198,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 latitude, longitude, height, this);
@@ -2410,7 +2383,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES), AngleUnit.DEGREES);
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -2447,7 +2419,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -2635,7 +2606,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final Distance height = new Distance(
                 randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT), DistanceUnit.METER);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -2672,7 +2642,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -2867,7 +2836,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final double yaw = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -2905,7 +2873,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -3114,7 +3081,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
             final double yaw = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
             final Acceleration acceleration1 = new Acceleration(0.0,
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             final Acceleration acceleration2 = new Acceleration(0.0,
@@ -3152,7 +3118,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                             BodyKinematicsBiasEstimator.DEFAULT_TIME_INTERVAL_SECONDS, ecefC, ecefC,
                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                             ecefPosition1);
-
 
             // test constructor
             BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -3399,7 +3364,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 timeInterval);
@@ -3640,7 +3604,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 nedC, timeInterval);
@@ -3848,7 +3811,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -3884,7 +3846,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -4086,7 +4047,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES), AngleUnit.DEGREES);
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -4122,7 +4082,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -4325,7 +4284,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final Distance height = new Distance(
                 randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT), DistanceUnit.METER);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -4361,7 +4319,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -4570,7 +4527,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final double yaw = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -4607,7 +4563,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -4827,7 +4782,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
             final double yaw = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
             final Acceleration acceleration1 = new Acceleration(0.0,
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             final Acceleration acceleration2 = new Acceleration(0.0,
@@ -4864,7 +4818,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                             timeInterval, ecefC, ecefC,
                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                             ecefPosition1);
-
 
             // test constructor
             BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -5119,7 +5072,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 timeInterval, this);
@@ -5359,7 +5311,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -5603,7 +5554,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 latitude, longitude, height, timeInterval, this);
@@ -5828,7 +5778,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 latitude, longitude, height, timeInterval, this);
@@ -6029,7 +5978,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final Distance height = new Distance(
                 randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT), DistanceUnit.METER);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -6065,7 +6013,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -6274,7 +6221,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final double yaw = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -6311,7 +6257,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -6531,7 +6476,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
             final double yaw = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
             final Acceleration acceleration1 = new Acceleration(0.0,
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             final Acceleration acceleration2 = new Acceleration(0.0,
@@ -6568,7 +6512,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                             timeInterval, ecefC, ecefC,
                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                             ecefPosition1);
-
 
             // test constructor
             BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -6822,7 +6765,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 timeInterval);
@@ -7063,7 +7005,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 nedC, timeInterval);
@@ -7271,7 +7212,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -7307,7 +7247,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -7509,7 +7448,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                 MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES), AngleUnit.DEGREES);
         final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -7545,7 +7483,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -7748,7 +7685,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final Distance height = new Distance(
                 randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT), DistanceUnit.METER);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -7784,7 +7720,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -7993,7 +7928,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final double yaw = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -8030,7 +7964,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -8250,7 +8183,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
             final double yaw = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
             final Acceleration acceleration1 = new Acceleration(0.0,
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             final Acceleration acceleration2 = new Acceleration(0.0,
@@ -8287,7 +8219,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                             timeInterval, ecefC, ecefC,
                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                             ecefPosition1);
-
 
             // test constructor
             BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -8543,7 +8474,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 timeInterval, this);
@@ -8783,7 +8713,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -9027,7 +8956,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 latitude, longitude, height, timeInterval, this);
@@ -9252,7 +9180,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
 
-
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
                 latitude, longitude, height, timeInterval, this);
@@ -9453,7 +9380,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final Distance height = new Distance(
                 randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT), DistanceUnit.METER);
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -9489,7 +9415,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -9698,7 +9623,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final double yaw = Math.toRadians(randomizer.nextDouble(
                 MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
         final Acceleration acceleration1 = new Acceleration(0.0,
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
         final Acceleration acceleration2 = new Acceleration(0.0,
@@ -9735,7 +9659,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                         timeInterval, ecefC, ecefC,
                         0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                         ecefPosition1);
-
 
         // test constructor
         BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -9956,7 +9879,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
             final double yaw = Math.toRadians(randomizer.nextDouble(
                     MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
 
-
             final Acceleration acceleration1 = new Acceleration(0.0,
                     AccelerationUnit.METERS_PER_SQUARED_SECOND);
             final Acceleration acceleration2 = new Acceleration(0.0,
@@ -9993,7 +9915,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
                             timeInterval, ecefC, ecefC,
                             0.0, 0.0, 0.0, 0.0, 0.0, 0.0,
                             ecefPosition1);
-
 
             // test constructor
             BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator(
@@ -11228,7 +11149,8 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
     }
 
     @Test
-    public void testSetNedPositionAndEcefOrientation1() throws InvalidSourceAndDestinationFrameTypeException, LockedException {
+    public void testSetNedPositionAndEcefOrientation1()
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException {
         final BodyKinematicsBiasEstimator estimator = new BodyKinematicsBiasEstimator();
 
         // check default values
@@ -11981,7 +11903,6 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         final CoordinateTransformation nedC = new CoordinateTransformation(
                 roll, pitch, yaw, FrameType.BODY_FRAME, FrameType.LOCAL_NAVIGATION_FRAME);
 
-
         final NEDFrame nedFrame = new NEDFrame(nedPosition, nedC);
         final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
                 .convertNEDtoECEFAndReturnNew(nedFrame);
@@ -12365,8 +12286,8 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         assertEquals(Math.sqrt(psdAngularRateX + psdAngularRateY + psdAngularRateZ),
                 estimatedGyroNoiseRootPSD, 0.0);
         assertEquals(Math.sqrt(rootPsdAngularRateX * rootPsdAngularRateX
-                + rootPsdAngularRateY * rootPsdAngularRateY
-                + rootPsdAngularRateZ * rootPsdAngularRateZ),
+                        + rootPsdAngularRateY * rootPsdAngularRateY
+                        + rootPsdAngularRateZ * rootPsdAngularRateZ),
                 estimatedGyroNoiseRootPSD, ABSOLUTE_ERROR);
 
         assertEquals(accelNoiseRootPSD, Math.sqrt(accelerometerNoisePsd),
@@ -12411,7 +12332,7 @@ public class BodyKinematicsBiasEstimatorTest implements BodyKinematicsBiasEstima
         assertFalse(estimator.isRunning());
         assertEquals(mReset, 1);
     }
-    
+
     @Override
     public void onStart(final BodyKinematicsBiasEstimator estimator) {
         checkLocked(estimator);

@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
@@ -35,12 +31,15 @@ import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Random;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class AttitudeEstimatorTest {
 
@@ -918,43 +917,43 @@ public class AttitudeEstimatorTest {
 
             // body attitude
             final UniformRandomizer randomizer =
-                new UniformRandomizer(new Random());
+                    new UniformRandomizer(new Random());
             final double roll1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                    MAX_ANGLE_DEGREES));
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
+                            MAX_ANGLE_DEGREES));
             final double pitch1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                    MAX_ANGLE_DEGREES));
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
+                            MAX_ANGLE_DEGREES));
             final double yaw1 = Math.toRadians(
-                randomizer.nextDouble(MIN_ANGLE_DEGREES,
-                    MAX_ANGLE_DEGREES));
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES,
+                            MAX_ANGLE_DEGREES));
 
             // attitude is expressed as rotation from local navigation frame
             // to body frame, since angles are measured on the device body
             final CoordinateTransformation bodyC = new CoordinateTransformation(
-                roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
-                FrameType.BODY_FRAME);
+                    roll1, pitch1, yaw1, FrameType.LOCAL_NAVIGATION_FRAME,
+                    FrameType.BODY_FRAME);
             final CoordinateTransformation nedC = bodyC.inverseAndReturnNew();
 
             // obtain expected kinematics measure
             final BodyKinematics kinematics = NEDKinematicsEstimator
-                .estimateKinematicsAndReturnNew(TIME_INTERVAL,
-                    nedC, nedC,
-                    0.0, 0.0, 0.0,
-                    0.0, 0.0, 0.0,
-                    latitude, height,
-                    latitude, height);
+                    .estimateKinematicsAndReturnNew(TIME_INTERVAL,
+                            nedC, nedC,
+                            0.0, 0.0, 0.0,
+                            0.0, 0.0, 0.0,
+                            latitude, height,
+                            latitude, height);
 
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+                    new WMMEarthMagneticFluxDensityEstimator();
             final NEDMagneticFluxDensity earthB = wmmEstimator.estimate(
-                position, date);
+                    position, date);
             final BodyMagneticFluxDensity b = BodyMagneticFluxDensityEstimator
-                .estimate(earthB, bodyC);
+                    .estimate(earthB, bodyC);
 
             final AttitudeEstimator estimator = new AttitudeEstimator();
             final CoordinateTransformation result = estimator.getAttitude(
-                position, date, kinematics, b);
+                    position, date, kinematics, b);
 
             // check
             final double roll2 = result.getRollEulerAngle();
@@ -975,9 +974,9 @@ public class AttitudeEstimatorTest {
             assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
 
             assertEquals(result.getSourceType(),
-                FrameType.LOCAL_NAVIGATION_FRAME);
+                    FrameType.LOCAL_NAVIGATION_FRAME);
             assertEquals(result.getDestinationType(),
-                FrameType.BODY_FRAME);
+                    FrameType.BODY_FRAME);
 
             numValid++;
             break;

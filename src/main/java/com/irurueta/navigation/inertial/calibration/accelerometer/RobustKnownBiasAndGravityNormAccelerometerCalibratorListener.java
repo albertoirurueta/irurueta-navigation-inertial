@@ -50,7 +50,7 @@ public interface RobustKnownBiasAndGravityNormAccelerometerCalibratorListener {
      * Called when calibration progress changes significantly.
      *
      * @param calibrator calibrator raising the event.
-     * @param progress progress of calibration expressed as a value between 0.0 and 1.0.
+     * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
             final RobustKnownBiasAndGravityNormAccelerometerCalibrator calibrator,

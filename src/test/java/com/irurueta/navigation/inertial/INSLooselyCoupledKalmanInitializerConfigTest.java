@@ -32,7 +32,6 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
 
     @Test
     public void testConstructor() {
-
         // test empty constructor
         INSLooselyCoupledKalmanInitializerConfig config = new INSLooselyCoupledKalmanInitializerConfig();
 
@@ -44,7 +43,6 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
                 0.0, 0.0);
         assertEquals(config.getInitialGyroscopeBiasUncertainty(),
                 0.0, 0.0);
-
 
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -73,7 +71,6 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
                 initialAccelerationBiasUncertainty, 0.0);
         assertEquals(config.getInitialGyroscopeBiasUncertainty(),
                 initialGyroscopeBiasUncertainty, 0.0);
-
 
         // test constructor with measurement values
         final Angle initialAttitudeUncertaintyAngle =
@@ -104,7 +101,6 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
                 initialAccelerationBiasUncertainty, 0.0);
         assertEquals(config.getInitialGyroscopeBiasUncertainty(),
                 initialGyroscopeBiasUncertainty, 0.0);
-
 
         // test copy constructor
         final INSLooselyCoupledKalmanInitializerConfig config2 =
@@ -411,7 +407,6 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
         assertEquals(config.getInitialGyroscopeBiasUncertainty(),
                 0.0, 0.0);
 
-
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double initialAttitudeUncertainty = randomizer.nextDouble(
@@ -454,7 +449,6 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
                 0.0, 0.0);
         assertEquals(config.getInitialGyroscopeBiasUncertainty(),
                 0.0, 0.0);
-
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());

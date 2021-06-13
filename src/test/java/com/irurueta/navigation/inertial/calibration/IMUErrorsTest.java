@@ -156,7 +156,6 @@ public class IMUErrorsTest {
         }
         assertNull(errors);
 
-
         // test constructor 3
         final Matrix accelerometerBiasesMatrix = new Matrix(3, 1);
         accelerometerBiasesMatrix.fromArray(accelerometerBiases);
@@ -249,7 +248,6 @@ public class IMUErrorsTest {
         }
         assertNull(errors);
 
-
         // test constructor 4
         final Acceleration[] accelerometerBiases2 = new Acceleration[COMPONENTS];
         accelerometerBiases2[0] = new Acceleration(accelerometerBiases[0],
@@ -340,7 +338,6 @@ public class IMUErrorsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(errors);
-
 
         // test constructor 5
         final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
@@ -451,7 +448,6 @@ public class IMUErrorsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(errors);
-
 
         // test constructor 6
         errors = new IMUErrors(accelerometerBiasesMatrix,
@@ -571,7 +567,6 @@ public class IMUErrorsTest {
         }
         assertNull(errors);
 
-
         // test constructor 7
         final Acceleration accelerometerQuantizationLevel2 =
                 new Acceleration(accelerometerQuantizationLevel,
@@ -689,7 +684,6 @@ public class IMUErrorsTest {
         }
         assertNull(errors);
 
-
         // test constructor 8
         errors = new IMUErrors(accelerometerBiases, gyroBiases,
                 accelerometerScaleFactorAndCrossCouplingErrors,
@@ -734,13 +728,11 @@ public class IMUErrorsTest {
 
         errors.setAccelerometerBiases(accelerometerBiases);
 
-
         assertArrayEquals(errors.getAccelerometerBiases(), accelerometerBiases,
                 0.0);
         final double[] result = new double[COMPONENTS];
         errors.getAccelerometerBiases(result);
         assertArrayEquals(result, accelerometerBiases, 0.0);
-
 
         // Force IllegalArgumentException
         try {
@@ -780,7 +772,6 @@ public class IMUErrorsTest {
 
         assertEquals(accelerometerBiases1, accelerometerBiases2);
         assertEquals(accelerometerBiases1, accelerometerBiases3);
-
 
         // Force IllegalArgumentException
         try {
@@ -860,12 +851,10 @@ public class IMUErrorsTest {
 
         errors.setGyroBiases(gyroBiases);
 
-
         assertArrayEquals(errors.getGyroBiases(), gyroBiases, 0.0);
         final double[] result = new double[COMPONENTS];
         errors.getGyroBiases(result);
         assertArrayEquals(result, gyroBiases, 0.0);
-
 
         // Force IllegalArgumentException
         try {
@@ -930,7 +919,7 @@ public class IMUErrorsTest {
 
         // check default value
         final AngularSpeed[] array1 = errors.getGyroBiasesAsAngularSpeed();
-        for (AngularSpeed as : array1) {
+        for (final AngularSpeed as : array1) {
             assertEquals(as, new AngularSpeed(0.0,
                     AngularSpeedUnit.RADIANS_PER_SECOND));
         }

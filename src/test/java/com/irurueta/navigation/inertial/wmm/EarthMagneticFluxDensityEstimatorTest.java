@@ -15,13 +15,14 @@
  */
 package com.irurueta.navigation.inertial.wmm;
 
-import static org.junit.Assert.assertEquals;
-
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
 
 public class EarthMagneticFluxDensityEstimatorTest {
 

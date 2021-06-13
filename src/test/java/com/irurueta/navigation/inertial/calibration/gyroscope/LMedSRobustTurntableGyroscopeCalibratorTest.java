@@ -25,17 +25,17 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -258,7 +258,7 @@ public class LMedSRobustTurntableGyroscopeCalibratorTest implements
         assertEquals(calibrator.getMinimumRequiredMeasurementsOrSequences(), 19);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        Assert.assertEquals(calibrator.getProgressDelta(),
+        assertEquals(calibrator.getProgressDelta(),
                 RobustTurntableGyroscopeCalibrator.DEFAULT_PROGRESS_DELTA, 0.0);
         assertEquals(calibrator.getConfidence(),
                 RobustTurntableGyroscopeCalibrator.DEFAULT_CONFIDENCE, 0.0);

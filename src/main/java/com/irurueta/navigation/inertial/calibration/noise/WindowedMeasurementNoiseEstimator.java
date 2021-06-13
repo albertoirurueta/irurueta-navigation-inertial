@@ -21,6 +21,7 @@ import com.irurueta.units.Measurement;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.Arrays;
 
 /**
@@ -596,7 +597,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     /**
      * Internally adds a measurement value and processes current window if indicated.
      *
-     * @param value measurement value to be added.
+     * @param value   measurement value to be added.
      * @param process true if window of samples must also be processed, false otherwise.
      * @throws LockedException if estimator is currently running.
      */

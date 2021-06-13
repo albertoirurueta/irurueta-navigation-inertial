@@ -20,13 +20,13 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Contains acceleration due to gravity resolved about NED frame.
  */
-@SuppressWarnings("WeakerAccess")
 public class NEDGravity implements Serializable, Cloneable {
 
     /**
@@ -371,7 +371,7 @@ public class NEDGravity implements Serializable, Cloneable {
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }

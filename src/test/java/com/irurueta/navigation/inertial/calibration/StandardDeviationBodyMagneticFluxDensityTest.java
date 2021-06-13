@@ -41,7 +41,6 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
         assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
                 0.0, 0.0);
 
-
         // test constructor with magnetic flux density
         final BodyMagneticFluxDensity magneticFluxDensity =
                 new BodyMagneticFluxDensity();
@@ -52,7 +51,6 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
         assertSame(stdMagnetic.getMagneticFluxDensity(), magneticFluxDensity);
         assertEquals(stdMagnetic.getMagneticFluxDensityStandardDeviation(),
                 0.0, 0.0);
-
 
         // test constructor with standard deviation
         final UniformRandomizer randomizer = new UniformRandomizer(
@@ -76,7 +74,6 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
         }
         assertNull(stdMagnetic);
 
-
         // test constructor with magnetic flux density and standard deviation
         stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(
                 magneticFluxDensity, std);
@@ -95,7 +92,6 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(stdMagnetic);
-
 
         // test copy constructor
         stdMagnetic = new StandardDeviationBodyMagneticFluxDensity(

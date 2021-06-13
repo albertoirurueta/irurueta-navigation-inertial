@@ -104,7 +104,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
 
-
         // test constructor with kinematics
         final BodyKinematics kinematics = new BodyKinematics();
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics);
@@ -143,7 +142,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 AngularSpeedUnit.DEGREES_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-
 
         // test constructor with ECEF frame
         final NEDFrame nedFrame = new NEDFrame();
@@ -188,7 +186,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
 
-
         // test constructor with NED frame
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame);
 
@@ -228,7 +225,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 AngularSpeedUnit.DEGREES_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-
 
         // test constructor with time interval seconds
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -283,7 +279,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with time interval
         final Time timeInterval2 = new Time(timeIntervalSeconds, TimeUnit.SECOND);
 
@@ -335,7 +330,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame
         final NEDFrame previousNedFrame = new NEDFrame();
         final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
@@ -383,7 +377,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
 
-
         // test constructor with current and previous NED frame
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
                 previousNedFrame);
@@ -426,7 +419,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 AngularSpeedUnit.DEGREES_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-
 
         // test constructor with current and previous ECEF frame and time interval seconds
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame,
@@ -482,7 +474,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame and time interval
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame,
                 previousEcefFrame, timeInterval2);
@@ -536,7 +527,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with current and previous NED frame and time interval seconds
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -592,7 +582,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous NED frame and time interval
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
                 previousNedFrame, timeInterval2);
@@ -647,7 +636,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics and ECEF frame
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
                 ecefFrame);
@@ -689,7 +677,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
 
-
         // test constructor with body kinematics and NED frame
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
                 nedFrame);
@@ -730,7 +717,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 AngularSpeedUnit.DEGREES_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-
 
         // test constructor with body kinematics, current and previous ECEF frame
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -775,7 +761,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
 
-
         // test constructor with body kinematics, current and previous NED frame
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
                 nedFrame, previousNedFrame);
@@ -818,7 +803,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 AngularSpeedUnit.DEGREES_PER_SECOND);
         frameBodyKinematics.getAngularRateStandardDeviationAsAngularSpeed(angularSpeed2);
         assertEquals(angularSpeed1, angularSpeed2);
-
 
         // test constructor with body kinematics, current and previous ECEF frame and
         // time interval seconds
@@ -875,7 +859,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous ECEF frame and
         // time interval
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -930,7 +913,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous NED frame and
         // time interval seconds
@@ -987,7 +969,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous NED frame and
         // time interval seconds
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -1042,7 +1023,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with specific force and angular rate standard deviations
         final double specificForceStandardDeviation =
@@ -1104,7 +1084,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -1160,7 +1139,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with ECEF frame, specific force and angular rate
         // standard deviations
@@ -1220,7 +1198,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with NED frame, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -1278,7 +1255,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with time interval, specific force and angular rate
         // standard deviations
@@ -1346,7 +1322,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with time interval, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(
@@ -1413,7 +1388,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame, specific force and
         // angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame,
@@ -1477,7 +1451,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous NED frame, specific force and
         // angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -1539,7 +1512,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with current and previous ECEF frame, time interval seconds,
         // specific force and angular rate standard deviations
@@ -1612,7 +1584,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame, time interval,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame,
@@ -1684,7 +1655,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous NED frame, time interval seconds,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -1755,7 +1725,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with current and previous NED frame, time interval,
         // specific force and angular rate standard deviations
@@ -1829,7 +1798,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics and ECEF frame,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -1890,7 +1858,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics and NED frame,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -1950,7 +1917,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous ECEF frame,
         // specific force and angular rate standard deviations
@@ -2015,7 +1981,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous NED frame,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -2078,7 +2043,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous ECEF frame,
         // time interval seconds, specific force and angular rate standard deviations
@@ -2151,7 +2115,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous ECEF frame,
         // time interval, specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -2222,7 +2185,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous NED frame,
         // time interval seconds, specific force and angular rate standard deviations
@@ -2295,7 +2257,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous NED frame,
         // time interval seconds, specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -2367,7 +2328,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with specific force and angular rate standard deviations
         final Acceleration specificForceStandardDeviation1 = new Acceleration(
                 specificForceStandardDeviation,
@@ -2435,7 +2395,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -2491,7 +2450,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with ECEF frame, specific force and angular rate
         // standard deviations
@@ -2551,7 +2509,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with NED frame, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -2609,7 +2566,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with time interval, specific force and angular rate
         // standard deviations
@@ -2678,7 +2634,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with time interval, specific force and angular rate
         // standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(
@@ -2745,7 +2700,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame, specific force and
         // angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame,
@@ -2809,7 +2763,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous NED frame, specific force and
         // angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -2871,7 +2824,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with current and previous ECEF frame, time interval seconds,
         // specific force and angular rate standard deviations
@@ -2944,7 +2896,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous ECEF frame, time interval,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(ecefFrame,
@@ -3016,7 +2967,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with current and previous NED frame, time interval seconds,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(nedFrame,
@@ -3087,7 +3037,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with current and previous NED frame, time interval,
         // specific force and angular rate standard deviations
@@ -3161,7 +3110,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics and ECEF frame,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -3222,7 +3170,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics and NED frame,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -3282,7 +3229,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous ECEF frame,
         // specific force and angular rate standard deviations
@@ -3347,7 +3293,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous NED frame,
         // specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -3410,7 +3355,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous ECEF frame,
         // time interval seconds, specific force and angular rate standard deviations
@@ -3483,7 +3427,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous ECEF frame,
         // time interval, specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -3554,7 +3497,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test constructor with body kinematics, current and previous NED frame,
         // time interval seconds, specific force and angular rate standard deviations
@@ -3627,7 +3569,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         }
         assertNull(frameBodyKinematics);
 
-
         // test constructor with body kinematics, current and previous NED frame,
         // time interval seconds, specific force and angular rate standard deviations
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -3698,7 +3639,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyKinematics);
-
 
         // test copy constructor
         frameBodyKinematics = new StandardDeviationFrameBodyKinematics(kinematics,
@@ -4078,7 +4018,6 @@ public class StandardDeviationFrameBodyKinematicsTest {
                 new StandardDeviationFrameBodyKinematics(kinematics, ecefFrame,
                         previousEcefFrame, timeInterval,
                         specificForceStandardDeviation, angularRateStandardDeviation);
-
 
         frameBodyKinematics2.copyFrom(frameBodyKinematics1);
 

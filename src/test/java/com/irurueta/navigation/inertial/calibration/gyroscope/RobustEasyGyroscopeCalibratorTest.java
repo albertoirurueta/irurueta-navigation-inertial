@@ -3555,18 +3555,20 @@ public class RobustEasyGyroscopeCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(RobustEasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateStart(final RobustEasyGyroscopeCalibrator calibrator) {
     }
 
     @Override
-    public void onCalibrateEnd(RobustEasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustEasyGyroscopeCalibrator calibrator) {
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustEasyGyroscopeCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustEasyGyroscopeCalibrator calibrator, final int iteration) {
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustEasyGyroscopeCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustEasyGyroscopeCalibrator calibrator, final float progress) {
     }
 }

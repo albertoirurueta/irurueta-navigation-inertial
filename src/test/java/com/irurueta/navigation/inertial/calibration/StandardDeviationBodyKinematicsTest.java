@@ -60,7 +60,6 @@ public class StandardDeviationBodyKinematicsTest {
         stdKinematics.getAngularRateStandardDeviationAsAngularSpeed(w2);
         assertEquals(w1, w2);
 
-
         // test constructor with body kinematics
         final BodyKinematics kinematics = new BodyKinematics();
         stdKinematics = new StandardDeviationBodyKinematics(kinematics);
@@ -81,7 +80,6 @@ public class StandardDeviationBodyKinematicsTest {
         w2 = new AngularSpeed(0.0, AngularSpeedUnit.DEGREES_PER_SECOND);
         stdKinematics.getAngularRateStandardDeviationAsAngularSpeed(w2);
         assertEquals(w1, w2);
-
 
         // test constructor with specific force and angular rate standard deviations
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -125,7 +123,6 @@ public class StandardDeviationBodyKinematicsTest {
         }
         assertNull(stdKinematics);
 
-
         // test constructor with body kinematics, specific force and
         // angular rate standard deviations
         stdKinematics = new StandardDeviationBodyKinematics(kinematics,
@@ -166,7 +163,6 @@ public class StandardDeviationBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(stdKinematics);
-
 
         // test constructor with specific force and angular rate standard deviations
         final Acceleration f = new Acceleration(specificForceStandardDeviation,
@@ -209,7 +205,6 @@ public class StandardDeviationBodyKinematicsTest {
         }
         assertNull(stdKinematics);
 
-
         // test constructor with body kinematics, specific force and
         // angular rate standard deviations
         stdKinematics = new StandardDeviationBodyKinematics(kinematics, f, w);
@@ -247,7 +242,6 @@ public class StandardDeviationBodyKinematicsTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(stdKinematics);
-
 
         // test copy constructor
         stdKinematics = new StandardDeviationBodyKinematics(kinematics,

@@ -15,21 +15,8 @@
  */
 package com.irurueta.navigation.inertial;
 
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleConverter;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 

@@ -110,6 +110,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
 
     /**
      * Gets x coordinate of measurement value.
+     *
      * @param result instance where x coordinate of measurement value
      *               will be stored.
      */
@@ -121,6 +122,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
 
     /**
      * Sets x coordinate of measurement value.
+     *
      * @param measurementX x coordinate of measurement value.
      */
     @Override
@@ -215,7 +217,7 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
     /**
      * Gets norm as a magnetic flux density.
      *
-     * @return  magnetic flux density containing triad norm.
+     * @return magnetic flux density containing triad norm.
      */
     @Override
     public MagneticFluxDensity getMeasurementNorm() {

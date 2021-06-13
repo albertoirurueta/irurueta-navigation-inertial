@@ -26,14 +26,12 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.ECEFGravity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.*;
 import com.irurueta.navigation.inertial.calibration.accelerometer.KnownGravityNormAccelerometerCalibrator;
 import com.irurueta.navigation.inertial.calibration.gyroscope.EasyGyroscopeCalibrator;
@@ -44,6 +42,8 @@ import com.irurueta.navigation.inertial.calibration.magnetometer.KnownPositionAn
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
@@ -817,7 +817,6 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
                     .getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = magnetometerCalibrator.getEstimatedMm();
 
-
             if (!bg.equals(estimatedBgTrue, ABSOLUTE_ERROR)) {
                 continue;
             }
@@ -870,8 +869,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     }
 
     @Test
-    public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndNoGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
+    public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndNoGDependentCrossBiases()
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException, IOException {
 
         final Matrix ba = generateBa();
@@ -1067,7 +1066,6 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
                     .getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = magnetometerCalibrator.getEstimatedMm();
 
-
             if (!bg.equals(estimatedBgTrue, ABSOLUTE_ERROR)) {
                 continue;
             }
@@ -1120,8 +1118,8 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     }
 
     @Test
-    public void testProcessCalibrateAndResetSmallNoiseMaCommonAxisAndNoGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
+    public void testProcessCalibrateAndResetSmallNoiseMaCommonAxisAndNoGDependentCrossBiases()
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException, IOException {
 
         final Matrix ba = generateBa();
@@ -1566,7 +1564,6 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
             final Matrix estimatedHardIron = magnetometerCalibrator
                     .getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = magnetometerCalibrator.getEstimatedMm();
-
 
             if (!bg.equals(estimatedBgTrue, SMALL_ABSOLUTE_ERROR)) {
                 continue;
@@ -2155,7 +2152,6 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
             final Matrix estimatedHardIron = magnetometerCalibrator
                     .getEstimatedHardIronAsMatrix();
             final Matrix estimatedMm = magnetometerCalibrator.getEstimatedMm();
-
 
             if (!bg.equals(estimatedBgTrue, SMALL_ABSOLUTE_ERROR)) {
                 continue;
@@ -2808,12 +2804,10 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
 
         NEDtoECEFFrameConverter.convertNEDtoECEF(newNedFrame, newEcefFrame);
 
-
         // update current ECEF and NED frames
         ecefFrame.copyFrom(newEcefFrame);
         nedFrame.copyFrom(newNedFrame);
         cnb.copyFrom(newCnb);
-
 
         // after dynamic sequence finishes, update true kinematics for a
         // static sequence at current frame

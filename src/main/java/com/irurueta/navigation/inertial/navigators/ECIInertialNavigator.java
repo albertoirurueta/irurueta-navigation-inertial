@@ -27,21 +27,7 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECIGravitation;
 import com.irurueta.navigation.inertial.estimators.ECIGravitationEstimator;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeConverter;
-import com.irurueta.units.TimeUnit;
+import com.irurueta.units.*;
 
 /**
  * Runs precision ECI-frame inertial navigation equations.
@@ -100,7 +86,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -487,7 +474,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final Distance oldX,
@@ -548,7 +536,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final Distance oldX,
@@ -691,7 +680,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -753,7 +743,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -894,7 +885,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -952,7 +944,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -1010,7 +1003,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -1068,7 +1062,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -1129,7 +1124,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final Distance oldX,
@@ -1191,7 +1187,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final Distance oldX,
@@ -1247,7 +1244,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final Distance oldX,
@@ -1303,7 +1301,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final Distance oldX,
@@ -1359,7 +1358,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final double timeInterval,
                          final double oldX,
@@ -1414,7 +1414,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public void navigate(final Time timeInterval,
                          final double oldX,
@@ -1909,7 +1910,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2292,7 +2294,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final Distance oldX,
@@ -2353,7 +2356,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final Distance oldX,
@@ -2494,7 +2498,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2555,7 +2560,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -2693,7 +2699,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2751,7 +2758,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -2809,7 +2817,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -2867,7 +2876,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -2928,7 +2938,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final Distance oldX,
@@ -2989,7 +3000,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final Distance oldX,
@@ -3044,7 +3056,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final Distance oldX,
@@ -3099,7 +3112,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final Distance oldX,
@@ -3154,7 +3168,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final double timeInterval,
                                          final double oldX,
@@ -3209,7 +3224,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public ECIFrame navigateAndReturnNew(final Time timeInterval,
                                          final double oldX,
@@ -3790,7 +3806,7 @@ public class ECIInertialNavigator {
                     .estimateGravitationAndReturnNew(oldX, oldY, oldZ);
             final Matrix g = gravitation.asMatrix();
 
-            //fIbi + g
+            // fIbi + g
             oldCbi.add(g);
 
             // timeInterval * (fIbi + g)
@@ -4191,7 +4207,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final Distance oldX,
@@ -4254,7 +4271,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final Distance oldX,
@@ -4402,7 +4420,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -4465,7 +4484,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -4608,7 +4628,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -4668,7 +4689,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -4728,7 +4750,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -4788,7 +4811,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -4850,7 +4874,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final Distance oldX,
@@ -4914,7 +4939,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final Distance oldX,
@@ -4970,7 +4996,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final Distance oldX,
@@ -5032,7 +5059,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final Distance oldX,
@@ -5088,7 +5116,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final double timeInterval,
                                    final double oldX,
@@ -5147,7 +5176,8 @@ public class ECIInertialNavigator {
      *                     velocity and coordinate transformation matrix will be stored.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static void navigateECI(final Time timeInterval,
                                    final double oldX,
@@ -5676,7 +5706,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6071,7 +6102,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final Distance oldX,
@@ -6133,7 +6165,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final Distance oldX,
@@ -6279,7 +6312,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6341,7 +6375,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -6484,7 +6519,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6543,7 +6579,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -6602,7 +6639,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -6661,7 +6699,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,
@@ -6723,7 +6762,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final Distance oldX,
@@ -6785,7 +6825,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final Distance oldX,
@@ -6841,7 +6882,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final Distance oldX,
@@ -6897,7 +6939,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final Distance oldX,
@@ -6953,7 +6996,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final double timeInterval,
                                                    final double oldX,
@@ -7009,7 +7053,8 @@ public class ECIInertialNavigator {
      * transformation matrix.
      * @throws InertialNavigatorException                    if navigation fails due to numerical instabilities.
      * @throws InvalidSourceAndDestinationFrameTypeException if source or destination frame types of previous
-     *                                                       body-to-ECI-frame coordinate transformation matrix are invalid.
+     *                                                       body-to-ECI-frame coordinate transformation matrix are
+     *                                                       invalid.
      */
     public static ECIFrame navigateECIAndReturnNew(final Time timeInterval,
                                                    final double oldX,

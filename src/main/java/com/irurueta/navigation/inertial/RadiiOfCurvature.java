@@ -18,13 +18,13 @@ package com.irurueta.navigation.inertial;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceConverter;
 import com.irurueta.units.DistanceUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 
 /**
  * Contains radii of curvature of the WGS84 ellipsoid at a given latitude.
  */
-@SuppressWarnings("WeakerAccess")
 public class RadiiOfCurvature implements Serializable, Cloneable {
 
     /**
@@ -41,7 +41,7 @@ public class RadiiOfCurvature implements Serializable, Cloneable {
 
     /**
      * Transverse radius of curvature expressed in meters (m).
-     * This is the radius of curvature for east-wet motion.
+     * This is the radius of curvature for east-west motion.
      * This is also known as the normal radius of curvature or prime vertical radius
      * of curvature.
      * It is the radius of curvature of a cross-section of the ellipsoid surface in

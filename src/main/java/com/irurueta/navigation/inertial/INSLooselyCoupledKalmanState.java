@@ -29,18 +29,8 @@ import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationConverter;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceConverter;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedConverter;
-import com.irurueta.units.SpeedUnit;
+import com.irurueta.units.*;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -303,8 +293,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      */
     public INSLooselyCoupledKalmanState(
             final CoordinateTransformation c,
-            final com.irurueta.navigation.frames.ECEFVelocity velocity,
-            final com.irurueta.navigation.frames.ECEFPosition position,
+            final ECEFVelocity velocity,
+            final ECEFPosition position,
             final double accelerationBiasX,
             final double accelerationBiasY,
             final double accelerationBiasZ,
@@ -1471,7 +1461,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *
      * @param result instance where estimated ECEF user velocity will be stored.
      */
-    public void getEcefVelocity(final com.irurueta.navigation.frames.ECEFVelocity result) {
+    public void getEcefVelocity(final ECEFVelocity result) {
         result.setCoordinates(mVx, mVy, mVz);
     }
 
@@ -1480,8 +1470,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *
      * @return estimated ECEF user velocity.
      */
-    public com.irurueta.navigation.frames.ECEFVelocity getEcefVelocity() {
-        return new com.irurueta.navigation.frames.ECEFVelocity(mVx, mVy, mVz);
+    public ECEFVelocity getEcefVelocity() {
+        return new ECEFVelocity(mVx, mVy, mVz);
     }
 
     /**
@@ -1635,7 +1625,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user position
      *               will be stored.
      */
-    public void getEcefPosition(final com.irurueta.navigation.frames.ECEFPosition result) {
+    public void getEcefPosition(final ECEFPosition result) {
         result.setCoordinates(mX, mY, mZ);
     }
 
@@ -1644,8 +1634,8 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      *
      * @return estimated ECEF user position.
      */
-    public com.irurueta.navigation.frames.ECEFPosition getEcefPosition() {
-        return new com.irurueta.navigation.frames.ECEFPosition(mX, mY, mZ);
+    public ECEFPosition getEcefPosition() {
+        return new ECEFPosition(mX, mY, mZ);
     }
 
     /**
@@ -1700,7 +1690,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where body to ECEF frame will be stored.
      * @return true if result was updated, false otherwise.
      */
-    public boolean getFrame(ECEFFrame result) {
+    public boolean getFrame(final ECEFFrame result) {
         if (mBodyToEcefCoordinateTransformationMatrix != null) {
             try {
                 result.setCoordinateTransformation(getC());
@@ -2136,7 +2126,7 @@ public class INSLooselyCoupledKalmanState implements Serializable, Cloneable {
      * @return a fixed rotation matrix.
      * @throws AlgebraException if there are numerical instabilities.
      */
-    private Matrix fixRotationMatrix() throws AlgebraException{
+    private Matrix fixRotationMatrix() throws AlgebraException {
         final SingularValueDecomposer decomposer = new SingularValueDecomposer(
                 mBodyToEcefCoordinateTransformationMatrix);
         decomposer.decompose();

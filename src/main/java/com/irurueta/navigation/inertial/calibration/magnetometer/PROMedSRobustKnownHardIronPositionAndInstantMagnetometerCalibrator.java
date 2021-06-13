@@ -28,6 +28,7 @@ import com.irurueta.numerical.robust.PROMedSRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -1506,21 +1507,21 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
-     * @param initialMm       initial soft-iron matrix containing scale factors
-     *                        and cross coupling errors.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3 or if provided quality scores
@@ -1540,22 +1541,22 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
-     * @param initialMm       initial soft-iron matrix containing scale factors
-     *                        and cross coupling errors.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3 or if provided quality scores
@@ -1700,17 +1701,17 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param hardIron       known hard-iron.
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3 or if provided
      *                                  quality scores length is smaller
@@ -1728,18 +1729,18 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param hardIron       known hard-iron.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param listener      listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3 or if provided
      *                                  quality scores length is smaller
@@ -1758,18 +1759,18 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3 or if provided
@@ -1788,20 +1789,20 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3 or if provided
      *                                  quality scores length is smaller
@@ -1820,17 +1821,17 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param hardIron       known hard-iron.
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if provided quality scores
      *                                  length is smaller than 7 samples.
@@ -1847,18 +1848,18 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param hardIron       known hard-iron.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param listener      listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if provided quality scores
      *                                  length is smaller than 7 samples.
@@ -1876,18 +1877,18 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if provided quality scores
@@ -1905,20 +1906,20 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if provided quality scores
      *                                  length is smaller than 7 samples.
@@ -1936,19 +1937,19 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param hardIron       known hard-iron.
-     * @param initialMm       initial soft-iron matrix containing scale factors
-     *                        and cross coupling errors.
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3 or if provided quality scores
@@ -1966,20 +1967,20 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param hardIron       known hard-iron.
-     * @param initialMm       initial soft-iron matrix containing scale factors
-     *                        and cross coupling errors.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param qualityScores quality scores corresponding to each provided
+     *                      measurement. The larger the score value the better
+     *                      the quality of the sample.
+     * @param position      position where body magnetic flux density measurements
+     *                      have been taken.
+     * @param measurements  collection of body magnetic flux density
+     *                      measurements with standard deviation of
+     *                      magnetometer measurements taken at the same
+     *                      position with zero velocity and unknown different
+     *                      orientations.
+     * @param hardIron      known hard-iron.
+     * @param initialMm     initial soft-iron matrix containing scale factors
+     *                      and cross coupling errors.
+     * @param listener      listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3 or if provided quality scores
@@ -1998,21 +1999,21 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
-     * @param initialMm       initial soft-iron matrix containing scale factors
-     *                        and cross coupling errors.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3 or if provided quality scores
@@ -2032,22 +2033,22 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
     /**
      * Constructor.
      *
-     * @param qualityScores   quality scores corresponding to each provided
-     *                        measurement. The larger the score value the better
-     *                        the quality of the sample.
-     * @param position        position where body magnetic flux density measurements
-     *                        have been taken.
-     * @param measurements    collection of body magnetic flux density
-     *                        measurements with standard deviation of
-     *                        magnetometer measurements taken at the same
-     *                        position with zero velocity and unknown different
-     *                        orientations.
-     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
-     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param qualityScores  quality scores corresponding to each provided
+     *                       measurement. The larger the score value the better
+     *                       the quality of the sample.
+     * @param position       position where body magnetic flux density measurements
+     *                       have been taken.
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
      * @param hardIron       known hard-iron.
-     * @param initialMm       initial soft-iron matrix containing scale factors
-     *                        and cross coupling errors.
-     * @param listener        listener to handle events raised by this calibrator.
+     * @param initialMm      initial soft-iron matrix containing scale factors
+     *                       and cross coupling errors.
+     * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3 or if provided quality scores
@@ -2222,11 +2223,13 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibrator 
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator<Matrix> estimator) {
+                        // no action needed
                     }
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator<Matrix> estimator) {
+                        // no action needed
                     }
 
                     @Override

@@ -23,10 +23,10 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.IMUErrors;
@@ -965,7 +965,6 @@ public class AccelerationTriadStaticIntervalDetectorTest implements
         assertTrue(lastStaticTriad.equals(detector.getAccumulatedAvgTriad(),
                 ABSOLUTE_ERROR));
 
-
         // keep adding static samples for twice the window size to last
         // true kinematics
         for (int i = 0; i < periodLength; i++) {
@@ -1313,7 +1312,6 @@ public class AccelerationTriadStaticIntervalDetectorTest implements
         assertTrue(lastStaticTriad.equals(detector.getAccumulatedAvgTriad(),
                 ABSOLUTE_ERROR));
 
-
         // keep adding static samples for twice the window size to last
         // true kinematics
         for (int i = 0; i < periodLength; i++) {
@@ -1650,7 +1648,6 @@ public class AccelerationTriadStaticIntervalDetectorTest implements
                 detector.getAccumulatedAvgZAsMeasurement(), ABSOLUTE_ERROR));
         assertTrue(lastStaticTriad.equals(detector.getAccumulatedAvgTriad(),
                 ABSOLUTE_ERROR));
-
 
         // keep adding static samples for twice the window size to last
         // true kinematics

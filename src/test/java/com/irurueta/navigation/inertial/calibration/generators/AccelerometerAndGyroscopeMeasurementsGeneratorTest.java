@@ -578,8 +578,8 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
     }
 
     @Test
-    public void testProcessCalibrateAndResetWithNoiseMaCommonAxisAndNoGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
+    public void testProcessCalibrateAndResetWithNoiseMaCommonAxisAndNoGDependentCrossBiases()
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException {
 
         final Matrix ba = generateBa();
@@ -1002,8 +1002,8 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
     }
 
     @Test
-    public void testProcessCalibrateAndResetSmallNoiseMaCommonAxisAndNoGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
+    public void testProcessCalibrateAndResetSmallNoiseMaCommonAxisAndNoGDependentCrossBiases()
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException {
 
         final Matrix ba = generateBa();
@@ -1208,8 +1208,8 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
     }
 
     @Test
-    public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndWithGDependentCrossBiases() throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException, LockedException,
+    public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndWithGDependentCrossBiases()
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
             NotReadyException, InvalidRotationMatrixException {
 
         final Matrix ba = generateBa();
@@ -1671,7 +1671,6 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
                 new AccelerometerAndGyroscopeMeasurementsGenerator(this);
         generator.setBaseNoiseLevelAbsoluteThreshold(Double.MIN_VALUE);
 
-
         // generate initial static samples
         final int initialStaticSamples = TriadStaticIntervalDetector
                 .DEFAULT_INITIAL_STATIC_SAMPLES;
@@ -1756,7 +1755,6 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
 
             final AccelerometerAndGyroscopeMeasurementsGenerator generator =
                     new AccelerometerAndGyroscopeMeasurementsGenerator(this);
-
 
             // generate initial static samples
             final int initialStaticSamples = TriadStaticIntervalDetector
@@ -2243,7 +2241,8 @@ public class AccelerometerAndGyroscopeMeasurementsGeneratorTest implements
             final Random random,
             final int startSample,
             final boolean changePosition)
-            throws InvalidSourceAndDestinationFrameTypeException, LockedException, InvalidRotationMatrixException {
+            throws InvalidSourceAndDestinationFrameTypeException, LockedException,
+            InvalidRotationMatrixException {
 
         final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
         final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;

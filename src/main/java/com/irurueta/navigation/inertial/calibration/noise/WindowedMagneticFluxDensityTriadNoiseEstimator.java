@@ -46,7 +46,7 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  */
 public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
         WindowedTriadNoiseEstimator<MagneticFluxDensityUnit, MagneticFluxDensity,
-                        MagneticFluxDensityTriad, WindowedMagneticFluxDensityTriadNoiseEstimator,
+                MagneticFluxDensityTriad, WindowedMagneticFluxDensityTriadNoiseEstimator,
                 WindowedMagneticFluxDensityTriadNoiseEstimatorListener> {
 
     /**
@@ -83,7 +83,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
      * @param valueX x coordinate value.
      * @param valueY y coordinate value.
      * @param valueZ z coordinate value.
-     * @param unit unit.
+     * @param unit   unit.
      * @return created triad.
      */
     @Override
@@ -123,7 +123,7 @@ public class WindowedMagneticFluxDensityTriadNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override

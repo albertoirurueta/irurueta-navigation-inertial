@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -135,19 +135,19 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getMeasurements());
@@ -10591,7 +10591,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         final double initialMzx = ma2.getElementAt(2, 0);
         final double initialMzy = ma2.getElementAt(2, 1);
 
-
         // check
         final Matrix ma3 = calibrator.getInitialMa();
         final Matrix ma4 = new Matrix(3, 3);
@@ -10857,7 +10856,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -10910,7 +10908,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
                 error = Math.abs(errorRandomizer.nextDouble());
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -10988,7 +10985,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -11041,7 +11037,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                         .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                 errorsOutlier, random);
                 error = Math.abs(errorRandomizer.nextDouble());
-
             } else {
                 // inlier
                 measuredKinematics = BodyKinematicsGenerator
@@ -11122,7 +11117,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -11175,7 +11169,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -11265,7 +11258,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -11318,7 +11310,6 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -11629,8 +11620,9 @@ public class PROSACRobustKnownBiasAndFrameAccelerometerCalibratorTest implements
         }
     }
 
-    private void assertEstimatedResult(final Matrix ma,
-                                       final PROSACRobustKnownBiasAndFrameAccelerometerCalibrator calibrator) {
+    private void assertEstimatedResult(
+            final Matrix ma,
+            final PROSACRobustKnownBiasAndFrameAccelerometerCalibrator calibrator) {
 
         assertEquals(ma.getElementAt(0, 0), calibrator.getEstimatedSx(),
                 0.0);

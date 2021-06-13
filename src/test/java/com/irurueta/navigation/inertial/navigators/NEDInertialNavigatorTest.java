@@ -1,7 +1,19 @@
+/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.irurueta.navigation.inertial.navigators;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.geometry.InvalidRotationMatrixException;
@@ -20,21 +32,13 @@ import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.NEDGravity;
 import com.irurueta.navigation.inertial.estimators.NEDGravityEstimator;
 import com.irurueta.statistics.UniformRandomizer;
-import com.irurueta.units.Acceleration;
-import com.irurueta.units.AccelerationUnit;
-import com.irurueta.units.Angle;
-import com.irurueta.units.AngleUnit;
-import com.irurueta.units.AngularSpeed;
-import com.irurueta.units.AngularSpeedConverter;
-import com.irurueta.units.AngularSpeedUnit;
-import com.irurueta.units.Distance;
-import com.irurueta.units.DistanceUnit;
-import com.irurueta.units.Speed;
-import com.irurueta.units.SpeedUnit;
-import com.irurueta.units.Time;
-import com.irurueta.units.TimeUnit;
-import java.util.Random;
+import com.irurueta.units.*;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class NEDInertialNavigatorTest {
     private static final double TIME_INTERVAL_SECONDS = 0.02;
@@ -853,8 +857,8 @@ public class NEDInertialNavigatorTest {
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result37 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
-                oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
+        final NEDFrame result37 = navigator.navigateAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
+                HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ);
 
         final NEDFrame result38 = navigator.navigateAndReturnNew(
@@ -1667,7 +1671,6 @@ public class NEDInertialNavigatorTest {
     public void testNavigateNEDAndReturnNew() throws InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
 
-
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
         final double oldLatitude = Math.toRadians(LATITUDE_DEGREES);
@@ -1903,8 +1906,8 @@ public class NEDInertialNavigatorTest {
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ);
 
-        final NEDFrame result37 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
-                oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
+        final NEDFrame result37 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude,
+                oldLongitude, HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
                 angularRateX, angularRateY, angularRateZ);
 
         final NEDFrame result38 = NEDInertialNavigator.navigateNEDAndReturnNew(

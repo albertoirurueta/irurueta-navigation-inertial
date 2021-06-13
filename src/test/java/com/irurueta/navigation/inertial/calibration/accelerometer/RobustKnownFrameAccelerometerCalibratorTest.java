@@ -67,7 +67,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
 
-
         // test create with listener and method
         calibrator =
                 RobustKnownFrameAccelerometerCalibrator.create(this,
@@ -108,7 +107,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertSame(calibrator.getListener(), this);
-
 
         // test create with measurements and method
 
@@ -153,7 +151,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, listener and method
 
@@ -202,7 +199,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with common axis used and method
 
         // RANSAC
@@ -244,7 +240,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with common axis used, listener and method
 
@@ -293,7 +288,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, common axis used and method
 
         // RANSAC
@@ -340,7 +334,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, common axis used and method
 
@@ -394,7 +387,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores and method
         final double[] qualityScores = new double[
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS];
@@ -438,7 +430,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
-
 
         // test create with quality scores, listener and method
 
@@ -487,7 +478,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements and method
 
         // RANSAC
@@ -534,7 +524,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with quality scores, measurements, listener and method
 
@@ -588,7 +577,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, common axis used and method
 
         // RANSAC
@@ -635,7 +623,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameAccelerometerCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, common axis used, listener and method
 
@@ -689,7 +676,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, common axis used and method
 
         // RANSAC
@@ -741,7 +727,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, common axis used, listener and
         // method
@@ -806,13 +791,11 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create();
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-
 
         // test create with listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(this);
@@ -821,14 +804,12 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
@@ -839,14 +820,12 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with common axis used and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(true);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with common axis used, listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(true,
@@ -857,7 +836,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, common axis used and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
                 true);
@@ -865,7 +843,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, common axis used, listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(measurements,
@@ -877,14 +854,12 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertNull(calibrator.getQualityScores());
-
 
         // test create with quality scores, listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
@@ -895,7 +870,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
                 measurements);
@@ -904,7 +878,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with quality scores, measurements, listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
@@ -916,7 +889,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, common axis used and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
                 true);
@@ -925,7 +897,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, common axis used, listener and default method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
@@ -937,7 +908,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, common axis used and default
         // method
         calibrator = RobustKnownFrameAccelerometerCalibrator.create(qualityScores,
@@ -948,7 +918,6 @@ public class RobustKnownFrameAccelerometerCalibratorTest implements
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, common axis used, listener
         // and default method

@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -224,7 +224,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with listener
         calibrator = new LMedSRobustKnownFrameAccelerometerCalibrator(this);
 
@@ -362,7 +361,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements
         final List<StandardDeviationFrameBodyKinematics> measurements =
@@ -504,7 +502,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and listener
         calibrator = new LMedSRobustKnownFrameAccelerometerCalibrator(measurements,
                 this);
@@ -643,7 +640,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with common axis used
         calibrator = new LMedSRobustKnownFrameAccelerometerCalibrator(
@@ -784,7 +780,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with common axis used and listener
         calibrator = new LMedSRobustKnownFrameAccelerometerCalibrator(
                 true, this);
@@ -924,7 +919,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
 
-
         // test constructor with measurements and common axis used
         calibrator = new LMedSRobustKnownFrameAccelerometerCalibrator(
                 measurements, true);
@@ -1063,7 +1057,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 RobustKnownFrameAccelerometerCalibrator.MINIMUM_MEASUREMENTS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-
 
         // test constructor with measurements and common axis used
         calibrator = new LMedSRobustKnownFrameAccelerometerCalibrator(
@@ -2109,7 +2102,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
 
-
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
         final double latitude = Math.toRadians(
@@ -2229,7 +2221,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
         final IMUErrors errorsInlier = new IMUErrors(ba, bg, ma, mg, gg,
                 0.0, 0.0, accelQuantLevel,
                 gyroQuantLevel);
-
 
         final Random random = new Random();
         final UniformRandomizer randomizer = new UniformRandomizer(random);
@@ -2355,7 +2346,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2402,7 +2392,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2492,7 +2481,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2539,7 +2527,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2628,7 +2615,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2675,7 +2661,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -2766,7 +2751,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -2813,7 +2797,6 @@ public class LMedSRobustKnownFrameAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

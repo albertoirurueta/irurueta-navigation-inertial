@@ -15,9 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -29,8 +26,12 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
 import com.irurueta.units.AngularSpeed;
-import java.util.Random;
 import org.junit.Test;
+
+import java.util.Random;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class LevelingEstimatorTest {
 

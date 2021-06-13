@@ -24,5 +24,5 @@ import com.irurueta.units.AccelerationUnit;
  */
 public interface WindowedAccelerationTriadNoiseEstimatorListener extends
         WindowedTriadNoiseEstimatorListener<AccelerationUnit, Acceleration,
-                        AccelerationTriad, WindowedAccelerationTriadNoiseEstimator> {
+                AccelerationTriad, WindowedAccelerationTriadNoiseEstimator> {
 }

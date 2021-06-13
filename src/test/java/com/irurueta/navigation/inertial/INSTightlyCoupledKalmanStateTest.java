@@ -77,8 +77,7 @@ public class INSTightlyCoupledKalmanStateTest {
         assertEquals(state.getReceiverClockOffset(), 0.0, 0.0);
         assertEquals(state.getReceiverClockDrift(), 0.0, 0.0);
         assertNull(state.getCovariance());
-
-
+        
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
@@ -151,8 +150,7 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
-
+        
         // test constructor with measurement values
         final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
         final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
@@ -196,8 +194,7 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
-
+        
         // test constructor with point position
         final Point3D position = new InhomogeneousPoint3D(x, y, z);
 
@@ -235,11 +232,10 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
-
+        
         // test constructor with ECEF velocity and position
-        final com.irurueta.navigation.frames.ECEFVelocity ecefVelocity = new com.irurueta.navigation.frames.ECEFVelocity(vx, vy, vz);
-        final com.irurueta.navigation.frames.ECEFPosition ecefPosition = new com.irurueta.navigation.frames.ECEFPosition(x, y, z);
+        final ECEFVelocity ecefVelocity = new ECEFVelocity(vx, vy, vz);
+        final ECEFPosition ecefPosition = new ECEFPosition(x, y, z);
 
         state = new INSTightlyCoupledKalmanState(c, ecefVelocity, ecefPosition,
                 accelerationBiasX, accelerationBiasY, accelerationBiasZ,
@@ -275,7 +271,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test constructor with ECEF position and velocity
         final ECEFPositionAndVelocity positionAndVelocity =
@@ -316,7 +311,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor with frame
         final ECEFFrame frame = new ECEFFrame(ecefPosition, ecefVelocity, c);
 
@@ -353,7 +347,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test constructor with measurements
         final Acceleration accelerationX = new Acceleration(
@@ -410,7 +403,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor with point
         state = new INSTightlyCoupledKalmanState(c, speedX, speedY, speedZ,
                 position, accelerationX, accelerationY, accelerationZ,
@@ -445,7 +437,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test constructor with velocity and position
         state = new INSTightlyCoupledKalmanState(c, ecefVelocity,
@@ -482,7 +473,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor with ECEF position and velocity
         state = new INSTightlyCoupledKalmanState(c, positionAndVelocity,
                 accelerationX, accelerationY, accelerationZ,
@@ -518,7 +508,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor with frame
         state = new INSTightlyCoupledKalmanState(frame, accelerationX,
                 accelerationY, accelerationZ, gyroX, gyroY, gyroZ,
@@ -552,7 +541,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test constructor
         state = new INSTightlyCoupledKalmanState(
@@ -604,7 +592,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor
         state = new INSTightlyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix,
@@ -655,7 +642,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor
         state = new INSTightlyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, ecefVelocity,
@@ -702,7 +688,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test constructor
         state = new INSTightlyCoupledKalmanState(
@@ -751,7 +736,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor
         state = new INSTightlyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
@@ -799,7 +783,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor
         state = new INSTightlyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, speedX, speedY, speedZ,
@@ -844,7 +827,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test constructor
         state = new INSTightlyCoupledKalmanState(
@@ -891,7 +873,6 @@ public class INSTightlyCoupledKalmanStateTest {
         }
         assertNull(state);
 
-
         // test constructor
         state = new INSTightlyCoupledKalmanState(
                 bodyToEcefCoordinateTransformationMatrix, positionAndVelocity,
@@ -936,7 +917,6 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-
 
         // test copy constructor
         state = new INSTightlyCoupledKalmanState(
@@ -1435,7 +1415,6 @@ public class INSTightlyCoupledKalmanStateTest {
         assertNull(state.getC());
         assertNull(state.getBodyToEcefCoordinateTransformationMatrix());
 
-
         // Force IllegalArgumentException
         try {
             state.setC(new CoordinateTransformation(
@@ -1559,9 +1538,9 @@ public class INSTightlyCoupledKalmanStateTest {
         final INSTightlyCoupledKalmanState state = new INSTightlyCoupledKalmanState();
 
         // check default value
-        final com.irurueta.navigation.frames.ECEFVelocity velocity1 = state.getEcefVelocity();
+        final ECEFVelocity velocity1 = state.getEcefVelocity();
 
-        assertEquals(velocity1, new com.irurueta.navigation.frames.ECEFVelocity());
+        assertEquals(velocity1, new ECEFVelocity());
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1569,11 +1548,11 @@ public class INSTightlyCoupledKalmanStateTest {
         final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double vz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final com.irurueta.navigation.frames.ECEFVelocity velocity2 = new com.irurueta.navigation.frames.ECEFVelocity(vx, vy, vz);
+        final ECEFVelocity velocity2 = new ECEFVelocity(vx, vy, vz);
         state.setEcefVelocity(velocity2);
 
         // check
-        final com.irurueta.navigation.frames.ECEFVelocity velocity3 = new com.irurueta.navigation.frames.ECEFVelocity();
+        final ECEFVelocity velocity3 = new ECEFVelocity();
         state.getEcefVelocity(velocity3);
         final ECEFVelocity velocity4 = state.getEcefVelocity();
 
@@ -1721,9 +1700,9 @@ public class INSTightlyCoupledKalmanStateTest {
         final INSTightlyCoupledKalmanState state = new INSTightlyCoupledKalmanState();
 
         // check default value
-        final com.irurueta.navigation.frames.ECEFPosition position1 = state.getEcefPosition();
+        final ECEFPosition position1 = state.getEcefPosition();
 
-        assertEquals(position1, new com.irurueta.navigation.frames.ECEFPosition());
+        assertEquals(position1, new ECEFPosition());
 
         // set new values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -1731,11 +1710,11 @@ public class INSTightlyCoupledKalmanStateTest {
         final double y = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
         final double z = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
 
-        final com.irurueta.navigation.frames.ECEFPosition position2 = new com.irurueta.navigation.frames.ECEFPosition(x, y, z);
+        final ECEFPosition position2 = new ECEFPosition(x, y, z);
         state.setEcefPosition(position2);
 
         // check
-        final com.irurueta.navigation.frames.ECEFPosition position3 = new com.irurueta.navigation.frames.ECEFPosition();
+        final ECEFPosition position3 = new ECEFPosition();
         state.getEcefPosition(position3);
         final ECEFPosition position4 = state.getEcefPosition();
 

@@ -766,7 +766,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
 
         if (mLastTriad == null && mListener != null) {
             //noinspection unchecked
-            mListener.onStart((E)this);
+            mListener.onStart((E) this);
         }
 
         // compute averages
@@ -899,7 +899,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      * Converts provided value and unit into default unit.
      *
      * @param value measurement value to be converted.
-     * @param unit unit of measurement value to be converted.
+     * @param unit  unit of measurement value to be converted.
      * @return converted value.
      */
     protected abstract double convertToDefaultUnit(final double value, final U unit);

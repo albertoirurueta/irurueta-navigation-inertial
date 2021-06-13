@@ -27,7 +27,6 @@ import com.irurueta.units.AngleUnit;
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
  * https://github.com/ymjdz/MATLAB-Codes/blob/master/Radii_of_curvature.m
  */
-@SuppressWarnings("WeakerAccess")
 public class RadiiOfCurvatureEstimator {
     /**
      * The equatorial radius of WGS84 ellipsoid (6378137 m) defining Earth's shape.

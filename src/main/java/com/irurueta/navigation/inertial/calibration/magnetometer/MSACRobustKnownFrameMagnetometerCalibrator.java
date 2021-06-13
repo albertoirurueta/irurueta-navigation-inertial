@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.irurueta.navigation.inertial.calibration.magnetometer;
 
 import com.irurueta.navigation.LockedException;
@@ -9,6 +24,7 @@ import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -204,73 +220,75 @@ public class MSACRobustKnownFrameMagnetometerCalibrator extends
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new MSACRobustEstimator<>(
                         new MSACRobustEstimatorListener<PreliminaryResult>() {
-                    @Override
-                    public double getThreshold() {
-                        return mThreshold;
-                    }
+                            @Override
+                            public double getThreshold() {
+                                return mThreshold;
+                            }
 
-                    @Override
-                    public int getTotalSamples() {
-                        return mMeasurements.size();
-                    }
+                            @Override
+                            public int getTotalSamples() {
+                                return mMeasurements.size();
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
+                            @Override
+                            public int getSubsetSize() {
+                                return mPreliminarySubsetSize;
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List<PreliminaryResult> solutions) {
+                                computePreliminarySolutions(samplesIndices, solutions);
+                            }
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation,
-                            final int i) {
-                        return computeError(mMeasurements.get(i),
-                                currentEstimation);
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation,
+                                    final int i) {
+                                return computeError(mMeasurements.get(i),
+                                        currentEstimation);
+                            }
 
-                    @Override
-                    public boolean isReady() {
-                        return MSACRobustKnownFrameMagnetometerCalibrator.super.isReady();
-                    }
+                            @Override
+                            public boolean isReady() {
+                                return MSACRobustKnownFrameMagnetometerCalibrator.super.isReady();
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
-                    }
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator<PreliminaryResult> estimator) {
+                                // no action needed
+                            }
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
-                    }
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator<PreliminaryResult> estimator) {
+                                // no action needed
+                            }
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    MSACRobustKnownFrameMagnetometerCalibrator.this,
-                                    iteration);
-                        }
-                    }
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator<PreliminaryResult> estimator,
+                                    final int iteration) {
+                                if (mListener != null) {
+                                    mListener.onCalibrateNextIteration(
+                                            MSACRobustKnownFrameMagnetometerCalibrator.this,
+                                            iteration);
+                                }
+                            }
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    MSACRobustKnownFrameMagnetometerCalibrator.this,
-                                    progress);
-                        }
-                    }
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator<PreliminaryResult> estimator,
+                                    final float progress) {
+                                if (mListener != null) {
+                                    mListener.onCalibrateProgressChange(
+                                            MSACRobustKnownFrameMagnetometerCalibrator.this,
+                                            progress);
+                                }
+                            }
+                        });
 
         try {
             mRunning = true;

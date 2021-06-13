@@ -30,6 +30,7 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -6026,9 +6027,9 @@ public abstract class RobustKnownBiasAndFrameAccelerometerCalibrator implements
         // fmeas = ba + (I + Ma) * ftrue
 
         // Hence:
-        //  [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
-        //  [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
-        //  [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy]   [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
+        // [fmeasz]   [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
 
         final BodyKinematics measuredKinematics = measurement.getKinematics();
         final ECEFFrame ecefFrame = measurement.getFrame();

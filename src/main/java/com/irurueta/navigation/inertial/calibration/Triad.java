@@ -18,6 +18,7 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Measurement;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -61,7 +62,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @param unit unit of measurement.
      * @throws IllegalArgumentException if provided unit is null.
      */
-    public Triad(U unit) {
+    public Triad(final U unit) {
         if (unit == null) {
             throw new IllegalArgumentException();
         }
@@ -78,7 +79,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @param valueZ value of z-coordinate.
      * @throws IllegalArgumentException if provided unit is null.
      */
-    public Triad(U unit, final double valueX, final double valueY,
+    public Triad(final U unit, final double valueX, final double valueY,
                  final double valueZ) {
         this(unit);
         setValueCoordinates(valueX, valueY, valueZ);
@@ -471,7 +472,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) {
             return true;
         }

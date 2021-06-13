@@ -24,5 +24,5 @@ import com.irurueta.units.MagneticFluxDensityUnit;
  */
 public interface WindowedMagneticFluxDensityTriadNoiseEstimatorListener extends
         WindowedTriadNoiseEstimatorListener<MagneticFluxDensityUnit, MagneticFluxDensity,
-                        MagneticFluxDensityTriad, WindowedMagneticFluxDensityTriadNoiseEstimator> {
+                MagneticFluxDensityTriad, WindowedMagneticFluxDensityTriadNoiseEstimator> {
 }

@@ -23,16 +23,16 @@ import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationFrameBodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
@@ -10476,7 +10476,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         measurements, hardIronMatrix, mm);
@@ -10894,7 +10893,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         true, hardIronMatrix, mm, this);
@@ -11036,7 +11034,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double myz = mm.getElementAt(1, 2);
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
-
 
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
@@ -11181,7 +11178,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         measurements, true, hardIronMatrix,
@@ -11324,7 +11320,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         magneticModel, hardIronMatrix, mm);
@@ -11463,7 +11458,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double myz = mm.getElementAt(1, 2);
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
-
 
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
@@ -11608,7 +11602,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         measurements, magneticModel, hardIronMatrix, mm);
@@ -11752,7 +11745,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         measurements, magneticModel, hardIronMatrix, mm,
@@ -11895,7 +11887,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         true, magneticModel, hardIronMatrix,
@@ -12037,7 +12028,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double myz = mm.getElementAt(1, 2);
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
-
 
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
@@ -12183,7 +12173,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
                         measurements, true, magneticModel,
@@ -12327,7 +12316,6 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         final double myz = mm.getElementAt(1, 2);
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
-
 
         KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibrator(
@@ -14021,7 +14009,8 @@ public class KnownHardIronAndFrameMagnetometerNonLinearLeastSquaresCalibratorTes
         }
     }
 
-    private static List<StandardDeviationFrameBodyMagneticFluxDensity> generateMeasurementsMultipleOrientationsWithSamePosition(
+    private static List<StandardDeviationFrameBodyMagneticFluxDensity>
+    generateMeasurementsMultipleOrientationsWithSamePosition(
             final double[] hardIron, final Matrix softIron,
             final int numberOfMeasurements,
             final WMMEarthMagneticFluxDensityEstimator wmmEstimator,

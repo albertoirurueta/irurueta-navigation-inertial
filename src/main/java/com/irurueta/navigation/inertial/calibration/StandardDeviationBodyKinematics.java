@@ -22,6 +22,7 @@ import com.irurueta.units.AccelerationUnit;
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 

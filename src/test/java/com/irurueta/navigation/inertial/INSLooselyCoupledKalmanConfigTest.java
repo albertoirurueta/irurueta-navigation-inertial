@@ -70,7 +70,6 @@ public class INSLooselyCoupledKalmanConfigTest {
         assertEquals(config.getPositionNoiseSD(), positionNoiseSD, 0.0);
         assertEquals(config.getVelocityNoiseSD(), velocityNoiseSD, 0.0);
 
-
         // test constructor with values
         final Distance positionNoiseSDDistance = new Distance(positionNoiseSD,
                 DistanceUnit.METER);
@@ -90,7 +89,6 @@ public class INSLooselyCoupledKalmanConfigTest {
         assertEquals(config.getGyroBiasPSD(), gyroBiasPSD, 0.0);
         assertEquals(config.getPositionNoiseSD(), positionNoiseSD, 0.0);
         assertEquals(config.getVelocityNoiseSD(), velocityNoiseSD, 0.0);
-
 
         // test copy constructor
         final INSLooselyCoupledKalmanConfig config2 =

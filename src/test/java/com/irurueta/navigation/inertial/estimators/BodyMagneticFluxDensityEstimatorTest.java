@@ -15,10 +15,6 @@
  */
 package com.irurueta.navigation.inertial.estimators;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -31,11 +27,14 @@ import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Angle;
 import com.irurueta.units.AngleUnit;
+import org.junit.Test;
+
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
-import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class BodyMagneticFluxDensityEstimatorTest {
 

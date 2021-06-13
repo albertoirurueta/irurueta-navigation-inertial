@@ -20,12 +20,12 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
-import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
@@ -83,7 +83,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density
         final BodyMagneticFluxDensity magneticFluxDensity =
                 createMagneticFluxDensity();
@@ -98,7 +97,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
                 0.0);
-
 
         // test constructor with ECEF frame
         final NEDFrame nedFrame = new NEDFrame();
@@ -117,7 +115,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
                 0.0);
 
-
         // test constructor with NED frame
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 nedFrame);
@@ -131,7 +128,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(nedFrame, nedFrame2);
         assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density and ECEF frame
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -148,7 +144,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density and NED frame
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 magneticFluxDensity, nedFrame);
@@ -163,7 +158,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(nedFrame, nedFrame2);
         assertEquals(frameBodyMagneticFluxDensity.getYear(), 0.0,
                 0.0);
-
 
         final Date timestamp = createTimestamp();
         final GregorianCalendar calendar = new GregorianCalendar();
@@ -183,7 +177,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with magnetic flux density and year
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 magneticFluxDensity, year);
@@ -196,7 +189,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with ECEF frame and year
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -212,7 +204,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with NED frame and year
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 nedFrame, year);
@@ -226,7 +217,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(nedFrame, nedFrame2);
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with magnetic flux density, ECEF frame and year
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -243,7 +233,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with magnetic flux density,  NED frame and year
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 magneticFluxDensity, nedFrame, year);
@@ -259,7 +248,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with date
         frameBodyMagneticFluxDensity =
                 new FrameBodyMagneticFluxDensity(timestamp);
@@ -271,7 +259,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with magnetic flux density and date
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -285,7 +272,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with ECEF frame and date
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -301,7 +287,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with NED frame and date
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 nedFrame, timestamp);
@@ -315,7 +300,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(nedFrame, nedFrame2);
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with magnetic flux density, ECEF frame and date
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -332,7 +316,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with magnetic flux density, NED frame and date
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 magneticFluxDensity, nedFrame, timestamp);
@@ -348,7 +331,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with calendar
         frameBodyMagneticFluxDensity =
                 new FrameBodyMagneticFluxDensity(calendar);
@@ -360,7 +342,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with magnetic flux density and calendar
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -374,7 +355,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertFalse(frameBodyMagneticFluxDensity.getNedFrame(null));
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with ECEF frame and calendar
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -390,7 +370,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with NED frame and calendar
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
                 nedFrame, calendar);
@@ -404,7 +383,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(nedFrame, nedFrame2);
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test constructor with magnetic flux density, ECEF frame and
         // calendar
@@ -422,7 +400,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
 
-
         // test constructor with magnetic flux density, NED frame and
         // calendar
         frameBodyMagneticFluxDensity = new FrameBodyMagneticFluxDensity(
@@ -438,7 +415,6 @@ public class FrameBodyMagneticFluxDensityTest {
         assertEquals(nedFrame, nedFrame2);
         assertEquals(frameBodyMagneticFluxDensity.getYear(), year,
                 0.0);
-
 
         // test copy constructor
         final FrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =

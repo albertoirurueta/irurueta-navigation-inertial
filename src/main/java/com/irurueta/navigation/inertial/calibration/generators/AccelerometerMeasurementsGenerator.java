@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.irurueta.navigation.inertial.calibration.generators;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
@@ -67,7 +66,7 @@ public class AccelerometerMeasurementsGenerator extends
      * @param sample an input sample.
      */
     @Override
-    protected void postProcess(BodyKinematics sample) {
+    protected void postProcess(final BodyKinematics sample) {
         // no action required for accelerometer calibration
     }
 
@@ -86,24 +85,24 @@ public class AccelerometerMeasurementsGenerator extends
     /**
      * Handles a static-to-dynamic interval change.
      *
-     * @param accumulatedAvgX   average x-coordinate of measurements during last
-     *                          static period expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accumulatedAvgY   average y-coordinate of specific force during last
-     *                          static period expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accumulatedAvgZ   average z-coordinate of specific force during last
-     *                          static period expressed in meters per squared
-     *                          second (m/s^2).
-     * @param accumulatedStdX   standard deviation of x-coordinate of measurements
-     *                          during last static period expressed in meters per
-     *                          squared second (m/s^2).
-     * @param accumulatedStdY   standard deviation of y-coordinate of measurements
-     *                          during last static period expressed in meters per
-     *                          squared second (m/s^2).
-     * @param accumulatedStdZ   standard deviation of z-coordinate of measurements
-     *                          during last static period expressed in meters per
-     *                          squared second (m/s^2).
+     * @param accumulatedAvgX average x-coordinate of measurements during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgY average y-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedAvgZ average z-coordinate of specific force during last
+     *                        static period expressed in meters per squared
+     *                        second (m/s^2).
+     * @param accumulatedStdX standard deviation of x-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdY standard deviation of y-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
+     * @param accumulatedStdZ standard deviation of z-coordinate of measurements
+     *                        during last static period expressed in meters per
+     *                        squared second (m/s^2).
      */
     @Override
     protected void handleStaticToDynamicChange(

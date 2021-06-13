@@ -1007,7 +1007,7 @@ public class ECIKinematicsEstimator {
                 // oldCbi now contains the average body-to-ECI-frame coordinate transformation
 
                 // Transform specific force to body-frame resolving axes using (5.81)
-                Matrix invAveCbi = Utils.inverse(oldCbi);
+                final Matrix invAveCbi = Utils.inverse(oldCbi);
                 invAveCbi.multiply(vIbi);
 
                 final double specificForceX = invAveCbi.getElementAtIndex(0);

@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -3639,7 +3639,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibratorTest
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -3785,7 +3784,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibratorTest
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -3935,7 +3933,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibratorTest
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -4082,7 +4079,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibratorTest
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -4228,7 +4224,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibratorTest
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -4375,7 +4370,6 @@ public class PROSACRobustKnownFrameGyroscopeCalibratorTest
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
                     error = Math.abs(errorRandomizer.nextDouble());
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

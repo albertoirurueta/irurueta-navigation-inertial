@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.PROSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -4091,11 +4092,13 @@ public class PROSACRobustTurntableGyroscopeCalibrator extends
                             @Override
                             public void onEstimateStart(
                                     final RobustEstimator<PreliminaryResult> estimator) {
+                                // no action needed
                             }
 
                             @Override
                             public void onEstimateEnd(
                                     final RobustEstimator<PreliminaryResult> estimator) {
+                                // no action needed
                             }
 
                             @Override

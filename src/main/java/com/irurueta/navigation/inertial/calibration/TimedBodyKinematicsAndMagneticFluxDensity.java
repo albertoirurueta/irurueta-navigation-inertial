@@ -21,6 +21,7 @@ import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.Objects;
 
 /**
@@ -129,7 +130,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * Constructor.
      *
      * @param magneticFluxDensity body magnetic flux density.
-     * @param timestampSeconds timestamp value expressed in seconds.
+     * @param timestampSeconds    timestamp value expressed in seconds.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity,
@@ -142,7 +143,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * Constructor.
      *
      * @param magneticFluxDensity body magnetic flux density.
-     * @param timestamp  timestamp value.
+     * @param timestamp           timestamp value.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity,
@@ -157,7 +158,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param kinematics          body kinematics containing sensed specific force
      *                            and angular rate.
      * @param magneticFluxDensity body magnetic flux density.
-     * @param timestampSeconds timestamp value expressed in seconds.
+     * @param timestampSeconds    timestamp value expressed in seconds.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics,
@@ -174,7 +175,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param kinematics          body kinematics containing sensed specific force
      *                            and angular rate.
      * @param magneticFluxDensity body magnetic flux density.
-     * @param timestamp  timestamp value.
+     * @param timestamp           timestamp value.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics,

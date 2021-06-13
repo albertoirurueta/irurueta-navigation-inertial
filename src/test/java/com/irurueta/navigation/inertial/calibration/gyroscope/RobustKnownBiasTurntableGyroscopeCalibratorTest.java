@@ -9413,7 +9413,8 @@ public class RobustKnownBiasTurntableGyroscopeCalibratorTest implements
         final Matrix accelerometerBias = new Matrix(3, 1);
         final Matrix accelerometerMa = new Matrix(3, 3);
 
-        final RobustKnownBiasTurntableGyroscopeCalibrator calibrator = RobustKnownBiasTurntableGyroscopeCalibrator.create(
+        final RobustKnownBiasTurntableGyroscopeCalibrator calibrator =
+                RobustKnownBiasTurntableGyroscopeCalibrator.create(
                 position, ROTATION_RATE, TIME_INTERVAL,
                 measurements, false,
                 false,
@@ -10334,26 +10335,22 @@ public class RobustKnownBiasTurntableGyroscopeCalibratorTest implements
     @Override
     public void onCalibrateStart(
             final RobustKnownBiasTurntableGyroscopeCalibrator calibrator) {
-
     }
 
     @Override
     public void onCalibrateEnd(
             final RobustKnownBiasTurntableGyroscopeCalibrator calibrator) {
-
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustKnownBiasTurntableGyroscopeCalibrator calibrator,
             final int iteration) {
-
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustKnownBiasTurntableGyroscopeCalibrator calibrator,
             final float progress) {
-
     }
 }

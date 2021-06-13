@@ -17,6 +17,7 @@ package com.irurueta.navigation.inertial.calibration.accelerometer;
 
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
+
 import java.util.Collection;
 
 /**

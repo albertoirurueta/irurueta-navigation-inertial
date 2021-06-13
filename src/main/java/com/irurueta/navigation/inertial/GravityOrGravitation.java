@@ -20,6 +20,7 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -27,7 +28,6 @@ import java.util.Objects;
  * Contains acceleration due to gravity resolved about ECEF or ECI frame, depending
  * on the implementation.
  */
-@SuppressWarnings("WeakerAccess")
 public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> implements Serializable, Cloneable {
     /**
      * Number of components.

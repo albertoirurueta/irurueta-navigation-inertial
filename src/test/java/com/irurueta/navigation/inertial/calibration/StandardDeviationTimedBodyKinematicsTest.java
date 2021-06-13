@@ -994,7 +994,6 @@ public class StandardDeviationTimedBodyKinematicsTest {
         final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics2 =
                 new StandardDeviationTimedBodyKinematics(standardDeviationTimedBodyKinematics1);
 
-
         // check default values
         assertEquals(standardDeviationTimedBodyKinematics2.getSpecificForceStandardDeviation(),
                 specificForceStandardDeviation, 0.0);

@@ -10344,26 +10344,22 @@ public class RobustTurntableGyroscopeCalibratorTest implements
     @Override
     public void onCalibrateStart(
             final RobustTurntableGyroscopeCalibrator calibrator) {
-
     }
 
     @Override
     public void onCalibrateEnd(
             final RobustTurntableGyroscopeCalibrator calibrator) {
-
     }
 
     @Override
     public void onCalibrateNextIteration(
             final RobustTurntableGyroscopeCalibrator calibrator,
             final int iteration) {
-
     }
 
     @Override
     public void onCalibrateProgressChange(
             final RobustTurntableGyroscopeCalibrator calibrator,
             final float progress) {
-
     }
 }

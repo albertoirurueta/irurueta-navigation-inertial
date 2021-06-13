@@ -24,11 +24,11 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.ECEFtoNEDFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECEFGravity;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
 import com.irurueta.navigation.inertial.calibration.IMUErrors;
@@ -1039,7 +1039,6 @@ public class AccelerometerMeasurementsGeneratorTest implements
         assertEquals(mInitializationStarted, 1);
         assertEquals(mInitializationCompleted, 1);
 
-
         final int staticPeriodLength = generator.getMinStaticSamples() / 2;
         final int dynamicPeriodLength = 2 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
 
@@ -1123,7 +1122,6 @@ public class AccelerometerMeasurementsGeneratorTest implements
 
         assertEquals(mInitializationStarted, 1);
         assertEquals(mInitializationCompleted, 1);
-
 
         final int staticPeriodLength = 3 * TriadStaticIntervalDetector.DEFAULT_WINDOW_SIZE;
         final int dynamicPeriodLength = 2 * generator.getMaxDynamicSamples();

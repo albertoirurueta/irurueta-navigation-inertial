@@ -28,6 +28,7 @@ import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.io.IOException;
 import java.util.List;
 
@@ -1017,11 +1018,13 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibrator ext
                     @Override
                     public void onEstimateStart(
                             final RobustEstimator<Matrix> estimator) {
+                        // no action needed
                     }
 
                     @Override
                     public void onEstimateEnd(
                             final RobustEstimator<Matrix> estimator) {
+                        // no action needed
                     }
 
                     @Override

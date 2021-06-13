@@ -16,11 +16,11 @@
 
 /**
  * Contains approximate bias (or hard iron for the magnetometer case) estimators.
- *
+ * <p>
  * Bias can be approximately estimated for accelerometers, gyroscopes and
  * magnetometers when body remains static and its position respect to Earth
  * and orientation is approximately known.
- *
+ * <p>
  * Estimators in this package assume that any cross coupling error can be
  * neglected, hence estimated biases are approximate, however these
  * approximate values can be used by some non-linear calibrators to obtain
@@ -48,8 +48,8 @@
  * of its subclasses.
  * - com.irurueta.navigation.inertial.calibration.magnetometer.RobustKnownPositionAndInstantMagnetometerCalibrator
  * and any of its subclasses.
- *
- *
+ * <p>
+ * <p>
  * On the other hand, it can be simply be assumed that estimated biases are
  * accurate enough and can be used by calibrators such as:
  * - com.irurueta.navigation.inertial.calibration.accelerometer.KnownBiasAndFrameAccelerometerLinearLeastSquaresCalibrator

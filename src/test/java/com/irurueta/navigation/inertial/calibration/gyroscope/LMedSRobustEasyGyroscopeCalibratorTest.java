@@ -7516,7 +7516,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -7772,7 +7771,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8039,7 +8037,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8193,7 +8190,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8311,7 +8307,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8463,7 +8458,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8581,7 +8575,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8733,7 +8726,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8851,7 +8843,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -9006,7 +8997,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -9124,7 +9114,6 @@ public class LMedSRobustEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator

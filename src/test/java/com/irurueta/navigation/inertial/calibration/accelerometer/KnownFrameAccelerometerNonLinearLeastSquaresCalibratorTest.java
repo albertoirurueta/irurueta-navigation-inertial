@@ -24,9 +24,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -11429,7 +11429,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibratorTest implemen
     }
 
     @Test
-    public void testGetSetInitialMx() throws WrongSizeException, LockedException {
+    public void testGetSetInitialMxy() throws WrongSizeException, LockedException {
         final KnownFrameAccelerometerNonLinearLeastSquaresCalibrator calibrator =
                 new KnownFrameAccelerometerNonLinearLeastSquaresCalibrator();
 
@@ -12505,7 +12505,7 @@ public class KnownFrameAccelerometerNonLinearLeastSquaresCalibratorTest implemen
 
     @Override
     public void onCalibrateStart(
-            KnownFrameAccelerometerNonLinearLeastSquaresCalibrator calibrator) {
+            final KnownFrameAccelerometerNonLinearLeastSquaresCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateStart++;
     }

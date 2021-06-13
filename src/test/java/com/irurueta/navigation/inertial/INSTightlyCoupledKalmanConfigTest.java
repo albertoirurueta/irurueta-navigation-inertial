@@ -48,7 +48,6 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(config.getPseudoRangeSD(), 0.0, 0.0);
         assertEquals(config.getRangeRateSD(), 0.0, 0.0);
 
-
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
@@ -75,7 +74,6 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(config.getPseudoRangeSD(), pseudoRangeSD, 0.0);
         assertEquals(config.getRangeRateSD(), rangeRateSD, 0.0);
 
-
         // test constructor with values
         final Distance pseudoRangeSDDistance = new Distance(pseudoRangeSD,
                 DistanceUnit.METER);
@@ -96,7 +94,6 @@ public class INSTightlyCoupledKalmanConfigTest {
         assertEquals(config.getClockPhasePSD(), clockPhasePSD, 0.0);
         assertEquals(config.getPseudoRangeSD(), pseudoRangeSD, 0.0);
         assertEquals(config.getRangeRateSD(), rangeRateSD, 0.0);
-
 
         // test copy constructor
         final INSTightlyCoupledKalmanConfig config2 =

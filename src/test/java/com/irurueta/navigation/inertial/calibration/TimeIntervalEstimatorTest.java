@@ -57,7 +57,6 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isFinished());
 
-
         // test constructor with listener
         estimator = new TimeIntervalEstimator(this);
 
@@ -73,7 +72,6 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertEquals(estimator.getNumberOfProcessedSamples(), 0);
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isFinished());
-
 
         // test constructor with total samples
         estimator = new TimeIntervalEstimator(1);
@@ -98,7 +96,6 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor with total samples and listener
         estimator = new TimeIntervalEstimator(1, this);
@@ -275,7 +272,7 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertNull(estimator.getLastTimestamp());
         assertFalse(estimator.isRunning());
 
-        GaussianRandomizer randomizer = new GaussianRandomizer(new Random(),
+        final GaussianRandomizer randomizer = new GaussianRandomizer(new Random(),
                 0.0, TIME_INTERVAL_STD);
         final int totalSamples = estimator.getTotalSamples();
         Double lastTimestamp = null;
@@ -360,26 +357,26 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
     }
 
     @Override
-    public void onStart(TimeIntervalEstimator estimator) {
+    public void onStart(final TimeIntervalEstimator estimator) {
         checkLocked(estimator);
         mStart++;
     }
 
     @Override
-    public void onTimestampAdded(TimeIntervalEstimator estimator) {
+    public void onTimestampAdded(final TimeIntervalEstimator estimator) {
         checkLocked(estimator);
         mTimestampAdded++;
     }
 
     @Override
-    public void onFinish(TimeIntervalEstimator estimator) {
+    public void onFinish(final TimeIntervalEstimator estimator) {
         assertFalse(estimator.isRunning());
         assertTrue(estimator.isFinished());
         mFinish++;
     }
 
     @Override
-    public void onReset(TimeIntervalEstimator estimator) {
+    public void onReset(final TimeIntervalEstimator estimator) {
         checkLocked(estimator);
         mReset++;
     }

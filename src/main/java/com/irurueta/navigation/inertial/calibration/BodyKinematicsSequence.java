@@ -18,6 +18,7 @@ package com.irurueta.navigation.inertial.calibration;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -790,8 +791,13 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      */
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+
         final BodyKinematicsSequence<?> that = (BodyKinematicsSequence<?>) o;
         return Double.compare(that.mBeforeMeanFx, mBeforeMeanFx) == 0 &&
                 Double.compare(that.mBeforeMeanFy, mBeforeMeanFy) == 0 &&

@@ -53,7 +53,7 @@ public class WMMLoader {
      * @throws IOException if an I/O error occurs.
      */
     public static WorldMagneticModel loadFromResource(final String resource) throws IOException {
-        try(final InputStream stream = WMMLoader.class
+        try (final InputStream stream = WMMLoader.class
                 .getResourceAsStream(resource)) {
             return load(stream);
         }

@@ -53,7 +53,6 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
-
         // test constructor with body kinematics
         final BodyKinematics kinematics = createBodyKinematics();
         timedBodyKinematics = new TimedBodyKinematics(kinematics);
@@ -67,7 +66,6 @@ public class TimedBodyKinematicsTest {
         time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
-
 
         // test constructor with timestamp in seconds
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -85,7 +83,6 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
-
         // test constructor with timestamp
         final Time time = new Time(timestampSeconds, TimeUnit.SECOND);
         timedBodyKinematics = new TimedBodyKinematics(time);
@@ -98,7 +95,6 @@ public class TimedBodyKinematicsTest {
         time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
-
 
         // test constructor with body kinematics and timestamp in seconds
         timedBodyKinematics = new TimedBodyKinematics(kinematics, timestampSeconds);
@@ -113,7 +109,6 @@ public class TimedBodyKinematicsTest {
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
 
-
         // test constructor with body kinematics and timestamp
         timedBodyKinematics = new TimedBodyKinematics(kinematics, time);
 
@@ -125,7 +120,6 @@ public class TimedBodyKinematicsTest {
         time2 = new Time(0.0, TimeUnit.HOUR);
         timedBodyKinematics.getTimestamp(time2);
         assertEquals(time1, time2);
-
 
         // test copy constructor
         final TimedBodyKinematics timedBodyKinematics2 = new TimedBodyKinematics(timedBodyKinematics);

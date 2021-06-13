@@ -84,7 +84,7 @@ public class WindowedAngularSpeedTriadNoiseEstimator extends
      * @param valueX x coordinate value.
      * @param valueY y coordinate value.
      * @param valueZ z coordinate value.
-     * @param unit unit.
+     * @param unit   unit.
      * @return created triad.
      */
     @Override
@@ -122,11 +122,11 @@ public class WindowedAngularSpeedTriadNoiseEstimator extends
      * Creates a measurement with provided value and unit.
      *
      * @param value value to be set.
-     * @param unit unit to be set.
+     * @param unit  unit to be set.
      * @return created measurement.
      */
     @Override
-    protected AngularSpeed createMeasurement(double value, AngularSpeedUnit unit) {
+    protected AngularSpeed createMeasurement(final double value, final AngularSpeedUnit unit) {
         return new AngularSpeed(value, unit);
     }
 

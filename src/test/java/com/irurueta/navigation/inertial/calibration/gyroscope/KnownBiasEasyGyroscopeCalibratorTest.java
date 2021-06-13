@@ -26,9 +26,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
@@ -282,7 +282,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                 new KnownBiasEasyGyroscopeCalibrator(
                         sequences, bg, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -451,7 +450,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -524,7 +522,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         KnownBiasEasyGyroscopeCalibrator calibrator =
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bg, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -693,7 +690,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -770,7 +766,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -939,7 +934,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -1002,7 +996,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         KnownBiasEasyGyroscopeCalibrator calibrator =
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -1171,7 +1164,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1258,7 +1250,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         KnownBiasEasyGyroscopeCalibrator calibrator =
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg, baArray, ma);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -1427,7 +1418,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1535,7 +1525,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg, baArray, ma, this);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -1703,7 +1692,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1813,7 +1801,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bg, mg, gg, ba, ma);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -1981,7 +1968,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2104,7 +2090,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         KnownBiasEasyGyroscopeCalibrator calibrator =
                 new KnownBiasEasyGyroscopeCalibrator(sequences,
                         bg, mg, gg, ba, ma, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -2377,7 +2362,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         bg, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -2546,7 +2530,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -2627,7 +2610,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bg, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -2796,7 +2778,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2883,7 +2864,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         bgArray, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -3052,7 +3032,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -3126,7 +3105,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bgArray, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -3295,7 +3273,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3390,7 +3367,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bgArray, mg, gg, baArray, ma);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -3559,7 +3535,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3683,7 +3658,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         bgArray, mg, gg, baArray, ma, this);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -3851,7 +3825,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3977,7 +3950,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         bg, mg, gg, ba, ma);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -4145,7 +4117,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4289,7 +4260,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
                         false,
                         bg, mg, gg, ba, ma, this);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -4457,7 +4427,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5744,7 +5713,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertArrayEquals(bg3, bg4, 0.0);
         assertArrayEquals(bg3, bg5, 0.0);
 
-
         // Force IllegalArgumentException
         try {
             calibrator.getBias(new double[1]);
@@ -5833,7 +5801,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
         assertEquals(mg3, mg4);
         assertEquals(mg3, mg5);
 
-
         // Force IllegalArgumentException
         try {
             calibrator.getInitialMg(new Matrix(1, 3));
@@ -5882,7 +5849,6 @@ public class KnownBiasEasyGyroscopeCalibratorTest implements
 
         assertEquals(gg3, gg4);
         assertEquals(gg3, gg5);
-
 
         // Force IllegalArgumentException
         try {

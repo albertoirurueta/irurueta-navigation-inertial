@@ -45,19 +45,19 @@ import com.irurueta.units.TimeUnit;
  * Approximately estimates accelerometer and gyroscope biases and noise PSD's
  * by averaging all provided samples when body position and orientation is known
  * while assuming that any cross coupling errors can be neglected.
- *
+ * <p>
  * This estimator must be used when the body where the accelerometer and gyroscope
  * is attached remains static on the same position with zero velocity and no rotation
  * speed while capturing data.
- *
+ * <p>
  * To compute PSD's this estimator assumes that accelerometer samples are obtained
  * at a constant provided rate equal to {@link #getTimeInterval()} seconds.
  * If not available, accelerometer and gyroscope sampling rate average can be
  * estimated using {@link com.irurueta.navigation.inertial.calibration.TimeIntervalEstimator}.
- *
+ * <p>
  * Notice that in order to compute accelerometer and gyroscope biases, body position
  * and orientation must be known to account for gravity and Earth rotation effects.
- *
+ * <p>
  * Even though this estimator obtains approximate bias values, the obtained
  * result can be used to initialize some non-linear calibrators to obtain
  * more accurate results. Such calibrators are:
@@ -80,11 +80,11 @@ import com.irurueta.units.TimeUnit;
  * its subclasses.
  * - com.irurueta.navigation.inertial.calibration.gyroscope.RobustKnownBiasTurntableGyroscopeCalibrator and any
  * of its subclasses.
- *
+ * <p>
  * Even though this estimator can compute noise PSD's, if only noise PSD's levels
  * are required, estimators in {@link com.irurueta.navigation.inertial.calibration.noise} package should
  * be used instead.
- *
+ * <p>
  * This estimator does NOT compute average bias values over a period of time, it only
  * computes accumulated averages.
  */
@@ -546,7 +546,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final double latitude, final double longitude,
-                            final double height, final double timeInterval) {
+                                       final double height, final double timeInterval) {
         this(latitude, longitude, height);
         try {
             setTimeInterval(timeInterval);
@@ -571,7 +571,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                            final double height, final double timeInterval) {
+                                       final double height, final double timeInterval) {
         this(latitude, longitude, height);
         try {
             setTimeInterval(timeInterval);
@@ -596,7 +596,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                            final Distance height, final double timeInterval) {
+                                       final Distance height, final double timeInterval) {
         this(latitude, longitude, height);
         try {
             setTimeInterval(timeInterval);
@@ -677,7 +677,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final double timeInterval,
-                            final BodyKinematicsBiasEstimatorListener listener) {
+                                       final BodyKinematicsBiasEstimatorListener listener) {
         this(timeInterval);
         mListener = listener;
     }
@@ -883,7 +883,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final double latitude, final double longitude,
-                            final double height, final Time timeInterval) {
+                                       final double height, final Time timeInterval) {
         this(latitude, longitude, height, convertTime(timeInterval));
     }
 
@@ -902,7 +902,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                            final double height, final Time timeInterval) {
+                                       final double height, final Time timeInterval) {
         this(latitude, longitude, height, convertTime(timeInterval));
     }
 
@@ -921,7 +921,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final Angle latitude, final Angle longitude,
-                            final Distance height, final Time timeInterval) {
+                                       final Distance height, final Time timeInterval) {
         this(latitude, longitude, height, convertTime(timeInterval));
     }
 
@@ -984,7 +984,7 @@ public class BodyKinematicsBiasEstimator {
      * @throws IllegalArgumentException if provided time interval is negative.
      */
     public BodyKinematicsBiasEstimator(final Time timeInterval,
-                            final BodyKinematicsBiasEstimatorListener listener) {
+                                       final BodyKinematicsBiasEstimatorListener listener) {
         this(convertTime(timeInterval), listener);
     }
 

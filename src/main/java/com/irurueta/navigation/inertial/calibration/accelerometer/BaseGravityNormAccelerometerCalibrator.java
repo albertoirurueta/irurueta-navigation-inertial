@@ -38,6 +38,7 @@ import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEv
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.util.Collection;
 
 /**
@@ -6122,7 +6123,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         final GradientEstimator gradientEstimator = new GradientEstimator(
                 new MultiDimensionFunctionEvaluatorListener() {
                     @Override
-                    public double evaluate(double[] point) throws EvaluationException {
+                    public double evaluate(final double[] point) throws EvaluationException {
                         return evaluateGeneral(point);
                     }
                 });
@@ -6245,18 +6246,18 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33)
         // as:
-        //[bax] = 	[m11 * bx + m12 * by + m13 * bz]
-        //[bay]		[m21 * bx + m22 * by + m23 * bz]
-        //[baz]		[m31 * bx + m32 * by + m33 * bz]
-        //[sx]		[m11 - 1]
-        //[sy]		[m22 - 1]
-        //[sz]		[m33 - 1]
-        //[mxy]	    [m12]
-        //[mxz]	    [m13]
-        //[myx]	    [m21]
-        //[myz]	    [m23]
-        //[mzx]	    [m31]
-        //[mzy]	    [m32]
+        // [bax] = 	[m11 * bx + m12 * by + m13 * bz]
+        // [bay]	[m21 * bx + m22 * by + m23 * bz]
+        // [baz]	[m31 * bx + m32 * by + m33 * bz]
+        // [sx]		[m11 - 1]
+        // [sy]		[m22 - 1]
+        // [sz]		[m33 - 1]
+        // [mxy]    [m12]
+        // [mxz]    [m13]
+        // [myx]    [m21]
+        // [myz]    [m23]
+        // [mzx]    [m31]
+        // [mzy]    [m32]
 
         // Then the Jacobian of F(b, M) is:
         // J = 	[m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
@@ -6375,7 +6376,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         final GradientEstimator gradientEstimator = new GradientEstimator(
                 new MultiDimensionFunctionEvaluatorListener() {
                     @Override
-                    public double evaluate(double[] point) throws EvaluationException {
+                    public double evaluate(final double[] point) throws EvaluationException {
                         return evaluateCommonAxis(point);
                     }
                 });
@@ -6508,18 +6509,18 @@ public abstract class BaseGravityNormAccelerometerCalibrator<C extends BaseGravi
         // Defining the linear application:
         // F(b, M) = F(bx, by, bz, m11, m12, m22, m13, m23, m33)
         // as:
-        //[bax] = 	[m11 * bx + m12 * by + m13 * bz]
-        //[bay]		[m22 * by + m23 * bz]
-        //[baz]		[m33 * bz]
-        //[sx]		[m11 - 1]
-        //[sy]		[m22 - 1]
-        //[sz]		[m33 -1]
-        //[mxy]	    [m12]
-        //[mxz]	    [m13]
-        //[myx]	    [0]
-        //[myz]	    [m23]
-        //[mzx]	    [0]
-        //[mzy]	    [0]
+        // [bax] = 	[m11 * bx + m12 * by + m13 * bz]
+        // [bay]	[m22 * by + m23 * bz]
+        // [baz]	[m33 * bz]
+        // [sx]		[m11 - 1]
+        // [sy]		[m22 - 1]
+        // [sz]		[m33 -1]
+        // [mxy]    [m12]
+        // [mxz]    [m13]
+        // [myx]    [0]
+        // [myz]    [m23]
+        // [mzx]    [0]
+        // [mzy]    [0]
 
         // Then the Jacobian of F(b, M) is:
         // J = 	[m11  m12  m13  bx  by  0   bz  0   0 ]

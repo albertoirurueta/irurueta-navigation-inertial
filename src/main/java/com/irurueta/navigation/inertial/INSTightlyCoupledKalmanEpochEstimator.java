@@ -33,6 +33,7 @@ import com.irurueta.units.AngleUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.Collection;
 
 /**
@@ -188,7 +189,6 @@ public class INSTightlyCoupledKalmanEpochEstimator {
 
         phiMatrix.setElementAt(15, 16, propagationInterval);
 
-
         // 2. Determine approximate system noise covariance matrix using (14.82)
         final Matrix qPrimeMatrix = new Matrix(
                 INSTightlyCoupledKalmanState.NUM_PARAMS,
@@ -226,7 +226,6 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         final double clockFreqValue = clockFreqPSD * propagationInterval;
         qPrimeMatrix.setElementAt(16, 16, clockFreqValue);
 
-
         // 3. Propagate state estimates using (3.14) noting that only the clock
         // states are non-zero due to closed-loop correction
         final double prevClockOffset = previousState.getReceiverClockOffset();
@@ -249,7 +248,6 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         pMatrixPropagated.multiply(phiMatrix);
 
         pMatrixPropagated.add(qPrimeMatrix);
-
 
         // MEASUREMENT UPDATE PHASE
 
@@ -406,7 +404,6 @@ public class INSTightlyCoupledKalmanEpochEstimator {
         k.multiply(h);
         updatedCovariance.subtract(k);
         updatedCovariance.multiply(pMatrixPropagated);
-
 
         // CLOSED-LOOP CORRECTION
 
@@ -582,8 +579,8 @@ public class INSTightlyCoupledKalmanEpochEstimator {
             final INSTightlyCoupledKalmanConfig config,
             final INSTightlyCoupledKalmanState result) throws AlgebraException {
 
-        final com.irurueta.navigation.frames.NEDPosition prevNedPosition = new NEDPosition();
-        final com.irurueta.navigation.frames.NEDVelocity prevNedVelocity = new NEDVelocity();
+        final NEDPosition prevNedPosition = new NEDPosition();
+        final NEDVelocity prevNedVelocity = new NEDVelocity();
         ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(
                 previousState.getX(), previousState.getY(), previousState.getZ(),
                 previousState.getVx(), previousState.getVy(), previousState.getVz(),

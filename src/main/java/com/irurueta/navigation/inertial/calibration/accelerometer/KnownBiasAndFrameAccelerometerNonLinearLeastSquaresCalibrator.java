@@ -32,6 +32,7 @@ import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFunctionEval
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationConverter;
 import com.irurueta.units.AccelerationUnit;
+
 import java.util.Collection;
 
 /**
@@ -3013,34 +3014,34 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
         // fmeas = ba + (I + Ma) * ftrue
 
         // Hence:
-        //  [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
-        //  [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
-        //  [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
+        // [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
 
         // where myx = mzx = mzy = 0
 
         // Hence:
-        //  [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
-        //  [fmeasy] = [by]     [0  1   0]   [0     sy  myz]    [ftruey]
-        //  [fmeasz] = [bz]     [0  0   1]   [0     0   sz ]    [ftruez]
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy] = [by]     [0  1   0]   [0     sy  myz]    [ftruey]
+        // [fmeasz] = [bz]     [0  0   1]   [0     0   sz ]    [ftruez]
 
-        //  [fmeasx] = [bx] +   [1+sx   mxy     mxz ][ftruex]
-        //  [fmeasy]   [by]     [0      1+sy    myz ][ftruey]
-        //  [fmeasz]   [bz]     [0      0       1+sz][ftruez]
+        // [fmeasx] = [bx] +   [1+sx   mxy     mxz ][ftruex]
+        // [fmeasy]   [by]     [0      1+sy    myz ][ftruey]
+        // [fmeasz]   [bz]     [0      0       1+sz][ftruez]
 
-        //  fmeasx = bx + (1+sx) * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + (1+sy) * ftruey + myz * ftruez
-        //  fmeasz = bz + (1+sz) * ftruez
+        // fmeasx = bx + (1+sx) * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + (1+sy) * ftruey + myz * ftruez
+        // fmeasz = bz + (1+sz) * ftruez
 
         // Where the unknowns are: sx, sy, sz, mxy mxz, myz
         // Reordering:
-        //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + ftruey + sy * ftruey + myz * ftruez
-        //  fmeasz = bz + ftruez + sz * ftruez
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + ftruez + sz * ftruez
 
-        //  fmeasx - ftruex - bx = sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy - ftruey - by = sy * ftruey + myz * ftruez
-        //  fmeasz - ftruez - bz = sz * ftruez
+        // fmeasx - ftruex - bx = sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy - ftruey - by = sy * ftruey + myz * ftruez
+        // fmeasz - ftruez - bz = sz * ftruez
 
         // [ftruex  0       0       ftruey  ftruez  0     ][sx ] = [fmeasx - ftruex - bx]
         // [0       ftruey  0       0       0       ftruez][sy ]   [fmeasy - ftruey - by]
@@ -3082,9 +3083,9 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
                     final int i, final double[] point, final double[] result,
                     final double[] params, final Matrix jacobian) {
                 // We know that
-                //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-                //  fmeasy = by + ftruey + sy * ftruey + myz * ftruez
-                //  fmeasz = bz + ftruez + sz * ftruez
+                // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+                // fmeasy = by + ftruey + sy * ftruey + myz * ftruez
+                // fmeasz = bz + ftruez + sz * ftruez
 
                 // Hence, the derivatives respect the parameters sx, sy, sz, mxy, mxz, myz are:
 
@@ -3185,15 +3186,15 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
 
         // We define a lineal function mapping original parameters for the common
         // axis case to the general case
-        //[sx'] = [1  0  0  0  0  0][sx]
-        //[sy']   [0  1  0  0  0  0][sy]
-        //[sz']   [0  0  1  0  0  0][sz]
-        //[mxy']  [0  0  0  1  0  0][mxy]
-        //[mxz']  [0  0  0  0  1  0][mxz]
-        //[myx']  [0  0  0  0  0  0][myz]
-        //[myz']  [0  0  0  0  0  1]
-        //[mzx']  [0  0  0  0  0  0]
-        //[mzy']  [0  0  0  0  0  0]
+        // [sx'] = [1  0  0  0  0  0][sx]
+        // [sy']   [0  1  0  0  0  0][sy]
+        // [sz']   [0  0  1  0  0  0][sz]
+        // [mxy']  [0  0  0  1  0  0][mxy]
+        // [mxz']  [0  0  0  0  1  0][mxz]
+        // [myx']  [0  0  0  0  0  0][myz]
+        // [myz']  [0  0  0  0  0  1]
+        // [mzx']  [0  0  0  0  0  0]
+        // [mzy']  [0  0  0  0  0  0]
 
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
@@ -3227,27 +3228,27 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
         // fmeas = ba + (I + Ma) * ftrue
 
         // Hence:
-        //  [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
-        //  [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
-        //  [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
+        // [fmeasx] = [bx] + ( [1  0   0] + [sx    mxy mxz])   [ftruex]
+        // [fmeasy] = [by]     [0  1   0]   [myx   sy  myz]    [ftruey]
+        // [fmeasz] = [bz]     [0  0   1]   [mzx   mzy sz ]    [ftruez]
 
-        //  [fmeasx] = [bx] +   [1+sx   mxy     mxz ][ftruex]
-        //  [fmeasy]   [by]     [myx    1+sy    myz ][ftruey]
-        //  [fmeasz]   [bz]     [mzx    mzy     1+sz][ftruez]
+        // [fmeasx] = [bx] +   [1+sx   mxy     mxz ][ftruex]
+        // [fmeasy]   [by]     [myx    1+sy    myz ][ftruey]
+        // [fmeasz]   [bz]     [mzx    mzy     1+sz][ftruez]
 
-        //  fmeasx = bx + (1+sx) * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + myx * ftruex + (1+sy) * ftruey + myz * ftruez
-        //  fmeasz = bz + mzx * ftruex + mzy * ftruey + (1+sz) * ftruez
+        // fmeasx = bx + (1+sx) * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + (1+sy) * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + (1+sz) * ftruez
 
         // Where the unknowns are: sx, sy, sz, mxy mxz, myx, myz, mzx, mzy
         // Reordering:
-        //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
-        //  fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
-        //  fmeasx - ftruex - bx = sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy - ftruey - by = myx * ftruex + sy * ftruey + myz * ftruez
-        //  fmeasz - ftruez - bz = mzx * ftruex + mzy * ftruey + sz * ftruez
+        // fmeasx - ftruex - bx = sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy - ftruey - by = myx * ftruex + sy * ftruey + myz * ftruez
+        // fmeasz - ftruez - bz = mzx * ftruex + mzy * ftruey + sz * ftruez
 
         // [ftruex  0       0       ftruey  ftruez  0       0       0       0     ][sx ] = [fmeasx - ftruex - bx]
         // [0       ftruey  0       0       0       ftruex  ftruez  0       0     ][sy ]   [fmeasy - ftruey - by]
@@ -3296,9 +3297,9 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
                     final int i, final double[] point, final double[] result,
                     final double[] params, final Matrix jacobian) {
                 // We know that:
-                //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-                //  fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
-                //  fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+                // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+                // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+                // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
                 // Hence, the derivatives respect the parameters sx, sy, sz,
                 // mxy, mxz, myx, myz, mzx and mzy is:
@@ -3432,9 +3433,9 @@ public class KnownBiasAndFrameAccelerometerNonLinearLeastSquaresCalibrator imple
      */
     private void setInputData() throws WrongSizeException {
         // set input data using:
-        //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
-        //  fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
         final BodyKinematics expectedKinematics = new BodyKinematics();
 

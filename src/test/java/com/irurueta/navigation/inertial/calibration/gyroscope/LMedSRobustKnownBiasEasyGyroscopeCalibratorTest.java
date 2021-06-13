@@ -26,9 +26,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
@@ -6083,7 +6083,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
         assertArrayEquals(bg3, bg4, 0.0);
         assertArrayEquals(bg3, bg5, 0.0);
 
-
         // Force IllegalArgumentException
         try {
             calibrator.getBias(new double[1]);
@@ -6172,7 +6171,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
         assertEquals(mg3, mg4);
         assertEquals(mg3, mg5);
 
-
         // Force IllegalArgumentException
         try {
             calibrator.getInitialMg(new Matrix(1, 3));
@@ -6221,7 +6219,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
         assertEquals(gg3, gg4);
         assertEquals(gg3, gg5);
-
 
         // Force IllegalArgumentException
         try {
@@ -6912,7 +6909,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -7166,7 +7162,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -7428,7 +7423,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -7577,7 +7571,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -7695,7 +7688,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -7845,7 +7837,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -7963,7 +7954,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8228,7 +8218,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8378,7 +8367,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8496,7 +8484,6 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
                                 .generate(TIME_INTERVAL_SECONDS,
                                         trueKinematics, errorsOutlier,
                                         random);
-
                     } else {
                         // inlier
                         measuredKinematics = BodyKinematicsGenerator
@@ -8619,25 +8606,27 @@ public class LMedSRobustKnownBiasEasyGyroscopeCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
         checkLocked((LMedSRobustKnownBiasEasyGyroscopeCalibrator) calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownBiasEasyGyroscopeCalibrator calibrator) {
         checkLocked((LMedSRobustKnownBiasEasyGyroscopeCalibrator) calibrator);
         mCalibrateEnd++;
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownBiasEasyGyroscopeCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownBiasEasyGyroscopeCalibrator calibrator, final int iteration) {
         checkLocked((LMedSRobustKnownBiasEasyGyroscopeCalibrator) calibrator);
         mCalibrateNextIteration++;
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownBiasEasyGyroscopeCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownBiasEasyGyroscopeCalibrator calibrator, final float progress) {
         checkLocked((LMedSRobustKnownBiasEasyGyroscopeCalibrator) calibrator);
         mCalibrateProgressChange++;
     }

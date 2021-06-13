@@ -27,6 +27,7 @@ import com.irurueta.numerical.robust.MSACRobustEstimatorListener;
 import com.irurueta.numerical.robust.RobustEstimator;
 import com.irurueta.numerical.robust.RobustEstimatorException;
 import com.irurueta.numerical.robust.RobustEstimatorMethod;
+
 import java.util.List;
 
 /**
@@ -689,72 +690,74 @@ public class MSACRobustEasyGyroscopeCalibrator extends RobustEasyGyroscopeCalibr
         final MSACRobustEstimator<PreliminaryResult> innerEstimator =
                 new MSACRobustEstimator<>(
                         new MSACRobustEstimatorListener<PreliminaryResult>() {
-                    @Override
-                    public double getThreshold() {
-                        return mThreshold;
-                    }
+                            @Override
+                            public double getThreshold() {
+                                return mThreshold;
+                            }
 
-                    @Override
-                    public int getTotalSamples() {
-                        return mSequences.size();
-                    }
+                            @Override
+                            public int getTotalSamples() {
+                                return mSequences.size();
+                            }
 
-                    @Override
-                    public int getSubsetSize() {
-                        return mPreliminarySubsetSize;
-                    }
+                            @Override
+                            public int getSubsetSize() {
+                                return mPreliminarySubsetSize;
+                            }
 
-                    @Override
-                    public void estimatePreliminarSolutions(
-                            final int[] samplesIndices,
-                            final List<PreliminaryResult> solutions) {
-                        computePreliminarySolutions(samplesIndices, solutions);
-                    }
+                            @Override
+                            public void estimatePreliminarSolutions(
+                                    final int[] samplesIndices,
+                                    final List<PreliminaryResult> solutions) {
+                                computePreliminarySolutions(samplesIndices, solutions);
+                            }
 
-                    @Override
-                    public double computeResidual(
-                            final PreliminaryResult currentEstimation,
-                            final int i) {
-                        return computeError(mSequences.get(i), currentEstimation);
-                    }
+                            @Override
+                            public double computeResidual(
+                                    final PreliminaryResult currentEstimation,
+                                    final int i) {
+                                return computeError(mSequences.get(i), currentEstimation);
+                            }
 
-                    @Override
-                    public boolean isReady() {
-                        return MSACRobustEasyGyroscopeCalibrator.super.isReady();
-                    }
+                            @Override
+                            public boolean isReady() {
+                                return MSACRobustEasyGyroscopeCalibrator.super.isReady();
+                            }
 
-                    @Override
-                    public void onEstimateStart(
-                            final RobustEstimator<PreliminaryResult> estimator) {
-                    }
+                            @Override
+                            public void onEstimateStart(
+                                    final RobustEstimator<PreliminaryResult> estimator) {
+                                // no action needed
+                            }
 
-                    @Override
-                    public void onEstimateEnd(
-                            final RobustEstimator<PreliminaryResult> estimator) {
-                    }
+                            @Override
+                            public void onEstimateEnd(
+                                    final RobustEstimator<PreliminaryResult> estimator) {
+                                // no action needed
+                            }
 
-                    @Override
-                    public void onEstimateNextIteration(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final int iteration) {
-                        if (mListener != null) {
-                            mListener.onCalibrateNextIteration(
-                                    MSACRobustEasyGyroscopeCalibrator.this,
-                                    iteration);
-                        }
-                    }
+                            @Override
+                            public void onEstimateNextIteration(
+                                    final RobustEstimator<PreliminaryResult> estimator,
+                                    final int iteration) {
+                                if (mListener != null) {
+                                    mListener.onCalibrateNextIteration(
+                                            MSACRobustEasyGyroscopeCalibrator.this,
+                                            iteration);
+                                }
+                            }
 
-                    @Override
-                    public void onEstimateProgressChange(
-                            final RobustEstimator<PreliminaryResult> estimator,
-                            final float progress) {
-                        if (mListener != null) {
-                            mListener.onCalibrateProgressChange(
-                                    MSACRobustEasyGyroscopeCalibrator.this,
-                                    progress);
-                        }
-                    }
-                });
+                            @Override
+                            public void onEstimateProgressChange(
+                                    final RobustEstimator<PreliminaryResult> estimator,
+                                    final float progress) {
+                                if (mListener != null) {
+                                    mListener.onCalibrateProgressChange(
+                                            MSACRobustEasyGyroscopeCalibrator.this,
+                                            progress);
+                                }
+                            }
+                        });
 
         try {
             mRunning = true;

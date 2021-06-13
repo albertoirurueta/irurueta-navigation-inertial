@@ -52,10 +52,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertNull(tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -74,10 +74,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertSame(tkb.getKinematics(), kinematics);
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -95,10 +95,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertNull(tkb.getKinematics());
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -118,10 +118,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertSame(tkb.getKinematics(), kinematics);
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(tkb.getTimestampSeconds(), 0.0, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -142,10 +142,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertNull(tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -167,10 +167,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertNull(tkb.getKinematics());
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -192,10 +192,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertSame(tkb.getKinematics(), kinematics);
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -218,10 +218,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertSame(tkb.getKinematics(), kinematics);
         assertNull(tkb.getMagneticFluxDensity());
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -243,10 +243,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertNull(tkb.getKinematics());
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -269,10 +269,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertNull(tkb.getKinematics());
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -295,10 +295,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertSame(tkb.getKinematics(), kinematics);
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -322,10 +322,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         assertSame(tkb.getKinematics(), kinematics);
         assertSame(tkb.getMagneticFluxDensity(), b);
         assertEquals(tkb.getTimestampSeconds(), timestampSeconds, 0.0);
-        Time time1 = tkb.getTimestamp();
+        final Time time1 = tkb.getTimestamp();
         assertEquals(time1.getValue().doubleValue(), timestampSeconds, 0.0);
         assertEquals(time1.getUnit(), TimeUnit.SECOND);
-        Time time2 = new Time(0.0, TimeUnit.HOUR);
+        final Time time2 = new Time(0.0, TimeUnit.HOUR);
         tkb.getTimestamp(time2);
         assertEquals(time1, time2);
 
@@ -636,6 +636,6 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
         final double bz = randomizer.nextDouble(
                 MIN_MAGNETIC_FLUX_VALUE, MAX_MAGNETIC_FLUX_VALUE);
 
-        return new BodyMagneticFluxDensity(bx, by,bz);
+        return new BodyMagneticFluxDensity(bx, by, bz);
     }
 }

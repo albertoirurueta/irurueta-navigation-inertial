@@ -26,9 +26,9 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
@@ -316,7 +316,6 @@ public class EasyGyroscopeCalibratorTest implements
         EasyGyroscopeCalibrator calibrator = new EasyGyroscopeCalibrator(
                 sequences, bg, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -520,7 +519,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -592,7 +590,6 @@ public class EasyGyroscopeCalibratorTest implements
 
         EasyGyroscopeCalibrator calibrator =
                 new EasyGyroscopeCalibrator(sequences, bg, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -796,7 +793,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -873,7 +869,6 @@ public class EasyGyroscopeCalibratorTest implements
                 new EasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -1077,7 +1072,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -1140,7 +1134,6 @@ public class EasyGyroscopeCalibratorTest implements
         EasyGyroscopeCalibrator calibrator =
                 new EasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -1344,7 +1337,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1431,7 +1423,6 @@ public class EasyGyroscopeCalibratorTest implements
         EasyGyroscopeCalibrator calibrator =
                 new EasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg, baArray, ma);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -1635,7 +1626,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1743,7 +1733,6 @@ public class EasyGyroscopeCalibratorTest implements
                 new EasyGyroscopeCalibrator(sequences,
                         bgArray, mg, gg, baArray, ma, this);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -1946,7 +1935,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2056,7 +2044,6 @@ public class EasyGyroscopeCalibratorTest implements
                 new EasyGyroscopeCalibrator(sequences,
                         bg, mg, gg, ba, ma);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -2259,7 +2246,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2382,7 +2368,6 @@ public class EasyGyroscopeCalibratorTest implements
         EasyGyroscopeCalibrator calibrator =
                 new EasyGyroscopeCalibrator(sequences,
                         bg, mg, gg, ba, ma, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -2690,7 +2675,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         bg, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -2894,7 +2878,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -2975,7 +2958,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bg, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -3179,7 +3161,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3266,7 +3247,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         bgArray, mg, gg);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 0.0, 0.0);
@@ -3470,7 +3450,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -3544,7 +3523,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bgArray, mg, gg, this);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -3748,7 +3726,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3843,7 +3820,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bgArray, mg, gg, baArray, ma);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -4047,7 +4023,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4171,7 +4146,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         bgArray, mg, gg, baArray, ma, this);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -4375,7 +4349,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -4449,7 +4422,6 @@ public class EasyGyroscopeCalibratorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(calibrator);
-
     }
 
     @Test
@@ -4500,7 +4472,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         false,
                         bg, mg, gg, ba, ma);
-
 
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
@@ -4704,7 +4675,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4848,7 +4818,6 @@ public class EasyGyroscopeCalibratorTest implements
                         false,
                         bg, mg, gg, ba, ma, this);
 
-
         // check default values
         assertEquals(calibrator.getAccelerometerBiasX(),
                 bax, 0.0);
@@ -5051,7 +5020,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6340,7 +6308,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertArrayEquals(bg3, bg4, 0.0);
         assertArrayEquals(bg3, bg5, 0.0);
 
-
         // Force IllegalArgumentException
         try {
             calibrator.getInitialBias(new double[1]);
@@ -6429,7 +6396,6 @@ public class EasyGyroscopeCalibratorTest implements
         assertEquals(mg3, mg4);
         assertEquals(mg3, mg5);
 
-
         // Force IllegalArgumentException
         try {
             calibrator.getInitialMg(new Matrix(1, 3));
@@ -6478,7 +6444,6 @@ public class EasyGyroscopeCalibratorTest implements
 
         assertEquals(gg3, gg4);
         assertEquals(gg3, gg5);
-
 
         // Force IllegalArgumentException
         try {
@@ -6864,10 +6829,8 @@ public class EasyGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithZeroInitialValues()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
-            LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, NotReadyException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7108,10 +7071,8 @@ public class EasyGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithNoiseLargeNumberOfMeasurements()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
-            LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, NotReadyException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8307,10 +8268,8 @@ public class EasyGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralCaseAndGDependentCrossBiasesEnabledAndNoNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
-            LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
+            LockedException, NotReadyException, InvalidRotationMatrixException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8787,13 +8746,13 @@ public class EasyGyroscopeCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(EasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateStart(final EasyGyroscopeCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(EasyGyroscopeCalibrator calibrator) {
+    public void onCalibrateEnd(final EasyGyroscopeCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateEnd++;
     }

@@ -44,7 +44,8 @@ public class EarthMagneticFluxDensityEstimator {
     /**
      * Private constructor to prevent instantiation.
      */
-    private EarthMagneticFluxDensityEstimator() { }
+    private EarthMagneticFluxDensityEstimator() {
+    }
 
     /**
      * Estimates Earth magnetic flux density.

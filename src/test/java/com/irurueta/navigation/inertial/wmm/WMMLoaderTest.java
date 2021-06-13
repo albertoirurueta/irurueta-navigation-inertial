@@ -15,13 +15,14 @@
  */
 package com.irurueta.navigation.inertial.wmm;
 
-import static org.junit.Assert.assertNotNull;
+import org.junit.Test;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
-import org.junit.Test;
+
+import static org.junit.Assert.assertNotNull;
 
 public class WMMLoaderTest {
 

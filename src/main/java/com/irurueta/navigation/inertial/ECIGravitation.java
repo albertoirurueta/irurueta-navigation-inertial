@@ -20,7 +20,6 @@ import com.irurueta.units.Acceleration;
 /**
  * Contains acceleration due to gravity resolved about ECI frame.
  */
-@SuppressWarnings("WeakerAccess")
 public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
 
     /**
@@ -70,7 +69,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (obj == null) {
             return false;
         }

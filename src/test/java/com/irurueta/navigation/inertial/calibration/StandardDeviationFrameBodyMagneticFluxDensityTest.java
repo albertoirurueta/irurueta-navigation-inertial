@@ -20,12 +20,12 @@ import com.irurueta.navigation.frames.ECEFFrame;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
-import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
-import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
-import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
+import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
+import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
@@ -88,7 +88,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density
         final BodyMagneticFluxDensity magneticFluxDensity =
                 createMagneticFluxDensity();
@@ -107,7 +106,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with ECEF frame
         final NEDFrame nedFrame = new NEDFrame();
@@ -130,7 +128,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with NED frame
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -148,7 +145,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density and ECEF frame
         frameBodyMagneticFluxDensity =
@@ -169,7 +165,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density and NED frame
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -188,7 +183,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         final Date timestamp = createTimestamp();
         final GregorianCalendar calendar = new GregorianCalendar();
@@ -211,7 +205,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density and year
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -228,7 +221,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with ECEF frame and year
         frameBodyMagneticFluxDensity =
@@ -248,7 +240,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with NED frame and year
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -266,7 +257,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density, ECEF frame and year
         frameBodyMagneticFluxDensity =
@@ -287,7 +277,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density,  NED frame and year
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -307,7 +296,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with date
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(timestamp);
@@ -322,7 +310,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density and date
         frameBodyMagneticFluxDensity =
@@ -340,7 +327,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with ECEF frame and date
         frameBodyMagneticFluxDensity =
@@ -360,7 +346,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with NED frame and date
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -378,7 +363,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density, ECEF frame and date
         frameBodyMagneticFluxDensity =
@@ -399,7 +383,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density, NED frame and date
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -419,7 +402,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with calendar
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(calendar);
@@ -434,7 +416,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density and calendar
         frameBodyMagneticFluxDensity =
@@ -452,7 +433,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with ECEF frame and calendar
         frameBodyMagneticFluxDensity =
@@ -472,7 +452,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with NED frame and calendar
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -490,7 +469,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         // test constructor with magnetic flux density, ECEF frame and
         // calendar
@@ -512,7 +490,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
 
-
         // test constructor with magnetic flux density, NED frame and
         // calendar
         frameBodyMagneticFluxDensity =
@@ -532,7 +509,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         assertEquals(frameBodyMagneticFluxDensity
                         .getMagneticFluxDensityStandardDeviation(), 0.0,
                 0.0);
-
 
         final UniformRandomizer randomizer = new UniformRandomizer(
                 new Random());
@@ -566,7 +542,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with magnetic flux density, year and standard
         // deviation
         frameBodyMagneticFluxDensity =
@@ -598,7 +573,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with ECEF frame, year and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -629,7 +603,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with NED frame, year and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -659,7 +632,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyMagneticFluxDensity);
-
 
         // test constructor with magnetic flux density, ECEF frame, year
         // and standard deviation
@@ -694,7 +666,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with magnetic flux density, NED frame, year
         // and standard deviation
         frameBodyMagneticFluxDensity =
@@ -728,7 +699,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with date and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(timestamp,
@@ -755,7 +725,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyMagneticFluxDensity);
-
 
         // test constructor with magnetic flux density, date and standard
         // deviation
@@ -788,7 +757,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with ECEF frame, date and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -820,7 +788,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with NED frame, date and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -850,7 +817,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyMagneticFluxDensity);
-
 
         // test constructor with magnetic flux density, ECEF frame, date
         // and standard deviation
@@ -885,7 +851,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with magnetic flux density, NED frame, date
         // and standard deviation
         frameBodyMagneticFluxDensity =
@@ -919,7 +884,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with calendar and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(calendar,
@@ -946,7 +910,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyMagneticFluxDensity);
-
 
         // test constructor with magnetic flux density, calendar and
         // standard deviation
@@ -979,7 +942,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with ECEF frame, calendar and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -1011,7 +973,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with NED frame, calendar and standard deviation
         frameBodyMagneticFluxDensity =
                 new StandardDeviationFrameBodyMagneticFluxDensity(
@@ -1042,7 +1003,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyMagneticFluxDensity);
-
 
         // test constructor with magnetic flux density, ECEF frame,
         // calendar and standard deviation
@@ -1077,7 +1037,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         }
         assertNull(frameBodyMagneticFluxDensity);
 
-
         // test constructor with magnetic flux density, NED frame,
         // calendar and standard deviation
         frameBodyMagneticFluxDensity =
@@ -1110,7 +1069,6 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(frameBodyMagneticFluxDensity);
-
 
         // test copy constructor
         frameBodyMagneticFluxDensity =

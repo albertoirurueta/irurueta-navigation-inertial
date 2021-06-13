@@ -27,6 +27,7 @@ import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyKinematics;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
 import com.irurueta.units.Acceleration;
+
 import java.util.Collection;
 
 /**
@@ -54,7 +55,7 @@ import java.util.Collection;
  */
 public class KnownPositionAccelerometerCalibrator extends
         BaseGravityNormAccelerometerCalibrator<KnownPositionAccelerometerCalibrator,
-                        KnownPositionAccelerometerCalibratorListener> {
+                KnownPositionAccelerometerCalibratorListener> {
 
 
     /**
@@ -1838,7 +1839,7 @@ public class KnownPositionAccelerometerCalibrator extends
     public KnownPositionAccelerometerCalibrator(final ECEFPosition position) {
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1855,7 +1856,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(position);
         try {
             setListener(listener);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1874,7 +1875,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(position);
         try {
             setMeasurements(measurements);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1895,7 +1896,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1912,7 +1913,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1931,7 +1932,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1953,7 +1954,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -1977,7 +1978,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2003,7 +2004,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2031,7 +2032,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBiasX, initialBiasY, initialBiasZ, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2061,7 +2062,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2094,7 +2095,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2123,7 +2124,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2155,7 +2156,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2189,7 +2190,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2225,7 +2226,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialBiasX, initialBiasY, initialBiasZ, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2247,7 +2248,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2271,7 +2272,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBiasX, initialBiasY, initialBiasZ, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2298,7 +2299,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2328,7 +2329,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2353,7 +2354,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2381,7 +2382,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2411,7 +2412,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialBiasX, initialBiasY, initialBiasZ);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2443,7 +2444,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2474,7 +2475,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2509,7 +2510,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2546,7 +2547,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2579,7 +2580,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2614,7 +2615,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2651,7 +2652,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2690,7 +2691,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2718,7 +2719,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2748,7 +2749,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2780,7 +2781,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2814,7 +2815,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2844,7 +2845,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2876,7 +2877,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2910,7 +2911,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2946,7 +2947,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialSx, initialSy, initialSz, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -2985,7 +2986,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMxy, initialMxz, initialMyx, initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3029,7 +3030,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyx, initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3075,7 +3076,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyx, initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3119,7 +3120,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3165,7 +3166,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3212,7 +3213,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyx, initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3261,7 +3262,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyx, initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3299,7 +3300,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3339,7 +3340,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3381,7 +3382,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3425,7 +3426,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3465,7 +3466,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3507,7 +3508,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3550,7 +3551,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3595,7 +3596,7 @@ public class KnownPositionAccelerometerCalibrator extends
                 initialMyz, initialMzx, initialMzy, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3614,7 +3615,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3635,7 +3636,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3659,7 +3660,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3685,7 +3686,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3707,7 +3708,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3731,7 +3732,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3757,7 +3758,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3785,7 +3786,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3803,7 +3804,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3823,7 +3824,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3845,7 +3846,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3868,7 +3869,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3888,7 +3889,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3910,7 +3911,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3934,7 +3935,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, initialBias);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3960,7 +3961,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, initialBias, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -3980,7 +3981,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBias, initialMa);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4002,7 +4003,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(initialBias, initialMa, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4026,7 +4027,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBias, initialMa);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4052,7 +4053,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, initialBias, initialMa, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4075,7 +4076,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBias, initialMa);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4100,7 +4101,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(commonAxisUsed, initialBias, initialMa, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4127,7 +4128,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, initialBias, initialMa);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }
@@ -4156,7 +4157,7 @@ public class KnownPositionAccelerometerCalibrator extends
         this(measurements, commonAxisUsed, initialBias, initialMa, listener);
         try {
             setPosition(position);
-        } catch (LockedException ignore) {
+        } catch (final LockedException ignore) {
             // never happens
         }
     }

@@ -47,7 +47,6 @@ public class INSTightlyCoupledKalmanInitializerConfigTest {
         assertEquals(config.getInitialClockOffsetUncertainty(), 0.0, 0.0);
         assertEquals(config.getInitialClockDriftUncertainty(), 0.0, 0.0);
 
-
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
         final double initialAttitudeUncertainty = randomizer.nextDouble(
@@ -84,7 +83,6 @@ public class INSTightlyCoupledKalmanInitializerConfigTest {
                 initialClockOffsetUncertainty, 0.0);
         assertEquals(config.getInitialClockDriftUncertainty(),
                 initialClockDriftUncertainty, 0.0);
-
 
         // test constructor with measurement values
         final Angle initialAttitudeUncertaintyAngle =
@@ -125,7 +123,6 @@ public class INSTightlyCoupledKalmanInitializerConfigTest {
                 initialClockOffsetUncertainty, 0.0);
         assertEquals(config.getInitialClockDriftUncertainty(),
                 initialClockDriftUncertainty, 0.0);
-
 
         // test copy constructor
         final INSTightlyCoupledKalmanInitializerConfig config2 =

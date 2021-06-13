@@ -1060,7 +1060,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -1133,7 +1132,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
 
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -1213,7 +1211,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -1291,7 +1288,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
 
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -1379,7 +1375,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -1459,7 +1454,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 3, 1, -1.0, 1.0);
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -1547,7 +1541,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -1633,7 +1626,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 3, 1, -1.0, 1.0);
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -1844,7 +1836,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 randomizer.nextDouble(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -1917,7 +1908,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 randomizer.nextDouble(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -1989,7 +1979,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Acceleration gravityNorm = new Acceleration(
                 randomizer.nextDouble(),
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -2408,7 +2397,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -2483,7 +2471,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
 
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -2565,7 +2552,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -2646,7 +2632,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
 
         final Matrix initialBias = Matrix.createWithUniformRandomValues(
                 3, 1, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -2736,7 +2721,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -2818,7 +2802,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 3, 1, -1.0, 1.0);
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -2908,7 +2891,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
 
-
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
                 RobustKnownGravityNormAccelerometerCalibrator.create(
@@ -2996,7 +2978,6 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
                 3, 1, -1.0, 1.0);
         final Matrix initialMa = Matrix.createWithUniformRandomValues(
                 3, 3, -1.0, 1.0);
-
 
         // RANSAC
         RobustKnownGravityNormAccelerometerCalibrator calibrator =
@@ -6931,22 +6912,24 @@ public class RobustKnownGravityNormAccelerometerCalibratorTest implements
     }
 
     @Override
-    public void onCalibrateStart(RobustKnownGravityNormAccelerometerCalibrator calibrator) {
+    public void onCalibrateStart(final RobustKnownGravityNormAccelerometerCalibrator calibrator) {
 
     }
 
     @Override
-    public void onCalibrateEnd(RobustKnownGravityNormAccelerometerCalibrator calibrator) {
+    public void onCalibrateEnd(final RobustKnownGravityNormAccelerometerCalibrator calibrator) {
 
     }
 
     @Override
-    public void onCalibrateNextIteration(RobustKnownGravityNormAccelerometerCalibrator calibrator, int iteration) {
+    public void onCalibrateNextIteration(
+            final RobustKnownGravityNormAccelerometerCalibrator calibrator, final int iteration) {
 
     }
 
     @Override
-    public void onCalibrateProgressChange(RobustKnownGravityNormAccelerometerCalibrator calibrator, float progress) {
+    public void onCalibrateProgressChange(
+            final RobustKnownGravityNormAccelerometerCalibrator calibrator, final float progress) {
 
     }
 }

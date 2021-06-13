@@ -56,6 +56,7 @@ import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeConverter;
 import com.irurueta.units.TimeUnit;
+
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
@@ -3823,7 +3824,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *
      * @param result instance where result will be stored.
      */
-    public void getInitialBiasAsTriad(AngularSpeedTriad result) {
+    public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
         result.setValueCoordinatesAndUnit(
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -3835,7 +3836,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      * @param initialBias initial bias coordinates to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    public void setInitialBias(AngularSpeedTriad initialBias) throws LockedException {
+    public void setInitialBias(final AngularSpeedTriad initialBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -13246,7 +13247,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      * Converts angular speed value and unit to radians per second.
      *
      * @param value angular speed value.
-     * @param unit unit of angular speed value.
+     * @param unit  unit of angular speed value.
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {

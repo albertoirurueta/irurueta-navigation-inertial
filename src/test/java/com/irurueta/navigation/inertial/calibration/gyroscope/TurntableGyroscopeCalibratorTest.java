@@ -25,17 +25,17 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -830,7 +830,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -1125,7 +1124,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -1411,7 +1409,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2048,7 +2045,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -2380,7 +2376,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2722,7 +2717,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -3050,7 +3044,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -3359,7 +3352,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3671,7 +3663,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -3970,7 +3961,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4291,7 +4281,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4645,7 +4634,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -4995,7 +4983,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5349,7 +5336,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -5698,7 +5684,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -5990,7 +5975,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6286,7 +6270,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -6572,7 +6555,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6879,7 +6861,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7210,7 +7191,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7883,7 +7863,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -8210,7 +8189,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -8517,7 +8495,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8827,7 +8804,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -9126,7 +9102,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9446,7 +9421,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9800,7 +9774,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
 
-
         // Force IllegalArgumentException
         calibrator = null;
         try {
@@ -10151,7 +10124,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10504,7 +10476,6 @@ public class TurntableGyroscopeCalibratorTest implements
         assertNull(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed());
         assertFalse(calibrator.getEstimatedBiasStandardDeviationNormAsAngularSpeed(null));
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -12196,8 +12167,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -12341,8 +12311,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -12486,8 +12455,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -12631,8 +12599,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -12776,8 +12743,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledLargeNumberOfMeasurementsWithNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -12920,8 +12886,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesDisabledLargeNumberOfMeasurementsWithNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13064,8 +13029,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledLargeNumberOfMeasurementsWithNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
@@ -13209,8 +13173,7 @@ public class TurntableGyroscopeCalibratorTest implements
 
     @Test
     public void testCalibrateGeneralAndGDependentCrossBiasesEnabledLargeNumberOfMeasurementsWithNoise()
-            throws WrongSizeException,
-            InvalidSourceAndDestinationFrameTypeException,
+            throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
             LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;

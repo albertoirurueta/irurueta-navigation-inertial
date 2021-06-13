@@ -1,3 +1,18 @@
+/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
 package com.irurueta.navigation.inertial.calibration.gyroscope;
 
 import com.irurueta.algebra.Matrix;
@@ -10,17 +25,17 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.geodesic.Constants;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.calibration.AngularSpeedTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -10423,7 +10438,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
         assertEquals(calibrator.getAccelerometerBiasY(), 0.0, 0.0);
         assertEquals(calibrator.getAccelerometerBiasZ(), 0.0, 0.0);
 
-
         // set new values
         final Matrix ba = generateBa();
         final double bax = ba.getElementAtIndex(0);
@@ -12126,7 +12140,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -12285,7 +12298,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -12445,7 +12457,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -12612,7 +12623,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -12772,7 +12782,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -12935,7 +12944,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -13099,7 +13107,6 @@ public class LMedSRobustKnownBiasTurntableGyroscopeCalibratorTest implements
                     // outlier
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(timeInterval, trueKinematics, errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

@@ -35,7 +35,7 @@ import java.util.Random;
 import static org.junit.Assert.*;
 
 public class WindowedAccelerationMeasurementNoiseEstimatorTest implements
-        WindowedAccelerationMeasurementNoiseEstimatorListener{
+        WindowedAccelerationMeasurementNoiseEstimatorListener {
 
     private static final double MIN_ACCELEROMETER_VALUE = -2.0 * 9.81;
     private static final double MAX_ACCELEROMETER_VALUE = 2.0 * 9.81;

@@ -24,5 +24,5 @@ import com.irurueta.units.AngularSpeedUnit;
  */
 public interface WindowedAngularSpeedTriadNoiseEstimatorListener extends
         WindowedTriadNoiseEstimatorListener<AngularSpeedUnit, AngularSpeed,
-                        AngularSpeedTriad, WindowedAngularSpeedTriadNoiseEstimator> {
+                AngularSpeedTriad, WindowedAngularSpeedTriadNoiseEstimator> {
 }

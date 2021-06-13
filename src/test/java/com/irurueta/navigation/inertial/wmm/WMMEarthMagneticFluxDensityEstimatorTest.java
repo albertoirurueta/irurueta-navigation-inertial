@@ -160,7 +160,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(21.0), 18e3, 2020.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(20.16, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(-36.0),
                         Math.toRadians(-137.0), 6e3, 2020.5)),
@@ -201,7 +200,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDeclination(Math.toRadians(-81.0),
                         Math.toRadians(-67.0), 50e3, 2020.5)),
                 ANGLE_ERROR);
-
 
         assertEquals(-22.29, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(-57.0),
@@ -244,7 +242,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(40.0), 56e3, 2021.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(-3.41, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(0.0),
                         Math.toRadians(80.0), 14e3, 2021.5)),
@@ -285,7 +282,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDeclination(Math.toRadians(-11.0),
                         Math.toRadians(167.0), 86e3, 2021.5)),
                 ANGLE_ERROR);
-
 
         assertEquals(-16.99, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(-66.0),
@@ -328,7 +324,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(-32.0), 67e3, 2022.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(18.95, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(62.0),
                         Math.toRadians(53.0), 8e3, 2022.5)),
@@ -369,7 +364,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDeclination(Math.toRadians(-87.0),
                         Math.toRadians(38.0), 72e3, 2022.5)),
                 ANGLE_ERROR);
-
 
         assertEquals(5.20, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(20.0),
@@ -412,7 +406,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(-21.0), 11e3, 2023.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(16.20, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(54.0),
                         Math.toRadians(-120.0), 28e3, 2023.5)),
@@ -454,7 +447,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(28.0), 95e3, 2023.5)),
                 ANGLE_ERROR);
 
-
         assertEquals(8.86, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(-60.0),
                         Math.toRadians(-59.0), 95e3, 2024.0)),
@@ -495,7 +487,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDeclination(Math.toRadians(46.0),
                         Math.toRadians(-22.0), 19e3, 2024.0)),
                 ANGLE_ERROR);
-
 
         assertEquals(9.21, Math.toDegrees(
                 estimator.getDeclination(Math.toRadians(13.0),
@@ -585,7 +576,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(21.0), 18e3, 2020.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(-52.21, Math.toDegrees(
                 estimator.getDip(Math.toRadians(-36.0),
                         Math.toRadians(-137), 6e3, 2020.5)),
@@ -626,7 +616,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDip(Math.toRadians(-81.0),
                         Math.toRadians(-67.0), 50e3, 2020.5)),
                 ANGLE_ERROR);
-
 
         assertEquals(-59.07, Math.toDegrees(
                 estimator.getDip(Math.toRadians(-57.0),
@@ -669,7 +658,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(40.0), 56e3, 2021.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(-17.32, Math.toDegrees(
                 estimator.getDip(Math.toRadians(0.0),
                         Math.toRadians(80.0), 14e3, 2021.5)),
@@ -710,7 +698,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDip(Math.toRadians(-11.0),
                         Math.toRadians(167.0), 86e3, 2021.5)),
                 ANGLE_ERROR);
-
 
         assertEquals(-59.27, Math.toDegrees(
                 estimator.getDip(Math.toRadians(-66.0),
@@ -753,7 +740,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(-32.0), 67e3, 2022.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(76.54, Math.toDegrees(
                 estimator.getDip(Math.toRadians(62.0),
                         Math.toRadians(53.0), 8e3, 2022.5)),
@@ -794,7 +780,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDip(Math.toRadians(-87.0),
                         Math.toRadians(38.0), 72e3, 2022.5)),
                 ANGLE_ERROR);
-
 
         assertEquals(26.85, Math.toDegrees(
                 estimator.getDip(Math.toRadians(20.0),
@@ -837,7 +822,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(-21.0), 11e3, 2023.0)),
                 ANGLE_ERROR);
 
-
         assertEquals(74.02, Math.toDegrees(
                 estimator.getDip(Math.toRadians(54.0),
                         Math.toRadians(-120.0), 28e3, 2023.5)),
@@ -879,7 +863,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                         Math.toRadians(28.0), 95e3, 2023.5)),
                 ANGLE_ERROR);
 
-
         assertEquals(-55.03, Math.toDegrees(
                 estimator.getDip(Math.toRadians(-60.0),
                         Math.toRadians(-59.0), 95e3, 2024.0)),
@@ -920,7 +903,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 estimator.getDip(Math.toRadians(46.0),
                         Math.toRadians(-22.0), 19e3, 2024.0)),
                 ANGLE_ERROR);
-
 
         assertEquals(31.51, Math.toDegrees(
                 estimator.getDip(Math.toRadians(13.0),
@@ -1011,7 +993,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 18e3, 2020.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(25511.4, estimator.getHorizontalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0),
                 6e3, 2020.5) * TO_NANO,
@@ -1052,7 +1033,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(-67.0),
                 50e3, 2020.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(14296.6, estimator.getHorizontalIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0),
@@ -1095,7 +1075,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 56e3, 2021.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(39316.2, estimator.getHorizontalIntensity(
                 Math.toRadians(0.0), Math.toRadians(80.0),
                 14e3, 2021.5) * TO_NANO,
@@ -1136,7 +1115,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-11.0), Math.toRadians(167.0),
                 86e3, 2021.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(17152.6, estimator.getHorizontalIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0),
@@ -1179,7 +1157,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 67e3, 2022.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(13043.3, estimator.getHorizontalIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0),
                 8e3, 2022.5) * TO_NANO,
@@ -1220,7 +1197,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-87.0), Math.toRadians(38.0),
                 72e3, 2022.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(30223.6, estimator.getHorizontalIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0),
@@ -1263,7 +1239,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 11e3, 2023.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(15158.8, estimator.getHorizontalIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0),
                 28e3, 2023.5) * TO_NANO,
@@ -1305,7 +1280,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 95e3, 2023.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(18317.9, estimator.getHorizontalIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0),
                 95e3, 2024.0) * TO_NANO,
@@ -1346,7 +1320,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(46.0), Math.toRadians(-22.0),
                 19e3, 2024.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(28413.4, estimator.getHorizontalIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0),
@@ -1436,7 +1409,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 18e3, 2020.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(23948.6, estimator.getNorthIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0),
                 6e3, 2020.5) * TO_NANO,
@@ -1477,7 +1449,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(-67.0),
                 50e3, 2020.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(13228.0, estimator.getNorthIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0),
@@ -1520,7 +1491,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 56e3, 2021.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(39246.6, estimator.getNorthIntensity(
                 Math.toRadians(0.0), Math.toRadians(80.0),
                 14e3, 2021.5) * TO_NANO,
@@ -1561,7 +1531,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-11.0), Math.toRadians(167.0),
                 86e3, 2021.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(16404.3, estimator.getNorthIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0),
@@ -1604,7 +1573,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 67e3, 2022.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(12336.1, estimator.getNorthIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0),
                 8e3, 2022.5) * TO_NANO,
@@ -1645,7 +1613,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-87.0), Math.toRadians(38.0),
                 72e3, 2022.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(30099.4, estimator.getNorthIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0),
@@ -1688,7 +1655,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 11e3, 2023.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(14556.6, estimator.getNorthIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0),
                 28e3, 2023.5) * TO_NANO,
@@ -1730,7 +1696,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 95e3, 2023.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(18099.3, estimator.getNorthIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0),
                 95e3, 2024.0) * TO_NANO,
@@ -1771,7 +1736,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(46.0), Math.toRadians(-22.0),
                 19e3, 2024.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(28046.9, estimator.getNorthIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0),
@@ -1865,7 +1829,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 18e3, 2020.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(8791.9, estimator.getEastIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0),
                 6e3, 2020.5) * TO_NANO,
@@ -1906,7 +1869,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(-67.0),
                 50e3, 2020.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(-5423.3, estimator.getEastIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0),
@@ -1949,7 +1911,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 56e3, 2021.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(-2338.9, estimator.getEastIntensity(
                 Math.toRadians(0.0), Math.toRadians(80.0),
                 14e3, 2021.5) * TO_NANO,
@@ -1990,7 +1951,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-11.0), Math.toRadians(167.0),
                 86e3, 2021.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(-5011.2, estimator.getEastIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0),
@@ -2033,7 +1993,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 67e3, 2022.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(4236.6, estimator.getEastIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0),
                 8e3, 2022.5) * TO_NANO,
@@ -2074,7 +2033,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-87.0), Math.toRadians(38.0),
                 72e3, 2022.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(2737.4, estimator.getEastIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0),
@@ -2117,7 +2075,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 11e3, 2023.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(4230.3, estimator.getEastIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0),
                 28e3, 2023.5) * TO_NANO,
@@ -2159,7 +2116,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 95e3, 2023.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(2821.2, estimator.getEastIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0),
                 95e3, 2024.0) * TO_NANO,
@@ -2200,7 +2156,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(46.0), Math.toRadians(-22.0),
                 19e3, 2024.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(4548.8, estimator.getEastIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0),
@@ -2294,7 +2249,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 18e3, 2020.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(-32897.6, estimator.getVerticalIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0),
                 6e3, 2020.5) * TO_NANO,
@@ -2335,7 +2289,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(-67.0),
                 50e3, 2020.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(-23859.2, estimator.getVerticalIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0),
@@ -2378,7 +2331,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 56e3, 2021.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(-12258.0, estimator.getVerticalIntensity(
                 Math.toRadians(0.0), Math.toRadians(80.0),
                 14e3, 2021.5) * TO_NANO,
@@ -2420,7 +2372,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 86e3, 2021.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(-28849.5, estimator.getVerticalIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0),
                 37e3, 2022.0) * TO_NANO,
@@ -2461,7 +2412,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-47.0), Math.toRadians(-32.0),
                 67e3, 2022.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(54498.1, estimator.getVerticalIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0),
@@ -2508,7 +2458,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 72e3, 2022.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(15301.2, estimator.getVerticalIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0),
                 49e3, 2023.0) * TO_NANO,
@@ -2549,7 +2498,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-22.0), Math.toRadians(-21.0),
                 11e3, 2023.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(52945.6, estimator.getVerticalIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0),
@@ -2592,7 +2540,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 95e3, 2023.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(-26193.2, estimator.getVerticalIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0),
                 95e3, 2024.0) * TO_NANO,
@@ -2633,7 +2580,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(46.0), Math.toRadians(-22.0),
                 19e3, 2024.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(17417.2, estimator.getVerticalIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0),
@@ -2723,7 +2669,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 18e3, 2020.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(41630.3, estimator.getIntensity(
                 Math.toRadians(-36.0), Math.toRadians(-137.0),
                 6e3, 2020.5) * TO_NANO,
@@ -2764,7 +2709,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-81.0), Math.toRadians(-67.0),
                 50e3, 2020.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(27814.7, estimator.getIntensity(
                 Math.toRadians(-57.0), Math.toRadians(3.0),
@@ -2811,7 +2755,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 56e3, 2021.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(41182.8, estimator.getIntensity(
                 Math.toRadians(0.0), Math.toRadians(80.0),
                 14e3, 2021.5) * TO_NANO,
@@ -2852,7 +2795,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-11.0), Math.toRadians(167.0),
                 86e3, 2021.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(33563.5, estimator.getIntensity(
                 Math.toRadians(-66.0), Math.toRadians(-5.0),
@@ -2895,7 +2837,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 67e3, 2022.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(56037.2, estimator.getIntensity(
                 Math.toRadians(62.0), Math.toRadians(53.0),
                 8e3, 2022.5) * TO_NANO,
@@ -2936,7 +2877,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(-87.0), Math.toRadians(38.0),
                 72e3, 2022.5) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(33876.1, estimator.getIntensity(
                 Math.toRadians(20.0), Math.toRadians(167.0),
@@ -2979,7 +2919,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 11e3, 2023.0) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(55072.9, estimator.getIntensity(
                 Math.toRadians(54.0), Math.toRadians(-120.0),
                 28e3, 2023.5) * TO_NANO,
@@ -3021,7 +2960,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 95e3, 2023.5) * TO_NANO,
                 INTENSITY_ERROR);
 
-
         assertEquals(31962.9, estimator.getIntensity(
                 Math.toRadians(-60.0), Math.toRadians(-59.0),
                 95e3, 2024.0) * TO_NANO,
@@ -3062,7 +3000,6 @@ public class WMMEarthMagneticFluxDensityEstimatorTest {
                 Math.toRadians(46.0), Math.toRadians(-22.0),
                 19e3, 2024.0) * TO_NANO,
                 INTENSITY_ERROR);
-
 
         assertEquals(33326.9, estimator.getIntensity(
                 Math.toRadians(13.0), Math.toRadians(-132.0),

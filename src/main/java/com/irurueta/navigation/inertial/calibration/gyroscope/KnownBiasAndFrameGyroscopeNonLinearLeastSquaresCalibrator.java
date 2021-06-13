@@ -32,6 +32,7 @@ import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFunctionEval
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
+
 import java.util.Collection;
 
 /**
@@ -3683,24 +3684,24 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
 
         // We define a lineal function mapping original parameters for the common
         // axis case to the general case
-        //[sx'] =   [1  0  0  0  0  0  0  0  0  0  0  0  0  0  0][sx]
-        //[sy']     [0  1  0  0  0  0  0  0  0  0  0  0  0  0  0][sy]
-        //[sz']     [0  0  1  0  0  0  0  0  0  0  0  0  0  0  0][sz]
-        //[mxy']    [0  0  0  1  0  0  0  0  0  0  0  0  0  0  0][mxy]
-        //[mxz']    [0  0  0  0  1  0  0  0  0  0  0  0  0  0  0][mxz]
-        //[myx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][myz]
-        //[myz']    [0  0  0  0  0  1  0  0  0  0  0  0  0  0  0][g11]
-        //[mzx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g21]
-        //[mzy']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g31]
-        //[g11']    [0  0  0  0  0  0  1  0  0  0  0  0  0  0  0][g12]
-        //[g21']    [0  0  0  0  0  0  0  1  0  0  0  0  0  0  0][g22]
-        //[g31']    [0  0  0  0  0  0  0  0  1  0  0  0  0  0  0][g32]
-        //[g12']    [0  0  0  0  0  0  0  0  0  1  0  0  0  0  0][g13]
-        //[g22']    [0  0  0  0  0  0  0  0  0  0  1  0  0  0  0][g23]
-        //[g32']    [0  0  0  0  0  0  0  0  0  0  0  1  0  0  0][g33]
-        //[g13']    [0  0  0  0  0  0  0  0  0  0  0  0  1  0  0]
-        //[g23']    [0  0  0  0  0  0  0  0  0  0  0  0  0  1  0]
-        //[g33']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  1]
+        // [sx'] =   [1  0  0  0  0  0  0  0  0  0  0  0  0  0  0][sx]
+        // [sy']     [0  1  0  0  0  0  0  0  0  0  0  0  0  0  0][sy]
+        // [sz']     [0  0  1  0  0  0  0  0  0  0  0  0  0  0  0][sz]
+        // [mxy']    [0  0  0  1  0  0  0  0  0  0  0  0  0  0  0][mxy]
+        // [mxz']    [0  0  0  0  1  0  0  0  0  0  0  0  0  0  0][mxz]
+        // [myx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][myz]
+        // [myz']    [0  0  0  0  0  1  0  0  0  0  0  0  0  0  0][g11]
+        // [mzx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g21]
+        // [mzy']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g31]
+        // [g11']    [0  0  0  0  0  0  1  0  0  0  0  0  0  0  0][g12]
+        // [g21']    [0  0  0  0  0  0  0  1  0  0  0  0  0  0  0][g22]
+        // [g31']    [0  0  0  0  0  0  0  0  1  0  0  0  0  0  0][g32]
+        // [g12']    [0  0  0  0  0  0  0  0  0  1  0  0  0  0  0][g13]
+        // [g22']    [0  0  0  0  0  0  0  0  0  0  1  0  0  0  0][g23]
+        // [g32']    [0  0  0  0  0  0  0  0  0  0  0  1  0  0  0][g33]
+        // [g13']    [0  0  0  0  0  0  0  0  0  0  0  0  1  0  0]
+        // [g23']    [0  0  0  0  0  0  0  0  0  0  0  0  0  1  0]
+        // [g33']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  1]
 
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
@@ -4062,9 +4063,9 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
         // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
-        //  fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
         final BodyKinematics expectedKinematics = new BodyKinematics();
 
@@ -4117,7 +4118,7 @@ public class KnownBiasAndFrameGyroscopeNonLinearLeastSquaresCalibrator implement
      * Converts angular speed instance to radians per second (rad/s).
      *
      * @param value angular speed value.
-     * @param unit unit of angular speed value.
+     * @param unit  unit of angular speed value.
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {

@@ -75,7 +75,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
 
-
         // create 2
 
         // RANSAC
@@ -117,7 +116,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertSame(calibrator.getListener(), this);
-
 
         // create 3
         final List<StandardDeviationBodyKinematics> measurements =
@@ -163,7 +161,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
 
-
         // create 4
 
         // RANSAC
@@ -205,7 +202,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // create 5
         final Matrix ba = generateBa();
@@ -251,7 +247,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
 
-
         // create 6
 
         // RANSAC
@@ -285,7 +280,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROSACRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 7
         final Matrix ma = generateMa();
@@ -335,7 +329,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
 
-
         // create 8
         final ECEFPosition ecefPosition = new ECEFPosition();
 
@@ -378,7 +371,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
-
 
         // create 9
 
@@ -426,7 +418,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // create 10
 
@@ -485,7 +476,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // create 11
 
         // RANSAC
@@ -542,7 +532,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // create 12
 
@@ -606,7 +595,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // create 13
 
         // RANSAC
@@ -663,7 +651,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 14
 
@@ -727,7 +714,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 15
 
         // RANSAC
@@ -789,7 +775,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 16
 
@@ -858,7 +843,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 17
 
         // RANSAC
@@ -910,7 +894,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 18
 
@@ -974,7 +957,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 19
 
         // RANSAC
@@ -1036,7 +1018,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 20
 
@@ -1105,7 +1086,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 21
 
         // RANSAC
@@ -1167,7 +1147,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 22
 
@@ -1236,7 +1215,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 23
 
         // RANSAC
@@ -1298,7 +1276,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 24
 
@@ -1367,7 +1344,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 25
         final NEDPosition nedPosition = new NEDPosition();
 
@@ -1410,7 +1386,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
-
 
         // create 26
 
@@ -1458,7 +1433,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator instanceof PROMedSRobustKnownBiasAndPositionAccelerometerCalibrator);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // create 27
 
@@ -1517,7 +1491,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // create 28
 
         // RANSAC
@@ -1574,7 +1547,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // create 29
 
@@ -1638,7 +1610,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // create 30
 
         // RANSAC
@@ -1695,7 +1666,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 31
 
@@ -1759,7 +1729,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 32
 
         // RANSAC
@@ -1821,7 +1790,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 33
 
@@ -1890,7 +1858,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 34
 
         // RANSAC
@@ -1942,7 +1909,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 35
 
@@ -2006,7 +1972,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 36
 
         // RANSAC
@@ -2068,7 +2033,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 37
 
@@ -2137,7 +2101,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 38
 
         // RANSAC
@@ -2199,7 +2162,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 39
 
@@ -2268,7 +2230,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 40
 
         // RANSAC
@@ -2330,7 +2291,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 41
 
@@ -2398,7 +2358,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 42
         final double[] qualityScores = new double[10];
 
@@ -2456,7 +2415,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // create 43
 
@@ -2520,7 +2478,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // create 44
 
         // RANSAC
@@ -2582,7 +2539,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // create 45
 
@@ -2651,7 +2607,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // create 46
 
         // RANSAC
@@ -2713,7 +2668,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 47
 
@@ -2782,7 +2736,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 48
 
         // RANSAC
@@ -2849,7 +2802,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 49
 
@@ -2923,7 +2875,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 50
 
         // RANSAC
@@ -2985,7 +2936,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getEcefPosition(), ecefPosition);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 51
 
@@ -3054,7 +3004,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 52
 
         // RANSAC
@@ -3121,7 +3070,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 53
 
@@ -3195,7 +3143,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 54
 
         // RANSAC
@@ -3262,7 +3209,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 55
 
@@ -3336,7 +3282,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 56
 
         // RANSAC
@@ -3403,7 +3348,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 57
 
@@ -3481,7 +3425,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 58
 
         // RANSAC
@@ -3538,7 +3481,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // create 59
 
@@ -3602,7 +3544,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // create 60
 
         // RANSAC
@@ -3664,7 +3605,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // create 69
 
@@ -3733,7 +3673,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // create 70
 
         // RANSAC
@@ -3795,7 +3734,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 71
 
@@ -3864,7 +3802,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 72
 
         // RANSAC
@@ -3931,7 +3868,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
-
 
         // create 73
 
@@ -4010,7 +3946,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertArrayEquals(calibrator.getBias(), bias, 0.0);
         assertSame(calibrator.getListener(), this);
 
-
         // create 74
 
         // RANSAC
@@ -4072,7 +4007,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.getNedPosition().equals(nedPosition, ABSOLUTE_ERROR));
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 75
 
@@ -4141,7 +4075,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 76
 
         // RANSAC
@@ -4208,7 +4141,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
-
 
         // create 77
 
@@ -4282,7 +4214,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertSame(calibrator.getListener(), this);
 
-
         // create 78
 
         // RANSAC
@@ -4349,7 +4280,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 79
 
@@ -4423,7 +4353,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMa(), ma);
         assertSame(calibrator.getListener(), this);
 
-
         // create 80
 
         // RANSAC
@@ -4490,7 +4419,6 @@ public class RobustKnownBiasAndPositionAccelerometerCalibratorTest implements
         assertTrue(calibrator.isCommonAxisUsed());
         assertEquals(calibrator.getBiasAsMatrix(), ba);
         assertEquals(calibrator.getInitialMa(), ma);
-
 
         // create 81
 

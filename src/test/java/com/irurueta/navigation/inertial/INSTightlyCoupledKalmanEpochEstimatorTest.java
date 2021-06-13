@@ -96,10 +96,9 @@ public class INSTightlyCoupledKalmanEpochEstimatorTest {
             final double userVe = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
             final double userVd = randomizer.nextDouble(MIN_SPEED_VALUE, MAX_SPEED_VALUE);
 
-            final com.irurueta.navigation.frames.NEDPosition userNedPosition = new com.irurueta.navigation.frames.NEDPosition(
+            final NEDPosition userNedPosition = new NEDPosition(
                     userLatitude, userLongitude, userHeight);
-            final com.irurueta.navigation.frames.NEDVelocity
-                userNedVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity userNedVelocity = new NEDVelocity(userVn, userVe, userVd);
 
             final com.irurueta.navigation.frames.ECEFPosition userEcefPosition = new com.irurueta.navigation.frames.ECEFPosition();
             final com.irurueta.navigation.frames.ECEFVelocity userEcefVelocity = new ECEFVelocity();
@@ -192,8 +191,8 @@ public class INSTightlyCoupledKalmanEpochEstimatorTest {
                     userEcefPosition.getY() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVy(),
                     userEcefPosition.getZ() + TIME_INTERVAL_SECONDS * userEcefVelocity.getVz());
 
-            final com.irurueta.navigation.frames.NEDPosition previousNedPosition = new NEDPosition();
-            final com.irurueta.navigation.frames.NEDVelocity previousNedVelocity = new NEDVelocity();
+            final NEDPosition previousNedPosition = new NEDPosition();
+            final NEDVelocity previousNedVelocity = new NEDVelocity();
             ECEFtoNEDPositionVelocityConverter.convertECEFtoNED(previousPosition,
                     userEcefVelocity, previousNedPosition, previousNedVelocity);
             final double previousLatitude = previousNedPosition.getLatitude();
@@ -204,7 +203,6 @@ public class INSTightlyCoupledKalmanEpochEstimatorTest {
                             accelerationBiasX, accelerationBiasY, accelerationBiasZ,
                             gyroBiasX, gyroBiasY, gyroBiasZ, receiverClockOffset,
                             receiverClockDrift, covariance);
-
 
             final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
             final double accelerometerNoisePSD =

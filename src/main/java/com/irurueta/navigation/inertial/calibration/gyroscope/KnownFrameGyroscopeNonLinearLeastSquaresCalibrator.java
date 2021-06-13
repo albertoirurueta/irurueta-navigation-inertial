@@ -36,6 +36,7 @@ import com.irurueta.numerical.fitting.LevenbergMarquardtMultiVariateFunctionEval
 import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
+
 import java.util.Collection;
 
 /**
@@ -2989,7 +2990,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @param result instance where result will be stored.
      */
     @Override
-    public void getInitialBiasAsTriad(AngularSpeedTriad result) {
+    public void getInitialBiasAsTriad(final AngularSpeedTriad result) {
         result.setValueCoordinatesAndUnit(
                 mInitialBiasX, mInitialBiasY, mInitialBiasZ,
                 AngularSpeedUnit.RADIANS_PER_SECOND);
@@ -3002,7 +3003,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * @throws LockedException if calibrator is currently running.
      */
     @Override
-    public void setInitialBias(AngularSpeedTriad initialBias) throws LockedException {
+    public void setInitialBias(final AngularSpeedTriad initialBias) throws LockedException {
         if (mRunning) {
             throw new LockedException();
         }
@@ -4096,206 +4097,206 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
 
         mFitter.setFunctionEvaluator(
                 new LevenbergMarquardtMultiVariateFunctionEvaluator() {
-            @Override
-            public int getNumberOfDimensions() {
-                // Input points are true angular rate + specific force coordinates
-                return 2 * BodyKinematics.COMPONENTS;
-            }
+                    @Override
+                    public int getNumberOfDimensions() {
+                        // Input points are true angular rate + specific force coordinates
+                        return 2 * BodyKinematics.COMPONENTS;
+                    }
 
-            @Override
-            public int getNumberOfVariables() {
-                // The multivariate function returns the components of measured angular rate
-                return BodyKinematics.COMPONENTS;
-            }
+                    @Override
+                    public int getNumberOfVariables() {
+                        // The multivariate function returns the components of measured angular rate
+                        return BodyKinematics.COMPONENTS;
+                    }
 
-            @Override
-            public double[] createInitialParametersArray() {
-                final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
+                    @Override
+                    public double[] createInitialParametersArray() {
+                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];
 
-                initial[0] = mInitialBiasX;
-                initial[1] = mInitialBiasY;
-                initial[2] = mInitialBiasZ;
+                        initial[0] = mInitialBiasX;
+                        initial[1] = mInitialBiasY;
+                        initial[2] = mInitialBiasZ;
 
-                initial[3] = mInitialSx;
-                initial[4] = mInitialSy;
-                initial[5] = mInitialSz;
+                        initial[3] = mInitialSx;
+                        initial[4] = mInitialSy;
+                        initial[5] = mInitialSz;
 
-                initial[6] = mInitialMxy;
-                initial[7] = mInitialMxz;
-                initial[8] = mInitialMyz;
+                        initial[6] = mInitialMxy;
+                        initial[7] = mInitialMxz;
+                        initial[8] = mInitialMyz;
 
-                final double[] buffer = mInitialGg.getBuffer();
-                final int num = buffer.length;
-                System.arraycopy(buffer, 0, initial, 9, num);
+                        final double[] buffer = mInitialGg.getBuffer();
+                        final int num = buffer.length;
+                        System.arraycopy(buffer, 0, initial, 9, num);
 
-                return initial;
-            }
+                        return initial;
+                    }
 
-            @Override
-            public void evaluate(final int i, final double[] point,
-                                 final double[] result, final double[] params,
-                                 final Matrix jacobian) {
-                // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+                    @Override
+                    public void evaluate(final int i, final double[] point,
+                                         final double[] result, final double[] params,
+                                         final Matrix jacobian) {
+                        // We know that:
+                        // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                        // Ωmeasy = by + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
+                        // Ωmeasz = bz + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-                // Hence, the derivatives respect the parameters bx, by, bz,
-                // sx, sy, sz, mxy mxz, myz, g11, g12, g13, g21, g22, g23,
-                // g31, g32, and g33 is:
+                        // Hence, the derivatives respect the parameters bx, by, bz,
+                        // sx, sy, sz, mxy mxz, myz, g11, g12, g13, g21, g22, g23,
+                        // g31, g32, and g33 is:
 
-                // d(Ωmeasx)/d(bx) = 1.0
-                // d(Ωmeasx)/d(by) = 0.0
-                // d(Ωmeasx)/d(bz) = 0.0
-                // d(Ωmeasx)/d(sx) = Ωtruex
-                // d(Ωmeasx)/d(sy) = 0.0
-                // d(Ωmeasx)/d(sz) = 0.0
-                // d(Ωmeasx)/d(mxy) = Ωtruey
-                // d(Ωmeasx)/d(mxz) = Ωtruez
-                // d(Ωmeasx)/d(myz) = 0.0
-                // d(Ωmeasx)/d(g11) = ftruex
-                // d(Ωmeasx)/d(g12) = ftruey
-                // d(Ωmeasx)/d(g13) = ftruez
-                // d(Ωmeasx)/d(g21) = 0.0
-                // d(Ωmeasx)/d(g22) = 0.0
-                // d(Ωmeasx)/d(g23) = 0.0
-                // d(Ωmeasx)/d(g31) = 0.0
-                // d(Ωmeasx)/d(g32) = 0.0
-                // d(Ωmeasx)/d(g33) = 0.0
+                        // d(Ωmeasx)/d(bx) = 1.0
+                        // d(Ωmeasx)/d(by) = 0.0
+                        // d(Ωmeasx)/d(bz) = 0.0
+                        // d(Ωmeasx)/d(sx) = Ωtruex
+                        // d(Ωmeasx)/d(sy) = 0.0
+                        // d(Ωmeasx)/d(sz) = 0.0
+                        // d(Ωmeasx)/d(mxy) = Ωtruey
+                        // d(Ωmeasx)/d(mxz) = Ωtruez
+                        // d(Ωmeasx)/d(myz) = 0.0
+                        // d(Ωmeasx)/d(g11) = ftruex
+                        // d(Ωmeasx)/d(g12) = ftruey
+                        // d(Ωmeasx)/d(g13) = ftruez
+                        // d(Ωmeasx)/d(g21) = 0.0
+                        // d(Ωmeasx)/d(g22) = 0.0
+                        // d(Ωmeasx)/d(g23) = 0.0
+                        // d(Ωmeasx)/d(g31) = 0.0
+                        // d(Ωmeasx)/d(g32) = 0.0
+                        // d(Ωmeasx)/d(g33) = 0.0
 
-                // d(Ωmeasy)/d(bx) = 0.0
-                // d(Ωmeasy)/d(by) = 1.0
-                // d(Ωmeasy)/d(bz) = 0.0
-                // d(Ωmeasy)/d(sx) = 0.0
-                // d(Ωmeasy)/d(sy) = Ωtruey
-                // d(Ωmeasy)/d(sz) = 0.0
-                // d(Ωmeasy)/d(mxy) = 0.0
-                // d(Ωmeasy)/d(mxz) = 0.0
-                // d(Ωmeasy)/d(myz) = Ωtruez
-                // d(Ωmeasx)/d(g11) = 0.0
-                // d(Ωmeasx)/d(g12) = 0.0
-                // d(Ωmeasx)/d(g13) = 0.0
-                // d(Ωmeasx)/d(g21) = ftruex
-                // d(Ωmeasx)/d(g22) = ftruey
-                // d(Ωmeasx)/d(g23) = ftruez
-                // d(Ωmeasx)/d(g31) = 0.0
-                // d(Ωmeasx)/d(g32) = 0.0
-                // d(Ωmeasx)/d(g33) = 0.0
+                        // d(Ωmeasy)/d(bx) = 0.0
+                        // d(Ωmeasy)/d(by) = 1.0
+                        // d(Ωmeasy)/d(bz) = 0.0
+                        // d(Ωmeasy)/d(sx) = 0.0
+                        // d(Ωmeasy)/d(sy) = Ωtruey
+                        // d(Ωmeasy)/d(sz) = 0.0
+                        // d(Ωmeasy)/d(mxy) = 0.0
+                        // d(Ωmeasy)/d(mxz) = 0.0
+                        // d(Ωmeasy)/d(myz) = Ωtruez
+                        // d(Ωmeasx)/d(g11) = 0.0
+                        // d(Ωmeasx)/d(g12) = 0.0
+                        // d(Ωmeasx)/d(g13) = 0.0
+                        // d(Ωmeasx)/d(g21) = ftruex
+                        // d(Ωmeasx)/d(g22) = ftruey
+                        // d(Ωmeasx)/d(g23) = ftruez
+                        // d(Ωmeasx)/d(g31) = 0.0
+                        // d(Ωmeasx)/d(g32) = 0.0
+                        // d(Ωmeasx)/d(g33) = 0.0
 
-                // d(Ωmeasz)/d(bx) = 0.0
-                // d(Ωmeasz)/d(by) = 0.0
-                // d(Ωmeasz)/d(bz) = 1.0
-                // d(Ωmeasz)/d(sx) = 0.0
-                // d(Ωmeasz)/d(sy) = 0.0
-                // d(Ωmeasz)/d(sz) = Ωtruez
-                // d(Ωmeasz)/d(mxy) = 0.0
-                // d(Ωmeasz)/d(mxz) = 0.0
-                // d(Ωmeasz)/d(myz) = 0.0
-                // d(Ωmeasx)/d(g11) = 0.0
-                // d(Ωmeasx)/d(g12) = 0.0
-                // d(Ωmeasx)/d(g13) = 0.0
-                // d(Ωmeasx)/d(g21) = 0.0
-                // d(Ωmeasx)/d(g22) = 0.0
-                // d(Ωmeasx)/d(g23) = 0.0
-                // d(Ωmeasx)/d(g31) = ftruex
-                // d(Ωmeasx)/d(g32) = ftruey
-                // d(Ωmeasx)/d(g33) = ftruez
+                        // d(Ωmeasz)/d(bx) = 0.0
+                        // d(Ωmeasz)/d(by) = 0.0
+                        // d(Ωmeasz)/d(bz) = 1.0
+                        // d(Ωmeasz)/d(sx) = 0.0
+                        // d(Ωmeasz)/d(sy) = 0.0
+                        // d(Ωmeasz)/d(sz) = Ωtruez
+                        // d(Ωmeasz)/d(mxy) = 0.0
+                        // d(Ωmeasz)/d(mxz) = 0.0
+                        // d(Ωmeasz)/d(myz) = 0.0
+                        // d(Ωmeasx)/d(g11) = 0.0
+                        // d(Ωmeasx)/d(g12) = 0.0
+                        // d(Ωmeasx)/d(g13) = 0.0
+                        // d(Ωmeasx)/d(g21) = 0.0
+                        // d(Ωmeasx)/d(g22) = 0.0
+                        // d(Ωmeasx)/d(g23) = 0.0
+                        // d(Ωmeasx)/d(g31) = ftruex
+                        // d(Ωmeasx)/d(g32) = ftruey
+                        // d(Ωmeasx)/d(g33) = ftruez
 
-                final double bx = params[0];
-                final double by = params[1];
-                final double bz = params[2];
+                        final double bx = params[0];
+                        final double by = params[1];
+                        final double bz = params[2];
 
-                final double sx = params[3];
-                final double sy = params[4];
-                final double sz = params[5];
+                        final double sx = params[3];
+                        final double sy = params[4];
+                        final double sz = params[5];
 
-                final double mxy = params[6];
-                final double mxz = params[7];
-                final double myz = params[8];
+                        final double mxy = params[6];
+                        final double mxz = params[7];
+                        final double myz = params[8];
 
-                final double g11 = params[9];
-                final double g21 = params[10];
-                final double g31 = params[11];
-                final double g12 = params[12];
-                final double g22 = params[13];
-                final double g32 = params[14];
-                final double g13 = params[15];
-                final double g23 = params[16];
-                final double g33 = params[17];
+                        final double g11 = params[9];
+                        final double g21 = params[10];
+                        final double g31 = params[11];
+                        final double g12 = params[12];
+                        final double g22 = params[13];
+                        final double g32 = params[14];
+                        final double g13 = params[15];
+                        final double g23 = params[16];
+                        final double g33 = params[17];
 
-                final double omegatruex = point[0];
-                final double omegatruey = point[1];
-                final double omegatruez = point[2];
+                        final double omegatruex = point[0];
+                        final double omegatruey = point[1];
+                        final double omegatruez = point[2];
 
-                final double ftruex = point[3];
-                final double ftruey = point[4];
-                final double ftruez = point[5];
+                        final double ftruex = point[3];
+                        final double ftruey = point[4];
+                        final double ftruez = point[5];
 
-                result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
-                        + g11 * ftruex + g12 * ftruey + g13 * ftruez;
-                result[1] = by + omegatruey + sy * omegatruey + myz * omegatruez
-                        + g21 * ftruex * g22 * ftruey + g23 * ftruez;
-                result[2] = bz + omegatruez + sz * omegatruez
-                        + g31 * ftruex + g32 * ftruey + g33 * ftruez;
+                        result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
+                                + g11 * ftruex + g12 * ftruey + g13 * ftruez;
+                        result[1] = by + omegatruey + sy * omegatruey + myz * omegatruez
+                                + g21 * ftruex * g22 * ftruey + g23 * ftruez;
+                        result[2] = bz + omegatruez + sz * omegatruez
+                                + g31 * ftruex + g32 * ftruey + g33 * ftruez;
 
-                jacobian.setElementAt(0, 0, 1.0);
-                jacobian.setElementAt(0, 1, 0.0);
-                jacobian.setElementAt(0, 2, 0.0);
-                jacobian.setElementAt(0, 3, omegatruex);
-                jacobian.setElementAt(0, 4, 0.0);
-                jacobian.setElementAt(0, 5, 0.0);
-                jacobian.setElementAt(0, 6, omegatruey);
-                jacobian.setElementAt(0, 7, omegatruez);
-                jacobian.setElementAt(0, 8, 0.0);
-                jacobian.setElementAt(0, 9, ftruex);
-                jacobian.setElementAt(0, 10, ftruey);
-                jacobian.setElementAt(0, 11, ftruez);
-                jacobian.setElementAt(0, 12, 0.0);
-                jacobian.setElementAt(0, 13, 0.0);
-                jacobian.setElementAt(0, 14, 0.0);
-                jacobian.setElementAt(0, 15, 0.0);
-                jacobian.setElementAt(0, 16, 0.0);
-                jacobian.setElementAt(0, 17, 0.0);
+                        jacobian.setElementAt(0, 0, 1.0);
+                        jacobian.setElementAt(0, 1, 0.0);
+                        jacobian.setElementAt(0, 2, 0.0);
+                        jacobian.setElementAt(0, 3, omegatruex);
+                        jacobian.setElementAt(0, 4, 0.0);
+                        jacobian.setElementAt(0, 5, 0.0);
+                        jacobian.setElementAt(0, 6, omegatruey);
+                        jacobian.setElementAt(0, 7, omegatruez);
+                        jacobian.setElementAt(0, 8, 0.0);
+                        jacobian.setElementAt(0, 9, ftruex);
+                        jacobian.setElementAt(0, 10, ftruey);
+                        jacobian.setElementAt(0, 11, ftruez);
+                        jacobian.setElementAt(0, 12, 0.0);
+                        jacobian.setElementAt(0, 13, 0.0);
+                        jacobian.setElementAt(0, 14, 0.0);
+                        jacobian.setElementAt(0, 15, 0.0);
+                        jacobian.setElementAt(0, 16, 0.0);
+                        jacobian.setElementAt(0, 17, 0.0);
 
-                jacobian.setElementAt(1, 0, 0.0);
-                jacobian.setElementAt(1, 1, 1.0);
-                jacobian.setElementAt(1, 2, 0.0);
-                jacobian.setElementAt(1, 3, 0.0);
-                jacobian.setElementAt(1, 4, omegatruey);
-                jacobian.setElementAt(1, 5, 0.0);
-                jacobian.setElementAt(1, 6, 0.0);
-                jacobian.setElementAt(1, 7, 0.0);
-                jacobian.setElementAt(1, 8, omegatruez);
-                jacobian.setElementAt(1, 9, 0.0);
-                jacobian.setElementAt(1, 10, 0.0);
-                jacobian.setElementAt(1, 11, 0.0);
-                jacobian.setElementAt(1, 12, ftruex);
-                jacobian.setElementAt(1, 13, ftruey);
-                jacobian.setElementAt(1, 14, ftruez);
-                jacobian.setElementAt(1, 15, 0.0);
-                jacobian.setElementAt(1, 16, 0.0);
-                jacobian.setElementAt(1, 17, 0.0);
+                        jacobian.setElementAt(1, 0, 0.0);
+                        jacobian.setElementAt(1, 1, 1.0);
+                        jacobian.setElementAt(1, 2, 0.0);
+                        jacobian.setElementAt(1, 3, 0.0);
+                        jacobian.setElementAt(1, 4, omegatruey);
+                        jacobian.setElementAt(1, 5, 0.0);
+                        jacobian.setElementAt(1, 6, 0.0);
+                        jacobian.setElementAt(1, 7, 0.0);
+                        jacobian.setElementAt(1, 8, omegatruez);
+                        jacobian.setElementAt(1, 9, 0.0);
+                        jacobian.setElementAt(1, 10, 0.0);
+                        jacobian.setElementAt(1, 11, 0.0);
+                        jacobian.setElementAt(1, 12, ftruex);
+                        jacobian.setElementAt(1, 13, ftruey);
+                        jacobian.setElementAt(1, 14, ftruez);
+                        jacobian.setElementAt(1, 15, 0.0);
+                        jacobian.setElementAt(1, 16, 0.0);
+                        jacobian.setElementAt(1, 17, 0.0);
 
-                jacobian.setElementAt(2, 0, 0.0);
-                jacobian.setElementAt(2, 1, 0.0);
-                jacobian.setElementAt(2, 2, 1.0);
-                jacobian.setElementAt(2, 3, 0.0);
-                jacobian.setElementAt(2, 4, 0.0);
-                jacobian.setElementAt(2, 5, omegatruez);
-                jacobian.setElementAt(2, 6, 0.0);
-                jacobian.setElementAt(2, 7, 0.0);
-                jacobian.setElementAt(2, 8, 0.0);
-                jacobian.setElementAt(2, 9, 0.0);
-                jacobian.setElementAt(2, 10, 0.0);
-                jacobian.setElementAt(2, 11, 0.0);
-                jacobian.setElementAt(2, 12, 0.0);
-                jacobian.setElementAt(2, 13, 0.0);
-                jacobian.setElementAt(2, 14, 0.0);
-                jacobian.setElementAt(2, 15, ftruex);
-                jacobian.setElementAt(2, 16, ftruey);
-                jacobian.setElementAt(2, 17, ftruez);
-            }
-        });
+                        jacobian.setElementAt(2, 0, 0.0);
+                        jacobian.setElementAt(2, 1, 0.0);
+                        jacobian.setElementAt(2, 2, 1.0);
+                        jacobian.setElementAt(2, 3, 0.0);
+                        jacobian.setElementAt(2, 4, 0.0);
+                        jacobian.setElementAt(2, 5, omegatruez);
+                        jacobian.setElementAt(2, 6, 0.0);
+                        jacobian.setElementAt(2, 7, 0.0);
+                        jacobian.setElementAt(2, 8, 0.0);
+                        jacobian.setElementAt(2, 9, 0.0);
+                        jacobian.setElementAt(2, 10, 0.0);
+                        jacobian.setElementAt(2, 11, 0.0);
+                        jacobian.setElementAt(2, 12, 0.0);
+                        jacobian.setElementAt(2, 13, 0.0);
+                        jacobian.setElementAt(2, 14, 0.0);
+                        jacobian.setElementAt(2, 15, ftruex);
+                        jacobian.setElementAt(2, 16, ftruey);
+                        jacobian.setElementAt(2, 17, ftruez);
+                    }
+                });
 
         setInputData();
 
@@ -4374,27 +4375,27 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
 
         // We define a lineal function mapping original parameters for the common
         // axis case to the general case
-        //[bx'] =   [1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][bx]
-        //[by']     [0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][by]
-        //[bz']     [0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][bz]
-        //[sx']     [0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0][sx]
-        //[sy']     [0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0][sy]
-        //[sz']     [0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0][sz]
-        //[mxy']    [0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0][mxy]
-        //[mxz']    [0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0][mxz]
-        //[myx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][myz]
-        //[myz']    [0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0][g11]
-        //[mzx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g21]
-        //[mzy']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g31]
-        //[g11']    [0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0][g12]
-        //[g21']    [0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0][g22]
-        //[g31']    [0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0][g32]
-        //[g12']    [0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0][g13]
-        //[g22']    [0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0][g23]
-        //[g32']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0][g33]
-        //[g13']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0]
-        //[g23']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0]
-        //[g33']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1]
+        // [bx'] =   [1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][bx]
+        // [by']     [0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][by]
+        // [bz']     [0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][bz]
+        // [sx']     [0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0  0][sx]
+        // [sy']     [0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0  0][sy]
+        // [sz']     [0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0  0][sz]
+        // [mxy']    [0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0  0][mxy]
+        // [mxz']    [0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0  0][mxz]
+        // [myx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][myz]
+        // [myz']    [0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0  0][g11]
+        // [mzx']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g21]
+        // [mzy']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0][g31]
+        // [g11']    [0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0  0][g12]
+        // [g21']    [0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0  0][g22]
+        // [g31']    [0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0  0][g32]
+        // [g12']    [0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0  0][g13]
+        // [g22']    [0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0  0][g23]
+        // [g32']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0  0][g33]
+        // [g13']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0  0]
+        // [g23']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1  0]
+        // [g33']    [0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  0  1]
 
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
@@ -4482,230 +4483,230 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
 
         mFitter.setFunctionEvaluator(
                 new LevenbergMarquardtMultiVariateFunctionEvaluator() {
-            @Override
-            public int getNumberOfDimensions() {
-                // Input points are true angular rate + specific force coordinates
-                return 2 * BodyKinematics.COMPONENTS;
-            }
+                    @Override
+                    public int getNumberOfDimensions() {
+                        // Input points are true angular rate + specific force coordinates
+                        return 2 * BodyKinematics.COMPONENTS;
+                    }
 
-            @Override
-            public int getNumberOfVariables() {
-                // The multivariate function returns the components of measured angular rate
-                return BodyKinematics.COMPONENTS;
-            }
+                    @Override
+                    public int getNumberOfVariables() {
+                        // The multivariate function returns the components of measured angular rate
+                        return BodyKinematics.COMPONENTS;
+                    }
 
-            @Override
-            public double[] createInitialParametersArray() {
-                final double[] initial = new double[GENERAL_UNKNOWNS];
+                    @Override
+                    public double[] createInitialParametersArray() {
+                        final double[] initial = new double[GENERAL_UNKNOWNS];
 
-                initial[0] = mInitialBiasX;
-                initial[1] = mInitialBiasY;
-                initial[2] = mInitialBiasZ;
+                        initial[0] = mInitialBiasX;
+                        initial[1] = mInitialBiasY;
+                        initial[2] = mInitialBiasZ;
 
-                initial[3] = mInitialSx;
-                initial[4] = mInitialSy;
-                initial[5] = mInitialSz;
+                        initial[3] = mInitialSx;
+                        initial[4] = mInitialSy;
+                        initial[5] = mInitialSz;
 
-                initial[6] = mInitialMxy;
-                initial[7] = mInitialMxz;
-                initial[8] = mInitialMyx;
-                initial[9] = mInitialMyz;
-                initial[10] = mInitialMzx;
-                initial[11] = mInitialMzy;
+                        initial[6] = mInitialMxy;
+                        initial[7] = mInitialMxz;
+                        initial[8] = mInitialMyx;
+                        initial[9] = mInitialMyz;
+                        initial[10] = mInitialMzx;
+                        initial[11] = mInitialMzy;
 
-                final double[] buffer = mInitialGg.getBuffer();
-                final int num = buffer.length;
-                System.arraycopy(buffer, 0, initial, 12, num);
+                        final double[] buffer = mInitialGg.getBuffer();
+                        final int num = buffer.length;
+                        System.arraycopy(buffer, 0, initial, 12, num);
 
-                return initial;
-            }
+                        return initial;
+                    }
 
-            @Override
-            public void evaluate(final int i, final double[] point,
-                                 final double[] result, final double[] params,
-                                 final Matrix jacobian) {
-                // We know that:
-                // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
-                // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
-                // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
+                    @Override
+                    public void evaluate(final int i, final double[] point,
+                                         final double[] result, final double[] params,
+                                         final Matrix jacobian) {
+                        // We know that:
+                        // Ωmeasx = bx + Ωtruex + sx * Ωtruex + mxy * Ωtruey + mxz * Ωtruez + g11 * ftruex + g12 * ftruey + g13 * ftruez
+                        // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
+                        // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-                // Hence, the derivatives respect the parameters bx, by, bz, sx, sy,
-                // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,
-                // g31, g32 and g33 is:
+                        // Hence, the derivatives respect the parameters bx, by, bz, sx, sy,
+                        // sz, mxy, mxz, myx, myz, mzx, mzy, g11, g12, g13, g21, g22, g23,
+                        // g31, g32 and g33 is:
 
-                // d(Ωmeasx)/d(bx) = 1.0
-                // d(Ωmeasx)/d(by) = 0.0
-                // d(Ωmeasx)/d(bz) = 0.0
-                // d(Ωmeasx)/d(sx) = Ωtruex
-                // d(Ωmeasx)/d(sy) = 0.0
-                // d(Ωmeasx)/d(sz) = 0.0
-                // d(Ωmeasx)/d(mxy) = Ωtruey
-                // d(Ωmeasx)/d(mxz) = Ωtruez
-                // d(Ωmeasx)/d(myx) = 0.0
-                // d(Ωmeasx)/d(myz) = 0.0
-                // d(Ωmeasx)/d(mzx) = 0.0
-                // d(Ωmeasx)/d(mzy) = 0.0
-                // d(Ωmeasx)/d(g11) = ftruex
-                // d(Ωmeasx)/d(g12) = ftruey
-                // d(Ωmeasx)/d(g13) = ftruez
-                // d(Ωmeasx)/d(g21) = 0.0
-                // d(Ωmeasx)/d(g22) = 0.0
-                // d(Ωmeasx)/d(g23) = 0.0
-                // d(Ωmeasx)/d(g31) = 0.0
-                // d(Ωmeasx)/d(g32) = 0.0
-                // d(Ωmeasx)/d(g33) = 0.0
+                        // d(Ωmeasx)/d(bx) = 1.0
+                        // d(Ωmeasx)/d(by) = 0.0
+                        // d(Ωmeasx)/d(bz) = 0.0
+                        // d(Ωmeasx)/d(sx) = Ωtruex
+                        // d(Ωmeasx)/d(sy) = 0.0
+                        // d(Ωmeasx)/d(sz) = 0.0
+                        // d(Ωmeasx)/d(mxy) = Ωtruey
+                        // d(Ωmeasx)/d(mxz) = Ωtruez
+                        // d(Ωmeasx)/d(myx) = 0.0
+                        // d(Ωmeasx)/d(myz) = 0.0
+                        // d(Ωmeasx)/d(mzx) = 0.0
+                        // d(Ωmeasx)/d(mzy) = 0.0
+                        // d(Ωmeasx)/d(g11) = ftruex
+                        // d(Ωmeasx)/d(g12) = ftruey
+                        // d(Ωmeasx)/d(g13) = ftruez
+                        // d(Ωmeasx)/d(g21) = 0.0
+                        // d(Ωmeasx)/d(g22) = 0.0
+                        // d(Ωmeasx)/d(g23) = 0.0
+                        // d(Ωmeasx)/d(g31) = 0.0
+                        // d(Ωmeasx)/d(g32) = 0.0
+                        // d(Ωmeasx)/d(g33) = 0.0
 
-                // d(Ωmeasy)/d(bx) = 0.0
-                // d(Ωmeasy)/d(by) = 1.0
-                // d(Ωmeasy)/d(bz) = 0.0
-                // d(Ωmeasy)/d(sx) = 0.0
-                // d(Ωmeasy)/d(sy) = Ωtruey
-                // d(Ωmeasy)/d(sz) = 0.0
-                // d(Ωmeasy)/d(mxy) = 0.0
-                // d(Ωmeasy)/d(mxz) = 0.0
-                // d(Ωmeasy)/d(myx) = Ωtruex
-                // d(Ωmeasy)/d(myz) = Ωtruez
-                // d(Ωmeasy)/d(mzx) = 0.0
-                // d(Ωmeasy)/d(mzy) = 0.0
-                // d(Ωmeasx)/d(g11) = 0.0
-                // d(Ωmeasx)/d(g12) = 0.0
-                // d(Ωmeasx)/d(g13) = 0.0
-                // d(Ωmeasx)/d(g21) = ftruex
-                // d(Ωmeasx)/d(g22) = ftruey
-                // d(Ωmeasx)/d(g23) = ftruez
-                // d(Ωmeasx)/d(g31) = 0.0
-                // d(Ωmeasx)/d(g32) = 0.0
-                // d(Ωmeasx)/d(g33) = 0.0
+                        // d(Ωmeasy)/d(bx) = 0.0
+                        // d(Ωmeasy)/d(by) = 1.0
+                        // d(Ωmeasy)/d(bz) = 0.0
+                        // d(Ωmeasy)/d(sx) = 0.0
+                        // d(Ωmeasy)/d(sy) = Ωtruey
+                        // d(Ωmeasy)/d(sz) = 0.0
+                        // d(Ωmeasy)/d(mxy) = 0.0
+                        // d(Ωmeasy)/d(mxz) = 0.0
+                        // d(Ωmeasy)/d(myx) = Ωtruex
+                        // d(Ωmeasy)/d(myz) = Ωtruez
+                        // d(Ωmeasy)/d(mzx) = 0.0
+                        // d(Ωmeasy)/d(mzy) = 0.0
+                        // d(Ωmeasx)/d(g11) = 0.0
+                        // d(Ωmeasx)/d(g12) = 0.0
+                        // d(Ωmeasx)/d(g13) = 0.0
+                        // d(Ωmeasx)/d(g21) = ftruex
+                        // d(Ωmeasx)/d(g22) = ftruey
+                        // d(Ωmeasx)/d(g23) = ftruez
+                        // d(Ωmeasx)/d(g31) = 0.0
+                        // d(Ωmeasx)/d(g32) = 0.0
+                        // d(Ωmeasx)/d(g33) = 0.0
 
-                // d(Ωmeasz)/d(bx) = 0.0
-                // d(Ωmeasz)/d(by) = 0.0
-                // d(Ωmeasz)/d(bz) = 1.0
-                // d(Ωmeasz)/d(sx) = 0.0
-                // d(Ωmeasz)/d(sy) = 0.0
-                // d(Ωmeasz)/d(sz) = Ωtruez
-                // d(Ωmeasz)/d(mxy) = 0.0
-                // d(Ωmeasz)/d(mxz) = 0.0
-                // d(Ωmeasz)/d(myx) = 0.0
-                // d(Ωmeasz)/d(myz) = 0.0
-                // d(Ωmeasz)/d(mzx) = Ωtruex
-                // d(Ωmeasz)/d(mzy) = Ωtruey
-                // d(Ωmeasx)/d(g11) = 0.0
-                // d(Ωmeasx)/d(g12) = 0.0
-                // d(Ωmeasx)/d(g13) = 0.0
-                // d(Ωmeasx)/d(g21) = 0.0
-                // d(Ωmeasx)/d(g22) = 0.0
-                // d(Ωmeasx)/d(g23) = 0.0
-                // d(Ωmeasx)/d(g31) = ftruex
-                // d(Ωmeasx)/d(g32) = ftruey
-                // d(Ωmeasx)/d(g33) = ftruez
+                        // d(Ωmeasz)/d(bx) = 0.0
+                        // d(Ωmeasz)/d(by) = 0.0
+                        // d(Ωmeasz)/d(bz) = 1.0
+                        // d(Ωmeasz)/d(sx) = 0.0
+                        // d(Ωmeasz)/d(sy) = 0.0
+                        // d(Ωmeasz)/d(sz) = Ωtruez
+                        // d(Ωmeasz)/d(mxy) = 0.0
+                        // d(Ωmeasz)/d(mxz) = 0.0
+                        // d(Ωmeasz)/d(myx) = 0.0
+                        // d(Ωmeasz)/d(myz) = 0.0
+                        // d(Ωmeasz)/d(mzx) = Ωtruex
+                        // d(Ωmeasz)/d(mzy) = Ωtruey
+                        // d(Ωmeasx)/d(g11) = 0.0
+                        // d(Ωmeasx)/d(g12) = 0.0
+                        // d(Ωmeasx)/d(g13) = 0.0
+                        // d(Ωmeasx)/d(g21) = 0.0
+                        // d(Ωmeasx)/d(g22) = 0.0
+                        // d(Ωmeasx)/d(g23) = 0.0
+                        // d(Ωmeasx)/d(g31) = ftruex
+                        // d(Ωmeasx)/d(g32) = ftruey
+                        // d(Ωmeasx)/d(g33) = ftruez
 
-                final double bx = params[0];
-                final double by = params[1];
-                final double bz = params[2];
+                        final double bx = params[0];
+                        final double by = params[1];
+                        final double bz = params[2];
 
-                final double sx = params[3];
-                final double sy = params[4];
-                final double sz = params[5];
+                        final double sx = params[3];
+                        final double sy = params[4];
+                        final double sz = params[5];
 
-                final double mxy = params[6];
-                final double mxz = params[7];
-                final double myx = params[8];
-                final double myz = params[9];
-                final double mzx = params[10];
-                final double mzy = params[11];
+                        final double mxy = params[6];
+                        final double mxz = params[7];
+                        final double myx = params[8];
+                        final double myz = params[9];
+                        final double mzx = params[10];
+                        final double mzy = params[11];
 
-                final double g11 = params[12];
-                final double g21 = params[13];
-                final double g31 = params[14];
-                final double g12 = params[15];
-                final double g22 = params[16];
-                final double g32 = params[17];
-                final double g13 = params[18];
-                final double g23 = params[19];
-                final double g33 = params[20];
+                        final double g11 = params[12];
+                        final double g21 = params[13];
+                        final double g31 = params[14];
+                        final double g12 = params[15];
+                        final double g22 = params[16];
+                        final double g32 = params[17];
+                        final double g13 = params[18];
+                        final double g23 = params[19];
+                        final double g33 = params[20];
 
-                final double omegatruex = point[0];
-                final double omegatruey = point[1];
-                final double omegatruez = point[2];
+                        final double omegatruex = point[0];
+                        final double omegatruey = point[1];
+                        final double omegatruez = point[2];
 
-                final double ftruex = point[3];
-                final double ftruey = point[4];
-                final double ftruez = point[5];
+                        final double ftruex = point[3];
+                        final double ftruey = point[4];
+                        final double ftruez = point[5];
 
-                result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
-                        + g11 * ftruex + g12 * ftruey + g13 * ftruez;
-                result[1] = by + myx * omegatruex + omegatruey + sy * omegatruey + myz * omegatruez
-                        + g21 * ftruex * g22 * ftruey + g23 * ftruez;
-                result[2] = bz + mzx * omegatruex + mzy * omegatruey + omegatruez + sz * omegatruez
-                        + g31 * ftruex + g32 * ftruey + g33 * ftruez;
+                        result[0] = bx + omegatruex + sx * omegatruex + mxy * omegatruey + mxz * omegatruez
+                                + g11 * ftruex + g12 * ftruey + g13 * ftruez;
+                        result[1] = by + myx * omegatruex + omegatruey + sy * omegatruey + myz * omegatruez
+                                + g21 * ftruex * g22 * ftruey + g23 * ftruez;
+                        result[2] = bz + mzx * omegatruex + mzy * omegatruey + omegatruez + sz * omegatruez
+                                + g31 * ftruex + g32 * ftruey + g33 * ftruez;
 
-                jacobian.setElementAt(0, 0, 1.0);
-                jacobian.setElementAt(0, 1, 0.0);
-                jacobian.setElementAt(0, 2, 0.0);
-                jacobian.setElementAt(0, 3, omegatruex);
-                jacobian.setElementAt(0, 4, 0.0);
-                jacobian.setElementAt(0, 5, 0.0);
-                jacobian.setElementAt(0, 6, omegatruey);
-                jacobian.setElementAt(0, 7, omegatruez);
-                jacobian.setElementAt(0, 8, 0.0);
-                jacobian.setElementAt(0, 9, 0.0);
-                jacobian.setElementAt(0, 10, 0.0);
-                jacobian.setElementAt(0, 11, 0.0);
-                jacobian.setElementAt(0, 12, ftruex);
-                jacobian.setElementAt(0, 13, ftruey);
-                jacobian.setElementAt(0, 14, ftruez);
-                jacobian.setElementAt(0, 15, 0.0);
-                jacobian.setElementAt(0, 16, 0.0);
-                jacobian.setElementAt(0, 17, 0.0);
-                jacobian.setElementAt(0, 18, 0.0);
-                jacobian.setElementAt(0, 19, 0.0);
-                jacobian.setElementAt(0, 20, 0.0);
+                        jacobian.setElementAt(0, 0, 1.0);
+                        jacobian.setElementAt(0, 1, 0.0);
+                        jacobian.setElementAt(0, 2, 0.0);
+                        jacobian.setElementAt(0, 3, omegatruex);
+                        jacobian.setElementAt(0, 4, 0.0);
+                        jacobian.setElementAt(0, 5, 0.0);
+                        jacobian.setElementAt(0, 6, omegatruey);
+                        jacobian.setElementAt(0, 7, omegatruez);
+                        jacobian.setElementAt(0, 8, 0.0);
+                        jacobian.setElementAt(0, 9, 0.0);
+                        jacobian.setElementAt(0, 10, 0.0);
+                        jacobian.setElementAt(0, 11, 0.0);
+                        jacobian.setElementAt(0, 12, ftruex);
+                        jacobian.setElementAt(0, 13, ftruey);
+                        jacobian.setElementAt(0, 14, ftruez);
+                        jacobian.setElementAt(0, 15, 0.0);
+                        jacobian.setElementAt(0, 16, 0.0);
+                        jacobian.setElementAt(0, 17, 0.0);
+                        jacobian.setElementAt(0, 18, 0.0);
+                        jacobian.setElementAt(0, 19, 0.0);
+                        jacobian.setElementAt(0, 20, 0.0);
 
-                jacobian.setElementAt(1, 0, 0.0);
-                jacobian.setElementAt(1, 1, 1.0);
-                jacobian.setElementAt(1, 2, 0.0);
-                jacobian.setElementAt(1, 3, 0.0);
-                jacobian.setElementAt(1, 4, omegatruey);
-                jacobian.setElementAt(1, 5, 0.0);
-                jacobian.setElementAt(1, 6, 0.0);
-                jacobian.setElementAt(1, 7, 0.0);
-                jacobian.setElementAt(1, 8, omegatruex);
-                jacobian.setElementAt(1, 9, omegatruez);
-                jacobian.setElementAt(1, 10, 0.0);
-                jacobian.setElementAt(1, 11, 0.0);
-                jacobian.setElementAt(1, 12, 0.0);
-                jacobian.setElementAt(1, 13, 0.0);
-                jacobian.setElementAt(1, 14, 0.0);
-                jacobian.setElementAt(1, 15, ftruex);
-                jacobian.setElementAt(1, 16, ftruey);
-                jacobian.setElementAt(1, 17, ftruez);
-                jacobian.setElementAt(1, 18, 0.0);
-                jacobian.setElementAt(1, 19, 0.0);
-                jacobian.setElementAt(1, 20, 0.0);
+                        jacobian.setElementAt(1, 0, 0.0);
+                        jacobian.setElementAt(1, 1, 1.0);
+                        jacobian.setElementAt(1, 2, 0.0);
+                        jacobian.setElementAt(1, 3, 0.0);
+                        jacobian.setElementAt(1, 4, omegatruey);
+                        jacobian.setElementAt(1, 5, 0.0);
+                        jacobian.setElementAt(1, 6, 0.0);
+                        jacobian.setElementAt(1, 7, 0.0);
+                        jacobian.setElementAt(1, 8, omegatruex);
+                        jacobian.setElementAt(1, 9, omegatruez);
+                        jacobian.setElementAt(1, 10, 0.0);
+                        jacobian.setElementAt(1, 11, 0.0);
+                        jacobian.setElementAt(1, 12, 0.0);
+                        jacobian.setElementAt(1, 13, 0.0);
+                        jacobian.setElementAt(1, 14, 0.0);
+                        jacobian.setElementAt(1, 15, ftruex);
+                        jacobian.setElementAt(1, 16, ftruey);
+                        jacobian.setElementAt(1, 17, ftruez);
+                        jacobian.setElementAt(1, 18, 0.0);
+                        jacobian.setElementAt(1, 19, 0.0);
+                        jacobian.setElementAt(1, 20, 0.0);
 
-                jacobian.setElementAt(2, 0, 0.0);
-                jacobian.setElementAt(2, 1, 0.0);
-                jacobian.setElementAt(2, 2, 1.0);
-                jacobian.setElementAt(2, 3, 0.0);
-                jacobian.setElementAt(2, 4, 0.0);
-                jacobian.setElementAt(2, 5, omegatruez);
-                jacobian.setElementAt(2, 6, 0.0);
-                jacobian.setElementAt(2, 7, 0.0);
-                jacobian.setElementAt(2, 8, 0.0);
-                jacobian.setElementAt(2, 9, 0.0);
-                jacobian.setElementAt(2, 10, omegatruex);
-                jacobian.setElementAt(2, 11, omegatruey);
-                jacobian.setElementAt(2, 12, 0.0);
-                jacobian.setElementAt(2, 13, 0.0);
-                jacobian.setElementAt(2, 14, 0.0);
-                jacobian.setElementAt(2, 15, 0.0);
-                jacobian.setElementAt(2, 16, 0.0);
-                jacobian.setElementAt(2, 17, 0.0);
-                jacobian.setElementAt(2, 18, ftruex);
-                jacobian.setElementAt(2, 19, ftruey);
-                jacobian.setElementAt(2, 20, ftruez);
-            }
-        });
+                        jacobian.setElementAt(2, 0, 0.0);
+                        jacobian.setElementAt(2, 1, 0.0);
+                        jacobian.setElementAt(2, 2, 1.0);
+                        jacobian.setElementAt(2, 3, 0.0);
+                        jacobian.setElementAt(2, 4, 0.0);
+                        jacobian.setElementAt(2, 5, omegatruez);
+                        jacobian.setElementAt(2, 6, 0.0);
+                        jacobian.setElementAt(2, 7, 0.0);
+                        jacobian.setElementAt(2, 8, 0.0);
+                        jacobian.setElementAt(2, 9, 0.0);
+                        jacobian.setElementAt(2, 10, omegatruex);
+                        jacobian.setElementAt(2, 11, omegatruey);
+                        jacobian.setElementAt(2, 12, 0.0);
+                        jacobian.setElementAt(2, 13, 0.0);
+                        jacobian.setElementAt(2, 14, 0.0);
+                        jacobian.setElementAt(2, 15, 0.0);
+                        jacobian.setElementAt(2, 16, 0.0);
+                        jacobian.setElementAt(2, 17, 0.0);
+                        jacobian.setElementAt(2, 18, ftruex);
+                        jacobian.setElementAt(2, 19, ftruey);
+                        jacobian.setElementAt(2, 20, ftruez);
+                    }
+                });
 
         setInputData();
 
@@ -4798,9 +4799,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
         // Ωmeasy = by + myx * Ωtruex + Ωtruey + sy * Ωtruey + myz * Ωtruez + g21 * ftruex * g22 * ftruey + g23 * ftruez
         // Ωmeasz = bz + mzx * Ωtruex + mzy * Ωtruey + Ωtruez + sz * Ωtruez + g31 * ftruex + g32 * ftruey + g33 * ftruez
 
-        //  fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
-        //  fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
-        //  fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
+        // fmeasx = bx + ftruex + sx * ftruex + mxy * ftruey + mxz * ftruez
+        // fmeasy = by + myx * ftruex + ftruey + sy * ftruey + myz * ftruez
+        // fmeasz = bz + mzx * ftruex + mzy * ftruey + ftruez + sz * ftruez
 
         final BodyKinematics expectedKinematics = new BodyKinematics();
 
@@ -4853,7 +4854,7 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
      * Converts angular speed value and unit to radians per second.
      *
      * @param value angular speed value.
-     * @param unit unit of angular speed value.
+     * @param unit  unit of angular speed value.
      * @return converted value.
      */
     private static double convertAngularSpeed(final double value, final AngularSpeedUnit unit) {

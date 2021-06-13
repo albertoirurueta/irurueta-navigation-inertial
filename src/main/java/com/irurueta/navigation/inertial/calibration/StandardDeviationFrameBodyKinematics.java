@@ -25,6 +25,7 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedConverter;
 import com.irurueta.units.AngularSpeedUnit;
 import com.irurueta.units.Time;
+
 import java.util.Objects;
 
 /**
@@ -1515,7 +1516,7 @@ public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
      * @return true if both objects are considered to be equal, false otherwise.
      */
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(final Object obj) {
         if (this == obj) {
             return true;
         }

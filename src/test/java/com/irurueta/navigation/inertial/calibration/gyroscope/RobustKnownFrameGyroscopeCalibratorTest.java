@@ -67,7 +67,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
 
-
         // test create with listener and method
 
         // RANSAC
@@ -109,7 +108,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertSame(calibrator.getListener(), this);
-
 
         // test create with measurements and method
 
@@ -154,7 +152,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, listener and method
 
@@ -203,7 +200,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with common axis used and method
 
         // RANSAC
@@ -245,7 +241,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with common axis used, listener and method
 
@@ -294,7 +289,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, common axis used and method
 
         // RANSAC
@@ -341,7 +335,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with measurements, common axis used and method
 
@@ -395,7 +388,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores and method
         final double[] qualityScores = new double[
                 RobustKnownFrameGyroscopeCalibrator.MINIMUM_MEASUREMENTS];
@@ -439,7 +431,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         // check
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
-
 
         // test create with quality scores, listener and method
 
@@ -488,7 +479,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements and method
 
         // RANSAC
@@ -535,7 +525,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with quality scores, measurements, listener and method
 
@@ -589,7 +578,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, common axis used and method
 
         // RANSAC
@@ -636,7 +624,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator instanceof PROMedSRobustKnownFrameGyroscopeCalibrator);
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, common axis used, listener and method
 
@@ -690,7 +677,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, common axis used and method
 
         // RANSAC
@@ -742,7 +728,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertSame(calibrator.getQualityScores(), qualityScores);
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, common axis used, listener and
         // method
@@ -807,13 +792,11 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create();
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
-
 
         // test create with listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(this);
@@ -822,14 +805,12 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements,
@@ -840,14 +821,12 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with common axis used and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with common axis used, listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(true,
@@ -858,7 +837,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with measurements, common axis used and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements,
                 true);
@@ -866,7 +844,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with measurements, common axis used, listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(measurements,
@@ -878,14 +855,12 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores);
 
         // check
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertNull(calibrator.getQualityScores());
-
 
         // test create with quality scores, listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores,
@@ -896,7 +871,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores,
                 measurements);
@@ -905,7 +879,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getMeasurements(), measurements);
-
 
         // test create with quality scores, measurements, listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores,
@@ -917,7 +890,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertSame(calibrator.getMeasurements(), measurements);
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, common axis used and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores,
                 true);
@@ -926,7 +898,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.LMedS);
         assertNull(calibrator.getQualityScores());
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, common axis used, listener and default method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores,
@@ -938,7 +909,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
 
-
         // test create with quality scores, measurements, common axis used and default
         // method
         calibrator = RobustKnownFrameGyroscopeCalibrator.create(qualityScores,
@@ -949,7 +919,6 @@ public class RobustKnownFrameGyroscopeCalibratorTest
         assertNull(calibrator.getQualityScores());
         assertSame(calibrator.getMeasurements(), measurements);
         assertTrue(calibrator.isCommonAxisUsed());
-
 
         // test create with quality scores, measurements, common axis used, listener
         // and default method

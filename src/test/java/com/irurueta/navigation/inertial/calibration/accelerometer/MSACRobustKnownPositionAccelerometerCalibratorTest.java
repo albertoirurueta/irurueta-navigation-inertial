@@ -21,16 +21,16 @@ import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.ECEFPosition;
+import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
-import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
 import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.navigation.inertial.calibration.BodyKinematicsGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -41,7 +41,6 @@ import com.irurueta.numerical.robust.RobustEstimatorMethod;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -139,19 +138,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -164,7 +163,7 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        Assert.assertEquals(calibrator.getMinimumRequiredMeasurements(),
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
                 RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
@@ -281,19 +280,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -426,19 +425,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -568,19 +567,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -717,16 +716,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -873,16 +872,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -1046,15 +1045,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertNull(calibrator.getEcefPosition());
@@ -1225,19 +1224,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -1386,19 +1385,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -1547,19 +1546,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -1708,19 +1707,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -1869,19 +1868,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -2037,16 +2036,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -2212,16 +2211,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -2387,16 +2386,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -2562,16 +2561,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -2738,16 +2737,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -2919,16 +2918,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -3102,16 +3101,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -3285,16 +3284,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -3479,15 +3478,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -3682,15 +3681,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -3889,15 +3888,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -4096,15 +4095,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertSame(calibrator.getEcefPosition(), ecefPosition);
@@ -4281,19 +4280,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -4442,19 +4441,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -4603,19 +4602,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -4764,19 +4763,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -4925,19 +4924,19 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        double[] bias1 = new double[3];
+        final double[] bias1 = new double[3];
         assertArrayEquals(calibrator.getInitialBias(), bias1, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias1, bias2, 0.0);
-        Matrix biasMatrix1 = new Matrix(3, 1);
+        final Matrix biasMatrix1 = new Matrix(3, 1);
         assertEquals(calibrator.getInitialBiasAsMatrix(), biasMatrix1);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(biasMatrix1, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -5093,16 +5092,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -5268,16 +5267,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -5443,16 +5442,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -5618,16 +5617,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -5794,16 +5793,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
         Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -5975,16 +5974,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -6158,16 +6157,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -6341,16 +6340,16 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
-        Matrix ma1 = new Matrix(3, 3);
+        final Matrix ma1 = new Matrix(3, 3);
         assertEquals(calibrator.getInitialMa(), ma1);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma1, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -6535,15 +6534,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -6738,15 +6737,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -6945,15 +6944,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -7152,15 +7151,15 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
         assertArrayEquals(calibrator.getInitialBias(), bias, 0.0);
-        double[] bias2 = new double[3];
+        final double[] bias2 = new double[3];
         calibrator.getInitialBias(bias2);
         assertArrayEquals(bias, bias2, 0.0);
         assertEquals(calibrator.getInitialBiasAsMatrix(), ba);
-        Matrix biasMatrix2 = new Matrix(3, 1);
+        final Matrix biasMatrix2 = new Matrix(3, 1);
         calibrator.getInitialBiasAsMatrix(biasMatrix2);
         assertEquals(ba, biasMatrix2);
         assertEquals(calibrator.getInitialMa(), ma);
-        Matrix ma2 = new Matrix(3, 3);
+        final Matrix ma2 = new Matrix(3, 3);
         calibrator.getInitialMa(ma2);
         assertEquals(ma, ma2);
         assertTrue(calibrator.getEcefPosition().equals(ecefPosition, ABSOLUTE_ERROR));
@@ -7859,7 +7858,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         final double initialMzx = ma2.getElementAt(2, 0);
         final double initialMzy = ma2.getElementAt(2, 1);
 
-
         // check
         final Matrix ma3 = calibrator.getInitialMa();
         final Matrix ma4 = new Matrix(3, 3);
@@ -8013,7 +8011,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         // check
         assertFalse(calibrator.isReady());
 
-
         // set empty measurements
         final List<StandardDeviationBodyKinematics> measurements1 =
                 Collections.emptyList();
@@ -8021,7 +8018,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
 
         // check
         assertFalse(calibrator.isReady());
-
 
         // set enough measurements for general case
         calibrator.setCommonAxisUsed(false);
@@ -8035,13 +8031,11 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
         // check
         assertFalse(calibrator.isReady());
 
-
         // set position
         final ECEFPosition position = new ECEFPosition();
         calibrator.setPosition(position);
 
         assertTrue(calibrator.isReady());
-
 
         // set enough measurements for common axis case
         measurements2.clear();
@@ -8224,7 +8218,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8271,7 +8264,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -8360,7 +8352,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8407,7 +8398,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -8496,7 +8486,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8543,7 +8532,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -8633,7 +8621,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     accelNoiseRootPSD, gyroNoiseRootPSD, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8680,7 +8667,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator
@@ -8770,7 +8756,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     0.0, 0.0, accelQuantLevel,
                     gyroQuantLevel);
 
-
             final Random random = new Random();
             final UniformRandomizer randomizer = new UniformRandomizer(random);
             final double latitude = Math.toRadians(
@@ -8817,7 +8802,6 @@ public class MSACRobustKnownPositionAccelerometerCalibratorTest implements
                     measuredKinematics = BodyKinematicsGenerator
                             .generate(TIME_INTERVAL_SECONDS, trueKinematics,
                                     errorsOutlier, random);
-
                 } else {
                     // inlier
                     measuredKinematics = BodyKinematicsGenerator

@@ -143,7 +143,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
 
-
         // test constructor 2
         final INSTightlyCoupledKalmanConfig kalmanConfig = generateKalmanConfig();
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig);
@@ -180,7 +179,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 3
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
@@ -228,7 +226,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 4
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(this);
 
@@ -261,7 +258,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
 
         // test constructor 5
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -308,8 +304,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 6
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 this);
@@ -345,8 +340,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
-
+        
         // test constructor 7
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
                 this);
@@ -390,8 +384,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 8
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochInterval, this);
@@ -437,8 +430,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 9
         epochIntervalTime = new Time(epochInterval, TimeUnit.SECOND);
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime);
@@ -472,8 +464,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
-
+        
         // test constructor 10
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 kalmanConfig, epochIntervalTime);
@@ -520,8 +511,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 11
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, this);
@@ -565,8 +555,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 12
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 kalmanConfig, epochIntervalTime, this);
@@ -612,8 +601,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 13
         final double roll = Math.toRadians(
                 randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
@@ -672,8 +660,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 14
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 kalmanConfig, c);
@@ -723,8 +710,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 15
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochInterval, c);
@@ -782,7 +768,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         }
         assertNull(estimator);
 
-
         // test constructor 16
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(c, this);
 
@@ -830,7 +815,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 17
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -891,8 +875,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 18
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 c, this);
@@ -942,8 +925,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 19
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
                 c, this);
@@ -1000,8 +982,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 20
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochInterval, c, this);
@@ -1061,8 +1042,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 21
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, c);
@@ -1120,8 +1100,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 22
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochIntervalTime, c);
@@ -1181,8 +1160,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 23
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochIntervalTime,
                 c, this);
@@ -1240,7 +1218,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 24
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
@@ -1301,8 +1278,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 25
         final INSTightlyCoupledKalmanInitializerConfig initialConfig =
                 generateInitConfig();
@@ -1340,8 +1316,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
-
+        
         // test constructor 26
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig);
@@ -1379,8 +1354,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
-
+        
         // test constructor 27
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
                 initialConfig);
@@ -1426,8 +1400,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 28
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
                 this);
@@ -1463,8 +1436,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
-
+        
         // test constructor 29
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochInterval, initialConfig);
@@ -1512,8 +1484,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 30
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig, this);
@@ -1551,8 +1522,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         assertNull(estimator.getLastStateTimestampAsTime());
         assertFalse(estimator.isRunning());
         assertFalse(estimator.isPropagateReady());
-
-
+        
         // test constructor 31
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
                 initialConfig, this);
@@ -1598,8 +1568,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 32
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochInterval, initialConfig, this);
@@ -1647,8 +1616,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 33
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig);
@@ -1694,8 +1662,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 34
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochIntervalTime, initialConfig);
@@ -1743,8 +1710,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 35
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig, this);
@@ -1790,8 +1756,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 36
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochIntervalTime, initialConfig, this);
@@ -1839,8 +1804,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 37
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
                 c);
@@ -1891,8 +1855,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 38
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig, c);
@@ -1945,7 +1908,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
 
         // test constructor 39
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
@@ -2005,8 +1967,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 40
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(initialConfig,
                 c, this);
@@ -2057,8 +2018,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 41
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochInterval, initialConfig, c);
@@ -2119,8 +2079,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 42
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 initialConfig, c, this);
@@ -2173,8 +2132,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final InvalidSourceAndDestinationFrameTypeException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 43
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(epochInterval,
                 initialConfig, c, this);
@@ -2233,8 +2191,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 44
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochInterval, initialConfig, c, this);
@@ -2295,8 +2252,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 45
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig, c);
@@ -2355,8 +2311,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 46
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochIntervalTime, initialConfig, c);
@@ -2417,8 +2372,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 47
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(
                 epochIntervalTime, initialConfig, c, this);
@@ -2477,8 +2431,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
-
-
+        
         // test constructor 48
         estimator = new INSGNSSTightlyCoupledKalmanFilteredEstimator(kalmanConfig,
                 epochIntervalTime, initialConfig, c, this);
@@ -2694,7 +2647,6 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
     @Test
     public void testIsUpdateMeasurementsReady() {
-        //noinspection ConstantConditions
         assertFalse(INSGNSSTightlyCoupledKalmanFilteredEstimator
                 .isUpdateMeasurementsReady(null));
 
@@ -2725,8 +2677,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition = new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -2734,11 +2685,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2762,8 +2712,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -2771,11 +2721,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -2868,8 +2817,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -2937,8 +2886,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -2946,11 +2895,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -2974,8 +2922,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -2983,11 +2931,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -3095,8 +3042,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -3146,8 +3093,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -3155,11 +3102,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -3183,8 +3129,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -3192,11 +3138,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -3303,8 +3248,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -3354,8 +3299,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -3363,11 +3308,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -3391,8 +3335,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -3400,11 +3344,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -3517,8 +3460,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -3582,8 +3525,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -3591,11 +3534,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -3619,8 +3561,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -3628,11 +3570,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -3704,7 +3645,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             assertEquals(estimator.getCoordinateTransformation(),
                     new CoordinateTransformation(FrameType.BODY_FRAME,
                             FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME));
-            CoordinateTransformation c2 = new CoordinateTransformation(
+            final CoordinateTransformation c2 = new CoordinateTransformation(
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME,
                     FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
             assertTrue(estimator.getCoordinateTransformation(c2));
@@ -3730,8 +3671,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -3798,8 +3739,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -3807,11 +3748,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -3835,8 +3775,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -3844,11 +3784,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -3946,8 +3885,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -4014,8 +3953,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -4023,11 +3962,11 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity
+                    nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -4051,8 +3990,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -4060,11 +3999,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -4162,8 +4100,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -4230,8 +4168,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -4239,11 +4177,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -4267,8 +4204,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -4276,11 +4213,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -4383,8 +4319,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity = estimation1.getEcefVelocity();
 
             final double diffX = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition.getX());
@@ -4452,8 +4388,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -4461,11 +4397,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -4489,8 +4424,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
-                        new com.irurueta.navigation.frames.NEDPosition(satLatitude, satLongitude, satHeight);
+                final NEDPosition nedSatPosition =
+                        new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
@@ -4498,11 +4433,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity
-                    nedSatVelocity = new com.irurueta.navigation.frames.NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 
@@ -4579,8 +4513,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation1, state1.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition1 = estimation1.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity1 = estimation1.getEcefVelocity();
+            final ECEFPosition estimatedPosition1 = estimation1.getEcefPosition();
+            final ECEFVelocity estimatedVelocity1 = estimation1.getEcefVelocity();
 
             final double diffX1 = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition1.getX());
@@ -4617,8 +4551,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
 
             assertEquals(estimation3, state3.getGNSSEstimation());
 
-            final com.irurueta.navigation.frames.ECEFPosition estimatedPosition3 = estimation3.getEcefPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity estimatedVelocity3 = estimation3.getEcefVelocity();
+            final ECEFPosition estimatedPosition3 = estimation3.getEcefPosition();
+            final ECEFVelocity estimatedVelocity3 = estimation3.getEcefVelocity();
 
             final double diffX3 = Math.abs(ecefUserPosition.getX()
                     - estimatedPosition3.getX());
@@ -4705,8 +4639,8 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
             final double userLongitude = Math.toRadians(
                     randomizer.nextDouble(MIN_LONGITUDE_DEGREES, MAX_LONGITUDE_DEGREES));
             final double userHeight = randomizer.nextDouble(MIN_USER_HEIGHT, MAX_USER_HEIGHT);
-            final com.irurueta.navigation.frames.NEDPosition nedUserPosition =
-                    new com.irurueta.navigation.frames.NEDPosition(userLatitude, userLongitude, userHeight);
+            final NEDPosition nedUserPosition =
+                    new NEDPosition(userLatitude, userLongitude, userHeight);
 
             final double userVn = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
@@ -4714,11 +4648,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                     MAX_USER_VELOCITY_VALUE);
             final double userVd = randomizer.nextDouble(MIN_USER_VELOCITY_VALUE,
                     MAX_USER_VELOCITY_VALUE);
-            final com.irurueta.navigation.frames.NEDVelocity
-                nedUserVelocity = new com.irurueta.navigation.frames.NEDVelocity(userVn, userVe, userVd);
+            final NEDVelocity nedUserVelocity = new NEDVelocity(userVn, userVe, userVd);
 
-            final com.irurueta.navigation.frames.ECEFPosition ecefUserPosition = new com.irurueta.navigation.frames.ECEFPosition();
-            final com.irurueta.navigation.frames.ECEFVelocity ecefUserVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+            final ECEFPosition ecefUserPosition = new ECEFPosition();
+            final ECEFVelocity ecefUserVelocity = new ECEFVelocity();
             NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                     nedUserPosition, nedUserVelocity, ecefUserPosition, ecefUserVelocity);
 
@@ -4742,7 +4675,7 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         userLongitude + delta);
                 final double satHeight = randomizer.nextDouble(MIN_SAT_HEIGHT,
                         MAX_SAT_HEIGHT);
-                final com.irurueta.navigation.frames.NEDPosition nedSatPosition =
+                final NEDPosition nedSatPosition =
                         new NEDPosition(satLatitude, satLongitude, satHeight);
 
                 final double satVn = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
@@ -4751,10 +4684,10 @@ public class INSGNSSTightlyCoupledKalmanFilteredEstimatorTest implements
                         MAX_SAT_VELOCITY_VALUE);
                 final double satVd = randomizer.nextDouble(MIN_SAT_VELOCITY_VALUE,
                         MAX_SAT_VELOCITY_VALUE);
-                final com.irurueta.navigation.frames.NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
+                final NEDVelocity nedSatVelocity = new NEDVelocity(satVn, satVe, satVd);
 
-                final com.irurueta.navigation.frames.ECEFPosition ecefSatPosition = new com.irurueta.navigation.frames.ECEFPosition();
-                final com.irurueta.navigation.frames.ECEFVelocity ecefSatVelocity = new com.irurueta.navigation.frames.ECEFVelocity();
+                final ECEFPosition ecefSatPosition = new ECEFPosition();
+                final ECEFVelocity ecefSatVelocity = new ECEFVelocity();
                 NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
                         nedSatPosition, nedSatVelocity, ecefSatPosition, ecefSatVelocity);
 

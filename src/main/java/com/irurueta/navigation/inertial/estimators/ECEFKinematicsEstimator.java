@@ -1665,7 +1665,8 @@ public class ECEFKinematicsEstimator {
 
                 // cOldNew = cBe' * cEarth * oldCbe
                 cEarth.multiply(oldCbe);
-                cBe.multiply(cEarth); // here cBe is cOldNew
+                // here cBe is cOldNew
+                cBe.multiply(cEarth);
 
                 // Calculate the approximate angular rate with respect an inertial frame
                 double alphaX = 0.5 * (cBe.getElementAt(1, 2)
@@ -1709,13 +1710,18 @@ public class ECEFKinematicsEstimator {
                 final Matrix earthRotationSkew = Utils.skewMatrix(
                         new double[]{0.0, 0.0, EARTH_ROTATION_RATE});
                 earthRotationSkew.multiplyByScalar(2.0);
-                earthRotationSkew.multiply(oldVebe); // 2.0 * earthRotationSkew * oldVebe
+                // 2.0 * earthRotationSkew * oldVebe
+                earthRotationSkew.multiply(oldVebe);
 
-                vEbe.subtract(oldVebe); // vEbe - oldVebe
-                vEbe.multiplyByScalar(1.0 / timeInterval); // (vEbe - oldVebe) / timeInterval
-                vEbe.subtract(g); // (vEbe - oldVebe) / timeInterval - g
+                // vEbe - oldVebe
+                vEbe.subtract(oldVebe);
+                // (vEbe - oldVebe) / timeInterval
+                vEbe.multiplyByScalar(1.0 / timeInterval);
+                // (vEbe - oldVebe) / timeInterval - g
+                vEbe.subtract(g);
                 // fibe = (vEbe - oldVebe) / timeInterval - g + 2.0 * earthRotationSkew * oldVebe
-                vEbe.add(earthRotationSkew); // vEbe contains specific force resolved about ECEF-frame axes
+                // vEbe contains specific force resolved about ECEF-frame axes
+                vEbe.add(earthRotationSkew);
 
                 // Calculate the average body-to-ECEF-frame coordinate transformation
                 // matrix over the update interval using (5,84) and (5.85)
@@ -1742,9 +1748,11 @@ public class ECEFKinematicsEstimator {
                 final Matrix alphaSkew2 = Utils.skewMatrix(
                         new double[]{0.0, 0.0, alpha});
                 alphaSkew2.multiplyByScalar(0.5);
-                alphaSkew2.multiply(oldCbe); // 0.5 * alphaSkew2 * oldCbe
+                // 0.5 * alphaSkew2 * oldCbe
+                alphaSkew2.multiply(oldCbe);
 
-                oldCbe.subtract(alphaSkew2); // oldCbe - 0.5 * alphaSkew2 * oldCbe
+                // oldCbe - 0.5 * alphaSkew2 * oldCbe
+                oldCbe.subtract(alphaSkew2);
                 // oldCbe now contains the average body-to-ECEF-frame coordinate transformation
 
                 // Transform specific force to body-frame resolving axes using (5.81)
@@ -2586,12 +2594,11 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final double x, final double y, final double z) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
                 x, y, z, result);
@@ -2632,12 +2639,11 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final double x, final double y, final double z) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final double x, final double y, final double z) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
                 x, y, z, result);
@@ -2725,12 +2731,11 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final ECEFPosition position) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final ECEFPosition position) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);
         return result;
@@ -2759,12 +2764,11 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final ECEFPosition position) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final ECEFPosition position) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz, position, result);
         return result;
@@ -3123,10 +3127,9 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final ECEFFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);
         return result;
@@ -3149,10 +3152,9 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final ECEFFrame frame,
-                                                                final CoordinateTransformation oldC,
-                                                                final Speed oldVx, final Speed oldVy, final Speed oldVz) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final ECEFFrame frame, final CoordinateTransformation oldC,
+            final Speed oldVx, final Speed oldVy, final Speed oldVz) {
         final BodyKinematics result = new BodyKinematics();
         estimateKinematics(timeInterval, frame, oldC, oldVx, oldVy, oldVz, result);
         return result;
@@ -3188,12 +3190,11 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final double timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final Point3D position) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final double timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final Point3D position) {
         return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz,
                 oldVx, oldVy, oldVz,
                 position.getInhomX(), position.getInhomY(), position.getInhomZ());
@@ -3229,12 +3230,11 @@ public class ECEFKinematicsEstimator {
      * @throws IllegalArgumentException if provided time interval is negative or coordinated transformation matrices
      *                                  are not ECEF frame valid.
      */
-    public static BodyKinematics estimateKinematicsAndReturnNew(final Time timeInterval,
-                                                                final CoordinateTransformation c,
-                                                                final CoordinateTransformation oldC,
-                                                                final double vx, final double vy, final double vz,
-                                                                final double oldVx, final double oldVy, final double oldVz,
-                                                                final Point3D position) {
+    public static BodyKinematics estimateKinematicsAndReturnNew(
+            final Time timeInterval, final CoordinateTransformation c, final CoordinateTransformation oldC,
+            final double vx, final double vy, final double vz,
+            final double oldVx, final double oldVy, final double oldVz,
+            final Point3D position) {
         return estimateKinematicsAndReturnNew(timeInterval, c, oldC, vx, vy, vz, oldVx, oldVy, oldVz,
                 position.getInhomX(), position.getInhomY(), position.getInhomZ());
     }

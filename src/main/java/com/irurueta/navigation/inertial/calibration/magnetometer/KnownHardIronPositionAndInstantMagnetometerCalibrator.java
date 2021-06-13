@@ -44,6 +44,7 @@ import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEv
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityConverter;
 import com.irurueta.units.MagneticFluxDensityUnit;
+
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Date;
@@ -2761,7 +2762,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator implements
         // bmeas = M*(btrue + b)
         // bmeas = M*btrue + M*b
 
-        //where:
+        // where:
         // M = I + Mm
         // bm = M*b = (I + Mm)*b --> b = M^-1*bm
 
@@ -2896,15 +2897,15 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator implements
 
         // We define a lineal function mapping original parameters for the
         // common axis case to the general case
-        //[sx'] = [1  0  0  0  0  0][sx ]
-        //[sy']   [0  0  1  0  0  0][mxy]
-        //[sz']   [0  0  0  0  0  1][sy ]
-        //[mxy']  [0  1  0  0  0  0][mxz]
-        //[mxz']  [0  0  0  1  0  0][myz]
-        //[myx']  [0  0  0  0  0  0][sz ]
-        //[myz']  [0  0  0  0  1  0]
-        //[mzx']  [0  0  0  0  0  0]
-        //[mzy']  [0  0  0  0  0  0]
+        // [sx'] = [1  0  0  0  0  0][sx ]
+        // [sy']   [0  0  1  0  0  0][mxy]
+        // [sz']   [0  0  0  0  0  1][sy ]
+        // [mxy']  [0  1  0  0  0  0][mxz]
+        // [mxz']  [0  0  0  1  0  0][myz]
+        // [myx']  [0  0  0  0  0  0][sz ]
+        // [myz']  [0  0  0  0  1  0]
+        // [mzx']  [0  0  0  0  0  0]
+        // [mzy']  [0  0  0  0  0  0]
 
         // As defined in com.irurueta.statistics.MultivariateNormalDist,
         // if we consider the jacobian of the lineal application the matrix shown
@@ -3163,7 +3164,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibrator implements
      * Converts magnetic flux density value and unit to Teslas.
      *
      * @param value magnetic flux density value.
-     * @param unit unit of magnetic flux density value.
+     * @param unit  unit of magnetic flux density value.
      * @return converted value.
      */
     private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {

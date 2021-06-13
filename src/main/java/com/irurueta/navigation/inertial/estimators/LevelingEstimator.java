@@ -39,7 +39,7 @@ import com.irurueta.units.AngularSpeedUnit;
  * must provide an attitude reference.
  * This class is based on Paul D. Groves. Principles of GNSS Inertial
  * and multi-sensor integrated navigation systemd. 2nd ed. p. 196.
- *
+ * <p>
  * Because this implementation neglects effects of Earth rotation on sensed
  * specific force, and also neglects the north component of gravity in a local
  * navigation frame (which is not zero because Earth is not fully spherical),
@@ -51,7 +51,8 @@ public class LevelingEstimator {
     /**
      * Private constructor to prevent instantiation.
      */
-    private LevelingEstimator() { }
+    private LevelingEstimator() {
+    }
 
     /**
      * Gets roll angle of body attitude expressed in radians.
@@ -421,10 +422,10 @@ public class LevelingEstimator {
      * Principles of GNSS Inertial and multi-sensor integrated
      * navigation systemd. 2nd ed.
      *
-     * @param fy y-coordinate of measured body specific force
-     *           expressed in meters per squared second (m/s^2).
-     * @param fz z-coordinate of measured body specific force
-     *           expressed in meters per squared second (m/s^2).
+     * @param fy     y-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param fz     z-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
      * @param result instance where roll angle will be stored.
      */
     public static void getRollAsAngle(
@@ -455,12 +456,12 @@ public class LevelingEstimator {
      * Principles of GNSS Inertial and multi-sensor integrated
      * navigation systemd. 2nd ed.
      *
-     * @param fx x-coordinate of measured body specific force
-     *           expressed in meters per squared second (m/s^2).
-     * @param fy y-coordinate of measured body specific force
-     *           expressed in meters per squared second (m/s^2).
-     * @param fz z-coordinate of measured body specific force
-     *           expressed in meters per squared second (m/s^2).
+     * @param fx     x-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param fy     y-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
+     * @param fz     z-coordinate of measured body specific force
+     *               expressed in meters per squared second (m/s^2).
      * @param result instance where pitch angle will be stored.
      */
     public static void getPitchAsAngle(
@@ -504,7 +505,7 @@ public class LevelingEstimator {
      *                     radians per second (rad/s).
      * @param angularRateZ z-coordinate of body angular rate expressed in
      *                     radians per second (rad/s).
-     * @param result instance where yaw angle will be stored.
+     * @param result       instance where yaw angle will be stored.
      */
     public static void getYawAsAngle(
             final double roll, final double pitch, final double angularRateX,
@@ -556,7 +557,7 @@ public class LevelingEstimator {
      *                     radians per second (rad/s).
      * @param angularRateZ z-coordinate of body angular rate expressed in
      *                     radians per second (rad/s).
-     * @param result instance where yaw angle will be stored.
+     * @param result       instance where yaw angle will be stored.
      */
     public static void getYawAsAngle(
             final double fx, final double fy, final double fz,
@@ -602,7 +603,7 @@ public class LevelingEstimator {
      *
      * @param kinematics body kinematics containing measured
      *                   body specific force.
-     * @param result instance where roll angle will be stored.
+     * @param result     instance where roll angle will be stored.
      */
     public static void getRollAsAngle(
             final BodyKinematics kinematics, final Angle result) {
@@ -632,7 +633,7 @@ public class LevelingEstimator {
      *
      * @param kinematics body kinematics containing measured
      *                   body specific force.
-     * @param result instance where pitch angle will be stored.
+     * @param result     instance where pitch angle will be stored.
      */
     public static void getPitchAsAngle(
             final BodyKinematics kinematics, final Angle result) {
@@ -661,7 +662,7 @@ public class LevelingEstimator {
      *
      * @param kinematics body kinematics containing measured
      *                   body specific force ang angular rates.
-     * @param result instance where yaw angle will be stored.
+     * @param result     instance where yaw angle will be stored.
      */
     public static void getYawAsAngle(
             final BodyKinematics kinematics, final Angle result) {
@@ -688,8 +689,8 @@ public class LevelingEstimator {
      * Principles of GNSS Inertial and multi-sensor integrated
      * navigation systemd. 2nd ed.
      *
-     * @param fy y-coordinate of measured body specific force.
-     * @param fz z-coordinate of measured body specific force.
+     * @param fy     y-coordinate of measured body specific force.
+     * @param fz     z-coordinate of measured body specific force.
      * @param result instance where roll angle will be stored.
      */
     public static void getRollAsAngle(
@@ -719,9 +720,9 @@ public class LevelingEstimator {
      * Principles of GNSS Inertial and multi-sensor integrated
      * navigation systemd. 2nd ed.
      *
-     * @param fx x-coordinate of measured body specific force.
-     * @param fy y-coordinate of measured body specific force.
-     * @param fz z-coordinate of measured body specific force.
+     * @param fx     x-coordinate of measured body specific force.
+     * @param fy     y-coordinate of measured body specific force.
+     * @param fz     z-coordinate of measured body specific force.
      * @param result instance where pitch angle will be stored.
      */
     public static void getPitchAsAngle(
@@ -759,7 +760,7 @@ public class LevelingEstimator {
      * @param angularRateX x-coordinate of body angular rate.
      * @param angularRateY y-coordinate of body angular rate.
      * @param angularRateZ z-coordinate of body angular rate.
-     * @param result instance where yaw angle will be stored.
+     * @param result       instance where yaw angle will be stored.
      */
     public static void getYawAsAngle(
             final Angle roll, final Angle pitch, final AngularSpeed angularRateX,
@@ -802,7 +803,7 @@ public class LevelingEstimator {
      * @param angularRateX x-coordinate of body angular rate.
      * @param angularRateY y-coordinate of body angular rate.
      * @param angularRateZ z-coordinate of body angular rate.
-     * @param result instance where yaw angle will be stored.
+     * @param result       instance where yaw angle will be stored.
      */
     public static void getYawAsAngle(
             final Acceleration fx, final Acceleration fy, final Acceleration fz,

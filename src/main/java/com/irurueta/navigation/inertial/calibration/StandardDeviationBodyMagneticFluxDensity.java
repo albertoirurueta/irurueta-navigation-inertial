@@ -16,6 +16,7 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+
 import java.io.Serializable;
 import java.util.Objects;
 
