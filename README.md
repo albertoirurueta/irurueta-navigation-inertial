@@ -1,7 +1,7 @@
 # irurueta-navigation-inertial
 An indoor GNSS/INS navigation library
 
-[![Build Status](https://travis-ci.org/albertoirurueta/irurueta-navigation-inertial.svg?branch=master)](https://travis-ci.org/albertoirurueta/irurueta-navigation-inertial)
+[![Build Status](https://travis-ci.com/albertoirurueta/irurueta-navigation-inertial.svg?branch=master)](https://travis-ci.com/albertoirurueta/irurueta-navigation-inertial)
 
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-navigation-inertial&metric=bugs)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial)
