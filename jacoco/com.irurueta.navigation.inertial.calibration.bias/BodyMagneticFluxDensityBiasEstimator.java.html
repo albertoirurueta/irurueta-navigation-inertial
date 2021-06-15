@@ -3359,9 +3359,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
         // compute biases
 <span class="fc" id="L3360">        final double tmp = (double) mNumberOfProcessedSamples</span>
                 / (double) mNumberOfProcessedSamplesPlusOne;
-<span class="fc" id="L3362">        mBiasX = mBiasX * tmp + diffBx / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L3363">        mBiasY = mBiasY * tmp + diffBy / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L3364">        mBiasZ = mBiasZ * tmp + diffBz / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3362">        mBiasX = mBiasX * tmp + diffBx / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3363">        mBiasY = mBiasY * tmp + diffBy / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3364">        mBiasZ = mBiasZ * tmp + diffBz / mNumberOfProcessedSamplesPlusOne;</span>
 
         // compute variances
 <span class="fc" id="L3367">        final double diffBiasX = diffBx - mBiasX;</span>
@@ -3373,11 +3373,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
 <span class="fc" id="L3373">        final double diffBiasZ2 = diffBiasZ * diffBiasZ;</span>
 
 <span class="fc" id="L3375">        mVarianceX = mVarianceX * tmp</span>
-                + diffBiasX2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3377">        mVarianceY = mVarianceY * tmp</span>
-                + diffBiasY2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3379">        mVarianceZ = mVarianceZ * tmp</span>
-                + diffBiasZ2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;
 
 <span class="fc" id="L3382">        mLastBodyMagneticFluxDensity = bodyMagneticFluxDensity;</span>
 

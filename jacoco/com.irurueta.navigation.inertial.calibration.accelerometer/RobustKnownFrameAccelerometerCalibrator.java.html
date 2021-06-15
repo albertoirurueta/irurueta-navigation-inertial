@@ -379,7 +379,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * Constructor.
      */
-<span class="fc" id="L382">    public RobustKnownFrameAccelerometerCalibrator() {</span>
+<span class="fc" id="L382">    protected RobustKnownFrameAccelerometerCalibrator() {</span>
 <span class="fc" id="L383">    }</span>
 
     /**
@@ -388,7 +388,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
 <span class="fc" id="L392">            final RobustKnownFrameAccelerometerCalibratorListener listener) {</span>
 <span class="fc" id="L393">        mListener = listener;</span>
 <span class="fc" id="L394">    }</span>
@@ -400,7 +400,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
 <span class="fc" id="L404">            final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {</span>
 <span class="fc" id="L405">        mMeasurements = measurements;</span>
 <span class="fc" id="L406">    }</span>
@@ -413,7 +413,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     and velocities).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
 <span class="fc" id="L419">        this(measurements);</span>
@@ -426,7 +426,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-<span class="fc" id="L429">    public RobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {</span>
+<span class="fc" id="L429">    protected RobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {</span>
 <span class="fc" id="L430">        mCommonAxisUsed = commonAxisUsed;</span>
 <span class="fc" id="L431">    }</span>
 
@@ -437,7 +437,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
 <span class="fc" id="L443">        this(commonAxisUsed);</span>
@@ -453,7 +453,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
 <span class="fc" id="L459">        this(measurements);</span>
@@ -470,7 +470,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {

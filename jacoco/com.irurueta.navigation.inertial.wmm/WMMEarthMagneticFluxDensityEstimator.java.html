@@ -2991,83 +2991,85 @@ public class WMMEarthMagneticFluxDensityEstimator {
 
 <span class="fc" id="L2992">        final double aor = RE_KM / mR;</span>
 <span class="fc" id="L2993">        double ar = aor * aor;</span>
-<span class="fc" id="L2994">        double br = 0, bt = 0, bp = 0, bpp = 0;</span>
+<span class="fc" id="L2994">        double br = 0;</span>
+<span class="fc" id="L2995">        double bt = 0;</span>
+<span class="fc" id="L2996">        double bp = 0;</span>
+<span class="fc" id="L2997">        double bpp = 0;</span>
 
-<span class="fc bfc" id="L2996" title="All 2 branches covered.">        for (int n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {</span>
-<span class="fc" id="L2997">            ar = ar * aor;</span>
-<span class="fc bfc" id="L2998" title="All 2 branches covered.">            for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {</span>
+<span class="fc bfc" id="L2999" title="All 2 branches covered.">        for (int n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {</span>
+<span class="fc" id="L3000">            ar = ar * aor;</span>
+<span class="fc bfc" id="L3001" title="All 2 branches covered.">            for (int m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {</span>
 
                 // compute un-normalized associated Legendre polynomials
                 // and derivatives via recursion relations
-<span class="pc bpc" id="L3002" title="1 of 6 branches missed.">                if (mOldHeight == null || height != mOldHeight</span>
-<span class="fc bfc" id="L3003" title="All 2 branches covered.">                        || mOldLatitude == null || latitude != mOldLatitude) {</span>
-<span class="fc bfc" id="L3004" title="All 2 branches covered.">                    if (n == m) {</span>
-<span class="fc" id="L3005">                        mModel.snorm[n + m * N] = mSt * mModel.snorm[n - 1 + (m - 1) * N];</span>
-<span class="fc" id="L3006">                        mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];</span>
+<span class="pc bpc" id="L3005" title="1 of 6 branches missed.">                if (mOldHeight == null || height != mOldHeight</span>
+<span class="fc bfc" id="L3006" title="All 2 branches covered.">                        || mOldLatitude == null || latitude != mOldLatitude) {</span>
+<span class="fc bfc" id="L3007" title="All 2 branches covered.">                    if (n == m) {</span>
+<span class="fc" id="L3008">                        mModel.snorm[n + m * N] = mSt * mModel.snorm[n - 1 + (m - 1) * N];</span>
+<span class="fc" id="L3009">                        mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];</span>
                     }
-<span class="fc bfc" id="L3008" title="All 4 branches covered.">                    if (n == 1 &amp;&amp; m == 0) {</span>
-<span class="fc" id="L3009">                        mModel.snorm[n] = mCt * mModel.snorm[0];</span>
-<span class="fc" id="L3010">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];</span>
+<span class="fc bfc" id="L3011" title="All 4 branches covered.">                    if (n == 1 &amp;&amp; m == 0) {</span>
+<span class="fc" id="L3012">                        mModel.snorm[n] = mCt * mModel.snorm[0];</span>
+<span class="fc" id="L3013">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];</span>
                     }
-<span class="fc bfc" id="L3012" title="All 4 branches covered.">                    if (n &gt; 1 &amp;&amp; n != m) {</span>
-<span class="fc bfc" id="L3013" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
-<span class="fc" id="L3014">                            mModel.snorm[n - 2 + m * N] = 0.0;</span>
-                        }
+<span class="fc bfc" id="L3015" title="All 4 branches covered.">                    if (n &gt; 1 &amp;&amp; n != m) {</span>
 <span class="fc bfc" id="L3016" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
-<span class="fc" id="L3017">                            mDp[m][n - 2] = 0.0;</span>
+<span class="fc" id="L3017">                            mModel.snorm[n - 2 + m * N] = 0.0;</span>
                         }
-<span class="fc" id="L3019">                        mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N]</span>
+<span class="fc bfc" id="L3019" title="All 2 branches covered.">                        if (m &gt; n - 2) {</span>
+<span class="fc" id="L3020">                            mDp[m][n - 2] = 0.0;</span>
+                        }
+<span class="fc" id="L3022">                        mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N]</span>
                                 - mModel.k[m][n] * mModel.snorm[n - 2 + m * N];
-<span class="fc" id="L3021">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N]</span>
+<span class="fc" id="L3024">                        mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N]</span>
                                 - mModel.k[m][n] * mDp[m][n - 2];
                     }
                 }
 
                 // time adjust the Gauss coefficients
 
-<span class="fc bfc" id="L3028" title="All 4 branches covered.">                if (mOldTime == null || year != mOldTime) {</span>
-<span class="fc" id="L3029">                    mTc[m][n] = mModel.c[m][n] + dt * mModel.cd[m][n];</span>
+<span class="fc bfc" id="L3031" title="All 4 branches covered.">                if (mOldTime == null || year != mOldTime) {</span>
+<span class="fc" id="L3032">                    mTc[m][n] = mModel.c[m][n] + dt * mModel.cd[m][n];</span>
 
-<span class="fc bfc" id="L3031" title="All 2 branches covered.">                    if (m != 0) {</span>
-<span class="fc" id="L3032">                        mTc[n][m - 1] = mModel.c[n][m - 1] + dt * mModel.cd[n][m - 1];</span>
+<span class="fc bfc" id="L3034" title="All 2 branches covered.">                    if (m != 0) {</span>
+<span class="fc" id="L3035">                        mTc[n][m - 1] = mModel.c[n][m - 1] + dt * mModel.cd[n][m - 1];</span>
                     }
                 }
 
                 // accumulate terms of the spherical harmonic expansions
-                double temp1, temp2;
-<span class="fc" id="L3038">                double par = ar * mModel.snorm[n + m * N];</span>
-<span class="fc bfc" id="L3039" title="All 2 branches covered.">                if (m == 0) {</span>
-<span class="fc" id="L3040">                    temp1 = mTc[m][n] * mCp[m];</span>
-<span class="fc" id="L3041">                    temp2 = mTc[m][n] * mSp[m];</span>
+                double temp1;
+                double temp2;
+<span class="fc" id="L3042">                double par = ar * mModel.snorm[n + m * N];</span>
+<span class="fc bfc" id="L3043" title="All 2 branches covered.">                if (m == 0) {</span>
+<span class="fc" id="L3044">                    temp1 = mTc[m][n] * mCp[m];</span>
+<span class="fc" id="L3045">                    temp2 = mTc[m][n] * mSp[m];</span>
                 } else {
-<span class="fc" id="L3043">                    temp1 = mTc[m][n] * mCp[m] + mTc[n][m - 1] * mSp[m];</span>
-<span class="fc" id="L3044">                    temp2 = mTc[m][n] * mSp[m] - mTc[n][m - 1] * mCp[m];</span>
+<span class="fc" id="L3047">                    temp1 = mTc[m][n] * mCp[m] + mTc[n][m - 1] * mSp[m];</span>
+<span class="fc" id="L3048">                    temp2 = mTc[m][n] * mSp[m] - mTc[n][m - 1] * mCp[m];</span>
                 }
 
-<span class="fc" id="L3047">                bt = bt - ar * temp1 * mDp[m][n];</span>
-<span class="fc" id="L3048">                bp += (mModel.fm[m] * temp2 * par);</span>
-<span class="fc" id="L3049">                br += (mModel.fn[n] * temp1 * par);</span>
+<span class="fc" id="L3051">                bt = bt - ar * temp1 * mDp[m][n];</span>
+<span class="fc" id="L3052">                bp += (mModel.fm[m] * temp2 * par);</span>
+<span class="fc" id="L3053">                br += (mModel.fn[n] * temp1 * par);</span>
 
                 // Special case: North/south geographic poles
 
-<span class="pc bpc" id="L3053" title="3 of 4 branches missed.">                if (mSt == 0.0 &amp;&amp; m == 1) {</span>
-<span class="nc bnc" id="L3054" title="All 2 branches missed.">                    if (n == 1)</span>
-<span class="nc" id="L3055">                        mPp[n] = mPp[n - 1];</span>
+<span class="pc bpc" id="L3057" title="3 of 4 branches missed.">                if (mSt == 0.0 &amp;&amp; m == 1) {</span>
+<span class="nc bnc" id="L3058" title="All 2 branches missed.">                    if (n == 1)</span>
+<span class="nc" id="L3059">                        mPp[n] = mPp[n - 1];</span>
                     else
-<span class="nc" id="L3057">                        mPp[n] = mCt * mPp[n - 1] - mModel.k[m][n] * mPp[n - 2];</span>
-<span class="nc" id="L3058">                    double parp = ar * mPp[n];</span>
-<span class="nc" id="L3059">                    bpp += (mModel.fm[m] * temp2 * parp);</span>
+<span class="nc" id="L3061">                        mPp[n] = mCt * mPp[n - 1] - mModel.k[m][n] * mPp[n - 2];</span>
+<span class="nc" id="L3062">                    double parp = ar * mPp[n];</span>
+<span class="nc" id="L3063">                    bpp += (mModel.fm[m] * temp2 * parp);</span>
                 }
 
-            }    //for(m...)
+            }
+        }
 
-        }    //for(n...)
-
-
-<span class="pc bpc" id="L3067" title="1 of 2 branches missed.">        if (mSt == 0.0) {</span>
-<span class="nc" id="L3068">            bp = bpp;</span>
+<span class="pc bpc" id="L3069" title="1 of 2 branches missed.">        if (mSt == 0.0) {</span>
+<span class="nc" id="L3070">            bp = bpp;</span>
         } else {
-<span class="fc" id="L3070">            bp /= mSt;</span>
+<span class="fc" id="L3072">            bp /= mSt;</span>
         }
 
         // Rotate magnetic vector components from spherical to
@@ -3075,24 +3077,24 @@ public class WMMEarthMagneticFluxDensityEstimator {
         // by is the east-west field component
         // bx is the north-south field component
         // bz is the vertical field component.
-<span class="fc" id="L3078">        mBx = -bt * mCa - br * mSa;</span>
-<span class="fc" id="L3079">        mBy = bp;</span>
-<span class="fc" id="L3080">        mBz = bt * mSa - br * mCa;</span>
+<span class="fc" id="L3080">        mBx = -bt * mCa - br * mSa;</span>
+<span class="fc" id="L3081">        mBy = bp;</span>
+<span class="fc" id="L3082">        mBz = bt * mSa - br * mCa;</span>
 
         // Compute declination (DEC), INCLINATION (DIP) and
         // total intensity (TI)
 
-<span class="fc" id="L3085">        mBh = Math.sqrt((mBx * mBx) + (mBy * mBy));</span>
-<span class="fc" id="L3086">        mTi = Math.sqrt((mBh * mBh) + (mBz * mBz));</span>
+<span class="fc" id="L3087">        mBh = Math.sqrt((mBx * mBx) + (mBy * mBy));</span>
+<span class="fc" id="L3088">        mTi = Math.sqrt((mBh * mBh) + (mBz * mBz));</span>
         //	Calculate the declination.
-<span class="fc" id="L3088">        mDec = Math.toDegrees(Math.atan2(mBy, mBx));</span>
-<span class="fc" id="L3089">        mDip = Math.toDegrees(Math.atan2(mBz, mBh));</span>
+<span class="fc" id="L3090">        mDec = Math.toDegrees(Math.atan2(mBy, mBx));</span>
+<span class="fc" id="L3091">        mDip = Math.toDegrees(Math.atan2(mBz, mBh));</span>
 
-<span class="fc" id="L3091">        mOldTime = year;</span>
-<span class="fc" id="L3092">        mOldHeight = height;</span>
-<span class="fc" id="L3093">        mOldLatitude = latitude;</span>
-<span class="fc" id="L3094">        mOldLongitude = longitude;</span>
-<span class="fc" id="L3095">    }</span>
+<span class="fc" id="L3093">        mOldTime = year;</span>
+<span class="fc" id="L3094">        mOldHeight = height;</span>
+<span class="fc" id="L3095">        mOldLatitude = latitude;</span>
+<span class="fc" id="L3096">        mOldLongitude = longitude;</span>
+<span class="fc" id="L3097">    }</span>
 
     /**
      * Converts provided angle instance to radians.
@@ -3101,8 +3103,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return converted value expressed in radians.
      */
     private static double convertAngle(final Angle angle) {
-<span class="fc" id="L3104">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
-<span class="fc" id="L3105">                angle.getUnit(), AngleUnit.RADIANS);</span>
+<span class="fc" id="L3106">        return AngleConverter.convert(angle.getValue().doubleValue(),</span>
+<span class="fc" id="L3107">                angle.getUnit(), AngleUnit.RADIANS);</span>
     }
 
     /**
@@ -3112,8 +3114,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
      * @return converted value expressed in meters.
      */
     private static double convertDistance(final Distance distance) {
-<span class="fc" id="L3115">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
-<span class="fc" id="L3116">                distance.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L3117">        return DistanceConverter.convert(distance.getValue().doubleValue(),</span>
+<span class="fc" id="L3118">                distance.getUnit(), DistanceUnit.METER);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

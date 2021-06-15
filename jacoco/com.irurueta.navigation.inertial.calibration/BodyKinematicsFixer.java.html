@@ -25,7 +25,7 @@ import com.irurueta.units.AngularSpeed;
  * Fixes body kinematics (acceleration + angular rate) values taking into
  * account provided biases, cross coupling errors and G-dependent errors.
  */
-public class BodyKinematicsFixer {
+<span class="fc" id="L28">public class BodyKinematicsFixer {</span>
 
     /**
      * Fixes specific force (acceleration) components of body kinematics measurements.
@@ -58,18 +58,12 @@ public class BodyKinematicsFixer {
 <span class="fc" id="L58">    private final AngularSpeedTriad mFixedAngularSpeed = new AngularSpeedTriad();</span>
 
     /**
-     * Constructor.
-     */
-<span class="fc" id="L63">    public BodyKinematicsFixer() {</span>
-<span class="fc" id="L64">    }</span>
-
-    /**
      * Gets acceleration bias values expressed in meters per squared second (m/s^2).
      *
      * @return bias values expressed in meters per squared second.
      */
     public Matrix getAccelerationBias() {
-<span class="fc" id="L72">        return mAccelerationFixer.getBias();</span>
+<span class="fc" id="L66">        return mAccelerationFixer.getBias();</span>
     }
 
     /**
@@ -78,8 +72,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBias(final Matrix result) {
-<span class="fc" id="L81">        mAccelerationFixer.getBias(result);</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L75">        mAccelerationFixer.getBias(result);</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Sets acceleration bias values expressed in meters per squared second (m/s^2).
@@ -89,8 +83,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setAccelerationBias(final Matrix bias) {
-<span class="fc" id="L92">        mAccelerationFixer.setBias(bias);</span>
-<span class="fc" id="L93">    }</span>
+<span class="fc" id="L86">        mAccelerationFixer.setBias(bias);</span>
+<span class="fc" id="L87">    }</span>
 
     /**
      * Gets acceleration bias values expressed in meters per squared second (m/s^2).
@@ -98,7 +92,7 @@ public class BodyKinematicsFixer {
      * @return bias values expressed in meters per squared second.
      */
     public double[] getAccelerationBiasArray() {
-<span class="fc" id="L101">        return mAccelerationFixer.getBiasArray();</span>
+<span class="fc" id="L95">        return mAccelerationFixer.getBiasArray();</span>
     }
 
     /**
@@ -108,8 +102,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getAccelerationBiasArray(final double[] result) {
-<span class="fc" id="L111">        mAccelerationFixer.getBiasArray(result);</span>
-<span class="fc" id="L112">    }</span>
+<span class="fc" id="L105">        mAccelerationFixer.getBiasArray(result);</span>
+<span class="fc" id="L106">    }</span>
 
     /**
      * Sets acceleration bias values expressed in meters per squared second (m/s^2).
@@ -119,8 +113,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setAccelerationBias(final double[] bias) {
-<span class="fc" id="L122">        mAccelerationFixer.setBias(bias);</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L116">        mAccelerationFixer.setBias(bias);</span>
+<span class="fc" id="L117">    }</span>
 
     /**
      * Gets acceleration bias.
@@ -128,7 +122,7 @@ public class BodyKinematicsFixer {
      * @return acceleration bias.
      */
     public AccelerationTriad getAccelerationBiasAsTriad() {
-<span class="fc" id="L131">        return mAccelerationFixer.getBiasAsTriad();</span>
+<span class="fc" id="L125">        return mAccelerationFixer.getBiasAsTriad();</span>
     }
 
     /**
@@ -137,8 +131,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasAsTriad(final AccelerationTriad result) {
-<span class="fc" id="L140">        mAccelerationFixer.getBiasAsTriad(result);</span>
-<span class="fc" id="L141">    }</span>
+<span class="fc" id="L134">        mAccelerationFixer.getBiasAsTriad(result);</span>
+<span class="fc" id="L135">    }</span>
 
     /**
      * Sets acceleration bias.
@@ -146,8 +140,8 @@ public class BodyKinematicsFixer {
      * @param bias acceleration bias to be set.
      */
     public void setAccelerationBias(final AccelerationTriad bias) {
-<span class="fc" id="L149">        mAccelerationFixer.setBias(bias);</span>
-<span class="fc" id="L150">    }</span>
+<span class="fc" id="L143">        mAccelerationFixer.setBias(bias);</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Gets acceleration x-coordinate of bias expressed in meters per squared
@@ -156,7 +150,7 @@ public class BodyKinematicsFixer {
      * @return x-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasX() {
-<span class="fc" id="L159">        return mAccelerationFixer.getBiasX();</span>
+<span class="fc" id="L153">        return mAccelerationFixer.getBiasX();</span>
     }
 
     /**
@@ -167,8 +161,8 @@ public class BodyKinematicsFixer {
      *              (m/s^2).
      */
     public void setAccelerationBiasX(final double biasX) {
-<span class="fc" id="L170">        mAccelerationFixer.setBiasX(biasX);</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L164">        mAccelerationFixer.setBiasX(biasX);</span>
+<span class="fc" id="L165">    }</span>
 
     /**
      * Gets acceleration y-coordinate of bias expressed in meters per squared
@@ -177,7 +171,7 @@ public class BodyKinematicsFixer {
      * @return y-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasY() {
-<span class="fc" id="L180">        return mAccelerationFixer.getBiasY();</span>
+<span class="fc" id="L174">        return mAccelerationFixer.getBiasY();</span>
     }
 
     /**
@@ -188,8 +182,8 @@ public class BodyKinematicsFixer {
      *              (m/s^2).
      */
     public void setAccelerationBiasY(final double biasY) {
-<span class="fc" id="L191">        mAccelerationFixer.setBiasY(biasY);</span>
-<span class="fc" id="L192">    }</span>
+<span class="fc" id="L185">        mAccelerationFixer.setBiasY(biasY);</span>
+<span class="fc" id="L186">    }</span>
 
     /**
      * Gets acceleration z-coordinate of bias expressed in meters per squared
@@ -198,7 +192,7 @@ public class BodyKinematicsFixer {
      * @return z-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasZ() {
-<span class="fc" id="L201">        return mAccelerationFixer.getBiasZ();</span>
+<span class="fc" id="L195">        return mAccelerationFixer.getBiasZ();</span>
     }
 
     /**
@@ -208,8 +202,8 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasZ(final double biasZ) {
-<span class="fc" id="L211">        mAccelerationFixer.setBiasZ(biasZ);</span>
-<span class="fc" id="L212">    }</span>
+<span class="fc" id="L205">        mAccelerationFixer.setBiasZ(biasZ);</span>
+<span class="fc" id="L206">    }</span>
 
     /**
      * Sets acceleration coordinates of bias expressed in meters per squared
@@ -221,8 +215,8 @@ public class BodyKinematicsFixer {
      */
     public void setAccelerationBias(
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L224">        mAccelerationFixer.setBias(biasX, biasY, biasZ);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L218">        mAccelerationFixer.setBias(biasX, biasY, biasZ);</span>
+<span class="fc" id="L219">    }</span>
 
     /**
      * Gets acceleration x-coordinate of bias.
@@ -230,7 +224,7 @@ public class BodyKinematicsFixer {
      * @return acceleration x-coordinate of bias.
      */
     public Acceleration getAccelerationBiasXAsAcceleration() {
-<span class="fc" id="L233">        return mAccelerationFixer.getBiasXAsAcceleration();</span>
+<span class="fc" id="L227">        return mAccelerationFixer.getBiasXAsAcceleration();</span>
     }
 
     /**
@@ -239,8 +233,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasXAsAcceleration(final Acceleration result) {
-<span class="fc" id="L242">        mAccelerationFixer.getBiasXAsAcceleration(result);</span>
-<span class="fc" id="L243">    }</span>
+<span class="fc" id="L236">        mAccelerationFixer.getBiasXAsAcceleration(result);</span>
+<span class="fc" id="L237">    }</span>
 
     /**
      * Sets acceleration x-coordinate of bias.
@@ -248,8 +242,8 @@ public class BodyKinematicsFixer {
      * @param biasX acceleration x-coordinate of bias.
      */
     public void setAccelerationBiasX(final Acceleration biasX) {
-<span class="fc" id="L251">        mAccelerationFixer.setBiasX(biasX);</span>
-<span class="fc" id="L252">    }</span>
+<span class="fc" id="L245">        mAccelerationFixer.setBiasX(biasX);</span>
+<span class="fc" id="L246">    }</span>
 
     /**
      * Gets acceleration y-coordinate of bias.
@@ -257,7 +251,7 @@ public class BodyKinematicsFixer {
      * @return acceleration y-coordinate of bias.
      */
     public Acceleration getAccelerationBiasYAsAcceleration() {
-<span class="fc" id="L260">        return mAccelerationFixer.getBiasYAsAcceleration();</span>
+<span class="fc" id="L254">        return mAccelerationFixer.getBiasYAsAcceleration();</span>
     }
 
     /**
@@ -266,8 +260,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasYAsAcceleration(final Acceleration result) {
-<span class="fc" id="L269">        mAccelerationFixer.getBiasYAsAcceleration(result);</span>
-<span class="fc" id="L270">    }</span>
+<span class="fc" id="L263">        mAccelerationFixer.getBiasYAsAcceleration(result);</span>
+<span class="fc" id="L264">    }</span>
 
     /**
      * Sets acceleration y-coordinate of bias.
@@ -275,8 +269,8 @@ public class BodyKinematicsFixer {
      * @param biasY acceleration y-coordinate of bias.
      */
     public void setAccelerationBiasY(final Acceleration biasY) {
-<span class="fc" id="L278">        mAccelerationFixer.setBiasY(biasY);</span>
-<span class="fc" id="L279">    }</span>
+<span class="fc" id="L272">        mAccelerationFixer.setBiasY(biasY);</span>
+<span class="fc" id="L273">    }</span>
 
     /**
      * Gets acceleration z-coordinate of bias.
@@ -284,7 +278,7 @@ public class BodyKinematicsFixer {
      * @return acceleration z-coordinate of bias.
      */
     public Acceleration getAccelerationBiasZAsAcceleration() {
-<span class="fc" id="L287">        return mAccelerationFixer.getBiasZAsAcceleration();</span>
+<span class="fc" id="L281">        return mAccelerationFixer.getBiasZAsAcceleration();</span>
     }
 
     /**
@@ -293,8 +287,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationBiasZAsAcceleration(final Acceleration result) {
-<span class="fc" id="L296">        mAccelerationFixer.getBiasZAsAcceleration(result);</span>
-<span class="fc" id="L297">    }</span>
+<span class="fc" id="L290">        mAccelerationFixer.getBiasZAsAcceleration(result);</span>
+<span class="fc" id="L291">    }</span>
 
     /**
      * Sets acceleration z-coordinate of bias.
@@ -302,8 +296,8 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAccelerationBiasZ(final Acceleration biasZ) {
-<span class="fc" id="L305">        mAccelerationFixer.setBiasZ(biasZ);</span>
-<span class="fc" id="L306">    }</span>
+<span class="fc" id="L299">        mAccelerationFixer.setBiasZ(biasZ);</span>
+<span class="fc" id="L300">    }</span>
 
     /**
      * Sets acceleration coordinates of bias.
@@ -316,8 +310,8 @@ public class BodyKinematicsFixer {
             final Acceleration biasX,
             final Acceleration biasY,
             final Acceleration biasZ) {
-<span class="fc" id="L319">        mAccelerationFixer.setBias(biasX, biasY, biasZ);</span>
-<span class="fc" id="L320">    }</span>
+<span class="fc" id="L313">        mAccelerationFixer.setBias(biasX, biasY, biasZ);</span>
+<span class="fc" id="L314">    }</span>
 
     /**
      * Gets acceleration cross coupling errors matrix.
@@ -325,7 +319,7 @@ public class BodyKinematicsFixer {
      * @return acceleration cross coupling errors matrix.
      */
     public Matrix getAccelerationCrossCouplingErrors() {
-<span class="fc" id="L328">        return mAccelerationFixer.getCrossCouplingErrors();</span>
+<span class="fc" id="L322">        return mAccelerationFixer.getCrossCouplingErrors();</span>
     }
 
     /**
@@ -334,8 +328,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAccelerationCrossCouplingErrors(final Matrix result) {
-<span class="fc" id="L337">        mAccelerationFixer.getCrossCouplingErrors(result);</span>
-<span class="fc" id="L338">    }</span>
+<span class="fc" id="L331">        mAccelerationFixer.getCrossCouplingErrors(result);</span>
+<span class="fc" id="L332">    }</span>
 
     /**
      * Sets acceleration cross coupling errors matrix.
@@ -347,8 +341,8 @@ public class BodyKinematicsFixer {
      */
     public void setAccelerationCrossCouplingErrors(
             final Matrix crossCouplingErrors) throws AlgebraException {
-<span class="fc" id="L350">        mAccelerationFixer.setCrossCouplingErrors(crossCouplingErrors);</span>
-<span class="fc" id="L351">    }</span>
+<span class="fc" id="L344">        mAccelerationFixer.setCrossCouplingErrors(crossCouplingErrors);</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Gets acceleration x scaling factor.
@@ -356,7 +350,7 @@ public class BodyKinematicsFixer {
      * @return x scaling factor.
      */
     public double getAccelerationSx() {
-<span class="fc" id="L359">        return mAccelerationFixer.getSx();</span>
+<span class="fc" id="L353">        return mAccelerationFixer.getSx();</span>
     }
 
     /**
@@ -367,8 +361,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationSx(final double sx) throws AlgebraException {
-<span class="fc" id="L370">        mAccelerationFixer.setSx(sx);</span>
-<span class="fc" id="L371">    }</span>
+<span class="fc" id="L364">        mAccelerationFixer.setSx(sx);</span>
+<span class="fc" id="L365">    }</span>
 
     /**
      * Gets acceleration y scaling factor.
@@ -376,7 +370,7 @@ public class BodyKinematicsFixer {
      * @return y scaling factor.
      */
     public double getAccelerationSy() {
-<span class="fc" id="L379">        return mAccelerationFixer.getSy();</span>
+<span class="fc" id="L373">        return mAccelerationFixer.getSy();</span>
     }
 
     /**
@@ -387,8 +381,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationSy(final double sy) throws AlgebraException {
-<span class="fc" id="L390">        mAccelerationFixer.setSy(sy);</span>
-<span class="fc" id="L391">    }</span>
+<span class="fc" id="L384">        mAccelerationFixer.setSy(sy);</span>
+<span class="fc" id="L385">    }</span>
 
     /**
      * Gets acceleration z scaling factor.
@@ -396,7 +390,7 @@ public class BodyKinematicsFixer {
      * @return z scaling factor.
      */
     public double getAccelerationSz() {
-<span class="fc" id="L399">        return mAccelerationFixer.getSz();</span>
+<span class="fc" id="L393">        return mAccelerationFixer.getSz();</span>
     }
 
     /**
@@ -407,8 +401,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationSz(final double sz) throws AlgebraException {
-<span class="fc" id="L410">        mAccelerationFixer.setSz(sz);</span>
-<span class="fc" id="L411">    }</span>
+<span class="fc" id="L404">        mAccelerationFixer.setSz(sz);</span>
+<span class="fc" id="L405">    }</span>
 
     /**
      * Gets acceleration x-y cross coupling error.
@@ -416,7 +410,7 @@ public class BodyKinematicsFixer {
      * @return acceleration x-y cross coupling error.
      */
     public double getAccelerationMxy() {
-<span class="fc" id="L419">        return mAccelerationFixer.getMxy();</span>
+<span class="fc" id="L413">        return mAccelerationFixer.getMxy();</span>
     }
 
     /**
@@ -427,8 +421,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationMxy(final double mxy) throws AlgebraException {
-<span class="fc" id="L430">        mAccelerationFixer.setMxy(mxy);</span>
-<span class="fc" id="L431">    }</span>
+<span class="fc" id="L424">        mAccelerationFixer.setMxy(mxy);</span>
+<span class="fc" id="L425">    }</span>
 
     /**
      * Gets acceleration x-z cross coupling error.
@@ -436,7 +430,7 @@ public class BodyKinematicsFixer {
      * @return acceleration x-z cross coupling error.
      */
     public double getAccelerationMxz() {
-<span class="fc" id="L439">        return mAccelerationFixer.getMxz();</span>
+<span class="fc" id="L433">        return mAccelerationFixer.getMxz();</span>
     }
 
     /**
@@ -447,8 +441,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationMxz(final double mxz) throws AlgebraException {
-<span class="fc" id="L450">        mAccelerationFixer.setMxz(mxz);</span>
-<span class="fc" id="L451">    }</span>
+<span class="fc" id="L444">        mAccelerationFixer.setMxz(mxz);</span>
+<span class="fc" id="L445">    }</span>
 
     /**
      * Gets acceleration y-x cross coupling error.
@@ -456,7 +450,7 @@ public class BodyKinematicsFixer {
      * @return acceleration y-x cross coupling error.
      */
     public double getAccelerationMyx() {
-<span class="fc" id="L459">        return mAccelerationFixer.getMyx();</span>
+<span class="fc" id="L453">        return mAccelerationFixer.getMyx();</span>
     }
 
     /**
@@ -467,8 +461,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationMyx(final double myx) throws AlgebraException {
-<span class="fc" id="L470">        mAccelerationFixer.setMyx(myx);</span>
-<span class="fc" id="L471">    }</span>
+<span class="fc" id="L464">        mAccelerationFixer.setMyx(myx);</span>
+<span class="fc" id="L465">    }</span>
 
     /**
      * Gets acceleration y-z cross coupling error.
@@ -476,7 +470,7 @@ public class BodyKinematicsFixer {
      * @return y-z cross coupling error.
      */
     public double getAccelerationMyz() {
-<span class="fc" id="L479">        return mAccelerationFixer.getMyz();</span>
+<span class="fc" id="L473">        return mAccelerationFixer.getMyz();</span>
     }
 
     /**
@@ -487,8 +481,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationMyz(final double myz) throws AlgebraException {
-<span class="fc" id="L490">        mAccelerationFixer.setMyz(myz);</span>
-<span class="fc" id="L491">    }</span>
+<span class="fc" id="L484">        mAccelerationFixer.setMyz(myz);</span>
+<span class="fc" id="L485">    }</span>
 
     /**
      * Gets acceleration z-x cross coupling error.
@@ -496,7 +490,7 @@ public class BodyKinematicsFixer {
      * @return acceleration z-x cross coupling error.
      */
     public double getAccelerationMzx() {
-<span class="fc" id="L499">        return mAccelerationFixer.getMzx();</span>
+<span class="fc" id="L493">        return mAccelerationFixer.getMzx();</span>
     }
 
     /**
@@ -507,8 +501,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationMzx(final double mzx) throws AlgebraException {
-<span class="fc" id="L510">        mAccelerationFixer.setMzx(mzx);</span>
-<span class="fc" id="L511">    }</span>
+<span class="fc" id="L504">        mAccelerationFixer.setMzx(mzx);</span>
+<span class="fc" id="L505">    }</span>
 
     /**
      * Gets acceleration z-y cross coupling error.
@@ -516,7 +510,7 @@ public class BodyKinematicsFixer {
      * @return acceleration z-y cross coupling error.
      */
     public double getAccelerationMzy() {
-<span class="fc" id="L519">        return mAccelerationFixer.getMzy();</span>
+<span class="fc" id="L513">        return mAccelerationFixer.getMzy();</span>
     }
 
     /**
@@ -527,8 +521,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAccelerationMzy(final double mzy) throws AlgebraException {
-<span class="fc" id="L530">        mAccelerationFixer.setMzy(mzy);</span>
-<span class="fc" id="L531">    }</span>
+<span class="fc" id="L524">        mAccelerationFixer.setMzy(mzy);</span>
+<span class="fc" id="L525">    }</span>
 
     /**
      * Sets acceleration scaling factors.
@@ -542,8 +536,8 @@ public class BodyKinematicsFixer {
     public void setAccelerationScalingFactors(
             final double sx, final double sy, final double sz)
             throws AlgebraException {
-<span class="fc" id="L545">        mAccelerationFixer.setScalingFactors(sx, sy, sz);</span>
-<span class="fc" id="L546">    }</span>
+<span class="fc" id="L539">        mAccelerationFixer.setScalingFactors(sx, sy, sz);</span>
+<span class="fc" id="L540">    }</span>
 
     /**
      * Sets acceleration cross coupling errors.
@@ -561,9 +555,9 @@ public class BodyKinematicsFixer {
             final double mxy, final double mxz,
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
-<span class="fc" id="L564">        mAccelerationFixer.setCrossCouplingErrors(</span>
+<span class="fc" id="L558">        mAccelerationFixer.setCrossCouplingErrors(</span>
                 mxy, mxz, myx, myz, mzx, mzy);
-<span class="fc" id="L566">    }</span>
+<span class="fc" id="L560">    }</span>
 
     /**
      * Sets acceleration scaling factors and cross coupling errors.
@@ -585,9 +579,9 @@ public class BodyKinematicsFixer {
             final double mxy, final double mxz,
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
-<span class="fc" id="L588">        mAccelerationFixer.setScalingFactorsAndCrossCouplingErrors(</span>
+<span class="fc" id="L582">        mAccelerationFixer.setScalingFactorsAndCrossCouplingErrors(</span>
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
-<span class="fc" id="L590">    }</span>
+<span class="fc" id="L584">    }</span>
 
     /**
      * Gets angular speed bias values expressed in radians per second (rad/s).
@@ -595,7 +589,7 @@ public class BodyKinematicsFixer {
      * @return angular speed bias values expressed in radians per second.
      */
     public Matrix getAngularSpeedBias() {
-<span class="fc" id="L598">        return mAngularRateFixer.getBias();</span>
+<span class="fc" id="L592">        return mAngularRateFixer.getBias();</span>
     }
 
     /**
@@ -604,8 +598,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBias(final Matrix result) {
-<span class="fc" id="L607">        mAngularRateFixer.getBias(result);</span>
-<span class="fc" id="L608">    }</span>
+<span class="fc" id="L601">        mAngularRateFixer.getBias(result);</span>
+<span class="fc" id="L602">    }</span>
 
     /**
      * Sets angular speed bias values expressed in radians per second (rad/s).
@@ -614,8 +608,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setAngularSpeedBias(final Matrix bias) {
-<span class="fc" id="L617">        mAngularRateFixer.setBias(bias);</span>
-<span class="fc" id="L618">    }</span>
+<span class="fc" id="L611">        mAngularRateFixer.setBias(bias);</span>
+<span class="fc" id="L612">    }</span>
 
     /**
      * Gets angular speed bias values expressed in radians per second (rad/s).
@@ -623,7 +617,7 @@ public class BodyKinematicsFixer {
      * @return bias values expressed in radians per second.
      */
     public double[] getAngularSpeedBiasArray() {
-<span class="fc" id="L626">        return mAngularRateFixer.getBiasArray();</span>
+<span class="fc" id="L620">        return mAngularRateFixer.getBiasArray();</span>
     }
 
     /**
@@ -633,8 +627,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getAngularSpeedBiasArray(final double[] result) {
-<span class="fc" id="L636">        mAngularRateFixer.getBiasArray(result);</span>
-<span class="fc" id="L637">    }</span>
+<span class="fc" id="L630">        mAngularRateFixer.getBiasArray(result);</span>
+<span class="fc" id="L631">    }</span>
 
     /**
      * Sets angular speed bias values expressed in radians per second (rad/s).
@@ -644,8 +638,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setAngularSpeedBias(final double[] bias) {
-<span class="fc" id="L647">        mAngularRateFixer.setBias(bias);</span>
-<span class="fc" id="L648">    }</span>
+<span class="fc" id="L641">        mAngularRateFixer.setBias(bias);</span>
+<span class="fc" id="L642">    }</span>
 
     /**
      * Gets angular speed bias.
@@ -653,7 +647,7 @@ public class BodyKinematicsFixer {
      * @return angular speed bias.
      */
     public AngularSpeedTriad getAngularSpeedBiasAsTriad() {
-<span class="fc" id="L656">        return mAngularRateFixer.getBiasAsTriad();</span>
+<span class="fc" id="L650">        return mAngularRateFixer.getBiasAsTriad();</span>
     }
 
     /**
@@ -662,8 +656,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasAsTriad(final AngularSpeedTriad result) {
-<span class="fc" id="L665">        mAngularRateFixer.getBiasAsTriad(result);</span>
-<span class="fc" id="L666">    }</span>
+<span class="fc" id="L659">        mAngularRateFixer.getBiasAsTriad(result);</span>
+<span class="fc" id="L660">    }</span>
 
     /**
      * Sets angular speed bias.
@@ -671,8 +665,8 @@ public class BodyKinematicsFixer {
      * @param bias angular speed bias to be set.
      */
     public void setAngularSpeedBias(final AngularSpeedTriad bias) {
-<span class="fc" id="L674">        mAngularRateFixer.setBias(bias);</span>
-<span class="fc" id="L675">    }</span>
+<span class="fc" id="L668">        mAngularRateFixer.setBias(bias);</span>
+<span class="fc" id="L669">    }</span>
 
     /**
      * Gets angular speed x-coordinate of bias expressed in radians per second
@@ -681,7 +675,7 @@ public class BodyKinematicsFixer {
      * @return x-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getAngularSpeedBiasX() {
-<span class="fc" id="L684">        return mAngularRateFixer.getBiasX();</span>
+<span class="fc" id="L678">        return mAngularRateFixer.getBiasX();</span>
     }
 
     /**
@@ -691,8 +685,8 @@ public class BodyKinematicsFixer {
      * @param biasX x-coordinate of bias expressed in radians per second (rad/s).
      */
     public void setAngularSpeedBiasX(final double biasX) {
-<span class="fc" id="L694">        mAngularRateFixer.setBiasX(biasX);</span>
-<span class="fc" id="L695">    }</span>
+<span class="fc" id="L688">        mAngularRateFixer.setBiasX(biasX);</span>
+<span class="fc" id="L689">    }</span>
 
     /**
      * Gets angular speed y-coordinate of bias expressed in radians per second
@@ -701,7 +695,7 @@ public class BodyKinematicsFixer {
      * @return y-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getAngularSpeedBiasY() {
-<span class="fc" id="L704">        return mAngularRateFixer.getBiasY();</span>
+<span class="fc" id="L698">        return mAngularRateFixer.getBiasY();</span>
     }
 
     /**
@@ -711,8 +705,8 @@ public class BodyKinematicsFixer {
      * @param biasY y-coordinate of bias expressed in radians per second (rad/s).
      */
     public void setAngularSpeedBiasY(final double biasY) {
-<span class="fc" id="L714">        mAngularRateFixer.setBiasY(biasY);</span>
-<span class="fc" id="L715">    }</span>
+<span class="fc" id="L708">        mAngularRateFixer.setBiasY(biasY);</span>
+<span class="fc" id="L709">    }</span>
 
     /**
      * Gets angular speed z-coordinate of bias expressed in radians per second
@@ -721,7 +715,7 @@ public class BodyKinematicsFixer {
      * @return z-coordinate of bias expressed in radians per second (rad/s).
      */
     public double getAngularSpeedBiasZ() {
-<span class="fc" id="L724">        return mAngularRateFixer.getBiasZ();</span>
+<span class="fc" id="L718">        return mAngularRateFixer.getBiasZ();</span>
     }
 
     /**
@@ -731,8 +725,8 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias expressed in radians per second (rad/s).
      */
     public void setAngularSpeedBiasZ(final double biasZ) {
-<span class="fc" id="L734">        mAngularRateFixer.setBiasZ(biasZ);</span>
-<span class="fc" id="L735">    }</span>
+<span class="fc" id="L728">        mAngularRateFixer.setBiasZ(biasZ);</span>
+<span class="fc" id="L729">    }</span>
 
     /**
      * Sets angular speed coordinates of bias expressed in radians per second
@@ -744,8 +738,8 @@ public class BodyKinematicsFixer {
      */
     public void setAngularSpeedBias(
             final double biasX, final double biasY, final double biasZ) {
-<span class="fc" id="L747">        mAngularRateFixer.setBias(biasX, biasY, biasZ);</span>
-<span class="fc" id="L748">    }</span>
+<span class="fc" id="L741">        mAngularRateFixer.setBias(biasX, biasY, biasZ);</span>
+<span class="fc" id="L742">    }</span>
 
     /**
      * Gets angular speed x-coordinate of bias.
@@ -753,7 +747,7 @@ public class BodyKinematicsFixer {
      * @return x-coordinate of bias.
      */
     public AngularSpeed getAngularSpeedBiasXAsAngularSpeed() {
-<span class="fc" id="L756">        return mAngularRateFixer.getBiasXAsAngularSpeed();</span>
+<span class="fc" id="L750">        return mAngularRateFixer.getBiasXAsAngularSpeed();</span>
     }
 
     /**
@@ -763,8 +757,8 @@ public class BodyKinematicsFixer {
      */
     public void getAngularSpeedBiasXAsAngularSpeed(
             final AngularSpeed result) {
-<span class="fc" id="L766">        mAngularRateFixer.getBiasXAsAngularSpeed(result);</span>
-<span class="fc" id="L767">    }</span>
+<span class="fc" id="L760">        mAngularRateFixer.getBiasXAsAngularSpeed(result);</span>
+<span class="fc" id="L761">    }</span>
 
     /**
      * Sets angular speed x-coordinate of bias.
@@ -772,8 +766,8 @@ public class BodyKinematicsFixer {
      * @param biasX x-coordinate of bias.
      */
     public void setAngularSpeedBiasX(final AngularSpeed biasX) {
-<span class="fc" id="L775">        mAngularRateFixer.setBiasX(biasX);</span>
-<span class="fc" id="L776">    }</span>
+<span class="fc" id="L769">        mAngularRateFixer.setBiasX(biasX);</span>
+<span class="fc" id="L770">    }</span>
 
     /**
      * Gets angular speed y-coordinate of bias.
@@ -781,7 +775,7 @@ public class BodyKinematicsFixer {
      * @return y-coordinate of bias.
      */
     public AngularSpeed getAngularSpeedBiasYAsAngularSpeed() {
-<span class="fc" id="L784">        return mAngularRateFixer.getBiasYAsAngularSpeed();</span>
+<span class="fc" id="L778">        return mAngularRateFixer.getBiasYAsAngularSpeed();</span>
     }
 
     /**
@@ -790,8 +784,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasYAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L793">        mAngularRateFixer.getBiasYAsAngularSpeed(result);</span>
-<span class="fc" id="L794">    }</span>
+<span class="fc" id="L787">        mAngularRateFixer.getBiasYAsAngularSpeed(result);</span>
+<span class="fc" id="L788">    }</span>
 
     /**
      * Sets angular speed y-coordinate of bias.
@@ -799,8 +793,8 @@ public class BodyKinematicsFixer {
      * @param biasY y-coordinate of bias.
      */
     public void setAngularSpeedBiasY(final AngularSpeed biasY) {
-<span class="fc" id="L802">        mAngularRateFixer.setBiasY(biasY);</span>
-<span class="fc" id="L803">    }</span>
+<span class="fc" id="L796">        mAngularRateFixer.setBiasY(biasY);</span>
+<span class="fc" id="L797">    }</span>
 
     /**
      * Gets angular speed z-coordinate of bias.
@@ -808,7 +802,7 @@ public class BodyKinematicsFixer {
      * @return z-coordinate of bias.
      */
     public AngularSpeed getAngularSpeedBiasZAsAngularSpeed() {
-<span class="fc" id="L811">        return mAngularRateFixer.getBiasZAsAngularSpeed();</span>
+<span class="fc" id="L805">        return mAngularRateFixer.getBiasZAsAngularSpeed();</span>
     }
 
     /**
@@ -817,8 +811,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedBiasZAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L820">        mAngularRateFixer.getBiasZAsAngularSpeed(result);</span>
-<span class="fc" id="L821">    }</span>
+<span class="fc" id="L814">        mAngularRateFixer.getBiasZAsAngularSpeed(result);</span>
+<span class="fc" id="L815">    }</span>
 
     /**
      * Sets angular speed z-coordinate of bias.
@@ -826,8 +820,8 @@ public class BodyKinematicsFixer {
      * @param biasZ z-coordinate of bias.
      */
     public void setAngularSpeedBiasZ(final AngularSpeed biasZ) {
-<span class="fc" id="L829">        mAngularRateFixer.setBiasZ(biasZ);</span>
-<span class="fc" id="L830">    }</span>
+<span class="fc" id="L823">        mAngularRateFixer.setBiasZ(biasZ);</span>
+<span class="fc" id="L824">    }</span>
 
     /**
      * Sets angular speed coordinates of bias.
@@ -840,8 +834,8 @@ public class BodyKinematicsFixer {
             final AngularSpeed biasX,
             final AngularSpeed biasY,
             final AngularSpeed biasZ) {
-<span class="fc" id="L843">        mAngularRateFixer.setBias(biasX, biasY, biasZ);</span>
-<span class="fc" id="L844">    }</span>
+<span class="fc" id="L837">        mAngularRateFixer.setBias(biasX, biasY, biasZ);</span>
+<span class="fc" id="L838">    }</span>
 
     /**
      * Gets angular speed cross coupling errors matrix.
@@ -849,7 +843,7 @@ public class BodyKinematicsFixer {
      * @return cross coupling errors matrix.
      */
     public Matrix getAngularSpeedCrossCouplingErrors() {
-<span class="fc" id="L852">        return mAngularRateFixer.getCrossCouplingErrors();</span>
+<span class="fc" id="L846">        return mAngularRateFixer.getCrossCouplingErrors();</span>
     }
 
     /**
@@ -858,8 +852,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedCrossCouplingErrors(final Matrix result) {
-<span class="fc" id="L861">        mAngularRateFixer.getCrossCouplingErrors(result);</span>
-<span class="fc" id="L862">    }</span>
+<span class="fc" id="L855">        mAngularRateFixer.getCrossCouplingErrors(result);</span>
+<span class="fc" id="L856">    }</span>
 
     /**
      * Sets angular speed cross coupling errors matrix.
@@ -870,8 +864,8 @@ public class BodyKinematicsFixer {
      */
     public void setAngularSpeedCrossCouplingErrors(
             final Matrix crossCouplingErrors) throws AlgebraException {
-<span class="fc" id="L873">        mAngularRateFixer.setCrossCouplingErrors(crossCouplingErrors);</span>
-<span class="fc" id="L874">    }</span>
+<span class="fc" id="L867">        mAngularRateFixer.setCrossCouplingErrors(crossCouplingErrors);</span>
+<span class="fc" id="L868">    }</span>
 
     /**
      * Gets angular speed x scaling factor.
@@ -879,7 +873,7 @@ public class BodyKinematicsFixer {
      * @return x scaling factor.
      */
     public double getAngularSpeedSx() {
-<span class="fc" id="L882">        return mAngularRateFixer.getSx();</span>
+<span class="fc" id="L876">        return mAngularRateFixer.getSx();</span>
     }
 
     /**
@@ -890,8 +884,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedSx(final double sx) throws AlgebraException {
-<span class="fc" id="L893">        mAngularRateFixer.setSx(sx);</span>
-<span class="fc" id="L894">    }</span>
+<span class="fc" id="L887">        mAngularRateFixer.setSx(sx);</span>
+<span class="fc" id="L888">    }</span>
 
     /**
      * Gets angular speed y scaling factor.
@@ -899,7 +893,7 @@ public class BodyKinematicsFixer {
      * @return y scaling factor.
      */
     public double getAngularSpeedSy() {
-<span class="fc" id="L902">        return mAngularRateFixer.getSy();</span>
+<span class="fc" id="L896">        return mAngularRateFixer.getSy();</span>
     }
 
     /**
@@ -910,8 +904,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedSy(final double sy) throws AlgebraException {
-<span class="fc" id="L913">        mAngularRateFixer.setSy(sy);</span>
-<span class="fc" id="L914">    }</span>
+<span class="fc" id="L907">        mAngularRateFixer.setSy(sy);</span>
+<span class="fc" id="L908">    }</span>
 
     /**
      * Gets angular speed z scaling factor.
@@ -919,7 +913,7 @@ public class BodyKinematicsFixer {
      * @return z scaling factor.
      */
     public double getAngularSpeedSz() {
-<span class="fc" id="L922">        return mAngularRateFixer.getSz();</span>
+<span class="fc" id="L916">        return mAngularRateFixer.getSz();</span>
     }
 
     /**
@@ -930,8 +924,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedSz(final double sz) throws AlgebraException {
-<span class="fc" id="L933">        mAngularRateFixer.setSz(sz);</span>
-<span class="fc" id="L934">    }</span>
+<span class="fc" id="L927">        mAngularRateFixer.setSz(sz);</span>
+<span class="fc" id="L928">    }</span>
 
     /**
      * Gets angular speed x-y cross coupling error.
@@ -939,7 +933,7 @@ public class BodyKinematicsFixer {
      * @return x-y cross coupling error.
      */
     public double getAngularSpeedMxy() {
-<span class="fc" id="L942">        return mAngularRateFixer.getMxy();</span>
+<span class="fc" id="L936">        return mAngularRateFixer.getMxy();</span>
     }
 
     /**
@@ -950,8 +944,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedMxy(final double mxy) throws AlgebraException {
-<span class="fc" id="L953">        mAngularRateFixer.setMxy(mxy);</span>
-<span class="fc" id="L954">    }</span>
+<span class="fc" id="L947">        mAngularRateFixer.setMxy(mxy);</span>
+<span class="fc" id="L948">    }</span>
 
     /**
      * Gets angular speed x-z cross coupling error.
@@ -959,7 +953,7 @@ public class BodyKinematicsFixer {
      * @return x-z cross coupling error.
      */
     public double getAngularSpeedMxz() {
-<span class="fc" id="L962">        return mAngularRateFixer.getMxz();</span>
+<span class="fc" id="L956">        return mAngularRateFixer.getMxz();</span>
     }
 
     /**
@@ -970,8 +964,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedMxz(final double mxz) throws AlgebraException {
-<span class="fc" id="L973">        mAngularRateFixer.setMxz(mxz);</span>
-<span class="fc" id="L974">    }</span>
+<span class="fc" id="L967">        mAngularRateFixer.setMxz(mxz);</span>
+<span class="fc" id="L968">    }</span>
 
     /**
      * Gets angular speed y-x cross coupling error.
@@ -979,7 +973,7 @@ public class BodyKinematicsFixer {
      * @return y-x cross coupling error.
      */
     public double getAngularSpeedMyx() {
-<span class="fc" id="L982">        return mAngularRateFixer.getMyx();</span>
+<span class="fc" id="L976">        return mAngularRateFixer.getMyx();</span>
     }
 
     /**
@@ -990,8 +984,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedMyx(final double myx) throws AlgebraException {
-<span class="fc" id="L993">        mAngularRateFixer.setMyx(myx);</span>
-<span class="fc" id="L994">    }</span>
+<span class="fc" id="L987">        mAngularRateFixer.setMyx(myx);</span>
+<span class="fc" id="L988">    }</span>
 
     /**
      * Gets angular speed y-z cross coupling error.
@@ -999,7 +993,7 @@ public class BodyKinematicsFixer {
      * @return y-z cross coupling error.
      */
     public double getAngularSpeedMyz() {
-<span class="fc" id="L1002">        return mAngularRateFixer.getMyz();</span>
+<span class="fc" id="L996">        return mAngularRateFixer.getMyz();</span>
     }
 
     /**
@@ -1010,8 +1004,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedMyz(final double myz) throws AlgebraException {
-<span class="fc" id="L1013">        mAngularRateFixer.setMyz(myz);</span>
-<span class="fc" id="L1014">    }</span>
+<span class="fc" id="L1007">        mAngularRateFixer.setMyz(myz);</span>
+<span class="fc" id="L1008">    }</span>
 
     /**
      * Gets angular speed z-x cross coupling error.
@@ -1019,7 +1013,7 @@ public class BodyKinematicsFixer {
      * @return z-x cross coupling error.
      */
     public double getAngularSpeedMzx() {
-<span class="fc" id="L1022">        return mAngularRateFixer.getMzx();</span>
+<span class="fc" id="L1016">        return mAngularRateFixer.getMzx();</span>
     }
 
     /**
@@ -1030,8 +1024,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedMzx(final double mzx) throws AlgebraException {
-<span class="fc" id="L1033">        mAngularRateFixer.setMzx(mzx);</span>
-<span class="fc" id="L1034">    }</span>
+<span class="fc" id="L1027">        mAngularRateFixer.setMzx(mzx);</span>
+<span class="fc" id="L1028">    }</span>
 
     /**
      * Gets angular speed z-y cross coupling error.
@@ -1039,7 +1033,7 @@ public class BodyKinematicsFixer {
      * @return z-y cross coupling error.
      */
     public double getAngularSpeedMzy() {
-<span class="fc" id="L1042">        return mAngularRateFixer.getMzy();</span>
+<span class="fc" id="L1036">        return mAngularRateFixer.getMzy();</span>
     }
 
     /**
@@ -1050,8 +1044,8 @@ public class BodyKinematicsFixer {
      *                          non invertible.
      */
     public void setAngularSpeedMzy(final double mzy) throws AlgebraException {
-<span class="fc" id="L1053">        mAngularRateFixer.setMzy(mzy);</span>
-<span class="fc" id="L1054">    }</span>
+<span class="fc" id="L1047">        mAngularRateFixer.setMzy(mzy);</span>
+<span class="fc" id="L1048">    }</span>
 
     /**
      * Sets angular speed scaling factors.
@@ -1065,8 +1059,8 @@ public class BodyKinematicsFixer {
     public void setAngularSpeedScalingFactors(
             final double sx, final double sy, final double sz)
             throws AlgebraException {
-<span class="fc" id="L1068">        mAngularRateFixer.setScalingFactors(sx, sy, sz);</span>
-<span class="fc" id="L1069">    }</span>
+<span class="fc" id="L1062">        mAngularRateFixer.setScalingFactors(sx, sy, sz);</span>
+<span class="fc" id="L1063">    }</span>
 
     /**
      * Sets angular speed cross coupling errors.
@@ -1085,9 +1079,9 @@ public class BodyKinematicsFixer {
             final double myx, final double myz,
             final double mzx, final double mzy)
             throws AlgebraException {
-<span class="fc" id="L1088">        mAngularRateFixer.setCrossCouplingErrors(</span>
+<span class="fc" id="L1082">        mAngularRateFixer.setCrossCouplingErrors(</span>
                 mxy, mxz, myx, myz, mzx, mzy);
-<span class="fc" id="L1090">    }</span>
+<span class="fc" id="L1084">    }</span>
 
     /**
      * Sets angular speed scaling factors and cross coupling errors.
@@ -1109,9 +1103,9 @@ public class BodyKinematicsFixer {
             final double mxy, final double mxz,
             final double myx, final double myz,
             final double mzx, final double mzy) throws AlgebraException {
-<span class="fc" id="L1112">        mAngularRateFixer.setScalingFactorsAndCrossCouplingErrors(</span>
+<span class="fc" id="L1106">        mAngularRateFixer.setScalingFactorsAndCrossCouplingErrors(</span>
                 sx, sy, sz, mxy, mxz, myx, myz, mzx, mzy);
-<span class="fc" id="L1114">    }</span>
+<span class="fc" id="L1108">    }</span>
 
     /**
      * Gets angular speed g-dependant cross biases matrix.
@@ -1119,7 +1113,7 @@ public class BodyKinematicsFixer {
      * @return g-dependant cross biases matrix.
      */
     public Matrix getAngularSpeedGDependantCrossBias() {
-<span class="fc" id="L1122">        return mAngularRateFixer.getGDependantCrossBias();</span>
+<span class="fc" id="L1116">        return mAngularRateFixer.getGDependantCrossBias();</span>
     }
 
     /**
@@ -1128,8 +1122,8 @@ public class BodyKinematicsFixer {
      * @param result instance where result will be stored.
      */
     public void getAngularSpeedGDependantCrossBias(final Matrix result) {
-<span class="fc" id="L1131">        mAngularRateFixer.getGDependantCrossBias(result);</span>
-<span class="fc" id="L1132">    }</span>
+<span class="fc" id="L1125">        mAngularRateFixer.getGDependantCrossBias(result);</span>
+<span class="fc" id="L1126">    }</span>
 
     /**
      * Sets angular speed g-dependant cross biases matrix.
@@ -1138,8 +1132,8 @@ public class BodyKinematicsFixer {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     public void setAngularSpeedGDependantCrossBias(final Matrix gDependantCrossBias) {
-<span class="fc" id="L1141">        mAngularRateFixer.setGDependantCrossBias(gDependantCrossBias);</span>
-<span class="fc" id="L1142">    }</span>
+<span class="fc" id="L1135">        mAngularRateFixer.setGDependantCrossBias(gDependantCrossBias);</span>
+<span class="fc" id="L1136">    }</span>
 
     /**
      * Fixes provided measured body kinematics by undoing the errors introduced
@@ -1155,15 +1149,15 @@ public class BodyKinematicsFixer {
      */
     public void fix(final BodyKinematics measuredKinematics,
                     final BodyKinematics result) throws AlgebraException {
-<span class="fc" id="L1158">        measuredKinematics.getSpecificForceTriad(mMeasuredAcceleration);</span>
-<span class="fc" id="L1159">        measuredKinematics.getAngularRateTriad(mMeasuredAngularSpeed);</span>
+<span class="fc" id="L1152">        measuredKinematics.getSpecificForceTriad(mMeasuredAcceleration);</span>
+<span class="fc" id="L1153">        measuredKinematics.getAngularRateTriad(mMeasuredAngularSpeed);</span>
 
-<span class="fc" id="L1161">        fix(mMeasuredAcceleration, mMeasuredAngularSpeed,</span>
+<span class="fc" id="L1155">        fix(mMeasuredAcceleration, mMeasuredAngularSpeed,</span>
                 mFixedAcceleration, mFixedAngularSpeed);
 
-<span class="fc" id="L1164">        result.setSpecificForceTriad(mFixedAcceleration);</span>
-<span class="fc" id="L1165">        result.setAngularRateTriad(mFixedAngularSpeed);</span>
-<span class="fc" id="L1166">    }</span>
+<span class="fc" id="L1158">        result.setSpecificForceTriad(mFixedAcceleration);</span>
+<span class="fc" id="L1159">        result.setAngularRateTriad(mFixedAngularSpeed);</span>
+<span class="fc" id="L1160">    }</span>
 
     /**
      * Fixes provided measured body kinematics by undoing the errors introduced
@@ -1186,10 +1180,10 @@ public class BodyKinematicsFixer {
                     final AngularSpeedTriad fixedAngularSpeed)
             throws AlgebraException {
 
-<span class="fc" id="L1189">        mAccelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);</span>
-<span class="fc" id="L1190">        mAngularRateFixer.fix(measuredAngularSpeed, fixedSpecificForce,</span>
+<span class="fc" id="L1183">        mAccelerationFixer.fix(measuredSpecificForce, fixedSpecificForce);</span>
+<span class="fc" id="L1184">        mAngularRateFixer.fix(measuredAngularSpeed, fixedSpecificForce,</span>
                 fixedAngularSpeed);
-<span class="fc" id="L1192">    }</span>
+<span class="fc" id="L1186">    }</span>
 
     /**
      * Fixes provided measured body kinematics by undoing the errors introduced
@@ -1209,12 +1203,12 @@ public class BodyKinematicsFixer {
                     final AccelerationTriad fixedSpecificForce,
                     final AngularSpeedTriad fixedAngularSpeed)
             throws AlgebraException {
-<span class="fc" id="L1212">        measuredKinematics.getSpecificForceTriad(mMeasuredAcceleration);</span>
-<span class="fc" id="L1213">        measuredKinematics.getAngularRateTriad(mMeasuredAngularSpeed);</span>
+<span class="fc" id="L1206">        measuredKinematics.getSpecificForceTriad(mMeasuredAcceleration);</span>
+<span class="fc" id="L1207">        measuredKinematics.getAngularRateTriad(mMeasuredAngularSpeed);</span>
 
-<span class="fc" id="L1215">        fix(mMeasuredAcceleration, mMeasuredAngularSpeed,</span>
+<span class="fc" id="L1209">        fix(mMeasuredAcceleration, mMeasuredAngularSpeed,</span>
                 fixedSpecificForce, fixedAngularSpeed);
-<span class="fc" id="L1217">    }</span>
+<span class="fc" id="L1211">    }</span>
 
     /**
      * Fixes provided measured body kinematics by undoing the errors introduced
@@ -1232,12 +1226,12 @@ public class BodyKinematicsFixer {
     public void fix(final AccelerationTriad measuredSpecificForce,
                     final AngularSpeedTriad measuredAngularSpeed,
                     final BodyKinematics result) throws AlgebraException {
-<span class="fc" id="L1235">        fix(measuredSpecificForce, measuredAngularSpeed,</span>
+<span class="fc" id="L1229">        fix(measuredSpecificForce, measuredAngularSpeed,</span>
                 mFixedAcceleration, mFixedAngularSpeed);
 
-<span class="fc" id="L1238">        result.setSpecificForceTriad(mFixedAcceleration);</span>
-<span class="fc" id="L1239">        result.setAngularRateTriad(mFixedAngularSpeed);</span>
-<span class="fc" id="L1240">    }</span>
+<span class="fc" id="L1232">        result.setSpecificForceTriad(mFixedAcceleration);</span>
+<span class="fc" id="L1233">        result.setAngularRateTriad(mFixedAngularSpeed);</span>
+<span class="fc" id="L1234">    }</span>
 
     /**
      * Fixes provided measured body kinematics by undoing the errors introduced
@@ -1252,9 +1246,9 @@ public class BodyKinematicsFixer {
      */
     public BodyKinematics fixAndReturnNew(
             final BodyKinematics measuredKinematics) throws AlgebraException {
-<span class="fc" id="L1255">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L1256">        fix(measuredKinematics, result);</span>
-<span class="fc" id="L1257">        return result;</span>
+<span class="fc" id="L1249">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L1250">        fix(measuredKinematics, result);</span>
+<span class="fc" id="L1251">        return result;</span>
     }
 
     /**
@@ -1273,9 +1267,9 @@ public class BodyKinematicsFixer {
             final AccelerationTriad measuredSpecificForce,
             final AngularSpeedTriad measuredAngularSpeed)
             throws AlgebraException {
-<span class="fc" id="L1276">        final BodyKinematics result = new BodyKinematics();</span>
-<span class="fc" id="L1277">        fix(measuredSpecificForce, measuredAngularSpeed, result);</span>
-<span class="fc" id="L1278">        return result;</span>
+<span class="fc" id="L1270">        final BodyKinematics result = new BodyKinematics();</span>
+<span class="fc" id="L1271">        fix(measuredSpecificForce, measuredAngularSpeed, result);</span>
+<span class="fc" id="L1272">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

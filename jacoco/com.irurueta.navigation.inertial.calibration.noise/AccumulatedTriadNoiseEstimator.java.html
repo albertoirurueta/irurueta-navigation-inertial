@@ -131,7 +131,7 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
     /**
      * Constructor.
      */
-<span class="fc" id="L134">    public AccumulatedTriadNoiseEstimator() {</span>
+<span class="fc" id="L134">    protected AccumulatedTriadNoiseEstimator() {</span>
 <span class="fc" id="L135">    }</span>
 
     /**
@@ -139,7 +139,7 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
      *
      * @param listener listener to handle events raised by this estimator.
      */
-<span class="fc" id="L142">    public AccumulatedTriadNoiseEstimator(final L listener) {</span>
+<span class="fc" id="L142">    protected AccumulatedTriadNoiseEstimator(final L listener) {</span>
 <span class="fc" id="L143">        mListener = listener;</span>
 <span class="fc" id="L144">    }</span>
 
@@ -771,9 +771,9 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
 
         // compute averages
 <span class="fc" id="L773">        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L774">        mAvgX = mAvgX * tmp + valueX / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L775">        mAvgY = mAvgY * tmp + valueY / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L776">        mAvgZ = mAvgZ * tmp + valueZ / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L774">        mAvgX = mAvgX * tmp + valueX / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L775">        mAvgY = mAvgY * tmp + valueY / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L776">        mAvgZ = mAvgZ * tmp + valueZ / mNumberOfProcessedSamplesPlusOne;</span>
 
         // compute variances
 <span class="fc" id="L779">        final double diffX = valueX - mAvgX;</span>
@@ -783,9 +783,9 @@ public abstract class AccumulatedTriadNoiseEstimator&lt;U extends Enum&lt;?&gt;,
 <span class="fc" id="L783">        final double diffY2 = diffY * diffY;</span>
 <span class="fc" id="L784">        final double diffZ2 = diffZ * diffZ;</span>
 
-<span class="fc" id="L786">        mVarianceX = mVarianceX * tmp + diffX2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L787">        mVarianceY = mVarianceY * tmp + diffY2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L788">        mVarianceZ = mVarianceZ * tmp + diffZ2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L786">        mVarianceX = mVarianceX * tmp + diffX2 / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L787">        mVarianceY = mVarianceY * tmp + diffY2 / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L788">        mVarianceZ = mVarianceZ * tmp + diffZ2 / mNumberOfProcessedSamplesPlusOne;</span>
 
 <span class="fc bfc" id="L790" title="All 2 branches covered.">        if (mLastTriad == null) {</span>
 <span class="fc" id="L791">            mLastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());</span>

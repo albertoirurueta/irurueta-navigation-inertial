@@ -357,33 +357,31 @@ public class TimeIntervalEstimator {
 <span class="fc bfc" id="L357" title="All 2 branches covered.">        if (mLastTimestamp != null) {</span>
 <span class="fc" id="L358">            final double timeInterval = timestamp - mLastTimestamp;</span>
 
-<span class="fc" id="L360">            mAverageTimeInterval = mAverageTimeInterval * (double) mNumberOfProcessedSamples</span>
-                    / (double) mNumberOfProcessedSamplesPlusOne
-                    + timeInterval / (double) mNumberOfProcessedSamplesPlusOne;
+<span class="fc" id="L360">            mAverageTimeInterval = mAverageTimeInterval * mNumberOfProcessedSamples / mNumberOfProcessedSamplesPlusOne</span>
+                    + timeInterval / mNumberOfProcessedSamplesPlusOne;
 
-<span class="fc" id="L364">            final double diff = timeInterval - mAverageTimeInterval;</span>
-<span class="fc" id="L365">            final double diff2 = diff * diff;</span>
-<span class="fc" id="L366">            mTimeIntervalVariance = mTimeIntervalVariance * (double) mNumberOfProcessedSamples</span>
-                    / (double) mNumberOfProcessedSamplesPlusOne
-                    + diff2 / (double) mNumberOfProcessedSamplesPlusOne;
+<span class="fc" id="L363">            final double diff = timeInterval - mAverageTimeInterval;</span>
+<span class="fc" id="L364">            final double diff2 = diff * diff;</span>
+<span class="fc" id="L365">            mTimeIntervalVariance = mTimeIntervalVariance * mNumberOfProcessedSamples / mNumberOfProcessedSamplesPlusOne</span>
+                    + diff2 / mNumberOfProcessedSamplesPlusOne;
         }
 
-<span class="fc" id="L371">        mLastTimestamp = timestamp;</span>
+<span class="fc" id="L369">        mLastTimestamp = timestamp;</span>
 
-<span class="fc" id="L373">        mNumberOfProcessedSamples++;</span>
-<span class="fc" id="L374">        mNumberOfProcessedSamplesPlusOne++;</span>
+<span class="fc" id="L371">        mNumberOfProcessedSamples++;</span>
+<span class="fc" id="L372">        mNumberOfProcessedSamplesPlusOne++;</span>
 
-<span class="pc bpc" id="L376" title="1 of 2 branches missed.">        if (mListener != null) {</span>
-<span class="fc" id="L377">            mListener.onTimestampAdded(this);</span>
+<span class="pc bpc" id="L374" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L375">            mListener.onTimestampAdded(this);</span>
         }
 
-<span class="fc" id="L380">        mRunning = false;</span>
+<span class="fc" id="L378">        mRunning = false;</span>
 
-<span class="pc bpc" id="L382" title="1 of 4 branches missed.">        if (isFinished() &amp;&amp; mListener != null) {</span>
-<span class="fc" id="L383">            mListener.onFinish(this);</span>
+<span class="pc bpc" id="L380" title="1 of 4 branches missed.">        if (isFinished() &amp;&amp; mListener != null) {</span>
+<span class="fc" id="L381">            mListener.onFinish(this);</span>
         }
 
-<span class="fc" id="L386">        return true;</span>
+<span class="fc" id="L384">        return true;</span>
     }
 
     /**
@@ -394,28 +392,28 @@ public class TimeIntervalEstimator {
      */
     @SuppressWarnings(&quot;DuplicatedCode&quot;)
     public boolean reset() throws LockedException {
-<span class="fc bfc" id="L397" title="All 2 branches covered.">        if (mRunning) {</span>
-<span class="fc" id="L398">            throw new LockedException();</span>
+<span class="fc bfc" id="L395" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L396">            throw new LockedException();</span>
         }
 
-<span class="pc bpc" id="L401" title="1 of 2 branches missed.">        if (mNumberOfProcessedSamples == 0) {</span>
-<span class="nc" id="L402">            return false;</span>
+<span class="pc bpc" id="L399" title="1 of 2 branches missed.">        if (mNumberOfProcessedSamples == 0) {</span>
+<span class="nc" id="L400">            return false;</span>
         }
 
-<span class="fc" id="L405">        mRunning = true;</span>
-<span class="fc" id="L406">        mLastTimestamp = null;</span>
-<span class="fc" id="L407">        mAverageTimeInterval = 0.0;</span>
-<span class="fc" id="L408">        mTimeIntervalVariance = 0.0;</span>
-<span class="fc" id="L409">        mNumberOfProcessedSamples = 0;</span>
-<span class="fc" id="L410">        mNumberOfProcessedSamplesPlusOne = 1;</span>
+<span class="fc" id="L403">        mRunning = true;</span>
+<span class="fc" id="L404">        mLastTimestamp = null;</span>
+<span class="fc" id="L405">        mAverageTimeInterval = 0.0;</span>
+<span class="fc" id="L406">        mTimeIntervalVariance = 0.0;</span>
+<span class="fc" id="L407">        mNumberOfProcessedSamples = 0;</span>
+<span class="fc" id="L408">        mNumberOfProcessedSamplesPlusOne = 1;</span>
 
-<span class="pc bpc" id="L412" title="1 of 2 branches missed.">        if (mListener != null) {</span>
-<span class="fc" id="L413">            mListener.onReset(this);</span>
+<span class="pc bpc" id="L410" title="1 of 2 branches missed.">        if (mListener != null) {</span>
+<span class="fc" id="L411">            mListener.onReset(this);</span>
         }
 
-<span class="fc" id="L416">        mRunning = false;</span>
+<span class="fc" id="L414">        mRunning = false;</span>
 
-<span class="fc" id="L418">        return true;</span>
+<span class="fc" id="L416">        return true;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -391,7 +391,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     /**
      * Constructor.
      */
-<span class="fc" id="L394">    public RobustKnownHardIronAndFrameMagnetometerCalibrator() {</span>
+<span class="fc" id="L394">    protected RobustKnownHardIronAndFrameMagnetometerCalibrator() {</span>
 <span class="fc" id="L395">    }</span>
 
     /**
@@ -400,7 +400,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
 <span class="fc" id="L404">            final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {</span>
 <span class="fc" id="L405">        mListener = listener;</span>
 <span class="fc" id="L406">    }</span>
@@ -412,7 +412,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                     deviations taken at different frames (positions and
      *                     orientations).
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
 <span class="fc" id="L416">            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {</span>
 <span class="fc" id="L417">        mMeasurements = measurements;</span>
 <span class="fc" id="L418">    }</span>
@@ -425,7 +425,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                     orientations).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
 <span class="fc" id="L431">        this(measurements);</span>
@@ -438,7 +438,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-<span class="fc" id="L441">    public RobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {</span>
+<span class="fc" id="L441">    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {</span>
 <span class="fc" id="L442">        mCommonAxisUsed = commonAxisUsed;</span>
 <span class="fc" id="L443">    }</span>
 
@@ -449,7 +449,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
 <span class="fc" id="L455">        this(commonAxisUsed);</span>
@@ -465,7 +465,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
 <span class="fc" id="L471">        this(measurements);</span>
@@ -482,7 +482,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {

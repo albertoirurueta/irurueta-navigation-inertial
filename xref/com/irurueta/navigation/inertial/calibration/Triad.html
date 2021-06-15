@@ -70,7 +70,7 @@
 <a class="jxr_linenumber" name="L62" href="#L62">62</a>  <em class="jxr_javadoccomment">     * @param unit unit of measurement.</em>
 <a class="jxr_linenumber" name="L63" href="#L63">63</a>  <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided unit is null.</em>
 <a class="jxr_linenumber" name="L64" href="#L64">64</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/inertial/calibration/Triad.html">Triad</a>(<strong class="jxr_keyword">final</strong> U unit) {
+<a class="jxr_linenumber" name="L65" href="#L65">65</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/inertial/calibration/Triad.html">Triad</a>(<strong class="jxr_keyword">final</strong> U unit) {
 <a class="jxr_linenumber" name="L66" href="#L66">66</a>          <strong class="jxr_keyword">if</strong> (unit == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L67" href="#L67">67</a>              <strong class="jxr_keyword">throw</strong> <strong class="jxr_keyword">new</strong> IllegalArgumentException();
 <a class="jxr_linenumber" name="L68" href="#L68">68</a>          }
@@ -87,7 +87,7 @@
 <a class="jxr_linenumber" name="L79" href="#L79">79</a>  <em class="jxr_javadoccomment">     * @param valueZ value of z-coordinate.</em>
 <a class="jxr_linenumber" name="L80" href="#L80">80</a>  <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if provided unit is null.</em>
 <a class="jxr_linenumber" name="L81" href="#L81">81</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/inertial/calibration/Triad.html">Triad</a>(<strong class="jxr_keyword">final</strong> U unit, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueX, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueY,
+<a class="jxr_linenumber" name="L82" href="#L82">82</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/inertial/calibration/Triad.html">Triad</a>(<strong class="jxr_keyword">final</strong> U unit, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueX, <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueY,
 <a class="jxr_linenumber" name="L83" href="#L83">83</a>                   <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> valueZ) {
 <a class="jxr_linenumber" name="L84" href="#L84">84</a>          <strong class="jxr_keyword">this</strong>(unit);
 <a class="jxr_linenumber" name="L85" href="#L85">85</a>          setValueCoordinates(valueX, valueY, valueZ);
@@ -98,7 +98,7 @@
 <a class="jxr_linenumber" name="L90" href="#L90">90</a>  <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L91" href="#L91">91</a>  <em class="jxr_javadoccomment">     * @param other instance to copy from.</em>
 <a class="jxr_linenumber" name="L92" href="#L92">92</a>  <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">public</strong> <a href="../../../../../com/irurueta/navigation/inertial/calibration/Triad.html">Triad</a>(<strong class="jxr_keyword">final</strong> Triad&lt;U, T&gt; other) {
+<a class="jxr_linenumber" name="L93" href="#L93">93</a>      <strong class="jxr_keyword">protected</strong> <a href="../../../../../com/irurueta/navigation/inertial/calibration/Triad.html">Triad</a>(<strong class="jxr_keyword">final</strong> Triad&lt;U, T&gt; other) {
 <a class="jxr_linenumber" name="L94" href="#L94">94</a>          copyFrom(other);
 <a class="jxr_linenumber" name="L95" href="#L95">95</a>      }
 <a class="jxr_linenumber" name="L96" href="#L96">96</a>  

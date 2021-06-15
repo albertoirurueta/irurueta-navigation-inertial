@@ -3367,9 +3367,9 @@
 <a class="jxr_linenumber" name="L3359" href="#L3359">3359</a>         <em class="jxr_comment">// compute biases</em>
 <a class="jxr_linenumber" name="L3360" href="#L3360">3360</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> tmp = (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamples
 <a class="jxr_linenumber" name="L3361" href="#L3361">3361</a>                 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L3362" href="#L3362">3362</a>         mBiasX = mBiasX * tmp + diffBx / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L3363" href="#L3363">3363</a>         mBiasY = mBiasY * tmp + diffBy / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L3364" href="#L3364">3364</a>         mBiasZ = mBiasZ * tmp + diffBz / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L3362" href="#L3362">3362</a>         mBiasX = mBiasX * tmp + diffBx / mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L3363" href="#L3363">3363</a>         mBiasY = mBiasY * tmp + diffBy / mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L3364" href="#L3364">3364</a>         mBiasZ = mBiasZ * tmp + diffBz / mNumberOfProcessedSamplesPlusOne;
 <a class="jxr_linenumber" name="L3365" href="#L3365">3365</a> 
 <a class="jxr_linenumber" name="L3366" href="#L3366">3366</a>         <em class="jxr_comment">// compute variances</em>
 <a class="jxr_linenumber" name="L3367" href="#L3367">3367</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> diffBiasX = diffBx - mBiasX;
@@ -3381,11 +3381,11 @@
 <a class="jxr_linenumber" name="L3373" href="#L3373">3373</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> diffBiasZ2 = diffBiasZ * diffBiasZ;
 <a class="jxr_linenumber" name="L3374" href="#L3374">3374</a> 
 <a class="jxr_linenumber" name="L3375" href="#L3375">3375</a>         mVarianceX = mVarianceX * tmp
-<a class="jxr_linenumber" name="L3376" href="#L3376">3376</a>                 + diffBiasX2 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L3376" href="#L3376">3376</a>                 + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;
 <a class="jxr_linenumber" name="L3377" href="#L3377">3377</a>         mVarianceY = mVarianceY * tmp
-<a class="jxr_linenumber" name="L3378" href="#L3378">3378</a>                 + diffBiasY2 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L3378" href="#L3378">3378</a>                 + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;
 <a class="jxr_linenumber" name="L3379" href="#L3379">3379</a>         mVarianceZ = mVarianceZ * tmp
-<a class="jxr_linenumber" name="L3380" href="#L3380">3380</a>                 + diffBiasZ2 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L3380" href="#L3380">3380</a>                 + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;
 <a class="jxr_linenumber" name="L3381" href="#L3381">3381</a> 
 <a class="jxr_linenumber" name="L3382" href="#L3382">3382</a>         mLastBodyMagneticFluxDensity = bodyMagneticFluxDensity;
 <a class="jxr_linenumber" name="L3383" href="#L3383">3383</a> 

@@ -52,7 +52,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
     /**
      * Constructor.
      */
-<span class="fc" id="L55">    public GravityOrGravitation() {</span>
+<span class="fc" id="L55">    protected GravityOrGravitation() {</span>
 <span class="fc" id="L56">    }</span>
 
     /**
@@ -62,7 +62,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * @param gy acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
      * @param gz acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
-<span class="fc" id="L65">    public GravityOrGravitation(final double gx, final double gy, final double gz) {</span>
+<span class="fc" id="L65">    protected GravityOrGravitation(final double gx, final double gy, final double gz) {</span>
 <span class="fc" id="L66">        setCoordinates(gx, gy, gz);</span>
 <span class="fc" id="L67">    }</span>
 
@@ -73,7 +73,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * @param gy acceleration due to gravity through ECI or ECEF y-axis to be set.
      * @param gz acceleration due to gravity through ECI or ECEF z-axis to be set.
      */
-    public GravityOrGravitation(final Acceleration gx, final Acceleration gy,
+    protected GravityOrGravitation(final Acceleration gx, final Acceleration gy,
 <span class="fc" id="L77">                                final Acceleration gz) {</span>
 <span class="fc" id="L78">        setCoordinates(gx, gy, gz);</span>
 <span class="fc" id="L79">    }</span>
@@ -83,7 +83,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      *
      * @param input instance to copy data from.
      */
-<span class="fc" id="L86">    public GravityOrGravitation(final T input) {</span>
+<span class="fc" id="L86">    protected GravityOrGravitation(final T input) {</span>
 <span class="fc" id="L87">        copyFrom(input);</span>
 <span class="fc" id="L88">    }</span>
 
@@ -388,6 +388,17 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
 <span class="fc" id="L388">        return Objects.hash(mGx, mGy, mGz);</span>
     }
 
+
+    /**
+     * Check if provided object is a T instance having exactly the same contents
+     * as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public abstract boolean equals(final Object obj);
+
     /**
      * Checks if provided instance has exactly the same contents as this instance.
      *
@@ -395,7 +406,7 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final T other) {
-<span class="fc" id="L398">        return equals(other, 0.0);</span>
+<span class="fc" id="L409">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -408,13 +419,13 @@ public abstract class GravityOrGravitation&lt;T extends GravityOrGravitation&lt;
      * threshold), false otherwise.
      */
     public boolean equals(final T other, final double threshold) {
-<span class="fc bfc" id="L411" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L412">            return false;</span>
+<span class="fc bfc" id="L422" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L423">            return false;</span>
         }
 
-<span class="fc bfc" id="L415" title="All 2 branches covered.">        return Math.abs(mGx - other.mGx) &lt;= threshold</span>
-<span class="pc bpc" id="L416" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGy - other.mGy) &lt;= threshold</span>
-<span class="pc bpc" id="L417" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGz - other.mGz) &lt;= threshold;</span>
+<span class="fc bfc" id="L426" title="All 2 branches covered.">        return Math.abs(mGx - other.mGx) &lt;= threshold</span>
+<span class="pc bpc" id="L427" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGy - other.mGy) &lt;= threshold</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGz - other.mGz) &lt;= threshold;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

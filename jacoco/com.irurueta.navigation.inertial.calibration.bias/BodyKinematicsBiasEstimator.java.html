@@ -3093,16 +3093,16 @@ public class BodyKinematicsBiasEstimator {
         // compute biases
 <span class="fc" id="L3094">        final double tmp = (double) mNumberOfProcessedSamples</span>
                 / (double) mNumberOfProcessedSamplesPlusOne;
-<span class="fc" id="L3096">        mBiasFx = mBiasFx * tmp + diffFx / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L3097">        mBiasFy = mBiasFy * tmp + diffFy / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L3098">        mBiasFz = mBiasFz * tmp + diffFz / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3096">        mBiasFx = mBiasFx * tmp + diffFx / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3097">        mBiasFy = mBiasFy * tmp + diffFy / mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L3098">        mBiasFz = mBiasFz * tmp + diffFz / mNumberOfProcessedSamplesPlusOne;</span>
 
 <span class="fc" id="L3100">        mBiasAngularRateX = mBiasAngularRateX * tmp</span>
-                + diffAngularRateX / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffAngularRateX / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3102">        mBiasAngularRateY = mBiasAngularRateY * tmp</span>
-                + diffAngularRateY / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffAngularRateY / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3104">        mBiasAngularRateZ = mBiasAngularRateZ * tmp</span>
-                + diffAngularRateZ / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffAngularRateZ / mNumberOfProcessedSamplesPlusOne;
 
         // compute variances
 <span class="fc" id="L3108">        final double diffBiasFx = diffFx - mBiasFx;</span>
@@ -3123,18 +3123,18 @@ public class BodyKinematicsBiasEstimator {
                 diffBiasAngularRateZ * diffBiasAngularRateZ;
 
 <span class="fc" id="L3125">        mVarianceFx = mVarianceFx * tmp</span>
-                + diffBiasFx2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasFx2 / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3127">        mVarianceFy = mVarianceFy * tmp</span>
-                + diffBiasFy2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasFy2 / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3129">        mVarianceFz = mVarianceFz * tmp</span>
-                + diffBiasFz2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasFz2 / mNumberOfProcessedSamplesPlusOne;
 
 <span class="fc" id="L3132">        mVarianceAngularRateX = mVarianceAngularRateX * tmp</span>
-                + diffBiasAngularRateX2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasAngularRateX2 / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3134">        mVarianceAngularRateY = mVarianceAngularRateY * tmp</span>
-                + diffBiasAngularRateY2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasAngularRateY2 / mNumberOfProcessedSamplesPlusOne;
 <span class="fc" id="L3136">        mVarianceAngularRateZ = mVarianceAngularRateZ * tmp</span>
-                + diffBiasAngularRateZ2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasAngularRateZ2 / mNumberOfProcessedSamplesPlusOne;
 
 <span class="fc" id="L3139">        mLastBodyKinematics = kinematics;</span>
 

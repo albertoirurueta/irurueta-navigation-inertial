@@ -325,109 +325,109 @@
 <a class="jxr_linenumber" name="L317" href="#L317">317</a> 
 <a class="jxr_linenumber" name="L318" href="#L318">318</a>                 addSequenceItem(sample);
 <a class="jxr_linenumber" name="L319" href="#L319">319</a>             }
-<a class="jxr_linenumber" name="L320" href="#L320">320</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {
-<a class="jxr_linenumber" name="L321" href="#L321">321</a>             <strong class="jxr_keyword">if</strong> (mPreviousStatus == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL
-<a class="jxr_linenumber" name="L322" href="#L322">322</a>                     &amp;&amp; mCurrentSequenceItems != <strong class="jxr_keyword">null</strong> &amp;&amp; !mCurrentSequenceItems.isEmpty()) {
+<a class="jxr_linenumber" name="L320" href="#L320">320</a>         } <strong class="jxr_keyword">else</strong> <strong class="jxr_keyword">if</strong> (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL
+<a class="jxr_linenumber" name="L321" href="#L321">321</a>                 &amp;&amp; mPreviousStatus == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL
+<a class="jxr_linenumber" name="L322" href="#L322">322</a>                 &amp;&amp; mCurrentSequenceItems != <strong class="jxr_keyword">null</strong> &amp;&amp; !mCurrentSequenceItems.isEmpty()) {
 <a class="jxr_linenumber" name="L323" href="#L323">323</a> 
-<a class="jxr_linenumber" name="L324" href="#L324">324</a>                 mCurrentAvgX = mStaticIntervalDetector.getInstantaneousAvgX();
-<a class="jxr_linenumber" name="L325" href="#L325">325</a>                 mCurrentAvgY = mStaticIntervalDetector.getInstantaneousAvgY();
-<a class="jxr_linenumber" name="L326" href="#L326">326</a>                 mCurrentAvgZ = mStaticIntervalDetector.getInstantaneousAvgZ();
+<a class="jxr_linenumber" name="L324" href="#L324">324</a>             mCurrentAvgX = mStaticIntervalDetector.getInstantaneousAvgX();
+<a class="jxr_linenumber" name="L325" href="#L325">325</a>             mCurrentAvgY = mStaticIntervalDetector.getInstantaneousAvgY();
+<a class="jxr_linenumber" name="L326" href="#L326">326</a>             mCurrentAvgZ = mStaticIntervalDetector.getInstantaneousAvgZ();
 <a class="jxr_linenumber" name="L327" href="#L327">327</a> 
-<a class="jxr_linenumber" name="L328" href="#L328">328</a>                 <em class="jxr_comment">// we have all required data to generate a sequence</em>
-<a class="jxr_linenumber" name="L329" href="#L329">329</a>                 BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L330" href="#L330">330</a>                 <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L331" href="#L331">331</a>                     sequence = <strong class="jxr_keyword">new</strong> BodyKinematicsSequence&lt;&gt;();
-<a class="jxr_linenumber" name="L332" href="#L332">332</a>                     sequence.setBeforeMeanSpecificForceCoordinates(
-<a class="jxr_linenumber" name="L333" href="#L333">333</a>                             mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);
-<a class="jxr_linenumber" name="L334" href="#L334">334</a>                     sequence.setItems(mCurrentSequenceItems);
-<a class="jxr_linenumber" name="L335" href="#L335">335</a>                     sequence.setAfterMeanSpecificForceCoordinates(
-<a class="jxr_linenumber" name="L336" href="#L336">336</a>                             mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);
-<a class="jxr_linenumber" name="L337" href="#L337">337</a>                 }
+<a class="jxr_linenumber" name="L328" href="#L328">328</a>             <em class="jxr_comment">// we have all required data to generate a sequence</em>
+<a class="jxr_linenumber" name="L329" href="#L329">329</a>             BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L330" href="#L330">330</a>             <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L331" href="#L331">331</a>                 sequence = <strong class="jxr_keyword">new</strong> BodyKinematicsSequence&lt;&gt;();
+<a class="jxr_linenumber" name="L332" href="#L332">332</a>                 sequence.setBeforeMeanSpecificForceCoordinates(
+<a class="jxr_linenumber" name="L333" href="#L333">333</a>                         mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);
+<a class="jxr_linenumber" name="L334" href="#L334">334</a>                 sequence.setItems(mCurrentSequenceItems);
+<a class="jxr_linenumber" name="L335" href="#L335">335</a>                 sequence.setAfterMeanSpecificForceCoordinates(
+<a class="jxr_linenumber" name="L336" href="#L336">336</a>                         mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);
+<a class="jxr_linenumber" name="L337" href="#L337">337</a>             }
 <a class="jxr_linenumber" name="L338" href="#L338">338</a> 
-<a class="jxr_linenumber" name="L339" href="#L339">339</a>                 mCurrentSequenceItems = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L339" href="#L339">339</a>             mCurrentSequenceItems = <strong class="jxr_keyword">null</strong>;
 <a class="jxr_linenumber" name="L340" href="#L340">340</a> 
-<a class="jxr_linenumber" name="L341" href="#L341">341</a>                 <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
-<a class="jxr_linenumber" name="L342" href="#L342">342</a>                     mListener.onGeneratedMeasurement(<strong class="jxr_keyword">this</strong>, sequence);
-<a class="jxr_linenumber" name="L343" href="#L343">343</a>                 }
-<a class="jxr_linenumber" name="L344" href="#L344">344</a>             }
-<a class="jxr_linenumber" name="L345" href="#L345">345</a>         }
-<a class="jxr_linenumber" name="L346" href="#L346">346</a>     }
-<a class="jxr_linenumber" name="L347" href="#L347">347</a> 
-<a class="jxr_linenumber" name="L348" href="#L348">348</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     * Gets corresponding acceleration triad from provided input sample.</em>
-<a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_javadoccomment">     * This method must store the result into {@link #mTriad}.</em>
-<a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     * @param sample input sample.</em>
-<a class="jxr_linenumber" name="L353" href="#L353">353</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L354" href="#L354">354</a>     @Override
-<a class="jxr_linenumber" name="L355" href="#L355">355</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> getAccelerationTriadFromInputSample(
-<a class="jxr_linenumber" name="L356" href="#L356">356</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/TimedBodyKinematics.html">TimedBodyKinematics</a> sample) {
-<a class="jxr_linenumber" name="L357" href="#L357">357</a>         sample.getKinematics().getSpecificForceTriad(mTriad);
-<a class="jxr_linenumber" name="L358" href="#L358">358</a>     }
-<a class="jxr_linenumber" name="L359" href="#L359">359</a> 
-<a class="jxr_linenumber" name="L360" href="#L360">360</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_javadoccomment">     * Handles a static-to-dynamic interval change.</em>
-<a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L363" href="#L363">363</a> <em class="jxr_javadoccomment">     * @param accumulatedAvgX average x-coordinate of measurements during last</em>
-<a class="jxr_linenumber" name="L364" href="#L364">364</a> <em class="jxr_javadoccomment">     *                        static period expressed in meters per squared</em>
-<a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     *                        second (m/s^2).</em>
-<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     * @param accumulatedAvgY average y-coordinate of specific force during last</em>
-<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     *                        static period expressed in meters per squared</em>
-<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     *                        second (m/s^2).</em>
-<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     * @param accumulatedAvgZ average z-coordinate of specific force during last</em>
-<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     *                        static period expressed in meters per squared</em>
-<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     *                        second (m/s^2).</em>
-<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     * @param accumulatedStdX standard deviation of x-coordinate of measurements</em>
-<a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     *                        during last static period expressed in meters per</em>
-<a class="jxr_linenumber" name="L374" href="#L374">374</a> <em class="jxr_javadoccomment">     *                        squared second (m/s^2).</em>
-<a class="jxr_linenumber" name="L375" href="#L375">375</a> <em class="jxr_javadoccomment">     * @param accumulatedStdY standard deviation of y-coordinate of measurements</em>
-<a class="jxr_linenumber" name="L376" href="#L376">376</a> <em class="jxr_javadoccomment">     *                        during last static period expressed in meters per</em>
-<a class="jxr_linenumber" name="L377" href="#L377">377</a> <em class="jxr_javadoccomment">     *                        squared second (m/s^2).</em>
-<a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     * @param accumulatedStdZ standard deviation of z-coordinate of measurements</em>
-<a class="jxr_linenumber" name="L379" href="#L379">379</a> <em class="jxr_javadoccomment">     *                        during last static period expressed in meters per</em>
-<a class="jxr_linenumber" name="L380" href="#L380">380</a> <em class="jxr_javadoccomment">     *                        squared second (m/s^2).</em>
-<a class="jxr_linenumber" name="L381" href="#L381">381</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     @Override
-<a class="jxr_linenumber" name="L383" href="#L383">383</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleStaticToDynamicChange(
-<a class="jxr_linenumber" name="L384" href="#L384">384</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedAvgX,
-<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedAvgY,
-<a class="jxr_linenumber" name="L386" href="#L386">386</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedAvgZ,
-<a class="jxr_linenumber" name="L387" href="#L387">387</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedStdX,
-<a class="jxr_linenumber" name="L388" href="#L388">388</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedStdY,
-<a class="jxr_linenumber" name="L389" href="#L389">389</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedStdZ) {
-<a class="jxr_linenumber" name="L390" href="#L390">390</a>         mPreviousStatus = TriadStaticIntervalDetector.Status.STATIC_INTERVAL;
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>     }
-<a class="jxr_linenumber" name="L392" href="#L392">392</a> 
-<a class="jxr_linenumber" name="L393" href="#L393">393</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     * Handles a dynamic-to-static interval change.</em>
-<a class="jxr_linenumber" name="L395" href="#L395">395</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L396" href="#L396">396</a>     @Override
-<a class="jxr_linenumber" name="L397" href="#L397">397</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleDynamicToStaticChange() {
-<a class="jxr_linenumber" name="L398" href="#L398">398</a>         mPreviousStatus = TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL;
-<a class="jxr_linenumber" name="L399" href="#L399">399</a>     }
-<a class="jxr_linenumber" name="L400" href="#L400">400</a> 
-<a class="jxr_linenumber" name="L401" href="#L401">401</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     * Handles an initialization completion.</em>
-<a class="jxr_linenumber" name="L403" href="#L403">403</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L404" href="#L404">404</a>     @Override
-<a class="jxr_linenumber" name="L405" href="#L405">405</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleInitializationCompleted() {
-<a class="jxr_linenumber" name="L406" href="#L406">406</a>         mAccelerationStandardDeviation = mStaticIntervalDetector.getBaseNoiseLevel();
-<a class="jxr_linenumber" name="L407" href="#L407">407</a>         mAngularSpeedStandardDeviation = mAccumulatedEstimator.getStandardDeviationNorm();
-<a class="jxr_linenumber" name="L408" href="#L408">408</a>         mAngularSpeedNoiseRootPsd = mAccumulatedEstimator.getNoiseRootPsdNorm();
-<a class="jxr_linenumber" name="L409" href="#L409">409</a> 
-<a class="jxr_linenumber" name="L410" href="#L410">410</a>         mPreviousStatus = mStaticIntervalDetector.getStatus();
-<a class="jxr_linenumber" name="L411" href="#L411">411</a>     }
-<a class="jxr_linenumber" name="L412" href="#L412">412</a> 
-<a class="jxr_linenumber" name="L413" href="#L413">413</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     * Handles an error during initialization.</em>
-<a class="jxr_linenumber" name="L415" href="#L415">415</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>     @Override
-<a class="jxr_linenumber" name="L417" href="#L417">417</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleInitializationFailed() {
-<a class="jxr_linenumber" name="L418" href="#L418">418</a>         mPreviousStatus = <strong class="jxr_keyword">null</strong>;
-<a class="jxr_linenumber" name="L419" href="#L419">419</a> 
-<a class="jxr_linenumber" name="L420" href="#L420">420</a>         <strong class="jxr_keyword">try</strong> {
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>             mAccumulatedEstimator.reset();
-<a class="jxr_linenumber" name="L422" href="#L422">422</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L341" href="#L341">341</a>             <strong class="jxr_keyword">if</strong> (mListener != <strong class="jxr_keyword">null</strong>) {
+<a class="jxr_linenumber" name="L342" href="#L342">342</a>                 mListener.onGeneratedMeasurement(<strong class="jxr_keyword">this</strong>, sequence);
+<a class="jxr_linenumber" name="L343" href="#L343">343</a>             }
+<a class="jxr_linenumber" name="L344" href="#L344">344</a>         }
+<a class="jxr_linenumber" name="L345" href="#L345">345</a>     }
+<a class="jxr_linenumber" name="L346" href="#L346">346</a> 
+<a class="jxr_linenumber" name="L347" href="#L347">347</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L348" href="#L348">348</a> <em class="jxr_javadoccomment">     * Gets corresponding acceleration triad from provided input sample.</em>
+<a class="jxr_linenumber" name="L349" href="#L349">349</a> <em class="jxr_javadoccomment">     * This method must store the result into {@link #mTriad}.</em>
+<a class="jxr_linenumber" name="L350" href="#L350">350</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L351" href="#L351">351</a> <em class="jxr_javadoccomment">     * @param sample input sample.</em>
+<a class="jxr_linenumber" name="L352" href="#L352">352</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L353" href="#L353">353</a>     @Override
+<a class="jxr_linenumber" name="L354" href="#L354">354</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> getAccelerationTriadFromInputSample(
+<a class="jxr_linenumber" name="L355" href="#L355">355</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/TimedBodyKinematics.html">TimedBodyKinematics</a> sample) {
+<a class="jxr_linenumber" name="L356" href="#L356">356</a>         sample.getKinematics().getSpecificForceTriad(mTriad);
+<a class="jxr_linenumber" name="L357" href="#L357">357</a>     }
+<a class="jxr_linenumber" name="L358" href="#L358">358</a> 
+<a class="jxr_linenumber" name="L359" href="#L359">359</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L360" href="#L360">360</a> <em class="jxr_javadoccomment">     * Handles a static-to-dynamic interval change.</em>
+<a class="jxr_linenumber" name="L361" href="#L361">361</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L362" href="#L362">362</a> <em class="jxr_javadoccomment">     * @param accumulatedAvgX average x-coordinate of measurements during last</em>
+<a class="jxr_linenumber" name="L363" href="#L363">363</a> <em class="jxr_javadoccomment">     *                        static period expressed in meters per squared</em>
+<a class="jxr_linenumber" name="L364" href="#L364">364</a> <em class="jxr_javadoccomment">     *                        second (m/s^2).</em>
+<a class="jxr_linenumber" name="L365" href="#L365">365</a> <em class="jxr_javadoccomment">     * @param accumulatedAvgY average y-coordinate of specific force during last</em>
+<a class="jxr_linenumber" name="L366" href="#L366">366</a> <em class="jxr_javadoccomment">     *                        static period expressed in meters per squared</em>
+<a class="jxr_linenumber" name="L367" href="#L367">367</a> <em class="jxr_javadoccomment">     *                        second (m/s^2).</em>
+<a class="jxr_linenumber" name="L368" href="#L368">368</a> <em class="jxr_javadoccomment">     * @param accumulatedAvgZ average z-coordinate of specific force during last</em>
+<a class="jxr_linenumber" name="L369" href="#L369">369</a> <em class="jxr_javadoccomment">     *                        static period expressed in meters per squared</em>
+<a class="jxr_linenumber" name="L370" href="#L370">370</a> <em class="jxr_javadoccomment">     *                        second (m/s^2).</em>
+<a class="jxr_linenumber" name="L371" href="#L371">371</a> <em class="jxr_javadoccomment">     * @param accumulatedStdX standard deviation of x-coordinate of measurements</em>
+<a class="jxr_linenumber" name="L372" href="#L372">372</a> <em class="jxr_javadoccomment">     *                        during last static period expressed in meters per</em>
+<a class="jxr_linenumber" name="L373" href="#L373">373</a> <em class="jxr_javadoccomment">     *                        squared second (m/s^2).</em>
+<a class="jxr_linenumber" name="L374" href="#L374">374</a> <em class="jxr_javadoccomment">     * @param accumulatedStdY standard deviation of y-coordinate of measurements</em>
+<a class="jxr_linenumber" name="L375" href="#L375">375</a> <em class="jxr_javadoccomment">     *                        during last static period expressed in meters per</em>
+<a class="jxr_linenumber" name="L376" href="#L376">376</a> <em class="jxr_javadoccomment">     *                        squared second (m/s^2).</em>
+<a class="jxr_linenumber" name="L377" href="#L377">377</a> <em class="jxr_javadoccomment">     * @param accumulatedStdZ standard deviation of z-coordinate of measurements</em>
+<a class="jxr_linenumber" name="L378" href="#L378">378</a> <em class="jxr_javadoccomment">     *                        during last static period expressed in meters per</em>
+<a class="jxr_linenumber" name="L379" href="#L379">379</a> <em class="jxr_javadoccomment">     *                        squared second (m/s^2).</em>
+<a class="jxr_linenumber" name="L380" href="#L380">380</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L381" href="#L381">381</a>     @Override
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleStaticToDynamicChange(
+<a class="jxr_linenumber" name="L383" href="#L383">383</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedAvgX,
+<a class="jxr_linenumber" name="L384" href="#L384">384</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedAvgY,
+<a class="jxr_linenumber" name="L385" href="#L385">385</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedAvgZ,
+<a class="jxr_linenumber" name="L386" href="#L386">386</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedStdX,
+<a class="jxr_linenumber" name="L387" href="#L387">387</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedStdY,
+<a class="jxr_linenumber" name="L388" href="#L388">388</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> accumulatedStdZ) {
+<a class="jxr_linenumber" name="L389" href="#L389">389</a>         mPreviousStatus = TriadStaticIntervalDetector.Status.STATIC_INTERVAL;
+<a class="jxr_linenumber" name="L390" href="#L390">390</a>     }
+<a class="jxr_linenumber" name="L391" href="#L391">391</a> 
+<a class="jxr_linenumber" name="L392" href="#L392">392</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L393" href="#L393">393</a> <em class="jxr_javadoccomment">     * Handles a dynamic-to-static interval change.</em>
+<a class="jxr_linenumber" name="L394" href="#L394">394</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L395" href="#L395">395</a>     @Override
+<a class="jxr_linenumber" name="L396" href="#L396">396</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleDynamicToStaticChange() {
+<a class="jxr_linenumber" name="L397" href="#L397">397</a>         mPreviousStatus = TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL;
+<a class="jxr_linenumber" name="L398" href="#L398">398</a>     }
+<a class="jxr_linenumber" name="L399" href="#L399">399</a> 
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L401" href="#L401">401</a> <em class="jxr_javadoccomment">     * Handles an initialization completion.</em>
+<a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>     @Override
+<a class="jxr_linenumber" name="L404" href="#L404">404</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleInitializationCompleted() {
+<a class="jxr_linenumber" name="L405" href="#L405">405</a>         mAccelerationStandardDeviation = mStaticIntervalDetector.getBaseNoiseLevel();
+<a class="jxr_linenumber" name="L406" href="#L406">406</a>         mAngularSpeedStandardDeviation = mAccumulatedEstimator.getStandardDeviationNorm();
+<a class="jxr_linenumber" name="L407" href="#L407">407</a>         mAngularSpeedNoiseRootPsd = mAccumulatedEstimator.getNoiseRootPsdNorm();
+<a class="jxr_linenumber" name="L408" href="#L408">408</a> 
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>         mPreviousStatus = mStaticIntervalDetector.getStatus();
+<a class="jxr_linenumber" name="L410" href="#L410">410</a>     }
+<a class="jxr_linenumber" name="L411" href="#L411">411</a> 
+<a class="jxr_linenumber" name="L412" href="#L412">412</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L413" href="#L413">413</a> <em class="jxr_javadoccomment">     * Handles an error during initialization.</em>
+<a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L415" href="#L415">415</a>     @Override
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>     <strong class="jxr_keyword">protected</strong> <strong class="jxr_keyword">void</strong> handleInitializationFailed() {
+<a class="jxr_linenumber" name="L417" href="#L417">417</a>         mPreviousStatus = <strong class="jxr_keyword">null</strong>;
+<a class="jxr_linenumber" name="L418" href="#L418">418</a> 
+<a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">try</strong> {
+<a class="jxr_linenumber" name="L420" href="#L420">420</a>             mAccumulatedEstimator.reset();
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>         } <strong class="jxr_keyword">catch</strong> (<strong class="jxr_keyword">final</strong> LockedException ignore) {
+<a class="jxr_linenumber" name="L422" href="#L422">422</a>             <em class="jxr_comment">// no action needed</em>
 <a class="jxr_linenumber" name="L423" href="#L423">423</a>         }
 <a class="jxr_linenumber" name="L424" href="#L424">424</a>     }
 <a class="jxr_linenumber" name="L425" href="#L425">425</a> 

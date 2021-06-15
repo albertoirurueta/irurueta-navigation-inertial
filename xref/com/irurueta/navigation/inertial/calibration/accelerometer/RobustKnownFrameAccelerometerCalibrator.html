@@ -387,7 +387,7 @@
 <a class="jxr_linenumber" name="L379" href="#L379">379</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L380" href="#L380">380</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L381" href="#L381">381</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>() {
+<a class="jxr_linenumber" name="L382" href="#L382">382</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>() {
 <a class="jxr_linenumber" name="L383" href="#L383">383</a>     }
 <a class="jxr_linenumber" name="L384" href="#L384">384</a> 
 <a class="jxr_linenumber" name="L385" href="#L385">385</a>     <em class="jxr_javadoccomment">/**</em>
@@ -396,7 +396,7 @@
 <a class="jxr_linenumber" name="L388" href="#L388">388</a> <em class="jxr_javadoccomment">     * @param listener listener to be notified of events such as when estimation</em>
 <a class="jxr_linenumber" name="L389" href="#L389">389</a> <em class="jxr_javadoccomment">     *                 starts, ends or its progress significantly changes.</em>
 <a class="jxr_linenumber" name="L390" href="#L390">390</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
+<a class="jxr_linenumber" name="L391" href="#L391">391</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
 <a class="jxr_linenumber" name="L392" href="#L392">392</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibratorListener.html">RobustKnownFrameAccelerometerCalibratorListener</a> listener) {
 <a class="jxr_linenumber" name="L393" href="#L393">393</a>         mListener = listener;
 <a class="jxr_linenumber" name="L394" href="#L394">394</a>     }
@@ -408,7 +408,7 @@
 <a class="jxr_linenumber" name="L400" href="#L400">400</a> <em class="jxr_javadoccomment">     *                     deviations taken at different frames (positions, orientations</em>
 <a class="jxr_linenumber" name="L401" href="#L401">401</a> <em class="jxr_javadoccomment">     *                     and velocities).</em>
 <a class="jxr_linenumber" name="L402" href="#L402">402</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L403" href="#L403">403</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
+<a class="jxr_linenumber" name="L403" href="#L403">403</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
 <a class="jxr_linenumber" name="L404" href="#L404">404</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyKinematics&gt; measurements) {
 <a class="jxr_linenumber" name="L405" href="#L405">405</a>         mMeasurements = measurements;
 <a class="jxr_linenumber" name="L406" href="#L406">406</a>     }
@@ -421,7 +421,7 @@
 <a class="jxr_linenumber" name="L413" href="#L413">413</a> <em class="jxr_javadoccomment">     *                     and velocities).</em>
 <a class="jxr_linenumber" name="L414" href="#L414">414</a> <em class="jxr_javadoccomment">     * @param listener     listener to handle events raised by this calibrator.</em>
 <a class="jxr_linenumber" name="L415" href="#L415">415</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L416" href="#L416">416</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
+<a class="jxr_linenumber" name="L416" href="#L416">416</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
 <a class="jxr_linenumber" name="L417" href="#L417">417</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
 <a class="jxr_linenumber" name="L418" href="#L418">418</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibratorListener.html">RobustKnownFrameAccelerometerCalibratorListener</a> listener) {
 <a class="jxr_linenumber" name="L419" href="#L419">419</a>         <strong class="jxr_keyword">this</strong>(measurements);
@@ -434,7 +434,7 @@
 <a class="jxr_linenumber" name="L426" href="#L426">426</a> <em class="jxr_javadoccomment">     * @param commonAxisUsed indicates whether z-axis is assumed to be common for</em>
 <a class="jxr_linenumber" name="L427" href="#L427">427</a> <em class="jxr_javadoccomment">     *                       accelerometer and gyroscope.</em>
 <a class="jxr_linenumber" name="L428" href="#L428">428</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L429" href="#L429">429</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed) {
+<a class="jxr_linenumber" name="L429" href="#L429">429</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed) {
 <a class="jxr_linenumber" name="L430" href="#L430">430</a>         mCommonAxisUsed = commonAxisUsed;
 <a class="jxr_linenumber" name="L431" href="#L431">431</a>     }
 <a class="jxr_linenumber" name="L432" href="#L432">432</a> 
@@ -445,7 +445,7 @@
 <a class="jxr_linenumber" name="L437" href="#L437">437</a> <em class="jxr_javadoccomment">     *                       accelerometer and gyroscope.</em>
 <a class="jxr_linenumber" name="L438" href="#L438">438</a> <em class="jxr_javadoccomment">     * @param listener       listener to handle events raised by this calibrator.</em>
 <a class="jxr_linenumber" name="L439" href="#L439">439</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
+<a class="jxr_linenumber" name="L440" href="#L440">440</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
 <a class="jxr_linenumber" name="L441" href="#L441">441</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L442" href="#L442">442</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibratorListener.html">RobustKnownFrameAccelerometerCalibratorListener</a> listener) {
 <a class="jxr_linenumber" name="L443" href="#L443">443</a>         <strong class="jxr_keyword">this</strong>(commonAxisUsed);
@@ -461,7 +461,7 @@
 <a class="jxr_linenumber" name="L453" href="#L453">453</a> <em class="jxr_javadoccomment">     * @param commonAxisUsed indicates whether z-axis is assumed to be common for</em>
 <a class="jxr_linenumber" name="L454" href="#L454">454</a> <em class="jxr_javadoccomment">     *                       accelerometer and gyroscope.</em>
 <a class="jxr_linenumber" name="L455" href="#L455">455</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L456" href="#L456">456</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
+<a class="jxr_linenumber" name="L456" href="#L456">456</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
 <a class="jxr_linenumber" name="L457" href="#L457">457</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
 <a class="jxr_linenumber" name="L458" href="#L458">458</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed) {
 <a class="jxr_linenumber" name="L459" href="#L459">459</a>         <strong class="jxr_keyword">this</strong>(measurements);
@@ -478,7 +478,7 @@
 <a class="jxr_linenumber" name="L470" href="#L470">470</a> <em class="jxr_javadoccomment">     *                       accelerometer and gyroscope.</em>
 <a class="jxr_linenumber" name="L471" href="#L471">471</a> <em class="jxr_javadoccomment">     * @param listener       listener to handle events raised by this calibrator.</em>
 <a class="jxr_linenumber" name="L472" href="#L472">472</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L473" href="#L473">473</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
+<a class="jxr_linenumber" name="L473" href="#L473">473</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibrator.html">RobustKnownFrameAccelerometerCalibrator</a>(
 <a class="jxr_linenumber" name="L474" href="#L474">474</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyKinematics&gt; measurements,
 <a class="jxr_linenumber" name="L475" href="#L475">475</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L476" href="#L476">476</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/accelerometer/RobustKnownFrameAccelerometerCalibratorListener.html">RobustKnownFrameAccelerometerCalibratorListener</a> listener) {

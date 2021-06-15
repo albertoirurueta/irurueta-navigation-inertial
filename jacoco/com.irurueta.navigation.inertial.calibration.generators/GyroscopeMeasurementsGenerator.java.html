@@ -317,33 +317,32 @@ public class GyroscopeMeasurementsGenerator extends
 
 <span class="fc" id="L318">                addSequenceItem(sample);</span>
             }
-<span class="fc bfc" id="L320" title="All 2 branches covered.">        } else if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {</span>
-<span class="pc bpc" id="L321" title="1 of 4 branches missed.">            if (mPreviousStatus == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL</span>
-<span class="pc bpc" id="L322" title="1 of 2 branches missed.">                    &amp;&amp; mCurrentSequenceItems != null &amp;&amp; !mCurrentSequenceItems.isEmpty()) {</span>
+<span class="pc bpc" id="L320" title="1 of 6 branches missed.">        } else if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL</span>
+                &amp;&amp; mPreviousStatus == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL
+<span class="pc bpc" id="L322" title="1 of 2 branches missed.">                &amp;&amp; mCurrentSequenceItems != null &amp;&amp; !mCurrentSequenceItems.isEmpty()) {</span>
 
-<span class="fc" id="L324">                mCurrentAvgX = mStaticIntervalDetector.getInstantaneousAvgX();</span>
-<span class="fc" id="L325">                mCurrentAvgY = mStaticIntervalDetector.getInstantaneousAvgY();</span>
-<span class="fc" id="L326">                mCurrentAvgZ = mStaticIntervalDetector.getInstantaneousAvgZ();</span>
+<span class="fc" id="L324">            mCurrentAvgX = mStaticIntervalDetector.getInstantaneousAvgX();</span>
+<span class="fc" id="L325">            mCurrentAvgY = mStaticIntervalDetector.getInstantaneousAvgY();</span>
+<span class="fc" id="L326">            mCurrentAvgZ = mStaticIntervalDetector.getInstantaneousAvgZ();</span>
 
-                // we have all required data to generate a sequence
-<span class="fc" id="L329">                BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence = null;</span>
-<span class="pc bpc" id="L330" title="1 of 2 branches missed.">                if (mListener != null) {</span>
-<span class="fc" id="L331">                    sequence = new BodyKinematicsSequence&lt;&gt;();</span>
-<span class="fc" id="L332">                    sequence.setBeforeMeanSpecificForceCoordinates(</span>
-<span class="fc" id="L333">                            mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);</span>
-<span class="fc" id="L334">                    sequence.setItems(mCurrentSequenceItems);</span>
-<span class="fc" id="L335">                    sequence.setAfterMeanSpecificForceCoordinates(</span>
-<span class="fc" id="L336">                            mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);</span>
-                }
+            // we have all required data to generate a sequence
+<span class="fc" id="L329">            BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence = null;</span>
+<span class="pc bpc" id="L330" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L331">                sequence = new BodyKinematicsSequence&lt;&gt;();</span>
+<span class="fc" id="L332">                sequence.setBeforeMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L333">                        mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);</span>
+<span class="fc" id="L334">                sequence.setItems(mCurrentSequenceItems);</span>
+<span class="fc" id="L335">                sequence.setAfterMeanSpecificForceCoordinates(</span>
+<span class="fc" id="L336">                        mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);</span>
+            }
 
-<span class="fc" id="L339">                mCurrentSequenceItems = null;</span>
+<span class="fc" id="L339">            mCurrentSequenceItems = null;</span>
 
-<span class="pc bpc" id="L341" title="1 of 2 branches missed.">                if (mListener != null) {</span>
-<span class="fc" id="L342">                    mListener.onGeneratedMeasurement(this, sequence);</span>
-                }
+<span class="pc bpc" id="L341" title="1 of 2 branches missed.">            if (mListener != null) {</span>
+<span class="fc" id="L342">                mListener.onGeneratedMeasurement(this, sequence);</span>
             }
         }
-<span class="fc" id="L346">    }</span>
+<span class="fc" id="L345">    }</span>
 
     /**
      * Gets corresponding acceleration triad from provided input sample.
@@ -354,8 +353,8 @@ public class GyroscopeMeasurementsGenerator extends
     @Override
     protected void getAccelerationTriadFromInputSample(
             final TimedBodyKinematics sample) {
-<span class="fc" id="L357">        sample.getKinematics().getSpecificForceTriad(mTriad);</span>
-<span class="fc" id="L358">    }</span>
+<span class="fc" id="L356">        sample.getKinematics().getSpecificForceTriad(mTriad);</span>
+<span class="fc" id="L357">    }</span>
 
     /**
      * Handles a static-to-dynamic interval change.
@@ -387,39 +386,40 @@ public class GyroscopeMeasurementsGenerator extends
             final double accumulatedStdX,
             final double accumulatedStdY,
             final double accumulatedStdZ) {
-<span class="fc" id="L390">        mPreviousStatus = TriadStaticIntervalDetector.Status.STATIC_INTERVAL;</span>
-<span class="fc" id="L391">    }</span>
+<span class="fc" id="L389">        mPreviousStatus = TriadStaticIntervalDetector.Status.STATIC_INTERVAL;</span>
+<span class="fc" id="L390">    }</span>
 
     /**
      * Handles a dynamic-to-static interval change.
      */
     @Override
     protected void handleDynamicToStaticChange() {
-<span class="fc" id="L398">        mPreviousStatus = TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL;</span>
-<span class="fc" id="L399">    }</span>
+<span class="fc" id="L397">        mPreviousStatus = TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL;</span>
+<span class="fc" id="L398">    }</span>
 
     /**
      * Handles an initialization completion.
      */
     @Override
     protected void handleInitializationCompleted() {
-<span class="fc" id="L406">        mAccelerationStandardDeviation = mStaticIntervalDetector.getBaseNoiseLevel();</span>
-<span class="fc" id="L407">        mAngularSpeedStandardDeviation = mAccumulatedEstimator.getStandardDeviationNorm();</span>
-<span class="fc" id="L408">        mAngularSpeedNoiseRootPsd = mAccumulatedEstimator.getNoiseRootPsdNorm();</span>
+<span class="fc" id="L405">        mAccelerationStandardDeviation = mStaticIntervalDetector.getBaseNoiseLevel();</span>
+<span class="fc" id="L406">        mAngularSpeedStandardDeviation = mAccumulatedEstimator.getStandardDeviationNorm();</span>
+<span class="fc" id="L407">        mAngularSpeedNoiseRootPsd = mAccumulatedEstimator.getNoiseRootPsdNorm();</span>
 
-<span class="fc" id="L410">        mPreviousStatus = mStaticIntervalDetector.getStatus();</span>
-<span class="fc" id="L411">    }</span>
+<span class="fc" id="L409">        mPreviousStatus = mStaticIntervalDetector.getStatus();</span>
+<span class="fc" id="L410">    }</span>
 
     /**
      * Handles an error during initialization.
      */
     @Override
     protected void handleInitializationFailed() {
-<span class="fc" id="L418">        mPreviousStatus = null;</span>
+<span class="fc" id="L417">        mPreviousStatus = null;</span>
 
         try {
-<span class="fc" id="L421">            mAccumulatedEstimator.reset();</span>
-<span class="nc" id="L422">        } catch (final LockedException ignore) {</span>
+<span class="fc" id="L420">            mAccumulatedEstimator.reset();</span>
+<span class="nc" id="L421">        } catch (final LockedException ignore) {</span>
+            // no action needed
 <span class="fc" id="L423">        }</span>
 <span class="fc" id="L424">    }</span>
 

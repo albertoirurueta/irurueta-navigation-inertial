@@ -2999,131 +2999,133 @@
 <a class="jxr_linenumber" name="L2991" href="#L2991">2991</a> 
 <a class="jxr_linenumber" name="L2992" href="#L2992">2992</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> aor = RE_KM / mR;
 <a class="jxr_linenumber" name="L2993" href="#L2993">2993</a>         <strong class="jxr_keyword">double</strong> ar = aor * aor;
-<a class="jxr_linenumber" name="L2994" href="#L2994">2994</a>         <strong class="jxr_keyword">double</strong> br = 0, bt = 0, bp = 0, bpp = 0;
-<a class="jxr_linenumber" name="L2995" href="#L2995">2995</a> 
-<a class="jxr_linenumber" name="L2996" href="#L2996">2996</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {
-<a class="jxr_linenumber" name="L2997" href="#L2997">2997</a>             ar = ar * aor;
-<a class="jxr_linenumber" name="L2998" href="#L2998">2998</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {
-<a class="jxr_linenumber" name="L2999" href="#L2999">2999</a> 
-<a class="jxr_linenumber" name="L3000" href="#L3000">3000</a>                 <em class="jxr_comment">// compute un-normalized associated Legendre polynomials</em>
-<a class="jxr_linenumber" name="L3001" href="#L3001">3001</a>                 <em class="jxr_comment">// and derivatives via recursion relations</em>
-<a class="jxr_linenumber" name="L3002" href="#L3002">3002</a>                 <strong class="jxr_keyword">if</strong> (mOldHeight == <strong class="jxr_keyword">null</strong> || height != mOldHeight
-<a class="jxr_linenumber" name="L3003" href="#L3003">3003</a>                         || mOldLatitude == <strong class="jxr_keyword">null</strong> || latitude != mOldLatitude) {
-<a class="jxr_linenumber" name="L3004" href="#L3004">3004</a>                     <strong class="jxr_keyword">if</strong> (n == m) {
-<a class="jxr_linenumber" name="L3005" href="#L3005">3005</a>                         mModel.snorm[n + m * N] = mSt * mModel.snorm[n - 1 + (m - 1) * N];
-<a class="jxr_linenumber" name="L3006" href="#L3006">3006</a>                         mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];
-<a class="jxr_linenumber" name="L3007" href="#L3007">3007</a>                     }
-<a class="jxr_linenumber" name="L3008" href="#L3008">3008</a>                     <strong class="jxr_keyword">if</strong> (n == 1 &amp;&amp; m == 0) {
-<a class="jxr_linenumber" name="L3009" href="#L3009">3009</a>                         mModel.snorm[n] = mCt * mModel.snorm[0];
-<a class="jxr_linenumber" name="L3010" href="#L3010">3010</a>                         mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];
-<a class="jxr_linenumber" name="L3011" href="#L3011">3011</a>                     }
-<a class="jxr_linenumber" name="L3012" href="#L3012">3012</a>                     <strong class="jxr_keyword">if</strong> (n &gt; 1 &amp;&amp; n != m) {
-<a class="jxr_linenumber" name="L3013" href="#L3013">3013</a>                         <strong class="jxr_keyword">if</strong> (m &gt; n - 2) {
-<a class="jxr_linenumber" name="L3014" href="#L3014">3014</a>                             mModel.snorm[n - 2 + m * N] = 0.0;
-<a class="jxr_linenumber" name="L3015" href="#L3015">3015</a>                         }
+<a class="jxr_linenumber" name="L2994" href="#L2994">2994</a>         <strong class="jxr_keyword">double</strong> br = 0;
+<a class="jxr_linenumber" name="L2995" href="#L2995">2995</a>         <strong class="jxr_keyword">double</strong> bt = 0;
+<a class="jxr_linenumber" name="L2996" href="#L2996">2996</a>         <strong class="jxr_keyword">double</strong> bp = 0;
+<a class="jxr_linenumber" name="L2997" href="#L2997">2997</a>         <strong class="jxr_keyword">double</strong> bpp = 0;
+<a class="jxr_linenumber" name="L2998" href="#L2998">2998</a> 
+<a class="jxr_linenumber" name="L2999" href="#L2999">2999</a>         <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> n = 1; n &lt;= WorldMagneticModel.MAX_ORDER; n++) {
+<a class="jxr_linenumber" name="L3000" href="#L3000">3000</a>             ar = ar * aor;
+<a class="jxr_linenumber" name="L3001" href="#L3001">3001</a>             <strong class="jxr_keyword">for</strong> (<strong class="jxr_keyword">int</strong> m = 0, D3 = 1, D4 = (n + m + D3) / D3; D4 &gt; 0; D4--, m += D3) {
+<a class="jxr_linenumber" name="L3002" href="#L3002">3002</a> 
+<a class="jxr_linenumber" name="L3003" href="#L3003">3003</a>                 <em class="jxr_comment">// compute un-normalized associated Legendre polynomials</em>
+<a class="jxr_linenumber" name="L3004" href="#L3004">3004</a>                 <em class="jxr_comment">// and derivatives via recursion relations</em>
+<a class="jxr_linenumber" name="L3005" href="#L3005">3005</a>                 <strong class="jxr_keyword">if</strong> (mOldHeight == <strong class="jxr_keyword">null</strong> || height != mOldHeight
+<a class="jxr_linenumber" name="L3006" href="#L3006">3006</a>                         || mOldLatitude == <strong class="jxr_keyword">null</strong> || latitude != mOldLatitude) {
+<a class="jxr_linenumber" name="L3007" href="#L3007">3007</a>                     <strong class="jxr_keyword">if</strong> (n == m) {
+<a class="jxr_linenumber" name="L3008" href="#L3008">3008</a>                         mModel.snorm[n + m * N] = mSt * mModel.snorm[n - 1 + (m - 1) * N];
+<a class="jxr_linenumber" name="L3009" href="#L3009">3009</a>                         mDp[m][n] = mSt * mDp[m - 1][n - 1] + mCt * mModel.snorm[n - 1 + (m - 1) * N];
+<a class="jxr_linenumber" name="L3010" href="#L3010">3010</a>                     }
+<a class="jxr_linenumber" name="L3011" href="#L3011">3011</a>                     <strong class="jxr_keyword">if</strong> (n == 1 &amp;&amp; m == 0) {
+<a class="jxr_linenumber" name="L3012" href="#L3012">3012</a>                         mModel.snorm[n] = mCt * mModel.snorm[0];
+<a class="jxr_linenumber" name="L3013" href="#L3013">3013</a>                         mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[0];
+<a class="jxr_linenumber" name="L3014" href="#L3014">3014</a>                     }
+<a class="jxr_linenumber" name="L3015" href="#L3015">3015</a>                     <strong class="jxr_keyword">if</strong> (n &gt; 1 &amp;&amp; n != m) {
 <a class="jxr_linenumber" name="L3016" href="#L3016">3016</a>                         <strong class="jxr_keyword">if</strong> (m &gt; n - 2) {
-<a class="jxr_linenumber" name="L3017" href="#L3017">3017</a>                             mDp[m][n - 2] = 0.0;
+<a class="jxr_linenumber" name="L3017" href="#L3017">3017</a>                             mModel.snorm[n - 2 + m * N] = 0.0;
 <a class="jxr_linenumber" name="L3018" href="#L3018">3018</a>                         }
-<a class="jxr_linenumber" name="L3019" href="#L3019">3019</a>                         mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N]
-<a class="jxr_linenumber" name="L3020" href="#L3020">3020</a>                                 - mModel.k[m][n] * mModel.snorm[n - 2 + m * N];
-<a class="jxr_linenumber" name="L3021" href="#L3021">3021</a>                         mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N]
-<a class="jxr_linenumber" name="L3022" href="#L3022">3022</a>                                 - mModel.k[m][n] * mDp[m][n - 2];
-<a class="jxr_linenumber" name="L3023" href="#L3023">3023</a>                     }
-<a class="jxr_linenumber" name="L3024" href="#L3024">3024</a>                 }
-<a class="jxr_linenumber" name="L3025" href="#L3025">3025</a> 
-<a class="jxr_linenumber" name="L3026" href="#L3026">3026</a>                 <em class="jxr_comment">// time adjust the Gauss coefficients</em>
-<a class="jxr_linenumber" name="L3027" href="#L3027">3027</a> 
-<a class="jxr_linenumber" name="L3028" href="#L3028">3028</a>                 <strong class="jxr_keyword">if</strong> (mOldTime == <strong class="jxr_keyword">null</strong> || year != mOldTime) {
-<a class="jxr_linenumber" name="L3029" href="#L3029">3029</a>                     mTc[m][n] = mModel.c[m][n] + dt * mModel.cd[m][n];
+<a class="jxr_linenumber" name="L3019" href="#L3019">3019</a>                         <strong class="jxr_keyword">if</strong> (m &gt; n - 2) {
+<a class="jxr_linenumber" name="L3020" href="#L3020">3020</a>                             mDp[m][n - 2] = 0.0;
+<a class="jxr_linenumber" name="L3021" href="#L3021">3021</a>                         }
+<a class="jxr_linenumber" name="L3022" href="#L3022">3022</a>                         mModel.snorm[n + m * N] = mCt * mModel.snorm[n - 1 + m * N]
+<a class="jxr_linenumber" name="L3023" href="#L3023">3023</a>                                 - mModel.k[m][n] * mModel.snorm[n - 2 + m * N];
+<a class="jxr_linenumber" name="L3024" href="#L3024">3024</a>                         mDp[m][n] = mCt * mDp[m][n - 1] - mSt * mModel.snorm[n - 1 + m * N]
+<a class="jxr_linenumber" name="L3025" href="#L3025">3025</a>                                 - mModel.k[m][n] * mDp[m][n - 2];
+<a class="jxr_linenumber" name="L3026" href="#L3026">3026</a>                     }
+<a class="jxr_linenumber" name="L3027" href="#L3027">3027</a>                 }
+<a class="jxr_linenumber" name="L3028" href="#L3028">3028</a> 
+<a class="jxr_linenumber" name="L3029" href="#L3029">3029</a>                 <em class="jxr_comment">// time adjust the Gauss coefficients</em>
 <a class="jxr_linenumber" name="L3030" href="#L3030">3030</a> 
-<a class="jxr_linenumber" name="L3031" href="#L3031">3031</a>                     <strong class="jxr_keyword">if</strong> (m != 0) {
-<a class="jxr_linenumber" name="L3032" href="#L3032">3032</a>                         mTc[n][m - 1] = mModel.c[n][m - 1] + dt * mModel.cd[n][m - 1];
-<a class="jxr_linenumber" name="L3033" href="#L3033">3033</a>                     }
-<a class="jxr_linenumber" name="L3034" href="#L3034">3034</a>                 }
-<a class="jxr_linenumber" name="L3035" href="#L3035">3035</a> 
-<a class="jxr_linenumber" name="L3036" href="#L3036">3036</a>                 <em class="jxr_comment">// accumulate terms of the spherical harmonic expansions</em>
-<a class="jxr_linenumber" name="L3037" href="#L3037">3037</a>                 <strong class="jxr_keyword">double</strong> temp1, temp2;
-<a class="jxr_linenumber" name="L3038" href="#L3038">3038</a>                 <strong class="jxr_keyword">double</strong> par = ar * mModel.snorm[n + m * N];
-<a class="jxr_linenumber" name="L3039" href="#L3039">3039</a>                 <strong class="jxr_keyword">if</strong> (m == 0) {
-<a class="jxr_linenumber" name="L3040" href="#L3040">3040</a>                     temp1 = mTc[m][n] * mCp[m];
-<a class="jxr_linenumber" name="L3041" href="#L3041">3041</a>                     temp2 = mTc[m][n] * mSp[m];
-<a class="jxr_linenumber" name="L3042" href="#L3042">3042</a>                 } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L3043" href="#L3043">3043</a>                     temp1 = mTc[m][n] * mCp[m] + mTc[n][m - 1] * mSp[m];
-<a class="jxr_linenumber" name="L3044" href="#L3044">3044</a>                     temp2 = mTc[m][n] * mSp[m] - mTc[n][m - 1] * mCp[m];
-<a class="jxr_linenumber" name="L3045" href="#L3045">3045</a>                 }
-<a class="jxr_linenumber" name="L3046" href="#L3046">3046</a> 
-<a class="jxr_linenumber" name="L3047" href="#L3047">3047</a>                 bt = bt - ar * temp1 * mDp[m][n];
-<a class="jxr_linenumber" name="L3048" href="#L3048">3048</a>                 bp += (mModel.fm[m] * temp2 * par);
-<a class="jxr_linenumber" name="L3049" href="#L3049">3049</a>                 br += (mModel.fn[n] * temp1 * par);
+<a class="jxr_linenumber" name="L3031" href="#L3031">3031</a>                 <strong class="jxr_keyword">if</strong> (mOldTime == <strong class="jxr_keyword">null</strong> || year != mOldTime) {
+<a class="jxr_linenumber" name="L3032" href="#L3032">3032</a>                     mTc[m][n] = mModel.c[m][n] + dt * mModel.cd[m][n];
+<a class="jxr_linenumber" name="L3033" href="#L3033">3033</a> 
+<a class="jxr_linenumber" name="L3034" href="#L3034">3034</a>                     <strong class="jxr_keyword">if</strong> (m != 0) {
+<a class="jxr_linenumber" name="L3035" href="#L3035">3035</a>                         mTc[n][m - 1] = mModel.c[n][m - 1] + dt * mModel.cd[n][m - 1];
+<a class="jxr_linenumber" name="L3036" href="#L3036">3036</a>                     }
+<a class="jxr_linenumber" name="L3037" href="#L3037">3037</a>                 }
+<a class="jxr_linenumber" name="L3038" href="#L3038">3038</a> 
+<a class="jxr_linenumber" name="L3039" href="#L3039">3039</a>                 <em class="jxr_comment">// accumulate terms of the spherical harmonic expansions</em>
+<a class="jxr_linenumber" name="L3040" href="#L3040">3040</a>                 <strong class="jxr_keyword">double</strong> temp1;
+<a class="jxr_linenumber" name="L3041" href="#L3041">3041</a>                 <strong class="jxr_keyword">double</strong> temp2;
+<a class="jxr_linenumber" name="L3042" href="#L3042">3042</a>                 <strong class="jxr_keyword">double</strong> par = ar * mModel.snorm[n + m * N];
+<a class="jxr_linenumber" name="L3043" href="#L3043">3043</a>                 <strong class="jxr_keyword">if</strong> (m == 0) {
+<a class="jxr_linenumber" name="L3044" href="#L3044">3044</a>                     temp1 = mTc[m][n] * mCp[m];
+<a class="jxr_linenumber" name="L3045" href="#L3045">3045</a>                     temp2 = mTc[m][n] * mSp[m];
+<a class="jxr_linenumber" name="L3046" href="#L3046">3046</a>                 } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L3047" href="#L3047">3047</a>                     temp1 = mTc[m][n] * mCp[m] + mTc[n][m - 1] * mSp[m];
+<a class="jxr_linenumber" name="L3048" href="#L3048">3048</a>                     temp2 = mTc[m][n] * mSp[m] - mTc[n][m - 1] * mCp[m];
+<a class="jxr_linenumber" name="L3049" href="#L3049">3049</a>                 }
 <a class="jxr_linenumber" name="L3050" href="#L3050">3050</a> 
-<a class="jxr_linenumber" name="L3051" href="#L3051">3051</a>                 <em class="jxr_comment">// Special case: North/south geographic poles</em>
-<a class="jxr_linenumber" name="L3052" href="#L3052">3052</a> 
-<a class="jxr_linenumber" name="L3053" href="#L3053">3053</a>                 <strong class="jxr_keyword">if</strong> (mSt == 0.0 &amp;&amp; m == 1) {
-<a class="jxr_linenumber" name="L3054" href="#L3054">3054</a>                     <strong class="jxr_keyword">if</strong> (n == 1)
-<a class="jxr_linenumber" name="L3055" href="#L3055">3055</a>                         mPp[n] = mPp[n - 1];
-<a class="jxr_linenumber" name="L3056" href="#L3056">3056</a>                     <strong class="jxr_keyword">else</strong>
-<a class="jxr_linenumber" name="L3057" href="#L3057">3057</a>                         mPp[n] = mCt * mPp[n - 1] - mModel.k[m][n] * mPp[n - 2];
-<a class="jxr_linenumber" name="L3058" href="#L3058">3058</a>                     <strong class="jxr_keyword">double</strong> parp = ar * mPp[n];
-<a class="jxr_linenumber" name="L3059" href="#L3059">3059</a>                     bpp += (mModel.fm[m] * temp2 * parp);
-<a class="jxr_linenumber" name="L3060" href="#L3060">3060</a>                 }
-<a class="jxr_linenumber" name="L3061" href="#L3061">3061</a> 
-<a class="jxr_linenumber" name="L3062" href="#L3062">3062</a>             }    <em class="jxr_comment">//for(m...)</em>
-<a class="jxr_linenumber" name="L3063" href="#L3063">3063</a> 
-<a class="jxr_linenumber" name="L3064" href="#L3064">3064</a>         }    <em class="jxr_comment">//for(n...)</em>
+<a class="jxr_linenumber" name="L3051" href="#L3051">3051</a>                 bt = bt - ar * temp1 * mDp[m][n];
+<a class="jxr_linenumber" name="L3052" href="#L3052">3052</a>                 bp += (mModel.fm[m] * temp2 * par);
+<a class="jxr_linenumber" name="L3053" href="#L3053">3053</a>                 br += (mModel.fn[n] * temp1 * par);
+<a class="jxr_linenumber" name="L3054" href="#L3054">3054</a> 
+<a class="jxr_linenumber" name="L3055" href="#L3055">3055</a>                 <em class="jxr_comment">// Special case: North/south geographic poles</em>
+<a class="jxr_linenumber" name="L3056" href="#L3056">3056</a> 
+<a class="jxr_linenumber" name="L3057" href="#L3057">3057</a>                 <strong class="jxr_keyword">if</strong> (mSt == 0.0 &amp;&amp; m == 1) {
+<a class="jxr_linenumber" name="L3058" href="#L3058">3058</a>                     <strong class="jxr_keyword">if</strong> (n == 1)
+<a class="jxr_linenumber" name="L3059" href="#L3059">3059</a>                         mPp[n] = mPp[n - 1];
+<a class="jxr_linenumber" name="L3060" href="#L3060">3060</a>                     <strong class="jxr_keyword">else</strong>
+<a class="jxr_linenumber" name="L3061" href="#L3061">3061</a>                         mPp[n] = mCt * mPp[n - 1] - mModel.k[m][n] * mPp[n - 2];
+<a class="jxr_linenumber" name="L3062" href="#L3062">3062</a>                     <strong class="jxr_keyword">double</strong> parp = ar * mPp[n];
+<a class="jxr_linenumber" name="L3063" href="#L3063">3063</a>                     bpp += (mModel.fm[m] * temp2 * parp);
+<a class="jxr_linenumber" name="L3064" href="#L3064">3064</a>                 }
 <a class="jxr_linenumber" name="L3065" href="#L3065">3065</a> 
-<a class="jxr_linenumber" name="L3066" href="#L3066">3066</a> 
-<a class="jxr_linenumber" name="L3067" href="#L3067">3067</a>         <strong class="jxr_keyword">if</strong> (mSt == 0.0) {
-<a class="jxr_linenumber" name="L3068" href="#L3068">3068</a>             bp = bpp;
-<a class="jxr_linenumber" name="L3069" href="#L3069">3069</a>         } <strong class="jxr_keyword">else</strong> {
-<a class="jxr_linenumber" name="L3070" href="#L3070">3070</a>             bp /= mSt;
-<a class="jxr_linenumber" name="L3071" href="#L3071">3071</a>         }
-<a class="jxr_linenumber" name="L3072" href="#L3072">3072</a> 
-<a class="jxr_linenumber" name="L3073" href="#L3073">3073</a>         <em class="jxr_comment">// Rotate magnetic vector components from spherical to</em>
-<a class="jxr_linenumber" name="L3074" href="#L3074">3074</a>         <em class="jxr_comment">// geodetic coordinates.</em>
-<a class="jxr_linenumber" name="L3075" href="#L3075">3075</a>         <em class="jxr_comment">// by is the east-west field component</em>
-<a class="jxr_linenumber" name="L3076" href="#L3076">3076</a>         <em class="jxr_comment">// bx is the north-south field component</em>
-<a class="jxr_linenumber" name="L3077" href="#L3077">3077</a>         <em class="jxr_comment">// bz is the vertical field component.</em>
-<a class="jxr_linenumber" name="L3078" href="#L3078">3078</a>         mBx = -bt * mCa - br * mSa;
-<a class="jxr_linenumber" name="L3079" href="#L3079">3079</a>         mBy = bp;
-<a class="jxr_linenumber" name="L3080" href="#L3080">3080</a>         mBz = bt * mSa - br * mCa;
-<a class="jxr_linenumber" name="L3081" href="#L3081">3081</a> 
-<a class="jxr_linenumber" name="L3082" href="#L3082">3082</a>         <em class="jxr_comment">// Compute declination (DEC), INCLINATION (DIP) and</em>
-<a class="jxr_linenumber" name="L3083" href="#L3083">3083</a>         <em class="jxr_comment">// total intensity (TI)</em>
-<a class="jxr_linenumber" name="L3084" href="#L3084">3084</a> 
-<a class="jxr_linenumber" name="L3085" href="#L3085">3085</a>         mBh = Math.sqrt((mBx * mBx) + (mBy * mBy));
-<a class="jxr_linenumber" name="L3086" href="#L3086">3086</a>         mTi = Math.sqrt((mBh * mBh) + (mBz * mBz));
-<a class="jxr_linenumber" name="L3087" href="#L3087">3087</a>         <em class="jxr_comment">//	Calculate the declination.</em>
-<a class="jxr_linenumber" name="L3088" href="#L3088">3088</a>         mDec = Math.toDegrees(Math.atan2(mBy, mBx));
-<a class="jxr_linenumber" name="L3089" href="#L3089">3089</a>         mDip = Math.toDegrees(Math.atan2(mBz, mBh));
-<a class="jxr_linenumber" name="L3090" href="#L3090">3090</a> 
-<a class="jxr_linenumber" name="L3091" href="#L3091">3091</a>         mOldTime = year;
-<a class="jxr_linenumber" name="L3092" href="#L3092">3092</a>         mOldHeight = height;
-<a class="jxr_linenumber" name="L3093" href="#L3093">3093</a>         mOldLatitude = latitude;
-<a class="jxr_linenumber" name="L3094" href="#L3094">3094</a>         mOldLongitude = longitude;
-<a class="jxr_linenumber" name="L3095" href="#L3095">3095</a>     }
-<a class="jxr_linenumber" name="L3096" href="#L3096">3096</a> 
-<a class="jxr_linenumber" name="L3097" href="#L3097">3097</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L3098" href="#L3098">3098</a> <em class="jxr_javadoccomment">     * Converts provided angle instance to radians.</em>
-<a class="jxr_linenumber" name="L3099" href="#L3099">3099</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L3100" href="#L3100">3100</a> <em class="jxr_javadoccomment">     * @param angle angle to be converted.</em>
-<a class="jxr_linenumber" name="L3101" href="#L3101">3101</a> <em class="jxr_javadoccomment">     * @return converted value expressed in radians.</em>
-<a class="jxr_linenumber" name="L3102" href="#L3102">3102</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L3103" href="#L3103">3103</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong> convertAngle(<strong class="jxr_keyword">final</strong> Angle angle) {
-<a class="jxr_linenumber" name="L3104" href="#L3104">3104</a>         <strong class="jxr_keyword">return</strong> AngleConverter.convert(angle.getValue().doubleValue(),
-<a class="jxr_linenumber" name="L3105" href="#L3105">3105</a>                 angle.getUnit(), AngleUnit.RADIANS);
-<a class="jxr_linenumber" name="L3106" href="#L3106">3106</a>     }
-<a class="jxr_linenumber" name="L3107" href="#L3107">3107</a> 
-<a class="jxr_linenumber" name="L3108" href="#L3108">3108</a>     <em class="jxr_javadoccomment">/**</em>
-<a class="jxr_linenumber" name="L3109" href="#L3109">3109</a> <em class="jxr_javadoccomment">     * Converts provided distance to meters.</em>
-<a class="jxr_linenumber" name="L3110" href="#L3110">3110</a> <em class="jxr_javadoccomment">     *</em>
-<a class="jxr_linenumber" name="L3111" href="#L3111">3111</a> <em class="jxr_javadoccomment">     * @param distance distance to be converted.</em>
-<a class="jxr_linenumber" name="L3112" href="#L3112">3112</a> <em class="jxr_javadoccomment">     * @return converted value expressed in meters.</em>
-<a class="jxr_linenumber" name="L3113" href="#L3113">3113</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L3114" href="#L3114">3114</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong> convertDistance(<strong class="jxr_keyword">final</strong> Distance distance) {
-<a class="jxr_linenumber" name="L3115" href="#L3115">3115</a>         <strong class="jxr_keyword">return</strong> DistanceConverter.convert(distance.getValue().doubleValue(),
-<a class="jxr_linenumber" name="L3116" href="#L3116">3116</a>                 distance.getUnit(), DistanceUnit.METER);
-<a class="jxr_linenumber" name="L3117" href="#L3117">3117</a>     }
-<a class="jxr_linenumber" name="L3118" href="#L3118">3118</a> }
+<a class="jxr_linenumber" name="L3066" href="#L3066">3066</a>             }
+<a class="jxr_linenumber" name="L3067" href="#L3067">3067</a>         }
+<a class="jxr_linenumber" name="L3068" href="#L3068">3068</a> 
+<a class="jxr_linenumber" name="L3069" href="#L3069">3069</a>         <strong class="jxr_keyword">if</strong> (mSt == 0.0) {
+<a class="jxr_linenumber" name="L3070" href="#L3070">3070</a>             bp = bpp;
+<a class="jxr_linenumber" name="L3071" href="#L3071">3071</a>         } <strong class="jxr_keyword">else</strong> {
+<a class="jxr_linenumber" name="L3072" href="#L3072">3072</a>             bp /= mSt;
+<a class="jxr_linenumber" name="L3073" href="#L3073">3073</a>         }
+<a class="jxr_linenumber" name="L3074" href="#L3074">3074</a> 
+<a class="jxr_linenumber" name="L3075" href="#L3075">3075</a>         <em class="jxr_comment">// Rotate magnetic vector components from spherical to</em>
+<a class="jxr_linenumber" name="L3076" href="#L3076">3076</a>         <em class="jxr_comment">// geodetic coordinates.</em>
+<a class="jxr_linenumber" name="L3077" href="#L3077">3077</a>         <em class="jxr_comment">// by is the east-west field component</em>
+<a class="jxr_linenumber" name="L3078" href="#L3078">3078</a>         <em class="jxr_comment">// bx is the north-south field component</em>
+<a class="jxr_linenumber" name="L3079" href="#L3079">3079</a>         <em class="jxr_comment">// bz is the vertical field component.</em>
+<a class="jxr_linenumber" name="L3080" href="#L3080">3080</a>         mBx = -bt * mCa - br * mSa;
+<a class="jxr_linenumber" name="L3081" href="#L3081">3081</a>         mBy = bp;
+<a class="jxr_linenumber" name="L3082" href="#L3082">3082</a>         mBz = bt * mSa - br * mCa;
+<a class="jxr_linenumber" name="L3083" href="#L3083">3083</a> 
+<a class="jxr_linenumber" name="L3084" href="#L3084">3084</a>         <em class="jxr_comment">// Compute declination (DEC), INCLINATION (DIP) and</em>
+<a class="jxr_linenumber" name="L3085" href="#L3085">3085</a>         <em class="jxr_comment">// total intensity (TI)</em>
+<a class="jxr_linenumber" name="L3086" href="#L3086">3086</a> 
+<a class="jxr_linenumber" name="L3087" href="#L3087">3087</a>         mBh = Math.sqrt((mBx * mBx) + (mBy * mBy));
+<a class="jxr_linenumber" name="L3088" href="#L3088">3088</a>         mTi = Math.sqrt((mBh * mBh) + (mBz * mBz));
+<a class="jxr_linenumber" name="L3089" href="#L3089">3089</a>         <em class="jxr_comment">//	Calculate the declination.</em>
+<a class="jxr_linenumber" name="L3090" href="#L3090">3090</a>         mDec = Math.toDegrees(Math.atan2(mBy, mBx));
+<a class="jxr_linenumber" name="L3091" href="#L3091">3091</a>         mDip = Math.toDegrees(Math.atan2(mBz, mBh));
+<a class="jxr_linenumber" name="L3092" href="#L3092">3092</a> 
+<a class="jxr_linenumber" name="L3093" href="#L3093">3093</a>         mOldTime = year;
+<a class="jxr_linenumber" name="L3094" href="#L3094">3094</a>         mOldHeight = height;
+<a class="jxr_linenumber" name="L3095" href="#L3095">3095</a>         mOldLatitude = latitude;
+<a class="jxr_linenumber" name="L3096" href="#L3096">3096</a>         mOldLongitude = longitude;
+<a class="jxr_linenumber" name="L3097" href="#L3097">3097</a>     }
+<a class="jxr_linenumber" name="L3098" href="#L3098">3098</a> 
+<a class="jxr_linenumber" name="L3099" href="#L3099">3099</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L3100" href="#L3100">3100</a> <em class="jxr_javadoccomment">     * Converts provided angle instance to radians.</em>
+<a class="jxr_linenumber" name="L3101" href="#L3101">3101</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L3102" href="#L3102">3102</a> <em class="jxr_javadoccomment">     * @param angle angle to be converted.</em>
+<a class="jxr_linenumber" name="L3103" href="#L3103">3103</a> <em class="jxr_javadoccomment">     * @return converted value expressed in radians.</em>
+<a class="jxr_linenumber" name="L3104" href="#L3104">3104</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L3105" href="#L3105">3105</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong> convertAngle(<strong class="jxr_keyword">final</strong> Angle angle) {
+<a class="jxr_linenumber" name="L3106" href="#L3106">3106</a>         <strong class="jxr_keyword">return</strong> AngleConverter.convert(angle.getValue().doubleValue(),
+<a class="jxr_linenumber" name="L3107" href="#L3107">3107</a>                 angle.getUnit(), AngleUnit.RADIANS);
+<a class="jxr_linenumber" name="L3108" href="#L3108">3108</a>     }
+<a class="jxr_linenumber" name="L3109" href="#L3109">3109</a> 
+<a class="jxr_linenumber" name="L3110" href="#L3110">3110</a>     <em class="jxr_javadoccomment">/**</em>
+<a class="jxr_linenumber" name="L3111" href="#L3111">3111</a> <em class="jxr_javadoccomment">     * Converts provided distance to meters.</em>
+<a class="jxr_linenumber" name="L3112" href="#L3112">3112</a> <em class="jxr_javadoccomment">     *</em>
+<a class="jxr_linenumber" name="L3113" href="#L3113">3113</a> <em class="jxr_javadoccomment">     * @param distance distance to be converted.</em>
+<a class="jxr_linenumber" name="L3114" href="#L3114">3114</a> <em class="jxr_javadoccomment">     * @return converted value expressed in meters.</em>
+<a class="jxr_linenumber" name="L3115" href="#L3115">3115</a> <em class="jxr_javadoccomment">     */</em>
+<a class="jxr_linenumber" name="L3116" href="#L3116">3116</a>     <strong class="jxr_keyword">private</strong> <strong class="jxr_keyword">static</strong> <strong class="jxr_keyword">double</strong> convertDistance(<strong class="jxr_keyword">final</strong> Distance distance) {
+<a class="jxr_linenumber" name="L3117" href="#L3117">3117</a>         <strong class="jxr_keyword">return</strong> DistanceConverter.convert(distance.getValue().doubleValue(),
+<a class="jxr_linenumber" name="L3118" href="#L3118">3118</a>                 distance.getUnit(), DistanceUnit.METER);
+<a class="jxr_linenumber" name="L3119" href="#L3119">3119</a>     }
+<a class="jxr_linenumber" name="L3120" href="#L3120">3120</a> }
 </pre>
 <hr/>
 <div id="footer">Copyright &#169; 2021. All rights reserved.</div>

@@ -139,7 +139,7 @@
 <a class="jxr_linenumber" name="L131" href="#L131">131</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L132" href="#L132">132</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L133" href="#L133">133</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/noise/AccumulatedTriadNoiseEstimator.html">AccumulatedTriadNoiseEstimator</a>() {
+<a class="jxr_linenumber" name="L134" href="#L134">134</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/noise/AccumulatedTriadNoiseEstimator.html">AccumulatedTriadNoiseEstimator</a>() {
 <a class="jxr_linenumber" name="L135" href="#L135">135</a>     }
 <a class="jxr_linenumber" name="L136" href="#L136">136</a> 
 <a class="jxr_linenumber" name="L137" href="#L137">137</a>     <em class="jxr_javadoccomment">/**</em>
@@ -147,7 +147,7 @@
 <a class="jxr_linenumber" name="L139" href="#L139">139</a> <em class="jxr_javadoccomment">     *</em>
 <a class="jxr_linenumber" name="L140" href="#L140">140</a> <em class="jxr_javadoccomment">     * @param listener listener to handle events raised by this estimator.</em>
 <a class="jxr_linenumber" name="L141" href="#L141">141</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/noise/AccumulatedTriadNoiseEstimator.html">AccumulatedTriadNoiseEstimator</a>(<strong class="jxr_keyword">final</strong> L listener) {
+<a class="jxr_linenumber" name="L142" href="#L142">142</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/noise/AccumulatedTriadNoiseEstimator.html">AccumulatedTriadNoiseEstimator</a>(<strong class="jxr_keyword">final</strong> L listener) {
 <a class="jxr_linenumber" name="L143" href="#L143">143</a>         mListener = listener;
 <a class="jxr_linenumber" name="L144" href="#L144">144</a>     }
 <a class="jxr_linenumber" name="L145" href="#L145">145</a> 
@@ -779,9 +779,9 @@
 <a class="jxr_linenumber" name="L771" href="#L771">771</a> 
 <a class="jxr_linenumber" name="L772" href="#L772">772</a>         <em class="jxr_comment">// compute averages</em>
 <a class="jxr_linenumber" name="L773" href="#L773">773</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> tmp = (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamples / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L774" href="#L774">774</a>         mAvgX = mAvgX * tmp + valueX / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L775" href="#L775">775</a>         mAvgY = mAvgY * tmp + valueY / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L776" href="#L776">776</a>         mAvgZ = mAvgZ * tmp + valueZ / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L774" href="#L774">774</a>         mAvgX = mAvgX * tmp + valueX / mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L775" href="#L775">775</a>         mAvgY = mAvgY * tmp + valueY / mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L776" href="#L776">776</a>         mAvgZ = mAvgZ * tmp + valueZ / mNumberOfProcessedSamplesPlusOne;
 <a class="jxr_linenumber" name="L777" href="#L777">777</a> 
 <a class="jxr_linenumber" name="L778" href="#L778">778</a>         <em class="jxr_comment">// compute variances</em>
 <a class="jxr_linenumber" name="L779" href="#L779">779</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> diffX = valueX - mAvgX;
@@ -791,9 +791,9 @@
 <a class="jxr_linenumber" name="L783" href="#L783">783</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> diffY2 = diffY * diffY;
 <a class="jxr_linenumber" name="L784" href="#L784">784</a>         <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong> diffZ2 = diffZ * diffZ;
 <a class="jxr_linenumber" name="L785" href="#L785">785</a> 
-<a class="jxr_linenumber" name="L786" href="#L786">786</a>         mVarianceX = mVarianceX * tmp + diffX2 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L787" href="#L787">787</a>         mVarianceY = mVarianceY * tmp + diffY2 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
-<a class="jxr_linenumber" name="L788" href="#L788">788</a>         mVarianceZ = mVarianceZ * tmp + diffZ2 / (<strong class="jxr_keyword">double</strong>) mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L786" href="#L786">786</a>         mVarianceX = mVarianceX * tmp + diffX2 / mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L787" href="#L787">787</a>         mVarianceY = mVarianceY * tmp + diffY2 / mNumberOfProcessedSamplesPlusOne;
+<a class="jxr_linenumber" name="L788" href="#L788">788</a>         mVarianceZ = mVarianceZ * tmp + diffZ2 / mNumberOfProcessedSamplesPlusOne;
 <a class="jxr_linenumber" name="L789" href="#L789">789</a> 
 <a class="jxr_linenumber" name="L790" href="#L790">790</a>         <strong class="jxr_keyword">if</strong> (mLastTriad == <strong class="jxr_keyword">null</strong>) {
 <a class="jxr_linenumber" name="L791" href="#L791">791</a>             mLastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());

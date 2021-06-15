@@ -2977,10 +2977,10 @@ public class KnownBiasEasyGyroscopeCalibrator implements GyroscopeNonLinearCalib
 <span class="fc" id="L2977">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="nc" id="L2980">        } catch (final FittingException</span>
+<span class="fc" id="L2980">        } catch (final FittingException</span>
                 | AlgebraException
                 | com.irurueta.numerical.NotReadyException e) {
-<span class="nc" id="L2983">            throw new CalibrationException(e);</span>
+<span class="fc" id="L2983">            throw new CalibrationException(e);</span>
         } finally {
 <span class="fc" id="L2985">            mRunning = false;</span>
         }

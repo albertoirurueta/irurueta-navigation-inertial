@@ -397,7 +397,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
     /**
      * Constructor.
      */
-<span class="fc" id="L400">    public RobustKnownFrameMagnetometerCalibrator() {</span>
+<span class="fc" id="L400">    protected RobustKnownFrameMagnetometerCalibrator() {</span>
 <span class="fc" id="L401">    }</span>
 
     /**
@@ -406,7 +406,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownFrameMagnetometerCalibrator(
+    protected RobustKnownFrameMagnetometerCalibrator(
 <span class="fc" id="L410">            final RobustKnownFrameMagnetometerCalibratorListener listener) {</span>
 <span class="fc" id="L411">        mListener = listener;</span>
 <span class="fc" id="L412">    }</span>
@@ -418,7 +418,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      *                     deviations taken at different frames (positions and
      *                     orientations).
      */
-    public RobustKnownFrameMagnetometerCalibrator(
+    protected RobustKnownFrameMagnetometerCalibrator(
 <span class="fc" id="L422">            final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {</span>
 <span class="fc" id="L423">        mMeasurements = measurements;</span>
 <span class="fc" id="L424">    }</span>
@@ -431,7 +431,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      *                     orientations).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameMagnetometerCalibrator(
+    protected RobustKnownFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
 <span class="fc" id="L437">        this(measurements);</span>
@@ -444,7 +444,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-<span class="fc" id="L447">    public RobustKnownFrameMagnetometerCalibrator(final boolean commonAxisUsed) {</span>
+<span class="fc" id="L447">    protected RobustKnownFrameMagnetometerCalibrator(final boolean commonAxisUsed) {</span>
 <span class="fc" id="L448">        mCommonAxisUsed = commonAxisUsed;</span>
 <span class="fc" id="L449">    }</span>
 
@@ -455,7 +455,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameMagnetometerCalibrator(
+    protected RobustKnownFrameMagnetometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {
 <span class="fc" id="L461">        this(commonAxisUsed);</span>
@@ -471,7 +471,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownFrameMagnetometerCalibrator(
+    protected RobustKnownFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed) {
 <span class="fc" id="L477">        this(measurements);</span>
@@ -488,7 +488,7 @@ public abstract class RobustKnownFrameMagnetometerCalibrator implements
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameMagnetometerCalibrator(
+    protected RobustKnownFrameMagnetometerCalibrator(
             final List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameMagnetometerCalibratorListener listener) {

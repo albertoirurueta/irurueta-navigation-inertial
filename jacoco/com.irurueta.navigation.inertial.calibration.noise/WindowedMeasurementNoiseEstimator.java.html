@@ -130,7 +130,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
     /**
      * Constructor.
      */
-<span class="fc" id="L133">    public WindowedMeasurementNoiseEstimator() {</span>
+<span class="fc" id="L133">    protected WindowedMeasurementNoiseEstimator() {</span>
 <span class="fc" id="L134">    }</span>
 
     /**
@@ -138,7 +138,7 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
      *
      * @param listener listener to handle events raised by this estimator.
      */
-<span class="fc" id="L141">    public WindowedMeasurementNoiseEstimator(final L listener) {</span>
+<span class="fc" id="L141">    protected WindowedMeasurementNoiseEstimator(final L listener) {</span>
 <span class="fc" id="L142">        mListener = listener;</span>
 <span class="fc" id="L143">    }</span>
 
@@ -660,21 +660,21 @@ public abstract class WindowedMeasurementNoiseEstimator&lt;U extends Enum&lt;?&g
 <span class="fc" id="L660">        avg /= mWindowSize;</span>
 
         // compute variances
-<span class="fc" id="L663">        double var = 0.0;</span>
+<span class="fc" id="L663">        double variance = 0.0;</span>
 <span class="fc bfc" id="L664" title="All 2 branches covered.">        for (int i = 0; i &lt; endPos; i++) {</span>
 <span class="fc" id="L665">            final double value = mWindowedMeasurements[i];</span>
 <span class="fc" id="L666">            final double diff = value - avg;</span>
 <span class="fc" id="L667">            final double diff2 = diff * diff;</span>
 
-<span class="fc" id="L669">            var += diff2;</span>
+<span class="fc" id="L669">            variance += diff2;</span>
         }
 
 <span class="fc" id="L672">        final int m = mWindowSize - 1;</span>
 
-<span class="fc" id="L674">        var /= m;</span>
+<span class="fc" id="L674">        variance /= m;</span>
 
 <span class="fc" id="L676">        mAvg = avg;</span>
-<span class="fc" id="L677">        mVariance = var;</span>
+<span class="fc" id="L677">        mVariance = variance;</span>
 <span class="fc" id="L678">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

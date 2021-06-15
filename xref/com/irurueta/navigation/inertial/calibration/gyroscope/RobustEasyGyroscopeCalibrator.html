@@ -533,7 +533,7 @@
 <a class="jxr_linenumber" name="L525" href="#L525">525</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L526" href="#L526">526</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L527" href="#L527">527</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L528" href="#L528">528</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>() {
+<a class="jxr_linenumber" name="L528" href="#L528">528</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>() {
 <a class="jxr_linenumber" name="L529" href="#L529">529</a>         <strong class="jxr_keyword">try</strong> {
 <a class="jxr_linenumber" name="L530" href="#L530">530</a>             mInitialGg = <strong class="jxr_keyword">new</strong> Matrix(BodyKinematics.COMPONENTS,
 <a class="jxr_linenumber" name="L531" href="#L531">531</a>                     BodyKinematics.COMPONENTS);
@@ -558,7 +558,7 @@
 <a class="jxr_linenumber" name="L550" href="#L550">550</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L551" href="#L551">551</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L552" href="#L552">552</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L553" href="#L553">553</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L553" href="#L553">553</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L554" href="#L554">554</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L555" href="#L555">555</a>             <strong class="jxr_keyword">final</strong> Matrix initialBias,
 <a class="jxr_linenumber" name="L556" href="#L556">556</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -592,7 +592,7 @@
 <a class="jxr_linenumber" name="L584" href="#L584">584</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L585" href="#L585">585</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L586" href="#L586">586</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L587" href="#L587">587</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L587" href="#L587">587</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L588" href="#L588">588</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L589" href="#L589">589</a>             <strong class="jxr_keyword">final</strong> Matrix initialBias,
 <a class="jxr_linenumber" name="L590" href="#L590">590</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -618,7 +618,7 @@
 <a class="jxr_linenumber" name="L610" href="#L610">610</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L611" href="#L611">611</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L612" href="#L612">612</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L613" href="#L613">613</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L613" href="#L613">613</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L614" href="#L614">614</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L615" href="#L615">615</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] initialBias,
 <a class="jxr_linenumber" name="L616" href="#L616">616</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -652,7 +652,7 @@
 <a class="jxr_linenumber" name="L644" href="#L644">644</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L645" href="#L645">645</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L646" href="#L646">646</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L647" href="#L647">647</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L647" href="#L647">647</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L648" href="#L648">648</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L649" href="#L649">649</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] initialBias,
 <a class="jxr_linenumber" name="L650" href="#L650">650</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -684,7 +684,7 @@
 <a class="jxr_linenumber" name="L676" href="#L676">676</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L677" href="#L677">677</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L678" href="#L678">678</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L679" href="#L679">679</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L679" href="#L679">679</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L680" href="#L680">680</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L681" href="#L681">681</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] initialBias,
 <a class="jxr_linenumber" name="L682" href="#L682">682</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -724,7 +724,7 @@
 <a class="jxr_linenumber" name="L716" href="#L716">716</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L717" href="#L717">717</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L718" href="#L718">718</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L719" href="#L719">719</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L719" href="#L719">719</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L720" href="#L720">720</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L721" href="#L721">721</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">double</strong>[] initialBias,
 <a class="jxr_linenumber" name="L722" href="#L722">722</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -758,7 +758,7 @@
 <a class="jxr_linenumber" name="L750" href="#L750">750</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L751" href="#L751">751</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L752" href="#L752">752</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L753" href="#L753">753</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L753" href="#L753">753</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L754" href="#L754">754</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L755" href="#L755">755</a>             <strong class="jxr_keyword">final</strong> Matrix initialBias,
 <a class="jxr_linenumber" name="L756" href="#L756">756</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -797,7 +797,7 @@
 <a class="jxr_linenumber" name="L789" href="#L789">789</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L790" href="#L790">790</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L791" href="#L791">791</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L792" href="#L792">792</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L792" href="#L792">792</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L793" href="#L793">793</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L794" href="#L794">794</a>             <strong class="jxr_keyword">final</strong> Matrix initialBias,
 <a class="jxr_linenumber" name="L795" href="#L795">795</a>             <strong class="jxr_keyword">final</strong> Matrix initialMg,
@@ -832,7 +832,7 @@
 <a class="jxr_linenumber" name="L824" href="#L824">824</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L825" href="#L825">825</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L826" href="#L826">826</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L827" href="#L827">827</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L827" href="#L827">827</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L828" href="#L828">828</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L829" href="#L829">829</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L830" href="#L830">830</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -868,7 +868,7 @@
 <a class="jxr_linenumber" name="L860" href="#L860">860</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L861" href="#L861">861</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L862" href="#L862">862</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L863" href="#L863">863</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L863" href="#L863">863</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L864" href="#L864">864</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L865" href="#L865">865</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L866" href="#L866">866</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -903,7 +903,7 @@
 <a class="jxr_linenumber" name="L895" href="#L895">895</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L896" href="#L896">896</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L897" href="#L897">897</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L898" href="#L898">898</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L898" href="#L898">898</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L899" href="#L899">899</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L900" href="#L900">900</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L901" href="#L901">901</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -939,7 +939,7 @@
 <a class="jxr_linenumber" name="L931" href="#L931">931</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L932" href="#L932">932</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L933" href="#L933">933</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L934" href="#L934">934</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L934" href="#L934">934</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L935" href="#L935">935</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L936" href="#L936">936</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L937" href="#L937">937</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -981,7 +981,7 @@
 <a class="jxr_linenumber" name="L973" href="#L973">973</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L974" href="#L974">974</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L975" href="#L975">975</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L976" href="#L976">976</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L976" href="#L976">976</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L977" href="#L977">977</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L978" href="#L978">978</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L979" href="#L979">979</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -1027,7 +1027,7 @@
 <a class="jxr_linenumber" name="L1019" href="#L1019">1019</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L1020" href="#L1020">1020</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L1021" href="#L1021">1021</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1022" href="#L1022">1022</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L1022" href="#L1022">1022</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L1023" href="#L1023">1023</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L1024" href="#L1024">1024</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L1025" href="#L1025">1025</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -1072,7 +1072,7 @@
 <a class="jxr_linenumber" name="L1064" href="#L1064">1064</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L1065" href="#L1065">1065</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L1066" href="#L1066">1066</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1067" href="#L1067">1067</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L1067" href="#L1067">1067</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L1068" href="#L1068">1068</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L1069" href="#L1069">1069</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L1070" href="#L1070">1070</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,
@@ -1118,7 +1118,7 @@
 <a class="jxr_linenumber" name="L1110" href="#L1110">1110</a> <em class="jxr_javadoccomment">     * @throws IllegalArgumentException if any of the provided values does</em>
 <a class="jxr_linenumber" name="L1111" href="#L1111">1111</a> <em class="jxr_javadoccomment">     *                                  not have proper size.</em>
 <a class="jxr_linenumber" name="L1112" href="#L1112">1112</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L1113" href="#L1113">1113</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
+<a class="jxr_linenumber" name="L1113" href="#L1113">1113</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/gyroscope/RobustEasyGyroscopeCalibrator.html">RobustEasyGyroscopeCalibrator</a>(
 <a class="jxr_linenumber" name="L1114" href="#L1114">1114</a>             <strong class="jxr_keyword">final</strong> List&lt;BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt;&gt; sequences,
 <a class="jxr_linenumber" name="L1115" href="#L1115">1115</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L1116" href="#L1116">1116</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> estimateGDependentCrossBiases,

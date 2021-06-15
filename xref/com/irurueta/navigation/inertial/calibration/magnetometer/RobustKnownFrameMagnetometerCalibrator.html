@@ -405,7 +405,7 @@
 <a class="jxr_linenumber" name="L397" href="#L397">397</a>     <em class="jxr_javadoccomment">/**</em>
 <a class="jxr_linenumber" name="L398" href="#L398">398</a> <em class="jxr_javadoccomment">     * Constructor.</em>
 <a class="jxr_linenumber" name="L399" href="#L399">399</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>() {
+<a class="jxr_linenumber" name="L400" href="#L400">400</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>() {
 <a class="jxr_linenumber" name="L401" href="#L401">401</a>     }
 <a class="jxr_linenumber" name="L402" href="#L402">402</a> 
 <a class="jxr_linenumber" name="L403" href="#L403">403</a>     <em class="jxr_javadoccomment">/**</em>
@@ -414,7 +414,7 @@
 <a class="jxr_linenumber" name="L406" href="#L406">406</a> <em class="jxr_javadoccomment">     * @param listener listener to be notified of events such as when estimation</em>
 <a class="jxr_linenumber" name="L407" href="#L407">407</a> <em class="jxr_javadoccomment">     *                 starts, ends or its progress significantly changes.</em>
 <a class="jxr_linenumber" name="L408" href="#L408">408</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L409" href="#L409">409</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
+<a class="jxr_linenumber" name="L409" href="#L409">409</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
 <a class="jxr_linenumber" name="L410" href="#L410">410</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibratorListener.html">RobustKnownFrameMagnetometerCalibratorListener</a> listener) {
 <a class="jxr_linenumber" name="L411" href="#L411">411</a>         mListener = listener;
 <a class="jxr_linenumber" name="L412" href="#L412">412</a>     }
@@ -426,7 +426,7 @@
 <a class="jxr_linenumber" name="L418" href="#L418">418</a> <em class="jxr_javadoccomment">     *                     deviations taken at different frames (positions and</em>
 <a class="jxr_linenumber" name="L419" href="#L419">419</a> <em class="jxr_javadoccomment">     *                     orientations).</em>
 <a class="jxr_linenumber" name="L420" href="#L420">420</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L421" href="#L421">421</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
+<a class="jxr_linenumber" name="L421" href="#L421">421</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
 <a class="jxr_linenumber" name="L422" href="#L422">422</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements) {
 <a class="jxr_linenumber" name="L423" href="#L423">423</a>         mMeasurements = measurements;
 <a class="jxr_linenumber" name="L424" href="#L424">424</a>     }
@@ -439,7 +439,7 @@
 <a class="jxr_linenumber" name="L431" href="#L431">431</a> <em class="jxr_javadoccomment">     *                     orientations).</em>
 <a class="jxr_linenumber" name="L432" href="#L432">432</a> <em class="jxr_javadoccomment">     * @param listener     listener to handle events raised by this calibrator.</em>
 <a class="jxr_linenumber" name="L433" href="#L433">433</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
+<a class="jxr_linenumber" name="L434" href="#L434">434</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
 <a class="jxr_linenumber" name="L435" href="#L435">435</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
 <a class="jxr_linenumber" name="L436" href="#L436">436</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibratorListener.html">RobustKnownFrameMagnetometerCalibratorListener</a> listener) {
 <a class="jxr_linenumber" name="L437" href="#L437">437</a>         <strong class="jxr_keyword">this</strong>(measurements);
@@ -452,7 +452,7 @@
 <a class="jxr_linenumber" name="L444" href="#L444">444</a> <em class="jxr_javadoccomment">     * @param commonAxisUsed indicates whether z-axis is assumed to be common</em>
 <a class="jxr_linenumber" name="L445" href="#L445">445</a> <em class="jxr_javadoccomment">     *                       for the accelerometer, gyroscope and magnetometer.</em>
 <a class="jxr_linenumber" name="L446" href="#L446">446</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L447" href="#L447">447</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed) {
+<a class="jxr_linenumber" name="L447" href="#L447">447</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(<strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed) {
 <a class="jxr_linenumber" name="L448" href="#L448">448</a>         mCommonAxisUsed = commonAxisUsed;
 <a class="jxr_linenumber" name="L449" href="#L449">449</a>     }
 <a class="jxr_linenumber" name="L450" href="#L450">450</a> 
@@ -463,7 +463,7 @@
 <a class="jxr_linenumber" name="L455" href="#L455">455</a> <em class="jxr_javadoccomment">     *                       for the accelerometer, gyroscope and magnetometer.</em>
 <a class="jxr_linenumber" name="L456" href="#L456">456</a> <em class="jxr_javadoccomment">     * @param listener       listener to handle events raised by this calibrator.</em>
 <a class="jxr_linenumber" name="L457" href="#L457">457</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L458" href="#L458">458</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
+<a class="jxr_linenumber" name="L458" href="#L458">458</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
 <a class="jxr_linenumber" name="L459" href="#L459">459</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L460" href="#L460">460</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibratorListener.html">RobustKnownFrameMagnetometerCalibratorListener</a> listener) {
 <a class="jxr_linenumber" name="L461" href="#L461">461</a>         <strong class="jxr_keyword">this</strong>(commonAxisUsed);
@@ -479,7 +479,7 @@
 <a class="jxr_linenumber" name="L471" href="#L471">471</a> <em class="jxr_javadoccomment">     * @param commonAxisUsed indicates whether z-axis is assumed to be common</em>
 <a class="jxr_linenumber" name="L472" href="#L472">472</a> <em class="jxr_javadoccomment">     *                       for the accelerometer, gyroscope and magnetometer.</em>
 <a class="jxr_linenumber" name="L473" href="#L473">473</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L474" href="#L474">474</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
+<a class="jxr_linenumber" name="L474" href="#L474">474</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
 <a class="jxr_linenumber" name="L475" href="#L475">475</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
 <a class="jxr_linenumber" name="L476" href="#L476">476</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed) {
 <a class="jxr_linenumber" name="L477" href="#L477">477</a>         <strong class="jxr_keyword">this</strong>(measurements);
@@ -496,7 +496,7 @@
 <a class="jxr_linenumber" name="L488" href="#L488">488</a> <em class="jxr_javadoccomment">     *                       for the accelerometer, gyroscope and magnetometer.</em>
 <a class="jxr_linenumber" name="L489" href="#L489">489</a> <em class="jxr_javadoccomment">     * @param listener       listener to handle events raised by this calibrator.</em>
 <a class="jxr_linenumber" name="L490" href="#L490">490</a> <em class="jxr_javadoccomment">     */</em>
-<a class="jxr_linenumber" name="L491" href="#L491">491</a>     <strong class="jxr_keyword">public</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
+<a class="jxr_linenumber" name="L491" href="#L491">491</a>     <strong class="jxr_keyword">protected</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibrator.html">RobustKnownFrameMagnetometerCalibrator</a>(
 <a class="jxr_linenumber" name="L492" href="#L492">492</a>             <strong class="jxr_keyword">final</strong> List&lt;StandardDeviationFrameBodyMagneticFluxDensity&gt; measurements,
 <a class="jxr_linenumber" name="L493" href="#L493">493</a>             <strong class="jxr_keyword">final</strong> <strong class="jxr_keyword">boolean</strong> commonAxisUsed,
 <a class="jxr_linenumber" name="L494" href="#L494">494</a>             <strong class="jxr_keyword">final</strong> <a href="../../../../../../com/irurueta/navigation/inertial/calibration/magnetometer/RobustKnownFrameMagnetometerCalibratorListener.html">RobustKnownFrameMagnetometerCalibratorListener</a> listener) {

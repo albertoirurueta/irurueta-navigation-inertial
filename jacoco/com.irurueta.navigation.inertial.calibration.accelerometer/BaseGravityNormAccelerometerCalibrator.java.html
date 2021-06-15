@@ -307,7 +307,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
     /**
      * Constructor.
      */
-<span class="fc" id="L310">    public BaseGravityNormAccelerometerCalibrator() {</span>
+<span class="fc" id="L310">    protected BaseGravityNormAccelerometerCalibrator() {</span>
 <span class="fc" id="L311">    }</span>
 
     /**
@@ -315,7 +315,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *
      * @param listener listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
 <span class="fc" id="L319">            final L listener) {</span>
 <span class="fc" id="L320">        mListener = listener;</span>
 <span class="fc" id="L321">    }</span>
@@ -327,7 +327,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     deviations taken at the same position with zero velocity
      *                     and unknown different orientations.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
 <span class="fc" id="L331">            final Collection&lt;StandardDeviationBodyKinematics&gt; measurements) {</span>
 <span class="fc" id="L332">        mMeasurements = measurements;</span>
 <span class="fc" id="L333">    }</span>
@@ -340,7 +340,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     and unknown different orientations.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final L listener) {
 <span class="fc" id="L346">        this(measurements);</span>
@@ -353,7 +353,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
 <span class="fc" id="L357">            final boolean commonAxisUsed) {</span>
 <span class="fc" id="L358">        mCommonAxisUsed = commonAxisUsed;</span>
 <span class="fc" id="L359">    }</span>
@@ -365,7 +365,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final L listener) {
 <span class="fc" id="L371">        this(commonAxisUsed);</span>
@@ -381,7 +381,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed) {
 <span class="fc" id="L387">        this(measurements);</span>
@@ -398,7 +398,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final L listener) {
@@ -419,7 +419,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     to find a solution. This is expressed in meters per squared
      *                     second (m/s^2).
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final double initialBiasX, final double initialBiasY,
 <span class="fc" id="L424">            final double initialBiasZ) {</span>
         try {
@@ -443,7 +443,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     second (m/s^2).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
             final L listener) {
@@ -467,7 +467,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     to find a solution. This is expressed in meters per squared
      *                     second (m/s^2).
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
@@ -492,7 +492,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     second (m/s^2).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
@@ -516,7 +516,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       to find a solution. This is expressed in meters per squared
      *                       second (m/s^2).
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ) {
@@ -540,7 +540,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       second (m/s^2).
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ,
@@ -567,7 +567,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       to find a solution. This is expressed in meters per squared
      *                       second (m/s^2).
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
@@ -595,7 +595,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       second (m/s^2).
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
@@ -615,7 +615,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBiasZ initial z-coordinate of accelerometer bias to be used
      *                     to find a solution.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
 <span class="fc" id="L620">            final Acceleration initialBiasZ) {</span>
         try {
@@ -636,7 +636,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     to find a solution.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ,
             final L listener) {
@@ -657,7 +657,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBiasZ initial z-coordinate of accelerometer bias to be used
      *                     to find a solution.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ) {
@@ -679,7 +679,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     to find a solution.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ,
@@ -700,7 +700,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBiasZ   initial z-coordinate of accelerometer bias to be used
      *                       to find a solution.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
 <span class="fc" id="L706">        this(initialBiasX, initialBiasY, initialBiasZ);</span>
@@ -720,7 +720,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       to find a solution.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final L listener) {
@@ -743,7 +743,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBiasZ   initial z-coordinate of accelerometer bias to be used
      *                       to find a solution.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ) {
@@ -767,7 +767,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       to find a solution.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
@@ -792,7 +792,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy    initial y scaling factor.
      * @param initialSz    initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
@@ -823,7 +823,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy    initial y scaling factor.
      * @param initialSz    initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
@@ -853,7 +853,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz    initial z scaling factor.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
@@ -882,7 +882,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy      initial y scaling factor.
      * @param initialSz      initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz) {
@@ -910,7 +910,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz      initial z scaling factor.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz,
@@ -941,7 +941,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy      initial y scaling factor.
      * @param initialSz      initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double initialBiasX,
             final double initialBiasY, final double initialBiasZ, final double initialSx,
@@ -973,7 +973,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz      initial z scaling factor.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double initialBiasX,
             final double initialBiasY, final double initialBiasZ, final double initialSx,
@@ -997,7 +997,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy    initial y scaling factor.
      * @param initialSz    initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz) {
@@ -1023,7 +1023,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz    initial z scaling factor.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz,
@@ -1049,7 +1049,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy    initial y scaling factor.
      * @param initialSz    initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
@@ -1076,7 +1076,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz    initial z scaling factor.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
@@ -1102,7 +1102,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy      initial y scaling factor.
      * @param initialSz      initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz) {
@@ -1127,7 +1127,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz      initial z scaling factor.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
@@ -1155,7 +1155,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSy      initial y scaling factor.
      * @param initialSz      initial z scaling factor.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
@@ -1184,7 +1184,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialSz      initial z scaling factor.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
@@ -1217,7 +1217,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx   initial z-x cross coupling error.
      * @param initialMzy   initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
             final double initialSz, final double initialMxy, final double initialMxz,
@@ -1257,7 +1257,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx   initial z-x cross coupling error.
      * @param initialMzy   initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
@@ -1295,7 +1295,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy   initial z-y cross coupling error.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
@@ -1333,7 +1333,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx     initial z-x cross coupling error.
      * @param initialMzy     initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
@@ -1370,7 +1370,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy     initial z-y cross coupling error.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
             final double initialBiasZ, final double initialSx, final double initialSy,
@@ -1411,7 +1411,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx     initial z-x cross coupling error.
      * @param initialMzy     initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
@@ -1453,7 +1453,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy     initial z-y cross coupling error.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed,
             final double initialBiasX, final double initialBiasY,
@@ -1487,7 +1487,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx   initial z-x cross coupling error.
      * @param initialMzy   initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz, final double initialMxy,
@@ -1522,7 +1522,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy   initial z-y cross coupling error.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
             final double initialSy, final double initialSz, final double initialMxy,
@@ -1556,7 +1556,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx   initial z-x cross coupling error.
      * @param initialMzy   initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
@@ -1591,7 +1591,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy   initial z-y cross coupling error.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Acceleration initialBiasX, final Acceleration initialBiasY,
             final Acceleration initialBiasZ, final double initialSx,
@@ -1626,7 +1626,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx     initial z-x cross coupling error.
      * @param initialMzy     initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
@@ -1659,7 +1659,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy     initial z-y cross coupling error.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
             final double initialSx, final double initialSy, final double initialSz,
@@ -1696,7 +1696,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzx     initial z-x cross coupling error.
      * @param initialMzy     initial z-y cross coupling error.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
@@ -1734,7 +1734,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialMzy     initial z-y cross coupling error.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Acceleration initialBiasX,
             final Acceleration initialBiasY, final Acceleration initialBiasZ,
@@ -1756,7 +1756,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                    squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
 <span class="fc" id="L1760">            final double[] initialBias) {</span>
         try {
 <span class="fc" id="L1762">            setInitialBias(initialBias);</span>
@@ -1774,7 +1774,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener    listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final double[] initialBias,
             final L listener) {
 <span class="fc" id="L1780">        this(initialBias);</span>
@@ -1792,7 +1792,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                     squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias) {
 <span class="fc" id="L1798">        this(initialBias);</span>
@@ -1811,7 +1811,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final double[] initialBias,
             final L listener) {
@@ -1829,7 +1829,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final double[] initialBias) {
 <span class="fc" id="L1834">        this(initialBias);</span>
 <span class="fc" id="L1835">        mCommonAxisUsed = commonAxisUsed;</span>
@@ -1846,7 +1846,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final double[] initialBias,
             final L listener) {
 <span class="fc" id="L1852">        this(commonAxisUsed, initialBias);</span>
@@ -1866,7 +1866,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      *                       squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias) {
 <span class="fc" id="L1872">        this(commonAxisUsed, initialBias);</span>
@@ -1887,7 +1887,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final double[] initialBias,
             final L listener) {
@@ -1901,7 +1901,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBias initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-<span class="fc" id="L1904">    public BaseGravityNormAccelerometerCalibrator(final Matrix initialBias) {</span>
+<span class="fc" id="L1904">    protected BaseGravityNormAccelerometerCalibrator(final Matrix initialBias) {</span>
         try {
 <span class="fc" id="L1906">            setInitialBias(initialBias);</span>
 <span class="nc" id="L1907">        } catch (final LockedException ignore) {</span>
@@ -1916,7 +1916,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener    listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Matrix initialBias,
             final L listener) {
 <span class="fc" id="L1922">        this(initialBias);</span>
@@ -1932,7 +1932,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBias  initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias) {
 <span class="fc" id="L1938">        this(initialBias);</span>
@@ -1949,7 +1949,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias,
             final L listener) {
@@ -1965,7 +1965,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBias    initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias) {
 <span class="fc" id="L1970">        this(initialBias);</span>
 <span class="fc" id="L1971">        mCommonAxisUsed = commonAxisUsed;</span>
@@ -1980,7 +1980,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias,
             final L listener) {
 <span class="fc" id="L1986">        this(commonAxisUsed, initialBias);</span>
@@ -1998,7 +1998,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param initialBias    initial bias to find a solution.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias) {
 <span class="fc" id="L2004">        this(commonAxisUsed, initialBias);</span>
@@ -2017,7 +2017,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final L listener) {
@@ -2033,7 +2033,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa) {
 <span class="fc" id="L2038">        this(initialBias);</span>
         try {
@@ -2052,7 +2052,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Matrix initialBias, final Matrix initialMa,
             final L listener) {
 <span class="fc" id="L2058">        this(initialBias, initialMa);</span>
@@ -2070,7 +2070,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa) {
 <span class="fc" id="L2076">        this(initialBias, initialMa);</span>
@@ -2089,7 +2089,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final Matrix initialBias, final Matrix initialMa,
             final L listener) {
@@ -2107,7 +2107,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
 <span class="fc" id="L2113">        this(initialBias, initialMa);</span>
@@ -2125,7 +2125,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
             final L listener) {
@@ -2146,7 +2146,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa) {
@@ -2168,7 +2168,7 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public BaseGravityNormAccelerometerCalibrator(
+    protected BaseGravityNormAccelerometerCalibrator(
             final Collection&lt;StandardDeviationBodyKinematics&gt; measurements,
             final boolean commonAxisUsed, final Matrix initialBias,
             final Matrix initialMa,
@@ -5320,9 +5320,9 @@ public abstract class BaseGravityNormAccelerometerCalibrator&lt;C extends BaseGr
 <span class="fc" id="L5320">                mListener.onCalibrateEnd((C) this);</span>
             }
 
-<span class="fc" id="L5323">        } catch (final AlgebraException | FittingException</span>
+<span class="nc" id="L5323">        } catch (final AlgebraException | FittingException</span>
                 | com.irurueta.numerical.NotReadyException e) {
-<span class="fc" id="L5325">            throw new CalibrationException(e);</span>
+<span class="nc" id="L5325">            throw new CalibrationException(e);</span>
         } finally {
 <span class="fc" id="L5327">            mRunning = false;</span>
         }

@@ -96,7 +96,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator&lt;U extends Enum&lt;
     /**
      * Constructor.
      */
-<span class="fc" id="L99">    public AccumulatedMeasurementNoiseEstimator() {</span>
+<span class="fc" id="L99">    protected AccumulatedMeasurementNoiseEstimator() {</span>
 <span class="fc" id="L100">    }</span>
 
     /**
@@ -104,7 +104,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator&lt;U extends Enum&lt;
      *
      * @param listener listener to handle events raised by this estimator.
      */
-<span class="fc" id="L107">    public AccumulatedMeasurementNoiseEstimator(final L listener) {</span>
+<span class="fc" id="L107">    protected AccumulatedMeasurementNoiseEstimator(final L listener) {</span>
 <span class="fc" id="L108">        mListener = listener;</span>
 <span class="fc" id="L109">    }</span>
 
@@ -349,13 +349,13 @@ public abstract class AccumulatedMeasurementNoiseEstimator&lt;U extends Enum&lt;
 
         // compute average
 <span class="fc" id="L351">        final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;</span>
-<span class="fc" id="L352">        mAvg = mAvg * tmp + value / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L352">        mAvg = mAvg * tmp + value / mNumberOfProcessedSamplesPlusOne;</span>
 
         // compute variance
 <span class="fc" id="L355">        final double diff = value - mAvg;</span>
 <span class="fc" id="L356">        final double diff2 = diff * diff;</span>
 
-<span class="fc" id="L358">        mVariance = mVariance * tmp + diff2 / (double) mNumberOfProcessedSamplesPlusOne;</span>
+<span class="fc" id="L358">        mVariance = mVariance * tmp + diff2 / mNumberOfProcessedSamplesPlusOne;</span>
 
 <span class="fc bfc" id="L360" title="All 2 branches covered.">        if (mLastMeasurement == null) {</span>
 <span class="fc" id="L361">            mLastMeasurement = createMeasurement(value, getDefaultUnit());</span>

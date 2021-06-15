@@ -30,7 +30,15 @@ import java.util.List;
  * This implementation uses a Runge-Kutta integration algorithm to obtain
  * accurate results on {@link EasyGyroscopeCalibrator}
  */
-<span class="nc" id="L33">public class QuaternionIntegrator {</span>
+public class QuaternionIntegrator {
+
+    /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private QuaternionIntegrator() {
+        // no action needed
+    }
 
     /**
      * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
@@ -46,58 +54,58 @@ import java.util.List;
             final Quaternion initialAttitude,
             final Quaternion result) {
 
-<span class="fc bfc" id="L49" title="All 2 branches covered.">        if (initialAttitude != null) {</span>
+<span class="fc bfc" id="L57" title="All 2 branches covered.">        if (initialAttitude != null) {</span>
             // if provided initial attitude
-<span class="fc" id="L51">            result.fromRotation(initialAttitude);</span>
+<span class="fc" id="L59">            result.fromRotation(initialAttitude);</span>
         } else {
             // if no initial attitude is provided, we use the identity
-<span class="fc" id="L54">            result.setA(1.0);</span>
-<span class="fc" id="L55">            result.setB(0.0);</span>
-<span class="fc" id="L56">            result.setC(0.0);</span>
-<span class="fc" id="L57">            result.setD(0.0);</span>
+<span class="fc" id="L62">            result.setA(1.0);</span>
+<span class="fc" id="L63">            result.setB(0.0);</span>
+<span class="fc" id="L64">            result.setC(0.0);</span>
+<span class="fc" id="L65">            result.setD(0.0);</span>
         }
 
 
-<span class="fc" id="L61">        final List&lt;StandardDeviationTimedBodyKinematics&gt; sortedMeasurements =</span>
-<span class="fc" id="L62">                sequence.getSortedItems();</span>
+<span class="fc" id="L69">        final List&lt;StandardDeviationTimedBodyKinematics&gt; sortedMeasurements =</span>
+<span class="fc" id="L70">                sequence.getSortedItems();</span>
 
-<span class="fc" id="L64">        boolean first = true;</span>
-<span class="fc" id="L65">        double previousTimestamp = 0.0;</span>
-<span class="fc" id="L66">        final double[] previousGyroData = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc" id="L67">        final double[] gyroData = new double[BodyKinematics.COMPONENTS];</span>
-<span class="fc bfc" id="L68" title="All 2 branches covered.">        for (final StandardDeviationTimedBodyKinematics measurement : sortedMeasurements) {</span>
-<span class="fc" id="L69">            final BodyKinematics kinematics = measurement.getKinematics();</span>
+<span class="fc" id="L72">        boolean first = true;</span>
+<span class="fc" id="L73">        double previousTimestamp = 0.0;</span>
+<span class="fc" id="L74">        final double[] previousGyroData = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc" id="L75">        final double[] gyroData = new double[BodyKinematics.COMPONENTS];</span>
+<span class="fc bfc" id="L76" title="All 2 branches covered.">        for (final StandardDeviationTimedBodyKinematics measurement : sortedMeasurements) {</span>
+<span class="fc" id="L77">            final BodyKinematics kinematics = measurement.getKinematics();</span>
 
-<span class="fc" id="L71">            gyroData[0] = kinematics.getAngularRateX();</span>
-<span class="fc" id="L72">            gyroData[1] = kinematics.getAngularRateY();</span>
-<span class="fc" id="L73">            gyroData[2] = kinematics.getAngularRateZ();</span>
+<span class="fc" id="L79">            gyroData[0] = kinematics.getAngularRateX();</span>
+<span class="fc" id="L80">            gyroData[1] = kinematics.getAngularRateY();</span>
+<span class="fc" id="L81">            gyroData[2] = kinematics.getAngularRateZ();</span>
 
-<span class="fc bfc" id="L75" title="All 2 branches covered.">            if (first) {</span>
-<span class="fc" id="L76">                previousTimestamp = measurement.getTimestampSeconds();</span>
+<span class="fc bfc" id="L83" title="All 2 branches covered.">            if (first) {</span>
+<span class="fc" id="L84">                previousTimestamp = measurement.getTimestampSeconds();</span>
 
                 // copy gyroData to previousGyroData
-<span class="fc" id="L79">                System.arraycopy(gyroData, 0, previousGyroData, 0, gyroData.length);</span>
+<span class="fc" id="L87">                System.arraycopy(gyroData, 0, previousGyroData, 0, gyroData.length);</span>
 
-<span class="fc" id="L81">                first = false;</span>
-<span class="fc" id="L82">                continue;</span>
+<span class="fc" id="L89">                first = false;</span>
+<span class="fc" id="L90">                continue;</span>
             }
 
-<span class="fc" id="L85">            final double timestamp = measurement.getTimestampSeconds();</span>
+<span class="fc" id="L93">            final double timestamp = measurement.getTimestampSeconds();</span>
 
 
-<span class="fc" id="L88">            final double dt = timestamp - previousTimestamp;</span>
+<span class="fc" id="L96">            final double dt = timestamp - previousTimestamp;</span>
 
-<span class="fc" id="L90">            quatIntegrationStepRK4(result, previousGyroData, gyroData, dt, result);</span>
+<span class="fc" id="L98">            quatIntegrationStepRK4(result, previousGyroData, gyroData, dt, result);</span>
 
 
             // prepare data for next iteration
 
             // copy gyroData to previousGyroData
-<span class="fc" id="L96">            System.arraycopy(gyroData, 0, previousGyroData, 0, gyroData.length);</span>
+<span class="fc" id="L104">            System.arraycopy(gyroData, 0, previousGyroData, 0, gyroData.length);</span>
             // copy timestamp to previous timestamp
-<span class="fc" id="L98">            previousTimestamp = timestamp;</span>
-<span class="fc" id="L99">        }</span>
-<span class="fc" id="L100">    }</span>
+<span class="fc" id="L106">            previousTimestamp = timestamp;</span>
+<span class="fc" id="L107">        }</span>
+<span class="fc" id="L108">    }</span>
 
     /**
      * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
@@ -109,8 +117,8 @@ import java.util.List;
     public static void integrateGyroSequence(
             final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence,
             final Quaternion result) {
-<span class="fc" id="L112">        integrateGyroSequence(sequence, null, result);</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L120">        integrateGyroSequence(sequence, null, result);</span>
+<span class="fc" id="L121">    }</span>
 
     /**
      * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
@@ -124,9 +132,9 @@ import java.util.List;
     public static Quaternion integrateGyroSequenceAndReturnNew(
             final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence,
             final Quaternion initialAttitude) {
-<span class="fc" id="L127">        final Quaternion result = new Quaternion();</span>
-<span class="fc" id="L128">        integrateGyroSequence(sequence, initialAttitude, result);</span>
-<span class="fc" id="L129">        return result;</span>
+<span class="fc" id="L135">        final Quaternion result = new Quaternion();</span>
+<span class="fc" id="L136">        integrateGyroSequence(sequence, initialAttitude, result);</span>
+<span class="fc" id="L137">        return result;</span>
     }
 
     /**
@@ -138,9 +146,9 @@ import java.util.List;
      */
     public static Quaternion integrateGyroSequenceAndReturnNew(
             final BodyKinematicsSequence&lt;StandardDeviationTimedBodyKinematics&gt; sequence) {
-<span class="fc" id="L141">        final Quaternion result = new Quaternion();</span>
-<span class="fc" id="L142">        integrateGyroSequence(sequence, result);</span>
-<span class="fc" id="L143">        return result;</span>
+<span class="fc" id="L149">        final Quaternion result = new Quaternion();</span>
+<span class="fc" id="L150">        integrateGyroSequence(sequence, result);</span>
+<span class="fc" id="L151">        return result;</span>
     }
 
     /**
@@ -150,9 +158,9 @@ import java.util.List;
      * @param quaternion matrix containing quaternion values to be normalized.
      */
     private static void normalizeQuaternion(final Matrix quaternion) {
-<span class="fc" id="L153">        final double norm = Utils.normF(quaternion);</span>
-<span class="fc" id="L154">        quaternion.multiplyByScalar(1.0 / norm);</span>
-<span class="fc" id="L155">    }</span>
+<span class="fc" id="L161">        final double norm = Utils.normF(quaternion);</span>
+<span class="fc" id="L162">        quaternion.multiplyByScalar(1.0 / norm);</span>
+<span class="fc" id="L163">    }</span>
 
     /**
      * Gets skew symmetric matrix representation of angular speed.
@@ -161,30 +169,30 @@ import java.util.List;
      * @param result computed skew symmetric matrix representation. Must be 4x4.
      */
     private static void computeOmegaSkew(final Matrix omega, final Matrix result) {
-<span class="fc" id="L164">        final double omega0 = omega.getElementAtIndex(0);</span>
-<span class="fc" id="L165">        final double omega1 = omega.getElementAtIndex(1);</span>
-<span class="fc" id="L166">        final double omega2 = omega.getElementAtIndex(2);</span>
+<span class="fc" id="L172">        final double omega0 = omega.getElementAtIndex(0);</span>
+<span class="fc" id="L173">        final double omega1 = omega.getElementAtIndex(1);</span>
+<span class="fc" id="L174">        final double omega2 = omega.getElementAtIndex(2);</span>
 
-<span class="fc" id="L168">        result.setElementAtIndex(0, 0.0);</span>
-<span class="fc" id="L169">        result.setElementAtIndex(1, omega0);</span>
-<span class="fc" id="L170">        result.setElementAtIndex(2, omega1);</span>
-<span class="fc" id="L171">        result.setElementAtIndex(3, omega2);</span>
+<span class="fc" id="L176">        result.setElementAtIndex(0, 0.0);</span>
+<span class="fc" id="L177">        result.setElementAtIndex(1, omega0);</span>
+<span class="fc" id="L178">        result.setElementAtIndex(2, omega1);</span>
+<span class="fc" id="L179">        result.setElementAtIndex(3, omega2);</span>
 
-<span class="fc" id="L173">        result.setElementAtIndex(4, -omega0);</span>
-<span class="fc" id="L174">        result.setElementAtIndex(5, 0.0);</span>
-<span class="fc" id="L175">        result.setElementAtIndex(6, -omega2);</span>
-<span class="fc" id="L176">        result.setElementAtIndex(7, omega1);</span>
+<span class="fc" id="L181">        result.setElementAtIndex(4, -omega0);</span>
+<span class="fc" id="L182">        result.setElementAtIndex(5, 0.0);</span>
+<span class="fc" id="L183">        result.setElementAtIndex(6, -omega2);</span>
+<span class="fc" id="L184">        result.setElementAtIndex(7, omega1);</span>
 
-<span class="fc" id="L178">        result.setElementAtIndex(8, -omega1);</span>
-<span class="fc" id="L179">        result.setElementAtIndex(9, omega2);</span>
-<span class="fc" id="L180">        result.setElementAtIndex(10, 0.0);</span>
-<span class="fc" id="L181">        result.setElementAtIndex(11, -omega0);</span>
+<span class="fc" id="L186">        result.setElementAtIndex(8, -omega1);</span>
+<span class="fc" id="L187">        result.setElementAtIndex(9, omega2);</span>
+<span class="fc" id="L188">        result.setElementAtIndex(10, 0.0);</span>
+<span class="fc" id="L189">        result.setElementAtIndex(11, -omega0);</span>
 
-<span class="fc" id="L183">        result.setElementAtIndex(12, -omega2);</span>
-<span class="fc" id="L184">        result.setElementAtIndex(13, -omega1);</span>
-<span class="fc" id="L185">        result.setElementAtIndex(14, omega0);</span>
-<span class="fc" id="L186">        result.setElementAtIndex(15, 0.0);</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L191">        result.setElementAtIndex(12, -omega2);</span>
+<span class="fc" id="L192">        result.setElementAtIndex(13, -omega1);</span>
+<span class="fc" id="L193">        result.setElementAtIndex(14, omega0);</span>
+<span class="fc" id="L194">        result.setElementAtIndex(15, 0.0);</span>
+<span class="fc" id="L195">    }</span>
 
     /**
      * Performs a RK4 Runge-Kutta integration step.
@@ -205,67 +213,67 @@ import java.util.List;
             final double dt,
             final Matrix result) {
         try {
-<span class="fc" id="L208">            final Matrix omega01 = omega0.addAndReturnNew(omega1);</span>
-<span class="fc" id="L209">            omega01.multiplyByScalar(0.5);</span>
+<span class="fc" id="L216">            final Matrix omega01 = omega0.addAndReturnNew(omega1);</span>
+<span class="fc" id="L217">            omega01.multiplyByScalar(0.5);</span>
 
-<span class="fc" id="L211">            final Matrix k1 = new Matrix(Quaternion.N_PARAMS, 1);</span>
-<span class="fc" id="L212">            final Matrix k2 = new Matrix(Quaternion.N_PARAMS, 1);</span>
-<span class="fc" id="L213">            final Matrix k3 = new Matrix(Quaternion.N_PARAMS, 1);</span>
-<span class="fc" id="L214">            final Matrix k4 = new Matrix(Quaternion.N_PARAMS, 1);</span>
-<span class="fc" id="L215">            final Matrix tmpQ = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L219">            final Matrix k1 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L220">            final Matrix k2 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L221">            final Matrix k3 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L222">            final Matrix k4 = new Matrix(Quaternion.N_PARAMS, 1);</span>
+<span class="fc" id="L223">            final Matrix tmpQ = new Matrix(Quaternion.N_PARAMS, 1);</span>
 
-<span class="fc" id="L217">            final Matrix omegaSkew = new Matrix(</span>
+<span class="fc" id="L225">            final Matrix omegaSkew = new Matrix(</span>
                     Quaternion.N_PARAMS, Quaternion.N_PARAMS);
 
             // First Runge-Kutta coefficient
-<span class="fc" id="L221">            computeOmegaSkew(omega0, omegaSkew);</span>
-<span class="fc" id="L222">            omegaSkew.multiply(quat, k1);</span>
-<span class="fc" id="L223">            k1.multiplyByScalar(0.5);</span>
+<span class="fc" id="L229">            computeOmegaSkew(omega0, omegaSkew);</span>
+<span class="fc" id="L230">            omegaSkew.multiply(quat, k1);</span>
+<span class="fc" id="L231">            k1.multiplyByScalar(0.5);</span>
 
             // Second Runge-Kutta coefficient
-<span class="fc" id="L226">            tmpQ.copyFrom(k1);</span>
-<span class="fc" id="L227">            tmpQ.multiplyByScalar(0.5 * dt);</span>
-<span class="fc" id="L228">            tmpQ.add(quat);</span>
-<span class="fc" id="L229">            computeOmegaSkew(omega01, omegaSkew);</span>
-<span class="fc" id="L230">            omegaSkew.multiply(tmpQ, k2);</span>
-<span class="fc" id="L231">            k2.multiplyByScalar(0.5);</span>
-
-            // Third Runge-Kutta coefficient (same omega skew as second coeff.)
-<span class="fc" id="L234">            tmpQ.copyFrom(k2);</span>
+<span class="fc" id="L234">            tmpQ.copyFrom(k1);</span>
 <span class="fc" id="L235">            tmpQ.multiplyByScalar(0.5 * dt);</span>
 <span class="fc" id="L236">            tmpQ.add(quat);</span>
-<span class="fc" id="L237">            omegaSkew.multiply(tmpQ, k3);</span>
-<span class="fc" id="L238">            k3.multiplyByScalar(0.5);</span>
+<span class="fc" id="L237">            computeOmegaSkew(omega01, omegaSkew);</span>
+<span class="fc" id="L238">            omegaSkew.multiply(tmpQ, k2);</span>
+<span class="fc" id="L239">            k2.multiplyByScalar(0.5);</span>
+
+            // Third Runge-Kutta coefficient (same omega skew as second coeff.)
+<span class="fc" id="L242">            tmpQ.copyFrom(k2);</span>
+<span class="fc" id="L243">            tmpQ.multiplyByScalar(0.5 * dt);</span>
+<span class="fc" id="L244">            tmpQ.add(quat);</span>
+<span class="fc" id="L245">            omegaSkew.multiply(tmpQ, k3);</span>
+<span class="fc" id="L246">            k3.multiplyByScalar(0.5);</span>
 
             // Forth Runge-Kutta coefficient
-<span class="fc" id="L241">            tmpQ.copyFrom(k3);</span>
-<span class="fc" id="L242">            tmpQ.multiplyByScalar(dt);</span>
-<span class="fc" id="L243">            tmpQ.add(quat);</span>
-<span class="fc" id="L244">            computeOmegaSkew(omega1, omegaSkew);</span>
-<span class="fc" id="L245">            omegaSkew.multiply(tmpQ, k4);</span>
-<span class="fc" id="L246">            k4.multiplyByScalar(0.5);</span>
+<span class="fc" id="L249">            tmpQ.copyFrom(k3);</span>
+<span class="fc" id="L250">            tmpQ.multiplyByScalar(dt);</span>
+<span class="fc" id="L251">            tmpQ.add(quat);</span>
+<span class="fc" id="L252">            computeOmegaSkew(omega1, omegaSkew);</span>
+<span class="fc" id="L253">            omegaSkew.multiply(tmpQ, k4);</span>
+<span class="fc" id="L254">            k4.multiplyByScalar(0.5);</span>
 
-<span class="fc" id="L248">            final double mult1 = 1.0 / 6.0;</span>
-<span class="fc" id="L249">            final double mult2 = 1.0 / 3.0;</span>
+<span class="fc" id="L256">            final double mult1 = 1.0 / 6.0;</span>
+<span class="fc" id="L257">            final double mult2 = 1.0 / 3.0;</span>
 
             // result = quat + dt * (mult1 * k1 + mult2 * k2 + mult2 * k3 + mult1 * k4)
-<span class="fc" id="L252">            k1.multiplyByScalar(mult1);</span>
-<span class="fc" id="L253">            k2.multiplyByScalar(mult2);</span>
-<span class="fc" id="L254">            k3.multiplyByScalar(mult2);</span>
-<span class="fc" id="L255">            k4.multiplyByScalar(mult1);</span>
+<span class="fc" id="L260">            k1.multiplyByScalar(mult1);</span>
+<span class="fc" id="L261">            k2.multiplyByScalar(mult2);</span>
+<span class="fc" id="L262">            k3.multiplyByScalar(mult2);</span>
+<span class="fc" id="L263">            k4.multiplyByScalar(mult1);</span>
 
-<span class="fc" id="L257">            result.copyFrom(k1);</span>
-<span class="fc" id="L258">            result.add(k2);</span>
-<span class="fc" id="L259">            result.add(k3);</span>
-<span class="fc" id="L260">            result.add(k4);</span>
-<span class="fc" id="L261">            result.multiplyByScalar(dt);</span>
-<span class="fc" id="L262">            result.add(quat);</span>
-<span class="nc" id="L263">        } catch (final WrongSizeException ignore) {</span>
+<span class="fc" id="L265">            result.copyFrom(k1);</span>
+<span class="fc" id="L266">            result.add(k2);</span>
+<span class="fc" id="L267">            result.add(k3);</span>
+<span class="fc" id="L268">            result.add(k4);</span>
+<span class="fc" id="L269">            result.multiplyByScalar(dt);</span>
+<span class="fc" id="L270">            result.add(quat);</span>
+<span class="nc" id="L271">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L265">        }</span>
+<span class="fc" id="L273">        }</span>
 
-<span class="fc" id="L267">        normalizeQuaternion(result);</span>
-<span class="fc" id="L268">    }</span>
+<span class="fc" id="L275">        normalizeQuaternion(result);</span>
+<span class="fc" id="L276">    }</span>
 
     /**
      * Performs a RK4 Runge-Kutta integration step.
@@ -285,22 +293,22 @@ import java.util.List;
             final double dt,
             final Quaternion result) {
         try {
-<span class="fc" id="L288">            final Matrix quat = new Matrix(</span>
+<span class="fc" id="L296">            final Matrix quat = new Matrix(</span>
                     Quaternion.N_PARAMS, 1);
-<span class="fc" id="L290">            quaternion.values(quat.getBuffer());</span>
+<span class="fc" id="L298">            quaternion.values(quat.getBuffer());</span>
 
-<span class="fc" id="L292">            final Matrix omega0b = Matrix.newFromArray(omega0);</span>
-<span class="fc" id="L293">            final Matrix omega1b = Matrix.newFromArray(omega1);</span>
+<span class="fc" id="L300">            final Matrix omega0b = Matrix.newFromArray(omega0);</span>
+<span class="fc" id="L301">            final Matrix omega1b = Matrix.newFromArray(omega1);</span>
 
-<span class="fc" id="L295">            final Matrix quatResult = new Matrix(</span>
+<span class="fc" id="L303">            final Matrix quatResult = new Matrix(</span>
                     Quaternion.N_PARAMS, 1);
 
-<span class="fc" id="L298">            quatIntegrationStepRK4(quat, omega0b, omega1b, dt, quatResult);</span>
-<span class="fc" id="L299">            result.setValues(quatResult.getBuffer());</span>
+<span class="fc" id="L306">            quatIntegrationStepRK4(quat, omega0b, omega1b, dt, quatResult);</span>
+<span class="fc" id="L307">            result.setValues(quatResult.getBuffer());</span>
 
-<span class="nc" id="L301">        } catch (WrongSizeException ignore) {</span>
+<span class="nc" id="L309">        } catch (WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L303">        }</span>
-<span class="fc" id="L304">    }</span>
+<span class="fc" id="L311">        }</span>
+<span class="fc" id="L312">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
