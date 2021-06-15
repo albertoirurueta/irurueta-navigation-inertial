@@ -45,6 +45,13 @@ public class WMMLoader {
     private static final int N = WorldMagneticModel.N;
 
     /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private WMMLoader() {
+    }
+
+    /**
      * Loads World Magnetic Model from provided resource name.
      * Resource will be resolved an loaded using current class loader.
      *
@@ -192,11 +199,10 @@ public class WMMLoader {
                     }
                     result.c[m][n] = result.snorm[n + m * N] * result.c[m][n];
                     result.cd[m][n] = result.snorm[n + m * N] * result.cd[m][n];
-                }    //for(m...)
+                }
 
                 result.fn[n] = (n + 1);
                 result.fm[n] = n;
-
             }
 
             result.k[1][1] = 0.0;

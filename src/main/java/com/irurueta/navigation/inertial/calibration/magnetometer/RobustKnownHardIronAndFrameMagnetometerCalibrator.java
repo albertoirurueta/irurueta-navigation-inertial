@@ -391,7 +391,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
     /**
      * Constructor.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator() {
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator() {
     }
 
     /**
@@ -400,7 +400,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         mListener = listener;
     }
@@ -412,7 +412,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                     deviations taken at different frames (positions and
      *                     orientations).
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements) {
         mMeasurements = measurements;
     }
@@ -425,7 +425,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                     orientations).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         this(measurements);
@@ -438,7 +438,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -449,7 +449,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {
         this(commonAxisUsed);
@@ -465,7 +465,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
         this(measurements);
@@ -482,7 +482,7 @@ public abstract class RobustKnownHardIronAndFrameMagnetometerCalibrator implemen
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownHardIronAndFrameMagnetometerCalibrator(
+    protected RobustKnownHardIronAndFrameMagnetometerCalibrator(
             final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
             final RobustKnownHardIronAndFrameMagnetometerCalibratorListener listener) {

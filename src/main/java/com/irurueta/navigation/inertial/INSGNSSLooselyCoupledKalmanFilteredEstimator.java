@@ -96,6 +96,7 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
                         @Override
                         public void onReset(
                                 final INSLooselyCoupledKalmanFilteredEstimator estimator) {
+                            // no action needed
                         }
                     });
 
@@ -1759,17 +1760,19 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
             mInsEstimator.setFrame(mFrame);
 
             boolean result = false;
-            if (mInsEstimator.isUpdateReady() &&
-                    (result = mInsEstimator.update(kinematics, timestamp))) {
-                if (mKinematics == null) {
-                    mKinematics = mInsEstimator.getKinematics();
-                } else {
-                    mInsEstimator.getKinematics(mKinematics);
-                }
+            if (mInsEstimator.isUpdateReady()) {
+                result = mInsEstimator.update(kinematics, timestamp);
+                if (result) {
+                    if (mKinematics == null) {
+                        mKinematics = mInsEstimator.getKinematics();
+                    } else {
+                        mInsEstimator.getKinematics(mKinematics);
+                    }
 
-                if (mEstimation != null) {
-                    initState();
-                    mInsEstimator.getState(mState);
+                    if (mEstimation != null) {
+                        initState();
+                        mInsEstimator.getState(mState);
+                    }
                 }
             } else {
                 mKinematics = kinematics;
@@ -1855,10 +1858,8 @@ public class INSGNSSLooselyCoupledKalmanFilteredEstimator {
                 mEstimation.setVelocityCoordinates(
                         mFrame.getVx(), mFrame.getVy(), mFrame.getVz());
 
-                if (mEstimation != null) {
-                    initState();
-                    mInsEstimator.getState(mState);
-                }
+                initState();
+                mInsEstimator.getState(mState);
             }
 
             return result;

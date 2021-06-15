@@ -66,6 +66,13 @@ public class INSTightlyCoupledKalmanEpochEstimator {
     public static final double EARTH_ECCENTRICITY = Constants.EARTH_ECCENTRICITY;
 
     /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private INSTightlyCoupledKalmanEpochEstimator() {
+    }
+
+    /**
      * Estimates the update of Kalman filter state and covariance matrix for a single
      * epoch.
      *

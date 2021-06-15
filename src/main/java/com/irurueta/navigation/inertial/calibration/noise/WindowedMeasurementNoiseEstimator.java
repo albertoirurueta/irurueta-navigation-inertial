@@ -130,7 +130,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
     /**
      * Constructor.
      */
-    public WindowedMeasurementNoiseEstimator() {
+    protected WindowedMeasurementNoiseEstimator() {
     }
 
     /**
@@ -138,7 +138,7 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public WindowedMeasurementNoiseEstimator(final L listener) {
+    protected WindowedMeasurementNoiseEstimator(final L listener) {
         mListener = listener;
     }
 
@@ -660,20 +660,20 @@ public abstract class WindowedMeasurementNoiseEstimator<U extends Enum<?>,
         avg /= mWindowSize;
 
         // compute variances
-        double var = 0.0;
+        double variance = 0.0;
         for (int i = 0; i < endPos; i++) {
             final double value = mWindowedMeasurements[i];
             final double diff = value - avg;
             final double diff2 = diff * diff;
 
-            var += diff2;
+            variance += diff2;
         }
 
         final int m = mWindowSize - 1;
 
-        var /= m;
+        variance /= m;
 
         mAvg = avg;
-        mVariance = var;
+        mVariance = variance;
     }
 }

@@ -317,30 +317,29 @@ public class GyroscopeMeasurementsGenerator extends
 
                 addSequenceItem(sample);
             }
-        } else if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {
-            if (mPreviousStatus == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL
-                    && mCurrentSequenceItems != null && !mCurrentSequenceItems.isEmpty()) {
+        } else if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL
+                && mPreviousStatus == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL
+                && mCurrentSequenceItems != null && !mCurrentSequenceItems.isEmpty()) {
 
-                mCurrentAvgX = mStaticIntervalDetector.getInstantaneousAvgX();
-                mCurrentAvgY = mStaticIntervalDetector.getInstantaneousAvgY();
-                mCurrentAvgZ = mStaticIntervalDetector.getInstantaneousAvgZ();
+            mCurrentAvgX = mStaticIntervalDetector.getInstantaneousAvgX();
+            mCurrentAvgY = mStaticIntervalDetector.getInstantaneousAvgY();
+            mCurrentAvgZ = mStaticIntervalDetector.getInstantaneousAvgZ();
 
-                // we have all required data to generate a sequence
-                BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = null;
-                if (mListener != null) {
-                    sequence = new BodyKinematicsSequence<>();
-                    sequence.setBeforeMeanSpecificForceCoordinates(
-                            mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);
-                    sequence.setItems(mCurrentSequenceItems);
-                    sequence.setAfterMeanSpecificForceCoordinates(
-                            mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);
-                }
+            // we have all required data to generate a sequence
+            BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence = null;
+            if (mListener != null) {
+                sequence = new BodyKinematicsSequence<>();
+                sequence.setBeforeMeanSpecificForceCoordinates(
+                        mPreviousAvgX, mPreviousAvgY, mPreviousAvgZ);
+                sequence.setItems(mCurrentSequenceItems);
+                sequence.setAfterMeanSpecificForceCoordinates(
+                        mCurrentAvgX, mCurrentAvgY, mCurrentAvgZ);
+            }
 
-                mCurrentSequenceItems = null;
+            mCurrentSequenceItems = null;
 
-                if (mListener != null) {
-                    mListener.onGeneratedMeasurement(this, sequence);
-                }
+            if (mListener != null) {
+                mListener.onGeneratedMeasurement(this, sequence);
             }
         }
     }
@@ -420,6 +419,7 @@ public class GyroscopeMeasurementsGenerator extends
         try {
             mAccumulatedEstimator.reset();
         } catch (final LockedException ignore) {
+            // no action needed
         }
     }
 

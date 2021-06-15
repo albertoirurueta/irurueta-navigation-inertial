@@ -493,7 +493,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
     /**
      * Constructor.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator() {
+    protected RobustKnownBiasTurntableGyroscopeCalibrator() {
         try {
             mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
                     BodyKinematics.COMPONENTS);
@@ -532,7 +532,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -586,7 +586,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -630,7 +630,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -684,7 +684,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -734,7 +734,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -791,7 +791,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -844,7 +844,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -901,7 +901,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -958,7 +958,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1015,7 +1015,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1073,7 +1073,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1132,7 +1132,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1197,7 +1197,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1265,7 +1265,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1330,7 +1330,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1397,7 +1397,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1446,7 +1446,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1490,7 +1490,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1533,7 +1533,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1577,7 +1577,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1626,7 +1626,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1678,7 +1678,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1730,7 +1730,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1782,7 +1782,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1838,7 +1838,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1894,7 +1894,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1951,7 +1951,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2009,7 +2009,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2073,7 +2073,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2140,7 +2140,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2205,7 +2205,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2271,7 +2271,7 @@ public abstract class RobustKnownBiasTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustKnownBiasTurntableGyroscopeCalibrator(
+    protected RobustKnownBiasTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,

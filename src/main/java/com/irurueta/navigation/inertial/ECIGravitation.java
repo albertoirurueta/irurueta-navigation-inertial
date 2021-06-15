@@ -62,7 +62,7 @@ public class ECIGravitation extends GravityOrGravitation<ECIGravitation> {
     }
 
     /**
-     * Check if provided object is a GravitationECI instance having exactly the same contents
+     * Check if provided object is a ECIGravitation instance having exactly the same contents
      * as this instance.
      *
      * @param obj object to be compared.

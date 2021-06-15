@@ -58,12 +58,6 @@ public class BodyKinematicsFixer {
     private final AngularSpeedTriad mFixedAngularSpeed = new AngularSpeedTriad();
 
     /**
-     * Constructor.
-     */
-    public BodyKinematicsFixer() {
-    }
-
-    /**
      * Gets acceleration bias values expressed in meters per squared second (m/s^2).
      *
      * @return bias values expressed in meters per squared second.

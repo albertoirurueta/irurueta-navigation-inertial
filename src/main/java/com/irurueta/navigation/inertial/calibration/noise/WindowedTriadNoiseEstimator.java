@@ -150,7 +150,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Constructor.
      */
-    public WindowedTriadNoiseEstimator() {
+    protected WindowedTriadNoiseEstimator() {
     }
 
     /**
@@ -158,7 +158,7 @@ public abstract class WindowedTriadNoiseEstimator<U extends Enum<?>,
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public WindowedTriadNoiseEstimator(final L listener) {
+    protected WindowedTriadNoiseEstimator(final L listener) {
         mListener = listener;
     }
 

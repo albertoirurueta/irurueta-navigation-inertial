@@ -131,7 +131,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
     /**
      * Constructor.
      */
-    public AccumulatedTriadNoiseEstimator() {
+    protected AccumulatedTriadNoiseEstimator() {
     }
 
     /**
@@ -139,7 +139,7 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public AccumulatedTriadNoiseEstimator(final L listener) {
+    protected AccumulatedTriadNoiseEstimator(final L listener) {
         mListener = listener;
     }
 
@@ -771,9 +771,9 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
 
         // compute averages
         final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
-        mAvgX = mAvgX * tmp + valueX / (double) mNumberOfProcessedSamplesPlusOne;
-        mAvgY = mAvgY * tmp + valueY / (double) mNumberOfProcessedSamplesPlusOne;
-        mAvgZ = mAvgZ * tmp + valueZ / (double) mNumberOfProcessedSamplesPlusOne;
+        mAvgX = mAvgX * tmp + valueX / mNumberOfProcessedSamplesPlusOne;
+        mAvgY = mAvgY * tmp + valueY / mNumberOfProcessedSamplesPlusOne;
+        mAvgZ = mAvgZ * tmp + valueZ / mNumberOfProcessedSamplesPlusOne;
 
         // compute variances
         final double diffX = valueX - mAvgX;
@@ -783,9 +783,9 @@ public abstract class AccumulatedTriadNoiseEstimator<U extends Enum<?>,
         final double diffY2 = diffY * diffY;
         final double diffZ2 = diffZ * diffZ;
 
-        mVarianceX = mVarianceX * tmp + diffX2 / (double) mNumberOfProcessedSamplesPlusOne;
-        mVarianceY = mVarianceY * tmp + diffY2 / (double) mNumberOfProcessedSamplesPlusOne;
-        mVarianceZ = mVarianceZ * tmp + diffZ2 / (double) mNumberOfProcessedSamplesPlusOne;
+        mVarianceX = mVarianceX * tmp + diffX2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceY = mVarianceY * tmp + diffY2 / mNumberOfProcessedSamplesPlusOne;
+        mVarianceZ = mVarianceZ * tmp + diffZ2 / mNumberOfProcessedSamplesPlusOne;
 
         if (mLastTriad == null) {
             mLastTriad = createTriad(valueX, valueY, valueZ, getDefaultUnit());

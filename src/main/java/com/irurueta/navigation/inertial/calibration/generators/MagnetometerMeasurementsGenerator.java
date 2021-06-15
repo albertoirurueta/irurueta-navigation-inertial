@@ -201,6 +201,7 @@ public class MagnetometerMeasurementsGenerator extends
         try {
             mAccumulatedEstimator.reset();
         } catch (final LockedException ignore) {
+            // no action needed
         }
     }
 }

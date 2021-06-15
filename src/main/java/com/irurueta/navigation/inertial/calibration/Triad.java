@@ -62,7 +62,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @param unit unit of measurement.
      * @throws IllegalArgumentException if provided unit is null.
      */
-    public Triad(final U unit) {
+    protected Triad(final U unit) {
         if (unit == null) {
             throw new IllegalArgumentException();
         }
@@ -79,7 +79,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      * @param valueZ value of z-coordinate.
      * @throws IllegalArgumentException if provided unit is null.
      */
-    public Triad(final U unit, final double valueX, final double valueY,
+    protected Triad(final U unit, final double valueX, final double valueY,
                  final double valueZ) {
         this(unit);
         setValueCoordinates(valueX, valueY, valueZ);
@@ -90,7 +90,7 @@ public abstract class Triad<U extends Enum<?>, T extends Measurement<U>>
      *
      * @param other instance to copy from.
      */
-    public Triad(final Triad<U, T> other) {
+    protected Triad(final Triad<U, T> other) {
         copyFrom(other);
     }
 

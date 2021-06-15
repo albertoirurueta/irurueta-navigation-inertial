@@ -3359,9 +3359,9 @@ public class BodyMagneticFluxDensityBiasEstimator {
         // compute biases
         final double tmp = (double) mNumberOfProcessedSamples
                 / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasX = mBiasX * tmp + diffBx / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasY = mBiasY * tmp + diffBy / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasZ = mBiasZ * tmp + diffBz / (double) mNumberOfProcessedSamplesPlusOne;
+        mBiasX = mBiasX * tmp + diffBx / mNumberOfProcessedSamplesPlusOne;
+        mBiasY = mBiasY * tmp + diffBy / mNumberOfProcessedSamplesPlusOne;
+        mBiasZ = mBiasZ * tmp + diffBz / mNumberOfProcessedSamplesPlusOne;
 
         // compute variances
         final double diffBiasX = diffBx - mBiasX;
@@ -3373,11 +3373,11 @@ public class BodyMagneticFluxDensityBiasEstimator {
         final double diffBiasZ2 = diffBiasZ * diffBiasZ;
 
         mVarianceX = mVarianceX * tmp
-                + diffBiasX2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasX2 / mNumberOfProcessedSamplesPlusOne;
         mVarianceY = mVarianceY * tmp
-                + diffBiasY2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasY2 / mNumberOfProcessedSamplesPlusOne;
         mVarianceZ = mVarianceZ * tmp
-                + diffBiasZ2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasZ2 / mNumberOfProcessedSamplesPlusOne;
 
         mLastBodyMagneticFluxDensity = bodyMagneticFluxDensity;
 

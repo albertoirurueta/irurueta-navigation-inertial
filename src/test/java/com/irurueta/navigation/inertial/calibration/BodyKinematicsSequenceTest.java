@@ -788,6 +788,32 @@ public class BodyKinematicsSequenceTest {
     }
 
     @Test
+    public void testSetItems2() {
+        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
+                new BodyKinematicsSequence<>();
+
+        assertFalse(sequence.getSortedItems(null));
+        assertNull(sequence.getSortedItems());
+
+        // set items
+        final List<StandardDeviationTimedBodyKinematics> items = new ArrayList<>(createItems());
+        sequence.setItems(items);
+
+        // check
+        final List<StandardDeviationTimedBodyKinematics> sorted1 = sequence
+                .getSortedItems();
+        final List<StandardDeviationTimedBodyKinematics> sorted2 =
+                new ArrayList<>();
+        assertTrue(sequence.getSortedItems(sorted2));
+
+        assertEquals(sorted1.size(), 2);
+        assertTrue(sorted1.get(0).getTimestampSeconds()
+                < sorted1.get(1).getTimestampSeconds());
+        assertEquals(sorted1, sorted2);
+        assertEquals(sequence.getItemsCount(), 2);
+    }
+
+    @Test
     public void testGetSetBeforeMeanFx() {
         final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence =
                 new BodyKinematicsSequence<>();

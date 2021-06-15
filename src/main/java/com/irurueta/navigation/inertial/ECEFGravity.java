@@ -63,7 +63,7 @@ public class ECEFGravity extends GravityOrGravitation<ECEFGravity> {
     }
 
     /**
-     * Checks if provided object is a GravityECEF instance having exactly the same contents
+     * Checks if provided object is a ECEFGravity instance having exactly the same contents
      * as this instance.
      *
      * @param obj object to be compared.

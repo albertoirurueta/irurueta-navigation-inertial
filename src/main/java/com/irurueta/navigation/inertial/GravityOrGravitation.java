@@ -52,7 +52,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
     /**
      * Constructor.
      */
-    public GravityOrGravitation() {
+    protected GravityOrGravitation() {
     }
 
     /**
@@ -62,7 +62,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gy acceleration due to gravity through ECI or ECEF y-axis expressed in meters per squared second (m/s^2).
      * @param gz acceleration due to gravity through ECI or ECEF z-axis expressed in meters per squared second (m/s^2).
      */
-    public GravityOrGravitation(final double gx, final double gy, final double gz) {
+    protected GravityOrGravitation(final double gx, final double gy, final double gz) {
         setCoordinates(gx, gy, gz);
     }
 
@@ -73,7 +73,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      * @param gy acceleration due to gravity through ECI or ECEF y-axis to be set.
      * @param gz acceleration due to gravity through ECI or ECEF z-axis to be set.
      */
-    public GravityOrGravitation(final Acceleration gx, final Acceleration gy,
+    protected GravityOrGravitation(final Acceleration gx, final Acceleration gy,
                                 final Acceleration gz) {
         setCoordinates(gx, gy, gz);
     }
@@ -83,7 +83,7 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
      *
      * @param input instance to copy data from.
      */
-    public GravityOrGravitation(final T input) {
+    protected GravityOrGravitation(final T input) {
         copyFrom(input);
     }
 
@@ -387,6 +387,17 @@ public abstract class GravityOrGravitation<T extends GravityOrGravitation<?>> im
     public int hashCode() {
         return Objects.hash(mGx, mGy, mGz);
     }
+
+
+    /**
+     * Check if provided object is a T instance having exactly the same contents
+     * as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public abstract boolean equals(final Object obj);
 
     /**
      * Checks if provided instance has exactly the same contents as this instance.

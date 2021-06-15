@@ -379,7 +379,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
     /**
      * Constructor.
      */
-    public RobustKnownFrameAccelerometerCalibrator() {
+    protected RobustKnownFrameAccelerometerCalibrator() {
     }
 
     /**
@@ -388,7 +388,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         mListener = listener;
     }
@@ -400,7 +400,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements) {
         mMeasurements = measurements;
     }
@@ -413,7 +413,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                     and velocities).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         this(measurements);
@@ -426,7 +426,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
+    protected RobustKnownFrameAccelerometerCalibrator(final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
 
@@ -437,7 +437,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {
         this(commonAxisUsed);
@@ -453,7 +453,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         this(measurements);
@@ -470,7 +470,7 @@ public abstract class RobustKnownFrameAccelerometerCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownFrameAccelerometerCalibrator(
+    protected RobustKnownFrameAccelerometerCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed,
             final RobustKnownFrameAccelerometerCalibratorListener listener) {

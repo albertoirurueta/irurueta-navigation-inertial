@@ -96,7 +96,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
     /**
      * Constructor.
      */
-    public AccumulatedMeasurementNoiseEstimator() {
+    protected AccumulatedMeasurementNoiseEstimator() {
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
      *
      * @param listener listener to handle events raised by this estimator.
      */
-    public AccumulatedMeasurementNoiseEstimator(final L listener) {
+    protected AccumulatedMeasurementNoiseEstimator(final L listener) {
         mListener = listener;
     }
 
@@ -349,13 +349,13 @@ public abstract class AccumulatedMeasurementNoiseEstimator<U extends Enum<?>,
 
         // compute average
         final double tmp = (double) mNumberOfProcessedSamples / (double) mNumberOfProcessedSamplesPlusOne;
-        mAvg = mAvg * tmp + value / (double) mNumberOfProcessedSamplesPlusOne;
+        mAvg = mAvg * tmp + value / mNumberOfProcessedSamplesPlusOne;
 
         // compute variance
         final double diff = value - mAvg;
         final double diff2 = diff * diff;
 
-        mVariance = mVariance * tmp + diff2 / (double) mNumberOfProcessedSamplesPlusOne;
+        mVariance = mVariance * tmp + diff2 / mNumberOfProcessedSamplesPlusOne;
 
         if (mLastMeasurement == null) {
             mLastMeasurement = createMeasurement(value, getDefaultUnit());

@@ -369,7 +369,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
     /**
      * Constructor.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator() {
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator() {
     }
 
     /**
@@ -378,7 +378,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
         mListener = listener;
     }
@@ -390,7 +390,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                     deviations taken at the same position with zero velocity
      *                     and unknown different orientations.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final List<StandardDeviationBodyKinematics> measurements) {
         mMeasurements = measurements;
     }
@@ -402,7 +402,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -414,7 +414,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final double[] bias) {
         try {
             setBias(bias);
@@ -429,7 +429,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Matrix bias) {
         try {
             setBias(bias);
@@ -446,7 +446,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Matrix bias, final Matrix initialMa) {
         this(bias);
         try {
@@ -463,7 +463,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               squared second (m/s^2).
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm) {
         internalSetGroundTruthGravityNorm(groundTruthGravityNorm);
     }
@@ -478,7 +478,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               of accelerometer and gyroscope measurements.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements) {
         this(measurements);
@@ -497,7 +497,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               starts, ends or its progress significantly changes.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
@@ -518,7 +518,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
@@ -541,7 +541,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               starts, ends or its progress significantly changes.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed,
@@ -563,7 +563,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
@@ -586,7 +586,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias,
@@ -610,7 +610,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
@@ -634,7 +634,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
@@ -656,7 +656,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
@@ -678,7 +678,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias,
@@ -701,7 +701,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
@@ -724,7 +724,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -748,7 +748,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
@@ -772,7 +772,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
@@ -797,7 +797,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -823,7 +823,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Double groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -840,7 +840,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @param groundTruthGravityNorm ground truth gravity norm.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm) {
         this(convertAcceleration(groundTruthGravityNorm));
     }
@@ -854,7 +854,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               of accelerometer and gyroscope measurements.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements) {
         this(convertAcceleration(groundTruthGravityNorm), measurements);
@@ -871,7 +871,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               starts, ends or its progress significantly changes.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndGravityNormAccelerometerCalibratorListener listener) {
@@ -890,7 +890,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
@@ -911,7 +911,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                               starts, ends or its progress significantly changes.
      * @throws IllegalArgumentException if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed,
@@ -932,7 +932,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
@@ -953,7 +953,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias,
@@ -976,7 +976,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
@@ -999,7 +999,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias array does not have length 3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
@@ -1019,7 +1019,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
@@ -1039,7 +1039,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias,
@@ -1061,7 +1061,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
@@ -1083,7 +1083,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      * @throws IllegalArgumentException if provided bias matrix is not 3x1 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -1105,7 +1105,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
@@ -1127,7 +1127,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
@@ -1151,7 +1151,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -1176,7 +1176,7 @@ public abstract class RobustKnownBiasAndGravityNormAccelerometerCalibrator imple
      *                                  scaling and coupling error matrix is not 3x3 or
      *                                  if provided gravity norm value is negative.
      */
-    public RobustKnownBiasAndGravityNormAccelerometerCalibrator(
+    protected RobustKnownBiasAndGravityNormAccelerometerCalibrator(
             final Acceleration groundTruthGravityNorm,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,

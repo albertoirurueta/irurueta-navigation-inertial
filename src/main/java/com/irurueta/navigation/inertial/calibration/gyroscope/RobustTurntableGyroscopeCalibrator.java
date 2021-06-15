@@ -504,7 +504,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
     /**
      * Constructor.
      */
-    public RobustTurntableGyroscopeCalibrator() {
+    protected RobustTurntableGyroscopeCalibrator() {
         try {
             mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
                     BodyKinematics.COMPONENTS);
@@ -544,7 +544,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -599,7 +599,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -644,7 +644,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -699,7 +699,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -750,7 +750,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -808,7 +808,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -862,7 +862,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -920,7 +920,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -978,7 +978,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1036,7 +1036,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1095,7 +1095,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1155,7 +1155,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1221,7 +1221,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1290,7 +1290,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1356,7 +1356,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1424,7 +1424,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final ECEFPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1474,7 +1474,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1519,7 +1519,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1563,7 +1563,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1608,7 +1608,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1658,7 +1658,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1711,7 +1711,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1764,7 +1764,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1817,7 +1817,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1874,7 +1874,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1931,7 +1931,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -1989,7 +1989,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2048,7 +2048,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2113,7 +2113,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2181,7 +2181,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2247,7 +2247,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,
@@ -2314,7 +2314,7 @@ public abstract class RobustTurntableGyroscopeCalibrator implements
      *                                  turntable rotation rate or
      *                                  time interval is zero or negative.
      */
-    public RobustTurntableGyroscopeCalibrator(
+    protected RobustTurntableGyroscopeCalibrator(
             final NEDPosition position,
             final double turntableRotationRate,
             final double timeInterval,

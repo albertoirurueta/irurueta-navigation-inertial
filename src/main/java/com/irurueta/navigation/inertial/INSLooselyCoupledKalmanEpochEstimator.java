@@ -64,6 +64,13 @@ public class INSLooselyCoupledKalmanEpochEstimator {
     private static final int POS_AND_VEL_COMPONENTS = 6;
 
     /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private INSLooselyCoupledKalmanEpochEstimator() {
+    }
+
+    /**
      * Estimates the update of Kalman filter state for a single epoch.
      *
      * @param userPosition        ECEF user position.
@@ -797,7 +804,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
 
         // 3. Propagate state estimates using (3.14) noting that all states are zero
         // due to closed-loop correction.
-        // x_est_propagated(1:15, 1) = 0;
+        // x_est_propagated(1:15, 1) = 0
 
         // 4. Propagate state estimation error covariance matrix using (3.46)
         final Matrix pMatrixOld = previousState.getCovariance();
@@ -866,7 +873,7 @@ public class INSLooselyCoupledKalmanEpochEstimator {
         deltaZ.setElementAtIndex(5, vz - prevVz);
 
         // 9. Update state estimates using (3.24)
-        // x_est_new = x_est_propagated + K_matrix * delta_z;
+        // x_est_new = x_est_propagated + K_matrix * delta_z
         final Matrix xEstNew = k.multiplyAndReturnNew(deltaZ);
 
         // 10. Update state estimation error covariance matrix using (3.25)

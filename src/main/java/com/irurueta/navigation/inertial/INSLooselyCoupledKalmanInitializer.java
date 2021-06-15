@@ -33,6 +33,13 @@ public class INSLooselyCoupledKalmanInitializer {
     public static final int NUM_PARAMS = 15;
 
     /**
+     * Constructor.
+     * Prevents instantiations of helper class.
+     */
+    private INSLooselyCoupledKalmanInitializer() {
+    }
+
+    /**
      * Initializes INS/GNS loosely coupled Kalman filter error covariance matrix.
      *
      * @param config Kalman filter configuration.

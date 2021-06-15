@@ -107,11 +107,12 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
     /**
      * Constructor.
      */
-    public MeasurementsGenerator() {
+    protected MeasurementsGenerator() {
         mStaticIntervalDetector = new AccelerationTriadStaticIntervalDetector();
         try {
             setupListener();
         } catch (final LockedException ignore) {
+            // never happens
         }
     }
 
@@ -120,7 +121,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      *
      * @param listener listener to handle events raised by this generator.
      */
-    public MeasurementsGenerator(final L listener) {
+    protected MeasurementsGenerator(final L listener) {
         this();
         mListener = listener;
     }
@@ -745,15 +746,13 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
      * Updates counters of processed samples.
      */
     protected void updateCounters() {
-        switch (mStaticIntervalDetector.getStatus()) {
-            case STATIC_INTERVAL:
-                mProcessedStaticSamples++;
-                mProcessedDynamicSamples = 0;
-                break;
-            case DYNAMIC_INTERVAL:
-                mProcessedDynamicSamples++;
-                mProcessedStaticSamples = 0;
-                break;
+        final TriadStaticIntervalDetector.Status status = mStaticIntervalDetector.getStatus();
+        if (status == TriadStaticIntervalDetector.Status.STATIC_INTERVAL) {
+            mProcessedStaticSamples++;
+            mProcessedDynamicSamples = 0;
+        } else if (status == TriadStaticIntervalDetector.Status.DYNAMIC_INTERVAL) {
+            mProcessedDynamicSamples++;
+            mProcessedStaticSamples = 0;
         }
     }
 
@@ -864,6 +863,7 @@ public abstract class MeasurementsGenerator<T, G extends MeasurementsGenerator<T
                     @Override
                     public void onReset(
                             final AccelerationTriadStaticIntervalDetector detector) {
+                        // no action needed
                     }
                 };
         mStaticIntervalDetector.setListener(listener);

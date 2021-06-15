@@ -33,6 +33,14 @@ import java.util.List;
 public class QuaternionIntegrator {
 
     /**
+     * Constructor.
+     * Prevents instantiation of helper class.
+     */
+    private QuaternionIntegrator() {
+        // no action needed
+    }
+
+    /**
      * Integrates a sequence of gyroscope measurements contained within timed body kinematics,
      * starting at an initial attitude to obtain a final attitude.
      *

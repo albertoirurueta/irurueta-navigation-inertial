@@ -386,7 +386,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
     /**
      * Constructor.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator() {
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator() {
         try {
             mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
                     BodyKinematics.COMPONENTS);
@@ -401,7 +401,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this();
         mListener = listener;
@@ -414,7 +414,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                     deviations taken at different frames (positions, orientations
      *                     and velocities).
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements) {
         this();
         mMeasurements = measurements;
@@ -428,7 +428,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                     and velocities).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(measurements);
@@ -441,7 +441,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final boolean commonAxisUsed) {
         this();
         mCommonAxisUsed = commonAxisUsed;
@@ -454,7 +454,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(commonAxisUsed);
@@ -470,7 +470,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed) {
         this(measurements);
@@ -487,7 +487,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -505,7 +505,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param biasZ known z coordinate of gyroscope bias expressed in radians per
      *              second (rad/s).
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ) {
         this();
         internalSetBiasCoordinates(biasX, biasY, biasZ);
@@ -523,7 +523,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(listener);
@@ -543,7 +543,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param biasZ        known z coordinate of gyroscope bias expressed in radians per
      *                     second (rad/s).
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ) {
         this(measurements);
@@ -564,7 +564,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                     second (rad/s).
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -584,7 +584,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
         this(commonAxisUsed);
@@ -604,7 +604,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -627,7 +627,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed) {
@@ -651,7 +651,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double biasX, final double biasY, final double biasZ,
             final boolean commonAxisUsed,
@@ -667,7 +667,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param biasY known y coordinate of gyroscope bias.
      * @param biasZ known z coordinate of gyroscope bias.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
         this();
         internalSetBiasCoordinates(biasX, biasY, biasZ);
@@ -682,7 +682,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(listener);
@@ -699,7 +699,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param biasY        known y coordinate of gyroscope bias.
      * @param biasZ        known z coordinate of gyroscope bias.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ) {
         this(measurements);
@@ -717,7 +717,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param biasZ        known z coordinate of gyroscope bias.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -734,7 +734,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
         this(commonAxisUsed);
@@ -751,7 +751,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -771,7 +771,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed) {
@@ -792,7 +792,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final AngularSpeed biasX, final AngularSpeed biasY, final AngularSpeed biasZ,
             final boolean commonAxisUsed,
@@ -807,7 +807,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param bias known gyroscope bias.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias) {
         this();
         internalSetBias(bias);
@@ -821,7 +821,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                 starts, ends or its progress significantly changes.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(listener);
@@ -837,7 +837,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param bias         known gyroscope bias.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double[] bias) {
         this(measurements);
@@ -854,7 +854,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double[] bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -870,7 +870,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias, final boolean commonAxisUsed) {
         this(commonAxisUsed);
         internalSetBias(bias);
@@ -885,7 +885,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(commonAxisUsed, listener);
@@ -903,7 +903,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double[] bias,
             final boolean commonAxisUsed) {
@@ -923,7 +923,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final double[] bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -937,7 +937,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param bias known gyroscope bias.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias) {
         this();
         internalSetBias(bias);
@@ -951,7 +951,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                 starts, ends or its progress significantly changes.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(listener);
@@ -967,7 +967,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param bias         known gyroscope bias.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix bias) {
         this(measurements);
@@ -984,7 +984,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix bias,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
@@ -1000,7 +1000,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias, final boolean commonAxisUsed) {
         this(commonAxisUsed);
         internalSetBias(bias);
@@ -1015,7 +1015,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {
         this(commonAxisUsed, listener);
@@ -1033,7 +1033,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      *                       accelerometer and gyroscope.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix bias,
             final boolean commonAxisUsed) {
@@ -1053,7 +1053,7 @@ public abstract class RobustKnownBiasAndFrameGyroscopeCalibrator implements
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
-    public RobustKnownBiasAndFrameGyroscopeCalibrator(
+    protected RobustKnownBiasAndFrameGyroscopeCalibrator(
             final List<StandardDeviationFrameBodyKinematics> measurements,
             final Matrix bias, final boolean commonAxisUsed,
             final RobustKnownBiasAndFrameGyroscopeCalibratorListener listener) {

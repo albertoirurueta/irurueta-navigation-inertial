@@ -3093,16 +3093,16 @@ public class BodyKinematicsBiasEstimator {
         // compute biases
         final double tmp = (double) mNumberOfProcessedSamples
                 / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasFx = mBiasFx * tmp + diffFx / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasFy = mBiasFy * tmp + diffFy / (double) mNumberOfProcessedSamplesPlusOne;
-        mBiasFz = mBiasFz * tmp + diffFz / (double) mNumberOfProcessedSamplesPlusOne;
+        mBiasFx = mBiasFx * tmp + diffFx / mNumberOfProcessedSamplesPlusOne;
+        mBiasFy = mBiasFy * tmp + diffFy / mNumberOfProcessedSamplesPlusOne;
+        mBiasFz = mBiasFz * tmp + diffFz / mNumberOfProcessedSamplesPlusOne;
 
         mBiasAngularRateX = mBiasAngularRateX * tmp
-                + diffAngularRateX / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffAngularRateX / mNumberOfProcessedSamplesPlusOne;
         mBiasAngularRateY = mBiasAngularRateY * tmp
-                + diffAngularRateY / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffAngularRateY / mNumberOfProcessedSamplesPlusOne;
         mBiasAngularRateZ = mBiasAngularRateZ * tmp
-                + diffAngularRateZ / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffAngularRateZ / mNumberOfProcessedSamplesPlusOne;
 
         // compute variances
         final double diffBiasFx = diffFx - mBiasFx;
@@ -3123,18 +3123,18 @@ public class BodyKinematicsBiasEstimator {
                 diffBiasAngularRateZ * diffBiasAngularRateZ;
 
         mVarianceFx = mVarianceFx * tmp
-                + diffBiasFx2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasFx2 / mNumberOfProcessedSamplesPlusOne;
         mVarianceFy = mVarianceFy * tmp
-                + diffBiasFy2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasFy2 / mNumberOfProcessedSamplesPlusOne;
         mVarianceFz = mVarianceFz * tmp
-                + diffBiasFz2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasFz2 / mNumberOfProcessedSamplesPlusOne;
 
         mVarianceAngularRateX = mVarianceAngularRateX * tmp
-                + diffBiasAngularRateX2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasAngularRateX2 / mNumberOfProcessedSamplesPlusOne;
         mVarianceAngularRateY = mVarianceAngularRateY * tmp
-                + diffBiasAngularRateY2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasAngularRateY2 / mNumberOfProcessedSamplesPlusOne;
         mVarianceAngularRateZ = mVarianceAngularRateZ * tmp
-                + diffBiasAngularRateZ2 / (double) mNumberOfProcessedSamplesPlusOne;
+                + diffBiasAngularRateZ2 / mNumberOfProcessedSamplesPlusOne;
 
         mLastBodyKinematics = kinematics;
 

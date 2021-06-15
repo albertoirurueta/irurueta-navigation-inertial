@@ -514,7 +514,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
     /**
      * Constructor.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator() {
+    protected RobustKnownBiasEasyGyroscopeCalibrator() {
         try {
             mInitialGg = new Matrix(BodyKinematics.COMPONENTS,
                     BodyKinematics.COMPONENTS);
@@ -538,7 +538,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final Matrix bias,
             final Matrix initialMg,
@@ -571,7 +571,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final Matrix bias,
             final Matrix initialMg,
@@ -596,7 +596,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final double[] bias,
             final Matrix initialMg,
@@ -629,7 +629,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final double[] bias,
             final Matrix initialMg,
@@ -660,7 +660,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final double[] bias,
             final Matrix initialMg,
@@ -699,7 +699,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final double[] bias,
             final Matrix initialMg,
@@ -732,7 +732,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final Matrix bias,
             final Matrix initialMg,
@@ -770,7 +770,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final Matrix bias,
             final Matrix initialMg,
@@ -804,7 +804,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -839,7 +839,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -873,7 +873,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -908,7 +908,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -949,7 +949,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -994,7 +994,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -1038,7 +1038,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,
@@ -1083,7 +1083,7 @@ public abstract class RobustKnownBiasEasyGyroscopeCalibrator implements
      * @throws IllegalArgumentException if any of the provided values does
      *                                  not have proper size.
      */
-    public RobustKnownBiasEasyGyroscopeCalibrator(
+    protected RobustKnownBiasEasyGyroscopeCalibrator(
             final List<BodyKinematicsSequence<StandardDeviationTimedBodyKinematics>> sequences,
             final boolean commonAxisUsed,
             final boolean estimateGDependentCrossBiases,

@@ -357,15 +357,13 @@ public class TimeIntervalEstimator {
         if (mLastTimestamp != null) {
             final double timeInterval = timestamp - mLastTimestamp;
 
-            mAverageTimeInterval = mAverageTimeInterval * (double) mNumberOfProcessedSamples
-                    / (double) mNumberOfProcessedSamplesPlusOne
-                    + timeInterval / (double) mNumberOfProcessedSamplesPlusOne;
+            mAverageTimeInterval = mAverageTimeInterval * mNumberOfProcessedSamples / mNumberOfProcessedSamplesPlusOne
+                    + timeInterval / mNumberOfProcessedSamplesPlusOne;
 
             final double diff = timeInterval - mAverageTimeInterval;
             final double diff2 = diff * diff;
-            mTimeIntervalVariance = mTimeIntervalVariance * (double) mNumberOfProcessedSamples
-                    / (double) mNumberOfProcessedSamplesPlusOne
-                    + diff2 / (double) mNumberOfProcessedSamplesPlusOne;
+            mTimeIntervalVariance = mTimeIntervalVariance * mNumberOfProcessedSamples / mNumberOfProcessedSamplesPlusOne
+                    + diff2 / mNumberOfProcessedSamplesPlusOne;
         }
 
         mLastTimestamp = timestamp;

@@ -379,7 +379,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
     /**
      * Constructor.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator() {
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator() {
     }
 
     /**
@@ -388,7 +388,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener listener to be notified of events such as when estimation
      *                 starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
         mListener = listener;
     }
@@ -400,7 +400,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                     deviations taken at the same position with zero velocity
      *                     and unknown different orientations.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final List<StandardDeviationBodyKinematics> measurements) {
         mMeasurements = measurements;
     }
@@ -411,7 +411,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -423,7 +423,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *             in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final double[] bias) {
         try {
             setBias(bias);
@@ -438,7 +438,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param bias known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(final Matrix bias) {
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(final Matrix bias) {
         try {
             setBias(bias);
         } catch (final LockedException ignore) {
@@ -454,7 +454,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final Matrix bias, final Matrix initialMa) {
         this(bias);
         try {
@@ -469,7 +469,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position) {
         mPosition = position;
     }
@@ -482,7 +482,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                     different unknown orientations and containing the standard deviations
      *                     of accelerometer and gyroscope measurements.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements) {
         this(measurements);
@@ -499,7 +499,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener     listener to be notified of events such as when estimation
      *                     starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
@@ -518,7 +518,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
@@ -539,7 +539,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener       listener to be notified of events such as when estimation
      *                       starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed,
@@ -559,7 +559,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                     in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
@@ -580,7 +580,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias,
@@ -602,7 +602,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                       in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
@@ -624,7 +624,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
@@ -643,7 +643,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param bias         known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
@@ -663,7 +663,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias,
@@ -684,7 +684,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param bias           known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
@@ -705,7 +705,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -726,7 +726,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
@@ -748,7 +748,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
@@ -771,7 +771,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -795,7 +795,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -810,7 +810,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *
      * @param position position where body kinematics measures have been taken.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(final NEDPosition position) {
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(final NEDPosition position) {
         mPosition = convertPosition(position);
     }
 
@@ -822,7 +822,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                     different unknown orientations and containing the standard deviations
      *                     of accelerometer and gyroscope measurements.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements) {
         this(convertPosition(position), measurements);
@@ -838,7 +838,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener     listener to be notified of events such as when estimation
      *                     starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final RobustKnownBiasAndPositionAccelerometerCalibratorListener listener) {
@@ -855,7 +855,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param commonAxisUsed indicates whether z-axis is assumed to be common for
      *                       accelerometer and gyroscope.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed) {
@@ -874,7 +874,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener       listener to be notified of events such as when estimation
      *                       starts, ends or its progress significantly changes.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed,
@@ -893,7 +893,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                     in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias) {
@@ -912,7 +912,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final double[] bias,
@@ -933,7 +933,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      *                       in meters per squared second (m/s^2).
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias) {
@@ -954,7 +954,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias array does not have length 3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final double[] bias,
@@ -973,7 +973,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param bias         known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias) {
@@ -991,7 +991,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener     listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias,
@@ -1011,7 +1011,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param bias           known accelerometer bias.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias) {
@@ -1031,7 +1031,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @param listener       listener to handle events raised by this calibrator.
      * @throws IllegalArgumentException if provided bias matrix is not 3x1.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -1052,7 +1052,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa) {
@@ -1072,7 +1072,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final Matrix bias, final Matrix initialMa,
@@ -1095,7 +1095,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,
@@ -1119,7 +1119,7 @@ public abstract class RobustKnownBiasAndPositionAccelerometerCalibrator implemen
      * @throws IllegalArgumentException if either provided bias matrix is not 3x1 or
      *                                  scaling and coupling error matrix is not 3x3.
      */
-    public RobustKnownBiasAndPositionAccelerometerCalibrator(
+    protected RobustKnownBiasAndPositionAccelerometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyKinematics> measurements,
             final boolean commonAxisUsed, final Matrix bias,

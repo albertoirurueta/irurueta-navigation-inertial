@@ -1488,38 +1488,33 @@ public abstract class TriadStaticIntervalDetector<U extends Enum<?>, M extends M
 
             if (previousStatus != mStatus) {
                 // static/dynamic period change detected
-                switch (mStatus) {
-                    case STATIC_INTERVAL:
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onStaticIntervalDetected((D) this,
-                                    mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
-                                    mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ);
-                        }
-                        break;
-                    case DYNAMIC_INTERVAL:
-                        // when switching from static to dynamic interval,
-                        // pick accumulated average and standard deviation measurement triads
-                        mAccumulatedAvgX = mAccumulatedNoiseEstimator.getAvgX();
-                        mAccumulatedAvgY = mAccumulatedNoiseEstimator.getAvgY();
-                        mAccumulatedAvgZ = mAccumulatedNoiseEstimator.getAvgZ();
+                if (mStatus == Status.STATIC_INTERVAL && mListener != null) {
+                    //noinspection unchecked
+                    mListener.onStaticIntervalDetected((D) this,
+                            mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
+                            mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ);
+                } else if (mStatus == Status.DYNAMIC_INTERVAL) {
+                    // when switching from static to dynamic interval,
+                    // pick accumulated average and standard deviation measurement triads
+                    mAccumulatedAvgX = mAccumulatedNoiseEstimator.getAvgX();
+                    mAccumulatedAvgY = mAccumulatedNoiseEstimator.getAvgY();
+                    mAccumulatedAvgZ = mAccumulatedNoiseEstimator.getAvgZ();
 
-                        mAccumulatedStdX = mAccumulatedNoiseEstimator.getStandardDeviationX();
-                        mAccumulatedStdY = mAccumulatedNoiseEstimator.getStandardDeviationY();
-                        mAccumulatedStdZ = mAccumulatedNoiseEstimator.getStandardDeviationZ();
+                    mAccumulatedStdX = mAccumulatedNoiseEstimator.getStandardDeviationX();
+                    mAccumulatedStdY = mAccumulatedNoiseEstimator.getStandardDeviationY();
+                    mAccumulatedStdZ = mAccumulatedNoiseEstimator.getStandardDeviationZ();
 
-                        // reset accumulated estimator when switching to dynamic period
-                        mAccumulatedNoiseEstimator.reset();
+                    // reset accumulated estimator when switching to dynamic period
+                    mAccumulatedNoiseEstimator.reset();
 
-                        if (mListener != null) {
-                            //noinspection unchecked
-                            mListener.onDynamicIntervalDetected((D) this,
-                                    mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
-                                    mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ,
-                                    mAccumulatedAvgX, mAccumulatedAvgY, mAccumulatedAvgZ,
-                                    mAccumulatedStdX, mAccumulatedStdY, mAccumulatedStdZ);
-                        }
-                        break;
+                    if (mListener != null) {
+                        //noinspection unchecked
+                        mListener.onDynamicIntervalDetected((D) this,
+                                mInstantaneousAvgX, mInstantaneousAvgY, mInstantaneousAvgZ,
+                                mInstantaneousStdX, mInstantaneousStdY, mInstantaneousStdZ,
+                                mAccumulatedAvgX, mAccumulatedAvgY, mAccumulatedAvgZ,
+                                mAccumulatedStdX, mAccumulatedStdY, mAccumulatedStdZ);
+                    }
                 }
             }
         }

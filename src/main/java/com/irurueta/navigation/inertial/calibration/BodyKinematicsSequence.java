@@ -47,14 +47,14 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * If items are provided unsorted, they are reordered by timestamp on
      * getter method.
      */
-    private List<T> mItems;
+    private ArrayList<T> mItems;
 
     /**
      * Contains sorted list of items.
      * This list is kept for performance reasons to reduce the amount of
      * required sorting.
      */
-    private List<T> mSortedItems;
+    private ArrayList<T> mSortedItems;
 
     /**
      * X-coordinate of mean specific force during the static period happening
@@ -111,7 +111,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      *              this sequence.
      */
     public BodyKinematicsSequence(final List<T> items) {
-        mItems = items;
+        setItems(items);
     }
 
     /**
@@ -334,7 +334,11 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @param items items to be kept.
      */
     public void setItems(final List<T> items) {
-        mItems = items;
+        if (items instanceof ArrayList) {
+            mItems = (ArrayList<T>) items;
+        } else {
+            mItems = new ArrayList<>(items);
+        }
         mSortedItems = null;
     }
 
@@ -844,7 +848,7 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
      * @return cloned list.
      */
     @SuppressWarnings("unchecked")
-    private List<T> cloneList(final List<T> list) {
+    private ArrayList<T> cloneList(final List<T> list) {
         // constructor with list only creates a new list containing the
         // same instances as the original list.
         // ArrayList is publicly Cloneable, so we clone it to get copies

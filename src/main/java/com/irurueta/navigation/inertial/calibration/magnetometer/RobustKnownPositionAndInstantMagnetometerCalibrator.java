@@ -409,7 +409,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
     /**
      * Constructor.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator() {
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator() {
     }
 
     /**
@@ -417,7 +417,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *
      * @param listener listener to handle events raised by this calibrator.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
         mListener = listener;
     }
@@ -431,7 +431,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                     position with zero velocity and unknown different
      *                     orientations.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         mMeasurements = measurements;
     }
@@ -442,7 +442,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final boolean commonAxisUsed) {
         mCommonAxisUsed = commonAxisUsed;
     }
@@ -453,7 +453,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param magneticModel Earth's magnetic model. If null, a default model
      *                      will be used instead.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final WorldMagneticModel magneticModel) {
         mMagneticModel = magneticModel;
     }
@@ -465,7 +465,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final double[] initialHardIron) {
         try {
             setInitialHardIron(initialHardIron);
@@ -481,7 +481,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final Matrix initialHardIron) {
         try {
             setInitialHardIron(initialHardIron);
@@ -500,7 +500,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final Matrix initialHardIron, final Matrix initialMm) {
         this(initialHardIron);
         try {
@@ -516,7 +516,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position) {
         mPosition = position;
     }
@@ -532,7 +532,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                     position with zero velocity and unknown different
      *                     orientations.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         this(position);
@@ -551,7 +551,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                     orientations.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
@@ -572,7 +572,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
@@ -594,7 +594,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
@@ -617,7 +617,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron) {
@@ -641,7 +641,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron,
@@ -666,7 +666,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron) {
@@ -691,7 +691,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron,
@@ -714,7 +714,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron) {
@@ -738,7 +738,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron,
@@ -763,7 +763,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron) {
@@ -788,7 +788,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
@@ -814,7 +814,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm) {
@@ -841,7 +841,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm,
@@ -869,7 +869,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
@@ -898,7 +898,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final NEDPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
@@ -915,7 +915,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param position position where body magnetic flux density measurements
      *                 have been taken.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position) {
         this(convertPosition(position));
     }
@@ -931,7 +931,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                     position with zero velocity and unknown different
      *                     orientations.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements) {
         this(convertPosition(position), measurements);
@@ -949,7 +949,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                     orientations.
      * @param listener     listener to handle events raised by this calibrator.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final RobustKnownPositionAndInstantMagnetometerCalibratorListener listener) {
@@ -969,7 +969,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param commonAxisUsed indicates whether z-axis is assumed to be common
      *                       for the accelerometer, gyroscope and magnetometer.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed) {
@@ -990,7 +990,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                       for the accelerometer, gyroscope and magnetometer.
      * @param listener       listener to handle events raised by this calibrator.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed,
@@ -1013,7 +1013,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron) {
@@ -1036,7 +1036,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final double[] initialHardIron,
@@ -1061,7 +1061,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron) {
@@ -1086,7 +1086,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron array does
      *                                  not have length 3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final double[] initialHardIron,
@@ -1109,7 +1109,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron) {
@@ -1131,7 +1131,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron,
@@ -1156,7 +1156,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron) {
@@ -1181,7 +1181,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @throws IllegalArgumentException if provided hard-iron matrix is not
      *                                  3x1.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
@@ -1207,7 +1207,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm) {
@@ -1233,7 +1233,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final Matrix initialHardIron, final Matrix initialMm,
@@ -1261,7 +1261,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,
@@ -1290,7 +1290,7 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *                                  3x1 or if soft-iron matrix is not
      *                                  3x3.
      */
-    public RobustKnownPositionAndInstantMagnetometerCalibrator(
+    protected RobustKnownPositionAndInstantMagnetometerCalibrator(
             final ECEFPosition position,
             final List<StandardDeviationBodyMagneticFluxDensity> measurements,
             final boolean commonAxisUsed, final Matrix initialHardIron,

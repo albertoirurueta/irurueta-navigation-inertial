@@ -2991,7 +2991,10 @@ public class WMMEarthMagneticFluxDensityEstimator {
 
         final double aor = RE_KM / mR;
         double ar = aor * aor;
-        double br = 0, bt = 0, bp = 0, bpp = 0;
+        double br = 0;
+        double bt = 0;
+        double bp = 0;
+        double bpp = 0;
 
         for (int n = 1; n <= WorldMagneticModel.MAX_ORDER; n++) {
             ar = ar * aor;
@@ -3034,7 +3037,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
                 }
 
                 // accumulate terms of the spherical harmonic expansions
-                double temp1, temp2;
+                double temp1;
+                double temp2;
                 double par = ar * mModel.snorm[n + m * N];
                 if (m == 0) {
                     temp1 = mTc[m][n] * mCp[m];
@@ -3059,10 +3063,8 @@ public class WMMEarthMagneticFluxDensityEstimator {
                     bpp += (mModel.fm[m] * temp2 * parp);
                 }
 
-            }    //for(m...)
-
-        }    //for(n...)
-
+            }
+        }
 
         if (mSt == 0.0) {
             bp = bpp;
