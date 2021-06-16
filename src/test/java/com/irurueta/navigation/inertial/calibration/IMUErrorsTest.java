@@ -17,6 +17,7 @@ package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
@@ -24,6 +25,8 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -1545,5 +1548,61 @@ public class IMUErrorsTest {
         final Object errors2 = errors1.clone();
 
         assertEquals(errors1, errors2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+
+        final double[] accelerometerBiases = new double[COMPONENTS];
+        randomizer.fill(accelerometerBiases, MIN_VALUE, MAX_VALUE);
+
+        final double[] gyroBiases = new double[COMPONENTS];
+        randomizer.fill(gyroBiases, MIN_VALUE, MAX_VALUE);
+
+        final Matrix accelerometerScaleFactorAndCrossCouplingErrors =
+                new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
+                accelerometerScaleFactorAndCrossCouplingErrors);
+
+        final Matrix gyroScaleFactorAndCrossCouplingErrors =
+                new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
+                gyroScaleFactorAndCrossCouplingErrors);
+
+        final Matrix gyroGDependenciesBiases = new Matrix(COMPONENTS, COMPONENTS);
+        Matrix.fillWithUniformRandomValues(MIN_VALUE, MAX_VALUE,
+                gyroGDependenciesBiases);
+
+        final double accelerometerNoiseRootPSD = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+        final double gyroNoiseRootPSD = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+
+        final double accelerometerQuantizationLevel = randomizer
+                .nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroQuantizationLevel = randomizer
+                .nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final IMUErrors errors1 = new IMUErrors(accelerometerBiases, gyroBiases,
+                accelerometerScaleFactorAndCrossCouplingErrors,
+                gyroScaleFactorAndCrossCouplingErrors,
+                gyroGDependenciesBiases, accelerometerNoiseRootPSD,
+                gyroNoiseRootPSD, accelerometerQuantizationLevel,
+                gyroQuantizationLevel);
+
+        final byte[] bytes = SerializationHelper.serialize(errors1);
+        final IMUErrors errors2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(errors1, errors2);
+        assertNotSame(errors1, errors2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = IMUErrors.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

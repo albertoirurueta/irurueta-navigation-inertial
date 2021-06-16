@@ -22,6 +22,8 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -521,5 +523,37 @@ public class INSLooselyCoupledKalmanConfigTest {
         final Object config2 = config1.clone();
 
         assertEquals(config1, config2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoisePSD =
+                randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerBiasPSD =
+                randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double positionNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double velocityNoiseSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final INSLooselyCoupledKalmanConfig config1 =
+                new INSLooselyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
+                        accelerometerBiasPSD, gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+
+        final byte[] bytes = SerializationHelper.serialize(config1);
+
+        final INSLooselyCoupledKalmanConfig config2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(config1, config2);
+        assertNotSame(config1, config2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = INSLooselyCoupledKalmanConfig.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

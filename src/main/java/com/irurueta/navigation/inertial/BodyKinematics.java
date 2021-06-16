@@ -38,10 +38,17 @@ import java.util.Objects;
  */
 @SuppressWarnings("DuplicatedCode")
 public class BodyKinematics implements Serializable, Cloneable {
+
     /**
      * Number of components of specific force or angular rate.
      */
     public static final int COMPONENTS = 3;
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
 
     /**
      * Specific force of body frame with respect ECI, ECEF or NED frame resolved along body-frame x-axis, averaged

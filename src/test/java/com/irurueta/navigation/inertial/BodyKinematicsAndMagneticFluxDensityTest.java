@@ -18,6 +18,8 @@ package com.irurueta.navigation.inertial;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -333,6 +335,28 @@ public class BodyKinematicsAndMagneticFluxDensityTest {
         assertEquals(kb1, kb2);
     }
 
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final BodyKinematics kinematics = createKinematics();
+        final BodyMagneticFluxDensity b = createMagneticFlux();
+
+        final BodyKinematicsAndMagneticFluxDensity kb1 =
+                new BodyKinematicsAndMagneticFluxDensity(kinematics, b);
+
+        final byte[] bytes = SerializationHelper.serialize(kb1);
+        final BodyKinematicsAndMagneticFluxDensity kb2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(kb1, kb2);
+        assertNotSame(kb1, kb2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = BodyKinematicsAndMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
+    }
 
     private BodyKinematics createKinematics() {
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());

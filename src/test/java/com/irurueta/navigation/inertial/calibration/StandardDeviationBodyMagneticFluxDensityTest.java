@@ -16,9 +16,12 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -428,5 +431,41 @@ public class StandardDeviationBodyMagneticFluxDensityTest {
 
         // check
         assertEquals(stdMagnetic1, stdMagnetic2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double bx = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
+                MAX_MAGNETIC_FLUX_DENSITY);
+        final double by = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
+                MAX_MAGNETIC_FLUX_DENSITY);
+        final double bz = randomizer.nextDouble(MIN_MAGNETIC_FLUX_DENSITY,
+                MAX_MAGNETIC_FLUX_DENSITY);
+        final double std = randomizer.nextDouble(0.0,
+                MAX_MAGNETIC_FLUX_DENSITY);
+        final BodyMagneticFluxDensity magneticFluxDensity =
+                new BodyMagneticFluxDensity(bx, by, bz);
+
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic1 =
+                new StandardDeviationBodyMagneticFluxDensity(
+                        magneticFluxDensity, std);
+
+        final byte[] bytes = SerializationHelper.serialize(stdMagnetic1);
+
+        final StandardDeviationBodyMagneticFluxDensity stdMagnetic2 =
+                SerializationHelper.deserialize(bytes);
+
+        assertEquals(stdMagnetic1, stdMagnetic2);
+        assertNotSame(stdMagnetic1, stdMagnetic2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = StandardDeviationBodyMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

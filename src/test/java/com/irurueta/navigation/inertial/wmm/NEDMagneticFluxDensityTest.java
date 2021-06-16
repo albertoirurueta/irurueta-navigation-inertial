@@ -17,12 +17,15 @@ package com.irurueta.navigation.inertial.wmm;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -667,5 +670,30 @@ public class NEDMagneticFluxDensityTest {
 
         // check
         assertEquals(b1, b2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double bn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double be = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double bd = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final NEDMagneticFluxDensity b1 = new NEDMagneticFluxDensity(bn, be, bd);
+
+        final byte[] bytes = SerializationHelper.serialize(b1);
+        final NEDMagneticFluxDensity b2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(b1, b2);
+        assertNotSame(b1, b2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = NEDMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

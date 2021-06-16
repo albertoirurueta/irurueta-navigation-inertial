@@ -16,6 +16,7 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
@@ -23,6 +24,8 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -528,6 +531,25 @@ public class StandardDeviationBodyKinematicsTest {
 
         // check
         assertEquals(stdKinematics1, stdKinematics2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final StandardDeviationBodyKinematics stdKinematics1 = createStdKinematics();
+
+        final byte[] bytes = SerializationHelper.serialize(stdKinematics1);
+        final StandardDeviationBodyKinematics stdKinematics2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(stdKinematics1, stdKinematics2);
+        assertNotSame(stdKinematics1, stdKinematics2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = StandardDeviationBodyKinematics.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     private static BodyKinematics createKinematics() {

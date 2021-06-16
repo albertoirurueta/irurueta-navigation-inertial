@@ -22,11 +22,14 @@ import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeExcept
 import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -1086,6 +1089,39 @@ public class FrameBodyKinematicsTest {
 
         // check
         assertEquals(frameBodyKinematics1, frameBodyKinematics2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException,
+            InvalidSourceAndDestinationFrameTypeException {
+        final BodyKinematics kinematics = createBodyKinematics();
+        final NEDFrame nedFrame = createNedFrame();
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
+                .convertNEDtoECEFAndReturnNew(nedFrame);
+        final NEDFrame previousNedFrame = createNedFrame();
+        final ECEFFrame previousEcefFrame = NEDtoECEFFrameConverter
+                .convertNEDtoECEFAndReturnNew(previousNedFrame);
+
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double timeInterval = randomizer.nextDouble(
+                MIN_TIME_INTERVAL, MAX_TIME_INTERVAL);
+
+        final FrameBodyKinematics frameBodyKinematics1 = new FrameBodyKinematics(
+                kinematics, ecefFrame, previousEcefFrame, timeInterval);
+
+        final byte[] bytes = SerializationHelper.serialize(frameBodyKinematics1);
+        final FrameBodyKinematics frameBodyKinematics2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(frameBodyKinematics1, frameBodyKinematics2);
+        assertNotSame(frameBodyKinematics1, frameBodyKinematics2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = FrameBodyKinematics.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     private BodyKinematics createBodyKinematics() {

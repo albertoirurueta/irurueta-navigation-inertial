@@ -21,6 +21,8 @@ import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -297,5 +299,28 @@ public class RadiiOfCurvatureTest {
 
         // check
         assertEquals(radii1, radii2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double rn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double re = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final RadiiOfCurvature radii1 = new RadiiOfCurvature(rn, re);
+
+        final byte[] bytes = SerializationHelper.serialize(radii1);
+        final RadiiOfCurvature radii2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(radii1, radii2);
+        assertNotSame(radii1, radii2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = RadiiOfCurvature.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

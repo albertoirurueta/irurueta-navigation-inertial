@@ -27,6 +27,7 @@ import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.InvalidSourceAndDestinationFrameTypeException;
 import com.irurueta.navigation.gnss.ECEFPositionAndVelocity;
+import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
@@ -38,6 +39,8 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -2426,5 +2429,51 @@ public class INSLooselyCoupledKalmanStateTest {
         final Object state2 = state1.clone();
 
         assertEquals(state1, state2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, WrongSizeException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
+                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
+        final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double vz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double x = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double y = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double z = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerationBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerationBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerationBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final Matrix covariance = Matrix.identity(INSLooselyCoupledKalmanState.NUM_PARAMS,
+                INSLooselyCoupledKalmanState.NUM_PARAMS);
+
+        final INSLooselyCoupledKalmanState state1 = new INSLooselyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, covariance);
+
+        final byte[] bytes = SerializationHelper.serialize(state1);
+        final INSLooselyCoupledKalmanState state2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(state1, state2);
+        assertNotSame(state1, state2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = INSLooselyCoupledKalmanState.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

@@ -52,6 +52,12 @@ public class IMUErrors implements Serializable, Cloneable {
     private static final int COMPONENTS_MINUS_ONE = 2;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Accelerometer biases for each IMU axis expressed in meters per squared
      * second (m/s^2).
      * By default it is assumed to be all zeros.
@@ -1271,13 +1277,11 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-        int result = Objects.hash(mAccelerometerScaleFactorAndCrossCouplingErrors,
+        return Objects.hash(mAccelerometerScaleFactorAndCrossCouplingErrors,
                 mGyroScaleFactorAndCrossCouplingErrors, mGyroGDependentBiases,
                 mAccelerometerNoiseRootPSD, mGyroNoiseRootPSD,
-                mAccelerometerQuantizationLevel, mGyroQuantizationLevel);
-        result = 31 * result + Arrays.hashCode(mAccelerometerBiases);
-        result = 31 * result + Arrays.hashCode(mGyroBiases);
-        return result;
+                mAccelerometerQuantizationLevel, mGyroQuantizationLevel,
+                Arrays.hashCode(mAccelerometerBiases), Arrays.hashCode(mGyroBiases));
     }
 
     /**

@@ -22,6 +22,8 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -464,5 +466,30 @@ public class ECIGravitationTest {
 
         // check
         assertEquals(gravitation1, gravitation2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final ECIGravitation gravitation1 = new ECIGravitation(gx, gy, gz);
+
+        final byte[] bytes = SerializationHelper.serialize(gravitation1);
+
+        final ECIGravitation gravitation2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(gravitation1, gravitation2);
+        assertNotSame(gravitation1, gravitation2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = ECIGravitation.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

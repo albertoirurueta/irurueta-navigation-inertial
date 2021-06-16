@@ -19,6 +19,8 @@ import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.*;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -680,5 +682,38 @@ public class INSLooselyCoupledKalmanInitializerConfigTest {
         final Object config2 = config1.clone();
 
         assertEquals(config1, config2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double initialAttitudeUncertainty = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+        final double initialVelocityUncertainty = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+        final double initialPositionUncertainty = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+        final double initialAccelerationBiasUncertainty = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+        final double initialGyroscopeBiasUncertainty = randomizer.nextDouble(
+                MIN_VALUE, MAX_VALUE);
+        final INSLooselyCoupledKalmanInitializerConfig config1 = new INSLooselyCoupledKalmanInitializerConfig(
+                initialAttitudeUncertainty, initialVelocityUncertainty,
+                initialPositionUncertainty, initialAccelerationBiasUncertainty,
+                initialGyroscopeBiasUncertainty);
+
+        final byte[] bytes = SerializationHelper.serialize(config1);
+        final INSLooselyCoupledKalmanInitializerConfig config2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(config1, config2);
+        assertNotSame(config1, config2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = INSLooselyCoupledKalmanInitializerConfig.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

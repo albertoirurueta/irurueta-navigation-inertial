@@ -32,6 +32,12 @@ public class StandardDeviationFrameBodyMagneticFluxDensity extends
         FrameBodyMagneticFluxDensity {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Standard deviation of measured magnetic flux density expressed in Teslas
      * (T).
      */

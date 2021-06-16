@@ -30,6 +30,12 @@ public class MagneticFluxDensityTriad extends Triad<MagneticFluxDensityUnit, Mag
     public static final MagneticFluxDensityUnit DEFAULT_UNIT = MagneticFluxDensityUnit.TESLA;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Constructor.
      */
     public MagneticFluxDensityTriad() {

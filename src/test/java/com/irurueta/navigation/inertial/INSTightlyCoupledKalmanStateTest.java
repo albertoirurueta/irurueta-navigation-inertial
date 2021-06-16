@@ -39,6 +39,8 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -77,7 +79,7 @@ public class INSTightlyCoupledKalmanStateTest {
         assertEquals(state.getReceiverClockOffset(), 0.0, 0.0);
         assertEquals(state.getReceiverClockDrift(), 0.0, 0.0);
         assertNull(state.getCovariance());
-        
+
         // test constructor with values
         final UniformRandomizer randomizer = new UniformRandomizer(new Random());
 
@@ -150,7 +152,7 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-        
+
         // test constructor with measurement values
         final Speed speedX = new Speed(vx, SpeedUnit.METERS_PER_SECOND);
         final Speed speedY = new Speed(vy, SpeedUnit.METERS_PER_SECOND);
@@ -194,7 +196,7 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-        
+
         // test constructor with point position
         final Point3D position = new InhomogeneousPoint3D(x, y, z);
 
@@ -232,7 +234,7 @@ public class INSTightlyCoupledKalmanStateTest {
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(state);
-        
+
         // test constructor with ECEF velocity and position
         final ECEFVelocity ecefVelocity = new ECEFVelocity(vx, vy, vz);
         final ECEFPosition ecefPosition = new ECEFPosition(x, y, z);
@@ -2699,5 +2701,54 @@ public class INSTightlyCoupledKalmanStateTest {
         final Object state2 = state1.clone();
 
         assertEquals(state1, state2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws WrongSizeException, IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+
+        final double roll = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+
+        final CoordinateTransformation c = new CoordinateTransformation(roll, pitch, yaw,
+                FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);
+        final Matrix bodyToEcefCoordinateTransformationMatrix = c.getMatrix();
+        final double vx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double vy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double vz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double x = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double y = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double z = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerationBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerationBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerationBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasX = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasY = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasZ = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double receiverClockOffset = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double receiverClockDrift = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final Matrix covariance = Matrix.identity(INSTightlyCoupledKalmanState.NUM_PARAMS,
+                INSTightlyCoupledKalmanState.NUM_PARAMS);
+
+        final INSTightlyCoupledKalmanState state1 = new INSTightlyCoupledKalmanState(
+                bodyToEcefCoordinateTransformationMatrix, vx, vy, vz, x, y, z,
+                accelerationBiasX, accelerationBiasY, accelerationBiasZ,
+                gyroBiasX, gyroBiasY, gyroBiasZ, receiverClockOffset,
+                receiverClockDrift, covariance);
+
+        final byte[] bytes = SerializationHelper.serialize(state1);
+        final INSTightlyCoupledKalmanState state2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(state1, state2);
+        assertNotSame(state1, state2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = INSTightlyCoupledKalmanState.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

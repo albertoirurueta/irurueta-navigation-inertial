@@ -25,6 +25,12 @@ import java.util.Objects;
 public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Body kinematics containing sensed specific force and angular rate.
      */
     private BodyKinematics mKinematics;

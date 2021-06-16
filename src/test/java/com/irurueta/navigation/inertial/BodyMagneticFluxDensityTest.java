@@ -23,6 +23,8 @@ import com.irurueta.units.MagneticFluxDensity;
 import com.irurueta.units.MagneticFluxDensityUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -673,5 +675,32 @@ public class BodyMagneticFluxDensityTest {
 
         // check
         assertEquals(b1, b2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double bx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double by = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double bz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final BodyMagneticFluxDensity b1 = new BodyMagneticFluxDensity(
+                bx, by, bz);
+
+        final byte[] bytes = SerializationHelper.serialize(b1);
+
+        final BodyMagneticFluxDensity b2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(b1, b2);
+        assertNotSame(b1, b2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = BodyMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

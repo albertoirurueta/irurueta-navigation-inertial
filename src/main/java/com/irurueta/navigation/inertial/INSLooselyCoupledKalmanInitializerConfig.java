@@ -27,6 +27,12 @@ import java.util.Objects;
 public class INSLooselyCoupledKalmanInitializerConfig implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Initial attitude uncertainty per axis expressed in radians (rad).
      */
     private double mInitialAttitudeUncertainty;

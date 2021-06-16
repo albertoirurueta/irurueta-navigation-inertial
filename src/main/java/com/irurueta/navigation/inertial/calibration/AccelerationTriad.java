@@ -30,6 +30,12 @@ public class AccelerationTriad extends Triad<AccelerationUnit, Acceleration> imp
     public static final AccelerationUnit DEFAULT_UNIT = AccelerationUnit.METERS_PER_SQUARED_SECOND;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Constructor.
      */
     public AccelerationTriad() {

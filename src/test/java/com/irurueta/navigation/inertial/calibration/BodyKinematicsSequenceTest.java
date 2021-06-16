@@ -16,11 +16,14 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -1572,4 +1575,43 @@ public class BodyKinematicsSequenceTest {
                 angularRateX, angularRateY, angularRateZ);
     }
 
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final List<StandardDeviationTimedBodyKinematics> items = createItems();
+
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double beforeMeanFx = randomizer.nextDouble(MIN_SPECIFIC_FORCE,
+                MAX_SPECIFIC_FORCE);
+        final double beforeMeanFy = randomizer.nextDouble(MIN_SPECIFIC_FORCE,
+                MAX_SPECIFIC_FORCE);
+        final double beforeMeanFz = randomizer.nextDouble(MIN_SPECIFIC_FORCE,
+                MAX_SPECIFIC_FORCE);
+        final double afterMeanFx = randomizer.nextDouble(MIN_SPECIFIC_FORCE,
+                MAX_SPECIFIC_FORCE);
+        final double afterMeanFy = randomizer.nextDouble(MIN_SPECIFIC_FORCE,
+                MAX_SPECIFIC_FORCE);
+        final double afterMeanFz = randomizer.nextDouble(MIN_SPECIFIC_FORCE,
+                MAX_SPECIFIC_FORCE);
+
+        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence1 =
+                new BodyKinematicsSequence<>(items,
+                        beforeMeanFx, beforeMeanFy, beforeMeanFz,
+                        afterMeanFx, afterMeanFy, afterMeanFz);
+
+        final byte[] bytes = SerializationHelper.serialize(sequence1);
+        final BodyKinematicsSequence<StandardDeviationTimedBodyKinematics> sequence2 = SerializationHelper.deserialize(
+                bytes);
+
+        assertEquals(sequence1, sequence2);
+        assertNotSame(sequence1, sequence2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = BodyKinematicsSequence.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
+    }
 }

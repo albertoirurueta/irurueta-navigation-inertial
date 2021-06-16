@@ -17,11 +17,14 @@ package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -606,6 +609,32 @@ public class TimedBodyKinematicsAndMagneticFluxDensityTest {
 
         // check
         assertEquals(tkb1, tkb2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+
+        final BodyKinematics kinematics = createKinematics();
+        final BodyMagneticFluxDensity b = createMagneticFlux();
+
+        final TimedBodyKinematicsAndMagneticFluxDensity tkb1 = new TimedBodyKinematicsAndMagneticFluxDensity(
+                kinematics, b, timestampSeconds);
+
+        final byte[] bytes = SerializationHelper.serialize(tkb1);
+        final TimedBodyKinematicsAndMagneticFluxDensity tkb2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(tkb1, tkb2);
+        assertNotSame(tkb1, tkb2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = TimedBodyKinematicsAndMagneticFluxDensity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     private BodyKinematics createKinematics() {

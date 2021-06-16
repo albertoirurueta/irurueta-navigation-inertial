@@ -26,6 +26,8 @@ import com.irurueta.units.AngularSpeed;
 import com.irurueta.units.AngularSpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -1129,5 +1131,36 @@ public class BodyKinematicsTest {
 
         // check
         assertEquals(k1, k2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double fx = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final double fy = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final double fz = randomizer.nextDouble(MIN_SPECIFIC_FORCE, MAX_SPECIFIC_FORCE);
+        final double angularRateX = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
+                MAX_ANGULAR_RATE_VALUE);
+        final double angularRateY = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
+                MAX_ANGULAR_RATE_VALUE);
+        final double angularRateZ = randomizer.nextDouble(MIN_ANGULAR_RATE_VALUE,
+                MAX_ANGULAR_RATE_VALUE);
+
+        final BodyKinematics k1 = new BodyKinematics(fx, fy, fz,
+                angularRateX, angularRateY, angularRateZ);
+
+        final byte[] bytes = SerializationHelper.serialize(k1);
+        final BodyKinematics k2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(k1, k2);
+        assertNotSame(k1, k2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = BodyKinematics.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

@@ -36,6 +36,12 @@ public class NEDMagneticFluxDensity implements Serializable, Cloneable {
     public static final int COMPONENTS = 3;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * North component of magnetic flux density expressed in Teslas (T).
      */
     private double mBn;

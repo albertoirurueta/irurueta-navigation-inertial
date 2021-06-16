@@ -43,6 +43,12 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     public static final int NUM_PARAMS = 17;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Estimated body to ECEF coordinate transformation matrix.
      */
     private Matrix mBodyToEcefCoordinateTransformationMatrix;

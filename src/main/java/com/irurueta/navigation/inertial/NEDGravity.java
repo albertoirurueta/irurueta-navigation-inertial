@@ -40,6 +40,12 @@ public class NEDGravity implements Serializable, Cloneable {
     public static final int COMPONENTS = 3;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Acceleration due to gravity through north-axis of NED frame and expressed in meters per squared second (m/s^2).
      */
     private double mGn;

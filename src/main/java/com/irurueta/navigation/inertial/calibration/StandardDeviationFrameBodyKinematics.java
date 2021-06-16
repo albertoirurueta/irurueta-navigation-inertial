@@ -37,6 +37,12 @@ import java.util.Objects;
 public class StandardDeviationFrameBodyKinematics extends FrameBodyKinematics {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Standard deviation of measured specific force expressed in meters per squared
      * second (m/s^2).
      */

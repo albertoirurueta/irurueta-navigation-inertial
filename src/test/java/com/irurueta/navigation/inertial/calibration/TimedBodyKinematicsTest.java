@@ -16,11 +16,14 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -339,6 +342,31 @@ public class TimedBodyKinematicsTest {
 
         // check
         assertEquals(timedBodyKinematics1, timedBodyKinematics2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final BodyKinematics kinematics = createBodyKinematics();
+
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+
+        final TimedBodyKinematics timedBodyKinematics1 = new TimedBodyKinematics(kinematics, timestampSeconds);
+
+        final byte[] bytes = SerializationHelper.serialize(timedBodyKinematics1);
+
+        final TimedBodyKinematics timedBodyKinematics2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(timedBodyKinematics1, timedBodyKinematics2);
+        assertNotSame(timedBodyKinematics1, timedBodyKinematics2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = TimedBodyKinematics.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     private BodyKinematics createBodyKinematics() {

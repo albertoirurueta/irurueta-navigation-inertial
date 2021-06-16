@@ -22,6 +22,8 @@ import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -417,5 +419,29 @@ public class NEDGravityTest {
 
         // check
         assertEquals(gravity1, gravity2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double gn = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gd = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final NEDGravity gravity1 = new NEDGravity(gn, gd);
+
+        final byte[] bytes = SerializationHelper.serialize(gravity1);
+
+        final NEDGravity gravity2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(gravity1, gravity2);
+        assertNotSame(gravity1, gravity2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = NEDGravity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

@@ -15,6 +15,7 @@
  */
 package com.irurueta.navigation.inertial;
 
+import com.irurueta.navigation.inertial.calibration.BodyKinematicsSequence;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Distance;
 import com.irurueta.units.DistanceUnit;
@@ -22,6 +23,8 @@ import com.irurueta.units.Speed;
 import com.irurueta.units.SpeedUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -582,5 +585,38 @@ public class INSTightlyCoupledKalmanConfigTest {
         final Object config2 = config1.clone();
 
         assertEquals(config1, config2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double gyroNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerNoisePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double accelerometerBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gyroBiasPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double clockFrequencyPSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double clockPhasePSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double pseudoRangeSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double rangeRateSD = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final INSTightlyCoupledKalmanConfig config1 =
+                new INSTightlyCoupledKalmanConfig(gyroNoisePSD, accelerometerNoisePSD,
+                        accelerometerBiasPSD, gyroBiasPSD, clockFrequencyPSD,
+                        clockPhasePSD, pseudoRangeSD, rangeRateSD);
+
+        final byte[] bytes = SerializationHelper.serialize(config1);
+
+        final INSTightlyCoupledKalmanConfig config2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(config1, config2);
+        assertNotSame(config1, config2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = INSTightlyCoupledKalmanConfig.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

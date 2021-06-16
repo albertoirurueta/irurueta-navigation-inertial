@@ -43,6 +43,12 @@ public class BodyKinematicsSequence<T extends TimedBodyKinematics>
         implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * List of items.
      * If items are provided unsorted, they are reordered by timestamp on
      * getter method.

@@ -23,6 +23,7 @@ import com.irurueta.navigation.frames.NEDFrame;
 import com.irurueta.navigation.frames.NEDPosition;
 import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
@@ -30,6 +31,7 @@ import com.irurueta.statistics.UniformRandomizer;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
@@ -1633,6 +1635,48 @@ public class StandardDeviationFrameBodyMagneticFluxDensityTest {
         // check
         assertEquals(frameBodyMagneticFluxDensity1,
                 frameBodyMagneticFluxDensity2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException,
+            InvalidSourceAndDestinationFrameTypeException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double magneticFluxDensityStandardDeviation =
+                randomizer.nextDouble(0.0, MAX_MAGNETIC_FLUX_DENSITY);
+
+        final NEDPosition position = createPosition();
+        final Date timestamp = createTimestamp();
+        final CoordinateTransformation cnb = createAttitude();
+        final CoordinateTransformation cbn = cnb.inverseAndReturnNew();
+
+        final BodyMagneticFluxDensity bodyMagneticFluxDensity =
+                createMagneticFluxDensity(position, timestamp, cnb);
+
+        final NEDFrame nedFrame = new NEDFrame(position, cbn);
+        final ECEFFrame ecefFrame = NEDtoECEFFrameConverter
+                .convertNEDtoECEFAndReturnNew(nedFrame);
+
+        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity1 =
+                new StandardDeviationFrameBodyMagneticFluxDensity(bodyMagneticFluxDensity,
+                        ecefFrame, timestamp,
+                        magneticFluxDensityStandardDeviation);
+
+        final byte[] bytes = SerializationHelper.serialize(frameBodyMagneticFluxDensity1);
+        final StandardDeviationFrameBodyMagneticFluxDensity frameBodyMagneticFluxDensity2 =
+                SerializationHelper.deserialize(bytes);
+
+        assertEquals(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
+        assertNotSame(frameBodyMagneticFluxDensity1, frameBodyMagneticFluxDensity2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = StandardDeviationFrameBodyMagneticFluxDensity.class.getDeclaredField(
+                "serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     private static BodyMagneticFluxDensity createMagneticFluxDensity()

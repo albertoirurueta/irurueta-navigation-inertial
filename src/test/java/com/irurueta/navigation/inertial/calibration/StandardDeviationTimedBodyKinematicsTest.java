@@ -16,6 +16,7 @@
 package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
@@ -25,6 +26,8 @@ import com.irurueta.units.Time;
 import com.irurueta.units.TimeUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -1461,6 +1464,38 @@ public class StandardDeviationTimedBodyKinematicsTest {
 
         // check
         assertEquals(standardDeviationTimedBodyKinematics1, standardDeviationTimedBodyKinematics2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final BodyKinematics kinematics = createBodyKinematics();
+
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double timestampSeconds = randomizer.nextDouble(MIN_TIMESTAMP_VALUE, MAX_TIMESTAMP_VALUE);
+        final double specificForceStandardDeviation =
+                randomizer.nextDouble(0.0, MAX_SPECIFIC_FORCE);
+        final double angularRateStandardDeviation =
+                randomizer.nextDouble(0.0, MAX_ANGULAR_RATE_VALUE);
+
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics1 =
+                new StandardDeviationTimedBodyKinematics(kinematics, timestampSeconds,
+                        specificForceStandardDeviation, angularRateStandardDeviation);
+
+        final byte[] bytes = SerializationHelper.serialize(standardDeviationTimedBodyKinematics1);
+
+        final StandardDeviationTimedBodyKinematics standardDeviationTimedBodyKinematics2 =
+                SerializationHelper.deserialize(bytes);
+
+        assertEquals(standardDeviationTimedBodyKinematics1, standardDeviationTimedBodyKinematics2);
+        assertNotSame(standardDeviationTimedBodyKinematics1, standardDeviationTimedBodyKinematics2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = StandardDeviationTimedBodyKinematics.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     private BodyKinematics createBodyKinematics() {

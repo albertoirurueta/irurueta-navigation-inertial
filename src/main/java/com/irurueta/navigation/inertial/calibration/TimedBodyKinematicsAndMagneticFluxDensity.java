@@ -36,6 +36,12 @@ import java.util.Objects;
 public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAndMagneticFluxDensity {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Timestamp value expressed in seconds.
      */
     private double mTimestampSeconds;

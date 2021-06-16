@@ -30,6 +30,12 @@ public class AngularSpeedTriad extends Triad<AngularSpeedUnit, AngularSpeed> imp
     public static final AngularSpeedUnit DEFAULT_UNIT = AngularSpeedUnit.RADIANS_PER_SECOND;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Constructor.
      */
     public AngularSpeedTriad() {

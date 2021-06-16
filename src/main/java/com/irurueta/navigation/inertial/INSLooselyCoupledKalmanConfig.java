@@ -32,6 +32,12 @@ import java.util.Objects;
 public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Gyro noise PSD (Power Spectral Density) expressed in squared radians per
      * second (rad^2/s).
      */

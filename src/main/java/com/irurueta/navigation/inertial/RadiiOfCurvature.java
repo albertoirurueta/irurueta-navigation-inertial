@@ -28,6 +28,12 @@ import java.util.Objects;
 public class RadiiOfCurvature implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Meridian radius of curvature expressed in meters (m).
      * This is the radius of curvature for north-south motion.
      * It is the radius of curvature of a meridian, a cross-section of the ellipsoid

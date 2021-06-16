@@ -17,11 +17,14 @@ package com.irurueta.navigation.inertial;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.inertial.calibration.AccelerationTriad;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -464,5 +467,29 @@ public class ECEFGravityTest {
 
         // check
         assertEquals(gravity1, gravity2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double gx = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gy = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+        final double gz = randomizer.nextDouble(MIN_VALUE, MAX_VALUE);
+
+        final ECEFGravity gravity1 = new ECEFGravity(gx, gy, gz);
+
+        final byte[] bytes = SerializationHelper.serialize(gravity1);
+        final ECEFGravity gravity2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(gravity1, gravity2);
+        assertNotSame(gravity1, gravity2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = ECEFGravity.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 }

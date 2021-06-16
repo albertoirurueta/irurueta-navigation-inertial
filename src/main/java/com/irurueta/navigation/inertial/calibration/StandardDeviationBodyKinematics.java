@@ -34,6 +34,12 @@ import java.util.Objects;
 public class StandardDeviationBodyKinematics implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
      */
     private BodyKinematics mKinematics;

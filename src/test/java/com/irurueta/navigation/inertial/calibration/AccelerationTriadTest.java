@@ -17,11 +17,14 @@ package com.irurueta.navigation.inertial.calibration;
 
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.inertial.SerializationHelper;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.lang.reflect.Field;
 import java.util.Random;
 
 import static org.junit.Assert.*;
@@ -825,6 +828,31 @@ public class AccelerationTriadTest {
         final AccelerationTriad triad2 = (AccelerationTriad) triad1.clone();
 
         assertEquals(triad1, triad2);
+    }
+
+    @Test
+    public void testSerializeDeserialize() throws IOException, ClassNotFoundException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+        final double valueX = randomizer.nextDouble();
+        final double valueY = randomizer.nextDouble();
+        final double valueZ = randomizer.nextDouble();
+
+        final AccelerationTriad triad1 = new AccelerationTriad(
+                valueX, valueY, valueZ);
+
+        final byte[] bytes = SerializationHelper.serialize(triad1);
+        final AccelerationTriad triad2 = SerializationHelper.deserialize(bytes);
+
+        assertEquals(triad1, triad2);
+        assertNotSame(triad1, triad2);
+    }
+
+    @Test
+    public void testSerialVersionUID() throws NoSuchFieldException, IllegalAccessException {
+        final Field field = AccelerationTriad.class.getDeclaredField("serialVersionUID");
+        field.setAccessible(true);
+
+        assertEquals(0L, field.get(null));
     }
 
     @Test
