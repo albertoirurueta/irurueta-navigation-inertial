@@ -30,11 +30,17 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
 <span class="fc" id="L30">    public static final AngularSpeedUnit DEFAULT_UNIT = AngularSpeedUnit.RADIANS_PER_SECOND;</span>
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Constructor.
      */
     public AngularSpeedTriad() {
-<span class="fc" id="L36">        this(DEFAULT_UNIT);</span>
-<span class="fc" id="L37">    }</span>
+<span class="fc" id="L42">        this(DEFAULT_UNIT);</span>
+<span class="fc" id="L43">    }</span>
 
     /**
      * Constructor.
@@ -42,8 +48,8 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      * @param unit angular speed unit for stored values.
      */
     public AngularSpeedTriad(final AngularSpeedUnit unit) {
-<span class="fc" id="L45">        super(unit);</span>
-<span class="fc" id="L46">    }</span>
+<span class="fc" id="L51">        super(unit);</span>
+<span class="fc" id="L52">    }</span>
 
     /**
      * Constructor.
@@ -54,8 +60,8 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     public AngularSpeedTriad(
             final double valueX, final double valueY, final double valueZ) {
-<span class="fc" id="L57">        this(DEFAULT_UNIT, valueX, valueY, valueZ);</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L63">        this(DEFAULT_UNIT, valueX, valueY, valueZ);</span>
+<span class="fc" id="L64">    }</span>
 
     /**
      * Constructor.
@@ -71,8 +77,8 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
     public AngularSpeedTriad(
             final AngularSpeedUnit unit,
             final double valueX, final double valueY, final double valueZ) {
-<span class="fc" id="L74">        super(unit, valueX, valueY, valueZ);</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L80">        super(unit, valueX, valueY, valueZ);</span>
+<span class="fc" id="L81">    }</span>
 
     /**
      * Constructor.
@@ -85,9 +91,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
             final AngularSpeed measurementX,
             final AngularSpeed measurementY,
             final AngularSpeed measurementZ) {
-<span class="fc" id="L88">        super(DEFAULT_UNIT);</span>
-<span class="fc" id="L89">        setMeasurementCoordinates(measurementX, measurementY, measurementZ);</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L94">        super(DEFAULT_UNIT);</span>
+<span class="fc" id="L95">        setMeasurementCoordinates(measurementX, measurementY, measurementZ);</span>
+<span class="fc" id="L96">    }</span>
 
     /**
      * Copy constructor.
@@ -95,8 +101,8 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      * @param other instance to copy from.
      */
     public AngularSpeedTriad(final AngularSpeedTriad other) {
-<span class="fc" id="L98">        super(other);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L104">        super(other);</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Gets x coordinate of measurement value.
@@ -105,7 +111,7 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public AngularSpeed getMeasurementX() {
-<span class="fc" id="L108">        return new AngularSpeed(getValueX(), getUnit());</span>
+<span class="fc" id="L114">        return new AngularSpeed(getValueX(), getUnit());</span>
     }
 
     /**
@@ -116,9 +122,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public void getMeasurementX(final AngularSpeed result) {
-<span class="fc" id="L119">        result.setValue(getValueX());</span>
-<span class="fc" id="L120">        result.setUnit(getUnit());</span>
-<span class="fc" id="L121">    }</span>
+<span class="fc" id="L125">        result.setValue(getValueX());</span>
+<span class="fc" id="L126">        result.setUnit(getUnit());</span>
+<span class="fc" id="L127">    }</span>
 
     /**
      * Sets x coordinate of measurement value.
@@ -127,9 +133,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public void setMeasurementX(final AngularSpeed measurementX) {
-<span class="fc" id="L130">        setValueX(AngularSpeedConverter.convert(measurementX.getValue(),</span>
-<span class="fc" id="L131">                measurementX.getUnit(), getUnit()).doubleValue());</span>
-<span class="fc" id="L132">    }</span>
+<span class="fc" id="L136">        setValueX(AngularSpeedConverter.convert(measurementX.getValue(),</span>
+<span class="fc" id="L137">                measurementX.getUnit(), getUnit()).doubleValue());</span>
+<span class="fc" id="L138">    }</span>
 
     /**
      * Gets y coordinate of measurement value.
@@ -138,7 +144,7 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public AngularSpeed getMeasurementY() {
-<span class="fc" id="L141">        return new AngularSpeed(getValueY(), getUnit());</span>
+<span class="fc" id="L147">        return new AngularSpeed(getValueY(), getUnit());</span>
     }
 
     /**
@@ -149,9 +155,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public void getMeasurementY(final AngularSpeed result) {
-<span class="fc" id="L152">        result.setValue(getValueY());</span>
-<span class="fc" id="L153">        result.setUnit(getUnit());</span>
-<span class="fc" id="L154">    }</span>
+<span class="fc" id="L158">        result.setValue(getValueY());</span>
+<span class="fc" id="L159">        result.setUnit(getUnit());</span>
+<span class="fc" id="L160">    }</span>
 
     /**
      * Sets y coordinate of measurement value.
@@ -160,9 +166,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public void setMeasurementY(final AngularSpeed measurementY) {
-<span class="fc" id="L163">        setValueY(AngularSpeedConverter.convert(measurementY.getValue(),</span>
-<span class="fc" id="L164">                measurementY.getUnit(), getUnit()).doubleValue());</span>
-<span class="fc" id="L165">    }</span>
+<span class="fc" id="L169">        setValueY(AngularSpeedConverter.convert(measurementY.getValue(),</span>
+<span class="fc" id="L170">                measurementY.getUnit(), getUnit()).doubleValue());</span>
+<span class="fc" id="L171">    }</span>
 
     /**
      * Gets z coordinate of measurement value.
@@ -171,7 +177,7 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public AngularSpeed getMeasurementZ() {
-<span class="fc" id="L174">        return new AngularSpeed(getValueZ(), getUnit());</span>
+<span class="fc" id="L180">        return new AngularSpeed(getValueZ(), getUnit());</span>
     }
 
     /**
@@ -182,9 +188,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public void getMeasurementZ(final AngularSpeed result) {
-<span class="fc" id="L185">        result.setValue(getValueZ());</span>
-<span class="fc" id="L186">        result.setUnit(getUnit());</span>
-<span class="fc" id="L187">    }</span>
+<span class="fc" id="L191">        result.setValue(getValueZ());</span>
+<span class="fc" id="L192">        result.setUnit(getUnit());</span>
+<span class="fc" id="L193">    }</span>
 
     /**
      * Sets z coordinate of measurement value.
@@ -193,9 +199,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public void setMeasurementZ(final AngularSpeed measurementZ) {
-<span class="fc" id="L196">        setValueZ(AngularSpeedConverter.convert(measurementZ.getValue(),</span>
-<span class="fc" id="L197">                measurementZ.getUnit(), getUnit()).doubleValue());</span>
-<span class="fc" id="L198">    }</span>
+<span class="fc" id="L202">        setValueZ(AngularSpeedConverter.convert(measurementZ.getValue(),</span>
+<span class="fc" id="L203">                measurementZ.getUnit(), getUnit()).doubleValue());</span>
+<span class="fc" id="L204">    }</span>
 
     /**
      * Sets measurement coordinates.
@@ -209,10 +215,10 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
             final AngularSpeed measurementX,
             final AngularSpeed measurementY,
             final AngularSpeed measurementZ) {
-<span class="fc" id="L212">        setMeasurementX(measurementX);</span>
-<span class="fc" id="L213">        setMeasurementY(measurementY);</span>
-<span class="fc" id="L214">        setMeasurementZ(measurementZ);</span>
-<span class="fc" id="L215">    }</span>
+<span class="fc" id="L218">        setMeasurementX(measurementX);</span>
+<span class="fc" id="L219">        setMeasurementY(measurementY);</span>
+<span class="fc" id="L220">        setMeasurementZ(measurementZ);</span>
+<span class="fc" id="L221">    }</span>
 
     /**
      * Gets norm as an angular speed.
@@ -221,7 +227,7 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     public AngularSpeed getMeasurementNorm() {
-<span class="fc" id="L224">        return new AngularSpeed(getNorm(), getUnit());</span>
+<span class="fc" id="L230">        return new AngularSpeed(getNorm(), getUnit());</span>
     }
 
     /**
@@ -232,9 +238,9 @@ public class AngularSpeedTriad extends Triad&lt;AngularSpeedUnit, AngularSpeed&g
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L235">        final AngularSpeedTriad result = (AngularSpeedTriad) super.clone();</span>
-<span class="fc" id="L236">        copyTo(result);</span>
-<span class="fc" id="L237">        return result;</span>
+<span class="fc" id="L241">        final AngularSpeedTriad result = (AngularSpeedTriad) super.clone();</span>
+<span class="fc" id="L242">        copyTo(result);</span>
+<span class="fc" id="L243">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

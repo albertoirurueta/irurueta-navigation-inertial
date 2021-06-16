@@ -23,11 +23,17 @@ import com.irurueta.units.Acceleration;
 public class ECIGravitation extends GravityOrGravitation&lt;ECIGravitation&gt; {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Constructor.
      */
     public ECIGravitation() {
-<span class="fc" id="L29">        super();</span>
-<span class="fc" id="L30">    }</span>
+<span class="fc" id="L35">        super();</span>
+<span class="fc" id="L36">    }</span>
 
     /**
      * Constructor.
@@ -37,8 +43,8 @@ public class ECIGravitation extends GravityOrGravitation&lt;ECIGravitation&gt; {
      * @param gz acceleration due to gravity through ECI z-axis expressed in meters per squared second (m/s^2).
      */
     public ECIGravitation(final double gx, final double gy, final double gz) {
-<span class="fc" id="L40">        super(gx, gy, gz);</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L46">        super(gx, gy, gz);</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * Constructor.
@@ -49,8 +55,8 @@ public class ECIGravitation extends GravityOrGravitation&lt;ECIGravitation&gt; {
      */
     public ECIGravitation(final Acceleration gx, final Acceleration gy,
                           final Acceleration gz) {
-<span class="fc" id="L52">        super(gx, gy, gz);</span>
-<span class="fc" id="L53">    }</span>
+<span class="fc" id="L58">        super(gx, gy, gz);</span>
+<span class="fc" id="L59">    }</span>
 
     /**
      * Constructor.
@@ -58,8 +64,8 @@ public class ECIGravitation extends GravityOrGravitation&lt;ECIGravitation&gt; {
      * @param input instance to copy data from.
      */
     public ECIGravitation(final ECIGravitation input) {
-<span class="fc" id="L61">        super(input);</span>
-<span class="fc" id="L62">    }</span>
+<span class="fc" id="L67">        super(input);</span>
+<span class="fc" id="L68">    }</span>
 
     /**
      * Check if provided object is a ECIGravitation instance having exactly the same contents
@@ -70,18 +76,18 @@ public class ECIGravitation extends GravityOrGravitation&lt;ECIGravitation&gt; {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L73" title="All 2 branches covered.">        if (obj == null) {</span>
-<span class="fc" id="L74">            return false;</span>
-        }
-<span class="fc bfc" id="L76" title="All 2 branches covered.">        if (obj == this) {</span>
-<span class="fc" id="L77">            return true;</span>
-        }
-<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (!(obj instanceof ECIGravitation)) {</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">        if (obj == null) {</span>
 <span class="fc" id="L80">            return false;</span>
         }
+<span class="fc bfc" id="L82" title="All 2 branches covered.">        if (obj == this) {</span>
+<span class="fc" id="L83">            return true;</span>
+        }
+<span class="fc bfc" id="L85" title="All 2 branches covered.">        if (!(obj instanceof ECIGravitation)) {</span>
+<span class="fc" id="L86">            return false;</span>
+        }
 
-<span class="fc" id="L83">        final ECIGravitation other = (ECIGravitation) obj;</span>
-<span class="fc" id="L84">        return equals(other);</span>
+<span class="fc" id="L89">        final ECIGravitation other = (ECIGravitation) obj;</span>
+<span class="fc" id="L90">        return equals(other);</span>
     }
 
     /**
@@ -92,9 +98,9 @@ public class ECIGravitation extends GravityOrGravitation&lt;ECIGravitation&gt; {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L95">        final ECIGravitation result = (ECIGravitation) super.clone();</span>
-<span class="fc" id="L96">        copyTo(result);</span>
-<span class="fc" id="L97">        return result;</span>
+<span class="fc" id="L101">        final ECIGravitation result = (ECIGravitation) super.clone();</span>
+<span class="fc" id="L102">        copyTo(result);</span>
+<span class="fc" id="L103">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

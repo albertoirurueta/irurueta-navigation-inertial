@@ -27,6 +27,12 @@ import java.util.Objects;
 public class StandardDeviationBodyMagneticFluxDensity implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Current body magnetic flux density. Contains magnetometer measurements.
      */
     private BodyMagneticFluxDensity mMagneticFluxDensity;
@@ -40,8 +46,8 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     /**
      * Constructor.
      */
-<span class="fc" id="L43">    public StandardDeviationBodyMagneticFluxDensity() {</span>
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L49">    public StandardDeviationBodyMagneticFluxDensity() {</span>
+<span class="fc" id="L50">    }</span>
 
     /**
      * Constructor.
@@ -49,9 +55,9 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param magneticFluxDensity current body magnetic flux density.
      */
     public StandardDeviationBodyMagneticFluxDensity(
-<span class="fc" id="L52">            final BodyMagneticFluxDensity magneticFluxDensity) {</span>
-<span class="fc" id="L53">        mMagneticFluxDensity = magneticFluxDensity;</span>
-<span class="fc" id="L54">    }</span>
+<span class="fc" id="L58">            final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L59">        mMagneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L60">    }</span>
 
     /**
      * Constructor.
@@ -62,10 +68,10 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      *                                  negative.
      */
     public StandardDeviationBodyMagneticFluxDensity(
-<span class="fc" id="L65">            final double magneticFluxDensityStandardDeviation) {</span>
-<span class="fc" id="L66">        setMagneticFluxDensityStandardDeviation(</span>
+<span class="fc" id="L71">            final double magneticFluxDensityStandardDeviation) {</span>
+<span class="fc" id="L72">        setMagneticFluxDensityStandardDeviation(</span>
                 magneticFluxDensityStandardDeviation);
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L74">    }</span>
 
     /**
      * Constructor.
@@ -80,9 +86,9 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     public StandardDeviationBodyMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity,
             final double magneticFluxDensityStandardDeviation) {
-<span class="fc" id="L83">        this(magneticFluxDensityStandardDeviation);</span>
-<span class="fc" id="L84">        mMagneticFluxDensity = magneticFluxDensity;</span>
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L89">        this(magneticFluxDensityStandardDeviation);</span>
+<span class="fc" id="L90">        mMagneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Constructor.
@@ -90,9 +96,9 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param input instance to copy data from.
      */
     public StandardDeviationBodyMagneticFluxDensity(
-<span class="fc" id="L93">            final StandardDeviationBodyMagneticFluxDensity input) {</span>
-<span class="fc" id="L94">        copyFrom(input);</span>
-<span class="fc" id="L95">    }</span>
+<span class="fc" id="L99">            final StandardDeviationBodyMagneticFluxDensity input) {</span>
+<span class="fc" id="L100">        copyFrom(input);</span>
+<span class="fc" id="L101">    }</span>
 
     /**
      * Gets current body magnetic flux density. Contains magnetometer
@@ -101,7 +107,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @return current body magnetic flux density.
      */
     public BodyMagneticFluxDensity getMagneticFluxDensity() {
-<span class="fc" id="L104">        return mMagneticFluxDensity;</span>
+<span class="fc" id="L110">        return mMagneticFluxDensity;</span>
     }
 
     /**
@@ -112,8 +118,8 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     public void setMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity) {
-<span class="fc" id="L115">        mMagneticFluxDensity = magneticFluxDensity;</span>
-<span class="fc" id="L116">    }</span>
+<span class="fc" id="L121">        mMagneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L122">    }</span>
 
     /**
      * Gets standard deviation of measured magnetic flux density expressed in
@@ -122,7 +128,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @return standard deviation of measured magnetic flux density.
      */
     public double getMagneticFluxDensityStandardDeviation() {
-<span class="fc" id="L125">        return mMagneticFluxDensityStandardDeviation;</span>
+<span class="fc" id="L131">        return mMagneticFluxDensityStandardDeviation;</span>
     }
 
     /**
@@ -136,13 +142,13 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     public void setMagneticFluxDensityStandardDeviation(
             final double magneticFluxDensityStandardDeviation) {
-<span class="fc bfc" id="L139" title="All 2 branches covered.">        if (magneticFluxDensityStandardDeviation &lt; 0.0) {</span>
-<span class="fc" id="L140">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L145" title="All 2 branches covered.">        if (magneticFluxDensityStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L146">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L143">        mMagneticFluxDensityStandardDeviation =</span>
+<span class="fc" id="L149">        mMagneticFluxDensityStandardDeviation =</span>
                 magneticFluxDensityStandardDeviation;
-<span class="fc" id="L145">    }</span>
+<span class="fc" id="L151">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -150,20 +156,20 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param input instance to copy data from.
      */
     public void copyFrom(final StandardDeviationBodyMagneticFluxDensity input) {
-<span class="fc bfc" id="L153" title="All 2 branches covered.">        if (input.mMagneticFluxDensity != null) {</span>
-<span class="fc bfc" id="L154" title="All 2 branches covered.">            if (mMagneticFluxDensity == null) {</span>
-<span class="fc" id="L155">                mMagneticFluxDensity = new BodyMagneticFluxDensity(</span>
+<span class="fc bfc" id="L159" title="All 2 branches covered.">        if (input.mMagneticFluxDensity != null) {</span>
+<span class="fc bfc" id="L160" title="All 2 branches covered.">            if (mMagneticFluxDensity == null) {</span>
+<span class="fc" id="L161">                mMagneticFluxDensity = new BodyMagneticFluxDensity(</span>
                         input.mMagneticFluxDensity);
             } else {
-<span class="fc" id="L158">                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);</span>
+<span class="fc" id="L164">                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);</span>
             }
         } else {
-<span class="fc" id="L161">            mMagneticFluxDensity = null;</span>
+<span class="fc" id="L167">            mMagneticFluxDensity = null;</span>
         }
 
-<span class="fc" id="L164">        mMagneticFluxDensityStandardDeviation =</span>
+<span class="fc" id="L170">        mMagneticFluxDensityStandardDeviation =</span>
                 input.mMagneticFluxDensityStandardDeviation;
-<span class="fc" id="L166">    }</span>
+<span class="fc" id="L172">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -171,8 +177,8 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final StandardDeviationBodyMagneticFluxDensity output) {
-<span class="fc" id="L174">        output.copyFrom(this);</span>
-<span class="fc" id="L175">    }</span>
+<span class="fc" id="L180">        output.copyFrom(this);</span>
+<span class="fc" id="L181">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost
@@ -183,8 +189,8 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L186">        return Objects.hash(mMagneticFluxDensity,</span>
-<span class="fc" id="L187">                mMagneticFluxDensityStandardDeviation);</span>
+<span class="fc" id="L192">        return Objects.hash(mMagneticFluxDensity,</span>
+<span class="fc" id="L193">                mMagneticFluxDensityStandardDeviation);</span>
     }
 
     /**
@@ -195,7 +201,7 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     public boolean equals(
             final StandardDeviationBodyMagneticFluxDensity other) {
-<span class="fc" id="L198">        return equals(other, 0.0);</span>
+<span class="fc" id="L204">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -211,13 +217,13 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
     public boolean equals(
             final StandardDeviationBodyMagneticFluxDensity other,
             final double threshold) {
-<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L215">            return false;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L221">            return false;</span>
         }
 
-<span class="pc bpc" id="L218" title="2 of 6 branches missed.">        return ((other.mMagneticFluxDensity == null &amp;&amp; mMagneticFluxDensity == null)</span>
-<span class="fc bfc" id="L219" title="All 2 branches covered.">                || (mMagneticFluxDensity != null &amp;&amp; mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)))</span>
-<span class="pc bpc" id="L220" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mMagneticFluxDensityStandardDeviation - other.mMagneticFluxDensityStandardDeviation) &lt;= threshold;</span>
+<span class="pc bpc" id="L224" title="2 of 6 branches missed.">        return ((other.mMagneticFluxDensity == null &amp;&amp; mMagneticFluxDensity == null)</span>
+<span class="fc bfc" id="L225" title="All 2 branches covered.">                || (mMagneticFluxDensity != null &amp;&amp; mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)))</span>
+<span class="pc bpc" id="L226" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mMagneticFluxDensityStandardDeviation - other.mMagneticFluxDensityStandardDeviation) &lt;= threshold;</span>
     }
 
     /**
@@ -228,15 +234,15 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      * @return true if both objects are considered to be equal, false otherwise.
      */
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L231" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L232">            return true;</span>
+<span class="fc bfc" id="L237" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L238">            return true;</span>
         }
-<span class="fc bfc" id="L234" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L235">            return false;</span>
+<span class="fc bfc" id="L240" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L241">            return false;</span>
         }
-<span class="fc" id="L237">        final StandardDeviationBodyMagneticFluxDensity other =</span>
+<span class="fc" id="L243">        final StandardDeviationBodyMagneticFluxDensity other =</span>
                 (StandardDeviationBodyMagneticFluxDensity) obj;
-<span class="fc" id="L239">        return equals(other);</span>
+<span class="fc" id="L245">        return equals(other);</span>
     }
 
     /**
@@ -247,10 +253,10 @@ public class StandardDeviationBodyMagneticFluxDensity implements Serializable, C
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L250">        final StandardDeviationBodyMagneticFluxDensity result =</span>
-<span class="fc" id="L251">                (StandardDeviationBodyMagneticFluxDensity) super.clone();</span>
-<span class="fc" id="L252">        copyTo(result);</span>
-<span class="fc" id="L253">        return super.clone();</span>
+<span class="fc" id="L256">        final StandardDeviationBodyMagneticFluxDensity result =</span>
+<span class="fc" id="L257">                (StandardDeviationBodyMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L258">        copyTo(result);</span>
+<span class="fc" id="L259">        return super.clone();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

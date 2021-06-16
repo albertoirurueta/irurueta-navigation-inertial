@@ -32,6 +32,12 @@ import java.util.Objects;
 public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Gyro noise PSD (Power Spectral Density) expressed in squared radians per
      * second (rad^2/s).
      */
@@ -68,8 +74,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
     /**
      * Constructor.
      */
-<span class="fc" id="L71">    public INSLooselyCoupledKalmanConfig() {</span>
-<span class="fc" id="L72">    }</span>
+<span class="fc" id="L77">    public INSLooselyCoupledKalmanConfig() {</span>
+<span class="fc" id="L78">    }</span>
 
     /**
      * Constructor.
@@ -92,10 +98,10 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
                                          final double accelerometerBiasPSD,
                                          final double gyroBiasPSD,
                                          final double positionNoiseSD,
-<span class="fc" id="L95">                                         final double velocityNoiseSD) {</span>
-<span class="fc" id="L96">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
+<span class="fc" id="L101">                                         final double velocityNoiseSD) {</span>
+<span class="fc" id="L102">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
                 gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
-<span class="fc" id="L98">    }</span>
+<span class="fc" id="L104">    }</span>
 
     /**
      * Constructor.
@@ -118,19 +124,19 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
                                          final double accelerometerBiasPSD,
                                          final double gyroBiasPSD,
                                          final Distance positionNoiseSD,
-<span class="fc" id="L121">                                         final Speed velocityNoiseSD) {</span>
-<span class="fc" id="L122">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
+<span class="fc" id="L127">                                         final Speed velocityNoiseSD) {</span>
+<span class="fc" id="L128">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
                 gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
-<span class="fc" id="L124">    }</span>
+<span class="fc" id="L130">    }</span>
 
     /**
      * Copy constructor.
      *
      * @param input input instance to copy data from.
      */
-<span class="fc" id="L131">    public INSLooselyCoupledKalmanConfig(final INSLooselyCoupledKalmanConfig input) {</span>
-<span class="fc" id="L132">        copyFrom(input);</span>
-<span class="fc" id="L133">    }</span>
+<span class="fc" id="L137">    public INSLooselyCoupledKalmanConfig(final INSLooselyCoupledKalmanConfig input) {</span>
+<span class="fc" id="L138">        copyFrom(input);</span>
+<span class="fc" id="L139">    }</span>
 
     /**
      * Gets gyro noise PSD (Power Spectral Density) expressed in squared radians per
@@ -139,7 +145,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return gyro noise PSD.
      */
     public double getGyroNoisePSD() {
-<span class="fc" id="L142">        return mGyroNoisePSD;</span>
+<span class="fc" id="L148">        return mGyroNoisePSD;</span>
     }
 
     /**
@@ -149,8 +155,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param gyroNoisePSD gyro noise PSD.
      */
     public void setGyroNoisePSD(final double gyroNoisePSD) {
-<span class="fc" id="L152">        mGyroNoisePSD = gyroNoisePSD;</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L158">        mGyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Gets accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3).
@@ -158,7 +164,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return accelerometer noise PSD.
      */
     public double getAccelerometerNoisePSD() {
-<span class="fc" id="L161">        return mAccelerometerNoisePSD;</span>
+<span class="fc" id="L167">        return mAccelerometerNoisePSD;</span>
     }
 
     /**
@@ -167,8 +173,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param accelerometerNoisePSD accelerometer noise PSD.
      */
     public void setAccelerometerNoisePSD(final double accelerometerNoisePSD) {
-<span class="fc" id="L170">        mAccelerometerNoisePSD = accelerometerNoisePSD;</span>
-<span class="fc" id="L171">    }</span>
+<span class="fc" id="L176">        mAccelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L177">    }</span>
 
     /**
      * Gets accelerometer bias random walk PSD (Power Spectral Density) expressed
@@ -177,7 +183,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return accelerometer bias random walk PSD.
      */
     public double getAccelerometerBiasPSD() {
-<span class="fc" id="L180">        return mAccelerometerBiasPSD;</span>
+<span class="fc" id="L186">        return mAccelerometerBiasPSD;</span>
     }
 
     /**
@@ -187,8 +193,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param accelerometerBiasPSD accelerometer bias random walk PSD.
      */
     public void setAccelerometerBiasPSD(final double accelerometerBiasPSD) {
-<span class="fc" id="L190">        mAccelerometerBiasPSD = accelerometerBiasPSD;</span>
-<span class="fc" id="L191">    }</span>
+<span class="fc" id="L196">        mAccelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L197">    }</span>
 
     /**
      * Gets gyro bias random walk PSD (Power Spectral Density) expressed in
@@ -197,7 +203,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return gyro bias random walk PSD.
      */
     public double getGyroBiasPSD() {
-<span class="fc" id="L200">        return mGyroBiasPSD;</span>
+<span class="fc" id="L206">        return mGyroBiasPSD;</span>
     }
 
     /**
@@ -207,8 +213,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param gyroBiasPSD gyro bias random walk PSD.
      */
     public void setGyroBiasPSD(final double gyroBiasPSD) {
-<span class="fc" id="L210">        mGyroBiasPSD = gyroBiasPSD;</span>
-<span class="fc" id="L211">    }</span>
+<span class="fc" id="L216">        mGyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L217">    }</span>
 
     /**
      * Gets position measurement noise SD (Standard Deviation) per axis expressed
@@ -217,7 +223,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return position measurement noise SD.
      */
     public double getPositionNoiseSD() {
-<span class="fc" id="L220">        return mPositionNoiseSD;</span>
+<span class="fc" id="L226">        return mPositionNoiseSD;</span>
     }
 
     /**
@@ -227,8 +233,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param positionNoiseSD position measurement noise SD.
      */
     public void setPositionNoiseSD(final double positionNoiseSD) {
-<span class="fc" id="L230">        mPositionNoiseSD = positionNoiseSD;</span>
-<span class="fc" id="L231">    }</span>
+<span class="fc" id="L236">        mPositionNoiseSD = positionNoiseSD;</span>
+<span class="fc" id="L237">    }</span>
 
     /**
      * Gets velocity measurement noise SD (Standard Deviation) per axis expressed in
@@ -237,7 +243,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return velocity measurement noise SD.
      */
     public double getVelocityNoiseSD() {
-<span class="fc" id="L240">        return mVelocityNoiseSD;</span>
+<span class="fc" id="L246">        return mVelocityNoiseSD;</span>
     }
 
     /**
@@ -247,8 +253,8 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD velocity measurement noise SD.
      */
     public void setVelocityNoiseSD(final double velocityNoiseSD) {
-<span class="fc" id="L250">        mVelocityNoiseSD = velocityNoiseSD;</span>
-<span class="fc" id="L251">    }</span>
+<span class="fc" id="L256">        mVelocityNoiseSD = velocityNoiseSD;</span>
+<span class="fc" id="L257">    }</span>
 
     /**
      * Sets configuration parameters.
@@ -272,13 +278,13 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
                           final double gyroBiasPSD,
                           final double positionNoiseSD,
                           final double velocityNoiseSD) {
-<span class="fc" id="L275">        mGyroNoisePSD = gyroNoisePSD;</span>
-<span class="fc" id="L276">        mAccelerometerNoisePSD = accelerometerNoisePSD;</span>
-<span class="fc" id="L277">        mAccelerometerBiasPSD = accelerometerBiasPSD;</span>
-<span class="fc" id="L278">        mGyroBiasPSD = gyroBiasPSD;</span>
-<span class="fc" id="L279">        mPositionNoiseSD = positionNoiseSD;</span>
-<span class="fc" id="L280">        mVelocityNoiseSD = velocityNoiseSD;</span>
-<span class="fc" id="L281">    }</span>
+<span class="fc" id="L281">        mGyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L282">        mAccelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L283">        mAccelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L284">        mGyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L285">        mPositionNoiseSD = positionNoiseSD;</span>
+<span class="fc" id="L286">        mVelocityNoiseSD = velocityNoiseSD;</span>
+<span class="fc" id="L287">    }</span>
 
     /**
      * Gets position measurement noise SD (Standard Deviation) per axis.
@@ -286,9 +292,9 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param result instance where position measurement noise SD will be stored.
      */
     public void getPositionNoiseSDAsDistance(final Distance result) {
-<span class="fc" id="L289">        result.setValue(mPositionNoiseSD);</span>
-<span class="fc" id="L290">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L291">    }</span>
+<span class="fc" id="L295">        result.setValue(mPositionNoiseSD);</span>
+<span class="fc" id="L296">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L297">    }</span>
 
     /**
      * Gets position measurement noise SD (Standard Deviation) per axis.
@@ -296,7 +302,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return position measurement noise SD.
      */
     public Distance getPositionNoiseSDAsDistance() {
-<span class="fc" id="L299">        return new Distance(mPositionNoiseSD, DistanceUnit.METER);</span>
+<span class="fc" id="L305">        return new Distance(mPositionNoiseSD, DistanceUnit.METER);</span>
     }
 
     /**
@@ -305,10 +311,10 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param positionNoiseSD position measurement noise SD.
      */
     public void setPositionNoiseSD(final Distance positionNoiseSD) {
-<span class="fc" id="L308">        mPositionNoiseSD = DistanceConverter.convert(</span>
-<span class="fc" id="L309">                positionNoiseSD.getValue().doubleValue(),</span>
-<span class="fc" id="L310">                positionNoiseSD.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L311">    }</span>
+<span class="fc" id="L314">        mPositionNoiseSD = DistanceConverter.convert(</span>
+<span class="fc" id="L315">                positionNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L316">                positionNoiseSD.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L317">    }</span>
 
     /**
      * Gets velocity measurement noise SD (Standard Deviation) per axis.
@@ -316,9 +322,9 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param result instance where velocity measurement noise SD will be stored.
      */
     public void getVelocityNoiseSDAsSpeed(final Speed result) {
-<span class="fc" id="L319">        result.setValue(mVelocityNoiseSD);</span>
-<span class="fc" id="L320">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L321">    }</span>
+<span class="fc" id="L325">        result.setValue(mVelocityNoiseSD);</span>
+<span class="fc" id="L326">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L327">    }</span>
 
     /**
      * Gets velocity measurement noise SD (Standard Deviation) per axis.
@@ -326,7 +332,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return velocity measurement noise SD per axis.
      */
     public Speed getVelocityNoiseSDAsSpeed() {
-<span class="fc" id="L329">        return new Speed(mVelocityNoiseSD, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L335">        return new Speed(mVelocityNoiseSD, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -335,10 +341,10 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param velocityNoiseSD velocity measurement noise SD per axis.
      */
     public void setVelocityNoiseSD(final Speed velocityNoiseSD) {
-<span class="fc" id="L338">        mVelocityNoiseSD = SpeedConverter.convert(</span>
-<span class="fc" id="L339">                velocityNoiseSD.getValue().doubleValue(),</span>
-<span class="fc" id="L340">                velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L341">    }</span>
+<span class="fc" id="L344">        mVelocityNoiseSD = SpeedConverter.convert(</span>
+<span class="fc" id="L345">                velocityNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L346">                velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L347">    }</span>
 
     /**
      * Sets configuration parameters.
@@ -362,13 +368,13 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
                           final double gyroBiasPSD,
                           final Distance positionNoiseSD,
                           final Speed velocityNoiseSD) {
-<span class="fc" id="L365">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
+<span class="fc" id="L371">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
                 gyroBiasPSD,
-<span class="fc" id="L367">                DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(),</span>
-<span class="fc" id="L368">                        positionNoiseSD.getUnit(), DistanceUnit.METER),</span>
-<span class="fc" id="L369">                SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(),</span>
-<span class="fc" id="L370">                        velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND));</span>
-<span class="fc" id="L371">    }</span>
+<span class="fc" id="L373">                DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L374">                        positionNoiseSD.getUnit(), DistanceUnit.METER),</span>
+<span class="fc" id="L375">                SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L376">                        velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND));</span>
+<span class="fc" id="L377">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -376,13 +382,13 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final INSLooselyCoupledKalmanConfig output) {
-<span class="fc" id="L379">        output.mGyroNoisePSD = mGyroNoisePSD;</span>
-<span class="fc" id="L380">        output.mAccelerometerNoisePSD = mAccelerometerNoisePSD;</span>
-<span class="fc" id="L381">        output.mAccelerometerBiasPSD = mAccelerometerBiasPSD;</span>
-<span class="fc" id="L382">        output.mGyroBiasPSD = mGyroBiasPSD;</span>
-<span class="fc" id="L383">        output.mPositionNoiseSD = mPositionNoiseSD;</span>
-<span class="fc" id="L384">        output.mVelocityNoiseSD = mVelocityNoiseSD;</span>
-<span class="fc" id="L385">    }</span>
+<span class="fc" id="L385">        output.mGyroNoisePSD = mGyroNoisePSD;</span>
+<span class="fc" id="L386">        output.mAccelerometerNoisePSD = mAccelerometerNoisePSD;</span>
+<span class="fc" id="L387">        output.mAccelerometerBiasPSD = mAccelerometerBiasPSD;</span>
+<span class="fc" id="L388">        output.mGyroBiasPSD = mGyroBiasPSD;</span>
+<span class="fc" id="L389">        output.mPositionNoiseSD = mPositionNoiseSD;</span>
+<span class="fc" id="L390">        output.mVelocityNoiseSD = mVelocityNoiseSD;</span>
+<span class="fc" id="L391">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -390,13 +396,13 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final INSLooselyCoupledKalmanConfig input) {
-<span class="fc" id="L393">        mGyroNoisePSD = input.mGyroNoisePSD;</span>
-<span class="fc" id="L394">        mAccelerometerNoisePSD = input.mAccelerometerNoisePSD;</span>
-<span class="fc" id="L395">        mAccelerometerBiasPSD = input.mAccelerometerBiasPSD;</span>
-<span class="fc" id="L396">        mGyroBiasPSD = input.mGyroBiasPSD;</span>
-<span class="fc" id="L397">        mPositionNoiseSD = input.mPositionNoiseSD;</span>
-<span class="fc" id="L398">        mVelocityNoiseSD = input.mVelocityNoiseSD;</span>
-<span class="fc" id="L399">    }</span>
+<span class="fc" id="L399">        mGyroNoisePSD = input.mGyroNoisePSD;</span>
+<span class="fc" id="L400">        mAccelerometerNoisePSD = input.mAccelerometerNoisePSD;</span>
+<span class="fc" id="L401">        mAccelerometerBiasPSD = input.mAccelerometerBiasPSD;</span>
+<span class="fc" id="L402">        mGyroBiasPSD = input.mGyroBiasPSD;</span>
+<span class="fc" id="L403">        mPositionNoiseSD = input.mPositionNoiseSD;</span>
+<span class="fc" id="L404">        mVelocityNoiseSD = input.mVelocityNoiseSD;</span>
+<span class="fc" id="L405">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -406,9 +412,9 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L409">        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD,</span>
-<span class="fc" id="L410">                mAccelerometerBiasPSD, mGyroBiasPSD, mPositionNoiseSD,</span>
-<span class="fc" id="L411">                mVelocityNoiseSD);</span>
+<span class="fc" id="L415">        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD,</span>
+<span class="fc" id="L416">                mAccelerometerBiasPSD, mGyroBiasPSD, mPositionNoiseSD,</span>
+<span class="fc" id="L417">                mVelocityNoiseSD);</span>
     }
 
     /**
@@ -420,14 +426,14 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L423" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L424">            return true;</span>
+<span class="fc bfc" id="L429" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L430">            return true;</span>
         }
-<span class="fc bfc" id="L426" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L427">            return false;</span>
+<span class="fc bfc" id="L432" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L433">            return false;</span>
         }
-<span class="fc" id="L429">        final INSLooselyCoupledKalmanConfig other = (INSLooselyCoupledKalmanConfig) obj;</span>
-<span class="fc" id="L430">        return equals(other);</span>
+<span class="fc" id="L435">        final INSLooselyCoupledKalmanConfig other = (INSLooselyCoupledKalmanConfig) obj;</span>
+<span class="fc" id="L436">        return equals(other);</span>
     }
 
     /**
@@ -437,7 +443,7 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final INSLooselyCoupledKalmanConfig other) {
-<span class="fc" id="L440">        return equals(other, 0.0);</span>
+<span class="fc" id="L446">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -451,16 +457,16 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     public boolean equals(final INSLooselyCoupledKalmanConfig other,
                           final double threshold) {
-<span class="fc bfc" id="L454" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L455">            return false;</span>
+<span class="fc bfc" id="L460" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L461">            return false;</span>
         }
 
-<span class="fc bfc" id="L458" title="All 2 branches covered.">        return Math.abs(mGyroNoisePSD - other.mGyroNoisePSD) &lt;= threshold</span>
-<span class="pc bpc" id="L459" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerometerNoisePSD - other.mAccelerometerNoisePSD) &lt;= threshold</span>
-<span class="pc bpc" id="L460" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerometerBiasPSD - other.mAccelerometerBiasPSD) &lt;= threshold</span>
-<span class="pc bpc" id="L461" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasPSD - other.mGyroBiasPSD) &lt;= threshold</span>
-<span class="pc bpc" id="L462" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mPositionNoiseSD - other.mPositionNoiseSD) &lt;= threshold</span>
-<span class="pc bpc" id="L463" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVelocityNoiseSD - other.mVelocityNoiseSD) &lt;= threshold;</span>
+<span class="fc bfc" id="L464" title="All 2 branches covered.">        return Math.abs(mGyroNoisePSD - other.mGyroNoisePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L465" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerometerNoisePSD - other.mAccelerometerNoisePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerometerBiasPSD - other.mAccelerometerBiasPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasPSD - other.mGyroBiasPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mPositionNoiseSD - other.mPositionNoiseSD) &lt;= threshold</span>
+<span class="pc bpc" id="L469" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVelocityNoiseSD - other.mVelocityNoiseSD) &lt;= threshold;</span>
     }
 
     /**
@@ -471,10 +477,10 @@ public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L474">        final INSLooselyCoupledKalmanConfig result =</span>
-<span class="fc" id="L475">                (INSLooselyCoupledKalmanConfig) super.clone();</span>
-<span class="fc" id="L476">        copyTo(result);</span>
-<span class="fc" id="L477">        return result;</span>
+<span class="fc" id="L480">        final INSLooselyCoupledKalmanConfig result =</span>
+<span class="fc" id="L481">                (INSLooselyCoupledKalmanConfig) super.clone();</span>
+<span class="fc" id="L482">        copyTo(result);</span>
+<span class="fc" id="L483">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

@@ -36,6 +36,12 @@ import java.util.Objects;
 public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAndMagneticFluxDensity {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Timestamp value expressed in seconds.
      */
     private double mTimestampSeconds;
@@ -44,8 +50,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * Constructor.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity() {
-<span class="fc" id="L47">        super();</span>
-<span class="fc" id="L48">    }</span>
+<span class="fc" id="L53">        super();</span>
+<span class="fc" id="L54">    }</span>
 
     /**
      * Constructor.
@@ -54,8 +60,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      *                   and angular rate.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics) {
-<span class="fc" id="L57">        super(kinematics);</span>
-<span class="fc" id="L58">    }</span>
+<span class="fc" id="L63">        super(kinematics);</span>
+<span class="fc" id="L64">    }</span>
 
     /**
      * Constructor.
@@ -64,8 +70,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity) {
-<span class="fc" id="L67">        super(magneticFluxDensity);</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L73">        super(magneticFluxDensity);</span>
+<span class="fc" id="L74">    }</span>
 
     /**
      * Constructor.
@@ -77,26 +83,26 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity magneticFluxDensity) {
-<span class="fc" id="L80">        super(kinematics, magneticFluxDensity);</span>
-<span class="fc" id="L81">    }</span>
+<span class="fc" id="L86">        super(kinematics, magneticFluxDensity);</span>
+<span class="fc" id="L87">    }</span>
 
     /**
      * Constructor.
      *
      * @param timestampSeconds timestamp value expressed in seconds.
      */
-<span class="fc" id="L88">    public TimedBodyKinematicsAndMagneticFluxDensity(final double timestampSeconds) {</span>
-<span class="fc" id="L89">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L90">    }</span>
+<span class="fc" id="L94">    public TimedBodyKinematicsAndMagneticFluxDensity(final double timestampSeconds) {</span>
+<span class="fc" id="L95">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L96">    }</span>
 
     /**
      * Constructor.
      *
      * @param timestamp timestamp value.
      */
-<span class="fc" id="L97">    public TimedBodyKinematicsAndMagneticFluxDensity(final Time timestamp) {</span>
-<span class="fc" id="L98">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L99">    }</span>
+<span class="fc" id="L103">    public TimedBodyKinematicsAndMagneticFluxDensity(final Time timestamp) {</span>
+<span class="fc" id="L104">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L105">    }</span>
 
     /**
      * Constructor.
@@ -108,9 +114,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics,
             final double timestampSeconds) {
-<span class="fc" id="L111">        super(kinematics);</span>
-<span class="fc" id="L112">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L113">    }</span>
+<span class="fc" id="L117">        super(kinematics);</span>
+<span class="fc" id="L118">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L119">    }</span>
 
     /**
      * Constructor.
@@ -122,9 +128,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics,
             final Time timestamp) {
-<span class="fc" id="L125">        super(kinematics);</span>
-<span class="fc" id="L126">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L127">    }</span>
+<span class="fc" id="L131">        super(kinematics);</span>
+<span class="fc" id="L132">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L133">    }</span>
 
     /**
      * Constructor.
@@ -135,9 +141,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity,
             final double timestampSeconds) {
-<span class="fc" id="L138">        super(magneticFluxDensity);</span>
-<span class="fc" id="L139">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L140">    }</span>
+<span class="fc" id="L144">        super(magneticFluxDensity);</span>
+<span class="fc" id="L145">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L146">    }</span>
 
     /**
      * Constructor.
@@ -148,9 +154,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
     public TimedBodyKinematicsAndMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity,
             final Time timestamp) {
-<span class="fc" id="L151">        super(magneticFluxDensity);</span>
-<span class="fc" id="L152">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L157">        super(magneticFluxDensity);</span>
+<span class="fc" id="L158">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Constructor.
@@ -164,9 +170,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity magneticFluxDensity,
             final double timestampSeconds) {
-<span class="fc" id="L167">        super(kinematics, magneticFluxDensity);</span>
-<span class="fc" id="L168">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L169">    }</span>
+<span class="fc" id="L173">        super(kinematics, magneticFluxDensity);</span>
+<span class="fc" id="L174">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L175">    }</span>
 
 
     /**
@@ -181,9 +187,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
             final BodyKinematics kinematics,
             final BodyMagneticFluxDensity magneticFluxDensity,
             final Time timestamp) {
-<span class="fc" id="L184">        super(kinematics, magneticFluxDensity);</span>
-<span class="fc" id="L185">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L186">    }</span>
+<span class="fc" id="L190">        super(kinematics, magneticFluxDensity);</span>
+<span class="fc" id="L191">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L192">    }</span>
 
     /**
      * Constructor.
@@ -191,9 +197,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param input instance to copy data from.
      */
     public TimedBodyKinematicsAndMagneticFluxDensity(
-<span class="fc" id="L194">            final TimedBodyKinematicsAndMagneticFluxDensity input) {</span>
-<span class="fc" id="L195">        copyFrom(input);</span>
-<span class="fc" id="L196">    }</span>
+<span class="fc" id="L200">            final TimedBodyKinematicsAndMagneticFluxDensity input) {</span>
+<span class="fc" id="L201">        copyFrom(input);</span>
+<span class="fc" id="L202">    }</span>
 
     /**
      * Gets timestamp value expressed in seconds.
@@ -201,7 +207,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return timestamp value expressed in seconds.
      */
     public double getTimestampSeconds() {
-<span class="fc" id="L204">        return mTimestampSeconds;</span>
+<span class="fc" id="L210">        return mTimestampSeconds;</span>
     }
 
     /**
@@ -210,8 +216,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestampSeconds timestamp value expressed in seconds.
      */
     public void setTimestampSeconds(final double timestampSeconds) {
-<span class="fc" id="L213">        mTimestampSeconds = timestampSeconds;</span>
-<span class="fc" id="L214">    }</span>
+<span class="fc" id="L219">        mTimestampSeconds = timestampSeconds;</span>
+<span class="fc" id="L220">    }</span>
 
     /**
      * Gets timestamp value.
@@ -219,7 +225,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return a new timestamp instance.
      */
     public Time getTimestamp() {
-<span class="fc" id="L222">        return new Time(mTimestampSeconds, TimeUnit.SECOND);</span>
+<span class="fc" id="L228">        return new Time(mTimestampSeconds, TimeUnit.SECOND);</span>
     }
 
     /**
@@ -228,9 +234,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param result instance where result data will be stored.
      */
     public void getTimestamp(final Time result) {
-<span class="fc" id="L231">        result.setValue(mTimestampSeconds);</span>
-<span class="fc" id="L232">        result.setUnit(TimeUnit.SECOND);</span>
-<span class="fc" id="L233">    }</span>
+<span class="fc" id="L237">        result.setValue(mTimestampSeconds);</span>
+<span class="fc" id="L238">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L239">    }</span>
 
     /**
      * Sets timestamp.
@@ -238,8 +244,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timestamp timestamp to be set.
      */
     public void setTimestamp(final Time timestamp) {
-<span class="fc" id="L241">        mTimestampSeconds = convertTime(timestamp);</span>
-<span class="fc" id="L242">    }</span>
+<span class="fc" id="L247">        mTimestampSeconds = convertTime(timestamp);</span>
+<span class="fc" id="L248">    }</span>
 
     /**
      * Gets a timed body kinematics instance containing current body kinematics
@@ -248,7 +254,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return a timed body kinematics
      */
     public TimedBodyKinematics getTimedKinematics() {
-<span class="fc" id="L251">        return new TimedBodyKinematics(getKinematics(), mTimestampSeconds);</span>
+<span class="fc" id="L257">        return new TimedBodyKinematics(getKinematics(), mTimestampSeconds);</span>
     }
 
     /**
@@ -258,9 +264,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param result instance where result will be stored.
      */
     public void getTimedKinematics(final TimedBodyKinematics result) {
-<span class="fc" id="L261">        result.setKinematics(getKinematics());</span>
-<span class="fc" id="L262">        result.setTimestampSeconds(mTimestampSeconds);</span>
-<span class="fc" id="L263">    }</span>
+<span class="fc" id="L267">        result.setKinematics(getKinematics());</span>
+<span class="fc" id="L268">        result.setTimestampSeconds(mTimestampSeconds);</span>
+<span class="fc" id="L269">    }</span>
 
     /**
      * Sets data from provided timed body kinematics.
@@ -268,9 +274,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param timedKinematics timed body kinematics.
      */
     public void setTimedKinematics(final TimedBodyKinematics timedKinematics) {
-<span class="fc" id="L271">        setKinematics(timedKinematics.getKinematics());</span>
-<span class="fc" id="L272">        mTimestampSeconds = timedKinematics.getTimestampSeconds();</span>
-<span class="fc" id="L273">    }</span>
+<span class="fc" id="L277">        setKinematics(timedKinematics.getKinematics());</span>
+<span class="fc" id="L278">        mTimestampSeconds = timedKinematics.getTimestampSeconds();</span>
+<span class="fc" id="L279">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -278,9 +284,9 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param input instance to copy data from.
      */
     public void copyFrom(final TimedBodyKinematicsAndMagneticFluxDensity input) {
-<span class="fc" id="L281">        super.copyFrom(input);</span>
-<span class="fc" id="L282">        mTimestampSeconds = input.mTimestampSeconds;</span>
-<span class="fc" id="L283">    }</span>
+<span class="fc" id="L287">        super.copyFrom(input);</span>
+<span class="fc" id="L288">        mTimestampSeconds = input.mTimestampSeconds;</span>
+<span class="fc" id="L289">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -288,8 +294,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final TimedBodyKinematicsAndMagneticFluxDensity output) {
-<span class="fc" id="L291">        output.copyFrom(this);</span>
-<span class="fc" id="L292">    }</span>
+<span class="fc" id="L297">        output.copyFrom(this);</span>
+<span class="fc" id="L298">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -299,7 +305,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L302">        return Objects.hash(super.hashCode(), mTimestampSeconds);</span>
+<span class="fc" id="L308">        return Objects.hash(super.hashCode(), mTimestampSeconds);</span>
     }
 
     /**
@@ -309,7 +315,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final TimedBodyKinematicsAndMagneticFluxDensity other) {
-<span class="fc" id="L312">        return equals(other, 0.0);</span>
+<span class="fc" id="L318">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -322,8 +328,8 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * threshold), false otherwise.
      */
     public boolean equals(final TimedBodyKinematicsAndMagneticFluxDensity other, final double threshold) {
-<span class="fc bfc" id="L325" title="All 2 branches covered.">        return super.equals(other, threshold)</span>
-<span class="pc bpc" id="L326" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimestampSeconds - mTimestampSeconds) &lt;= threshold;</span>
+<span class="fc bfc" id="L331" title="All 2 branches covered.">        return super.equals(other, threshold)</span>
+<span class="pc bpc" id="L332" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimestampSeconds - mTimestampSeconds) &lt;= threshold;</span>
     }
 
     /**
@@ -335,14 +341,14 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L338" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L339">            return true;</span>
+<span class="fc bfc" id="L344" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L345">            return true;</span>
         }
-<span class="fc bfc" id="L341" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L342">            return false;</span>
+<span class="fc bfc" id="L347" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L348">            return false;</span>
         }
-<span class="fc" id="L344">        final TimedBodyKinematicsAndMagneticFluxDensity other = (TimedBodyKinematicsAndMagneticFluxDensity) obj;</span>
-<span class="fc" id="L345">        return equals(other);</span>
+<span class="fc" id="L350">        final TimedBodyKinematicsAndMagneticFluxDensity other = (TimedBodyKinematicsAndMagneticFluxDensity) obj;</span>
+<span class="fc" id="L351">        return equals(other);</span>
     }
 
     /**
@@ -353,10 +359,10 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L356">        final TimedBodyKinematicsAndMagneticFluxDensity result =</span>
-<span class="fc" id="L357">                (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();</span>
-<span class="fc" id="L358">        copyTo(result);</span>
-<span class="fc" id="L359">        return result;</span>
+<span class="fc" id="L362">        final TimedBodyKinematicsAndMagneticFluxDensity result =</span>
+<span class="fc" id="L363">                (TimedBodyKinematicsAndMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L364">        copyTo(result);</span>
+<span class="fc" id="L365">        return result;</span>
     }
 
     /**
@@ -366,7 +372,7 @@ public class TimedBodyKinematicsAndMagneticFluxDensity extends BodyKinematicsAnd
      * @return converted value expressed in seconds.
      */
     private static double convertTime(final Time time) {
-<span class="fc" id="L369">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+<span class="fc" id="L375">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

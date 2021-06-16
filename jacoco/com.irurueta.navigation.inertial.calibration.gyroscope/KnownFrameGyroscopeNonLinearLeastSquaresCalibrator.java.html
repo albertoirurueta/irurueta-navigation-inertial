@@ -3348,9 +3348,9 @@ public class KnownFrameGyroscopeNonLinearLeastSquaresCalibrator implements
 <span class="fc" id="L3348">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="fc" id="L3351">        } catch (final AlgebraException | FittingException</span>
+<span class="nc" id="L3351">        } catch (final AlgebraException | FittingException</span>
                 | com.irurueta.numerical.NotReadyException e) {
-<span class="fc" id="L3353">            throw new CalibrationException(e);</span>
+<span class="nc" id="L3353">            throw new CalibrationException(e);</span>
         } finally {
 <span class="fc" id="L3355">            mRunning = false;</span>
         }

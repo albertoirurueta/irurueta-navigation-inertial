@@ -35,6 +35,12 @@ import java.util.Objects;
 public class FrameBodyKinematics implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Current body kinematics measurement. Contains accelerometer and gyroscope measurements.
      */
     private BodyKinematics mKinematics;
@@ -60,26 +66,26 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
     /**
      * Constructor.
      */
-<span class="fc" id="L63">    public FrameBodyKinematics() {</span>
-<span class="fc" id="L64">    }</span>
+<span class="fc" id="L69">    public FrameBodyKinematics() {</span>
+<span class="fc" id="L70">    }</span>
 
     /**
      * Constructor.
      *
      * @param kinematics current body kinematics measurement.
      */
-<span class="fc" id="L71">    public FrameBodyKinematics(final BodyKinematics kinematics) {</span>
-<span class="fc" id="L72">        mKinematics = kinematics;</span>
-<span class="fc" id="L73">    }</span>
+<span class="fc" id="L77">    public FrameBodyKinematics(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L78">        mKinematics = kinematics;</span>
+<span class="fc" id="L79">    }</span>
 
     /**
      * Constructor.
      *
      * @param frame current ECEF frame associated to measurement.
      */
-<span class="fc" id="L80">    public FrameBodyKinematics(final ECEFFrame frame) {</span>
-<span class="fc" id="L81">        mFrame = frame;</span>
-<span class="fc" id="L82">    }</span>
+<span class="fc" id="L86">    public FrameBodyKinematics(final ECEFFrame frame) {</span>
+<span class="fc" id="L87">        mFrame = frame;</span>
+<span class="fc" id="L88">    }</span>
 
     /**
      * Constructor.
@@ -87,9 +93,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param frame current NED frame associated to measurement. Internally it will be
      *              converted to its corresponding ECEF frame.
      */
-<span class="fc" id="L90">    public FrameBodyKinematics(final NEDFrame frame) {</span>
-<span class="fc" id="L91">        setNedFrame(frame);</span>
-<span class="fc" id="L92">    }</span>
+<span class="fc" id="L96">    public FrameBodyKinematics(final NEDFrame frame) {</span>
+<span class="fc" id="L97">        setNedFrame(frame);</span>
+<span class="fc" id="L98">    }</span>
 
     /**
      * Constructor.
@@ -98,9 +104,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                     used to obtain current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-<span class="fc" id="L101">    public FrameBodyKinematics(final double timeInterval) {</span>
-<span class="fc" id="L102">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L103">    }</span>
+<span class="fc" id="L107">    public FrameBodyKinematics(final double timeInterval) {</span>
+<span class="fc" id="L108">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L109">    }</span>
 
     /**
      * Constructor.
@@ -109,9 +115,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                     current frame and previous frame.
      * @throws IllegalArgumentException if provided value is negative.
      */
-<span class="fc" id="L112">    public FrameBodyKinematics(final Time timeInterval) {</span>
-<span class="fc" id="L113">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L114">    }</span>
+<span class="fc" id="L118">    public FrameBodyKinematics(final Time timeInterval) {</span>
+<span class="fc" id="L119">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L120">    }</span>
 
     /**
      * Constructor.
@@ -120,9 +126,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param previousFrame previous ECEF frame associated to measurement.
      */
     public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame) {
-<span class="fc" id="L123">        this(frame);</span>
-<span class="fc" id="L124">        mPreviousFrame = previousFrame;</span>
-<span class="fc" id="L125">    }</span>
+<span class="fc" id="L129">        this(frame);</span>
+<span class="fc" id="L130">        mPreviousFrame = previousFrame;</span>
+<span class="fc" id="L131">    }</span>
 
     /**
      * Constructor.
@@ -133,9 +139,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      will be converted to its corresponding ECEF frame.
      */
     public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame) {
-<span class="fc" id="L136">        this(frame);</span>
-<span class="fc" id="L137">        setPreviousNedFrame(previousFrame);</span>
-<span class="fc" id="L138">    }</span>
+<span class="fc" id="L142">        this(frame);</span>
+<span class="fc" id="L143">        setPreviousNedFrame(previousFrame);</span>
+<span class="fc" id="L144">    }</span>
 
     /**
      * Constructor.
@@ -148,9 +154,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame,
                                final double timeInterval) {
-<span class="fc" id="L151">        this(frame, previousFrame);</span>
-<span class="fc" id="L152">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L153">    }</span>
+<span class="fc" id="L157">        this(frame, previousFrame);</span>
+<span class="fc" id="L158">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L159">    }</span>
 
     /**
      * Constructor.
@@ -163,9 +169,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final ECEFFrame frame, final ECEFFrame previousFrame,
                                final Time timeInterval) {
-<span class="fc" id="L166">        this(frame, previousFrame);</span>
-<span class="fc" id="L167">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L168">    }</span>
+<span class="fc" id="L172">        this(frame, previousFrame);</span>
+<span class="fc" id="L173">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L174">    }</span>
 
     /**
      * Constructor.
@@ -180,9 +186,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame,
                                final double timeInterval) {
-<span class="fc" id="L183">        this(frame, previousFrame);</span>
-<span class="fc" id="L184">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L185">    }</span>
+<span class="fc" id="L189">        this(frame, previousFrame);</span>
+<span class="fc" id="L190">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L191">    }</span>
 
     /**
      * Constructor.
@@ -197,9 +203,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final NEDFrame frame, final NEDFrame previousFrame,
                                final Time timeInterval) {
-<span class="fc" id="L200">        this(frame, previousFrame);</span>
-<span class="fc" id="L201">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L202">    }</span>
+<span class="fc" id="L206">        this(frame, previousFrame);</span>
+<span class="fc" id="L207">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L208">    }</span>
 
     /**
      * Constructor.
@@ -208,9 +214,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param frame      ECEF frame associated to measurement.
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame) {
-<span class="fc" id="L211">        this(kinematics);</span>
-<span class="fc" id="L212">        mFrame = frame;</span>
-<span class="fc" id="L213">    }</span>
+<span class="fc" id="L217">        this(kinematics);</span>
+<span class="fc" id="L218">        mFrame = frame;</span>
+<span class="fc" id="L219">    }</span>
 
     /**
      * Constructor.
@@ -220,9 +226,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                   converted to its corresponding ECEF frame.
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame) {
-<span class="fc" id="L223">        this(kinematics);</span>
-<span class="fc" id="L224">        setNedFrame(frame);</span>
-<span class="fc" id="L225">    }</span>
+<span class="fc" id="L229">        this(kinematics);</span>
+<span class="fc" id="L230">        setNedFrame(frame);</span>
+<span class="fc" id="L231">    }</span>
 
     /**
      * Constructor.
@@ -233,9 +239,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
                                final ECEFFrame previousFrame) {
-<span class="fc" id="L236">        this(kinematics, frame);</span>
-<span class="fc" id="L237">        mPreviousFrame = previousFrame;</span>
-<span class="fc" id="L238">    }</span>
+<span class="fc" id="L242">        this(kinematics, frame);</span>
+<span class="fc" id="L243">        mPreviousFrame = previousFrame;</span>
+<span class="fc" id="L244">    }</span>
 
     /**
      * Constructor.
@@ -248,9 +254,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
                                final NEDFrame previousFrame) {
-<span class="fc" id="L251">        this(kinematics, frame);</span>
-<span class="fc" id="L252">        setPreviousNedFrame(previousFrame);</span>
-<span class="fc" id="L253">    }</span>
+<span class="fc" id="L257">        this(kinematics, frame);</span>
+<span class="fc" id="L258">        setPreviousNedFrame(previousFrame);</span>
+<span class="fc" id="L259">    }</span>
 
     /**
      * Constructor.
@@ -264,9 +270,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
                                final ECEFFrame previousFrame, final double timeInterval) {
-<span class="fc" id="L267">        this(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L268">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L269">    }</span>
+<span class="fc" id="L273">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L274">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L275">    }</span>
 
     /**
      * Constructor.
@@ -280,9 +286,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final ECEFFrame frame,
                                final ECEFFrame previousFrame, final Time timeInterval) {
-<span class="fc" id="L283">        this(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L284">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L285">    }</span>
+<span class="fc" id="L289">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L290">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L291">    }</span>
 
     /**
      * Constructor.
@@ -298,9 +304,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
                                final NEDFrame previousFrame, final double timeInterval) {
-<span class="fc" id="L301">        this(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L302">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L303">    }</span>
+<span class="fc" id="L307">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L308">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L309">    }</span>
 
     /**
      * Constructor.
@@ -316,18 +322,18 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     public FrameBodyKinematics(final BodyKinematics kinematics, final NEDFrame frame,
                                final NEDFrame previousFrame, final Time timeInterval) {
-<span class="fc" id="L319">        this(kinematics, frame, previousFrame);</span>
-<span class="fc" id="L320">        setTimeInterval(timeInterval);</span>
-<span class="fc" id="L321">    }</span>
+<span class="fc" id="L325">        this(kinematics, frame, previousFrame);</span>
+<span class="fc" id="L326">        setTimeInterval(timeInterval);</span>
+<span class="fc" id="L327">    }</span>
 
     /**
      * Constructor.
      *
      * @param input instance to copy data from.
      */
-<span class="fc" id="L328">    public FrameBodyKinematics(final FrameBodyKinematics input) {</span>
-<span class="fc" id="L329">        copyFrom(input);</span>
-<span class="fc" id="L330">    }</span>
+<span class="fc" id="L334">    public FrameBodyKinematics(final FrameBodyKinematics input) {</span>
+<span class="fc" id="L335">        copyFrom(input);</span>
+<span class="fc" id="L336">    }</span>
 
     /**
      * Gets current body kinematics measurement. Contains accelerometer and gyroscope
@@ -336,7 +342,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return current body kinematics measurement.
      */
     public BodyKinematics getKinematics() {
-<span class="fc" id="L339">        return mKinematics;</span>
+<span class="fc" id="L345">        return mKinematics;</span>
     }
 
     /**
@@ -346,8 +352,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param kinematics current body kinematics measurement to be set.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-<span class="fc" id="L349">        mKinematics = kinematics;</span>
-<span class="fc" id="L350">    }</span>
+<span class="fc" id="L355">        mKinematics = kinematics;</span>
+<span class="fc" id="L356">    }</span>
 
     /**
      * Gets current body position (which will typically remain constant),
@@ -359,7 +365,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * not available.
      */
     public ECEFFrame getFrame() {
-<span class="fc" id="L362">        return mFrame;</span>
+<span class="fc" id="L368">        return mFrame;</span>
     }
 
     /**
@@ -371,8 +377,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param frame current ECEF frame
      */
     public void setFrame(final ECEFFrame frame) {
-<span class="fc" id="L374">        mFrame = frame;</span>
-<span class="fc" id="L375">    }</span>
+<span class="fc" id="L380">        mFrame = frame;</span>
+<span class="fc" id="L381">    }</span>
 
     /**
      * Gets current body position (which will typically remain constant),
@@ -384,8 +390,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * not available.
      */
     public NEDFrame getNedFrame() {
-<span class="fc bfc" id="L387" title="All 2 branches covered.">        return mFrame != null ?</span>
-<span class="fc" id="L388">                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;</span>
+<span class="fc bfc" id="L393" title="All 2 branches covered.">        return mFrame != null ?</span>
+<span class="fc" id="L394">                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mFrame) : null;</span>
     }
 
     /**
@@ -398,11 +404,11 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getNedFrame(final NEDFrame result) {
-<span class="fc bfc" id="L401" title="All 2 branches covered.">        if (mFrame != null) {</span>
-<span class="fc" id="L402">            ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);</span>
-<span class="fc" id="L403">            return true;</span>
+<span class="fc bfc" id="L407" title="All 2 branches covered.">        if (mFrame != null) {</span>
+<span class="fc" id="L408">            ECEFtoNEDFrameConverter.convertECEFtoNED(mFrame, result);</span>
+<span class="fc" id="L409">            return true;</span>
         } else {
-<span class="fc" id="L405">            return false;</span>
+<span class="fc" id="L411">            return false;</span>
         }
     }
 
@@ -419,16 +425,16 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                 to be set.
      */
     public void setNedFrame(final NEDFrame nedFrame) {
-<span class="pc bpc" id="L422" title="1 of 2 branches missed.">        if (nedFrame != null) {</span>
-<span class="pc bpc" id="L423" title="1 of 2 branches missed.">            if (mFrame != null) {</span>
-<span class="nc" id="L424">                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
+<span class="pc bpc" id="L428" title="1 of 2 branches missed.">        if (nedFrame != null) {</span>
+<span class="pc bpc" id="L429" title="1 of 2 branches missed.">            if (mFrame != null) {</span>
+<span class="nc" id="L430">                NEDtoECEFFrameConverter.convertNEDtoECEF(nedFrame, mFrame);</span>
             } else {
-<span class="fc" id="L426">                mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);</span>
+<span class="fc" id="L432">                mFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(nedFrame);</span>
             }
         } else {
-<span class="nc" id="L429">            mFrame = null;</span>
+<span class="nc" id="L435">            mFrame = null;</span>
         }
-<span class="fc" id="L431">    }</span>
+<span class="fc" id="L437">    }</span>
 
     /**
      * Gets previous body position (which will typically remain constant),
@@ -440,7 +446,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * null if not available.
      */
     public ECEFFrame getPreviousFrame() {
-<span class="fc" id="L443">        return mPreviousFrame;</span>
+<span class="fc" id="L449">        return mPreviousFrame;</span>
     }
 
     /**
@@ -453,8 +459,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                      measurement.
      */
     public void setPreviousFrame(final ECEFFrame previousFrame) {
-<span class="fc" id="L456">        mPreviousFrame = previousFrame;</span>
-<span class="fc" id="L457">    }</span>
+<span class="fc" id="L462">        mPreviousFrame = previousFrame;</span>
+<span class="fc" id="L463">    }</span>
 
     /**
      * Gets previous body position (which will typically remain constant),
@@ -466,8 +472,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * null if not available.
      */
     public NEDFrame getPreviousNedFrame() {
-<span class="fc bfc" id="L469" title="All 2 branches covered.">        return mPreviousFrame != null ?</span>
-<span class="fc" id="L470">                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mPreviousFrame) : null;</span>
+<span class="fc bfc" id="L475" title="All 2 branches covered.">        return mPreviousFrame != null ?</span>
+<span class="fc" id="L476">                ECEFtoNEDFrameConverter.convertECEFtoNEDAndReturnNew(mPreviousFrame) : null;</span>
     }
 
     /**
@@ -480,11 +486,11 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return true if result instance was updated, false otherwise.
      */
     public boolean getPreviousNedFrame(final NEDFrame result) {
-<span class="fc bfc" id="L483" title="All 2 branches covered.">        if (mPreviousFrame != null) {</span>
-<span class="fc" id="L484">            ECEFtoNEDFrameConverter.convertECEFtoNED(mPreviousFrame, result);</span>
-<span class="fc" id="L485">            return true;</span>
+<span class="fc bfc" id="L489" title="All 2 branches covered.">        if (mPreviousFrame != null) {</span>
+<span class="fc" id="L490">            ECEFtoNEDFrameConverter.convertECEFtoNED(mPreviousFrame, result);</span>
+<span class="fc" id="L491">            return true;</span>
         } else {
-<span class="fc" id="L487">            return false;</span>
+<span class="fc" id="L493">            return false;</span>
         }
     }
 
@@ -498,17 +504,17 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      *                         measurement to be set.
      */
     public void setPreviousNedFrame(final NEDFrame previousNedFrame) {
-<span class="pc bpc" id="L501" title="1 of 2 branches missed.">        if (previousNedFrame != null) {</span>
-<span class="pc bpc" id="L502" title="1 of 2 branches missed.">            if (mPreviousFrame != null) {</span>
-<span class="nc" id="L503">                NEDtoECEFFrameConverter.convertNEDtoECEF(previousNedFrame, mPreviousFrame);</span>
+<span class="pc bpc" id="L507" title="1 of 2 branches missed.">        if (previousNedFrame != null) {</span>
+<span class="pc bpc" id="L508" title="1 of 2 branches missed.">            if (mPreviousFrame != null) {</span>
+<span class="nc" id="L509">                NEDtoECEFFrameConverter.convertNEDtoECEF(previousNedFrame, mPreviousFrame);</span>
             } else {
-<span class="fc" id="L505">                mPreviousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(</span>
+<span class="fc" id="L511">                mPreviousFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(</span>
                         previousNedFrame);
             }
         } else {
-<span class="nc" id="L509">            mPreviousFrame = null;</span>
+<span class="nc" id="L515">            mPreviousFrame = null;</span>
         }
-<span class="fc" id="L511">    }</span>
+<span class="fc" id="L517">    }</span>
 
     /**
      * Gets time interval expressed in seconds (s) between IMU measurements used to
@@ -517,7 +523,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return time interval expressed in seconds (s) between IMU measurements.
      */
     public double getTimeInterval() {
-<span class="fc" id="L520">        return mTimeInterval;</span>
+<span class="fc" id="L526">        return mTimeInterval;</span>
     }
 
     /**
@@ -529,12 +535,12 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public void setTimeInterval(final double timeInterval) {
-<span class="fc bfc" id="L532" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
-<span class="fc" id="L533">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L538" title="All 2 branches covered.">        if (timeInterval &lt; 0.0) {</span>
+<span class="fc" id="L539">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L536">        mTimeInterval = timeInterval;</span>
-<span class="fc" id="L537">    }</span>
+<span class="fc" id="L542">        mTimeInterval = timeInterval;</span>
+<span class="fc" id="L543">    }</span>
 
     /**
      * Gets time interval between IMU measurements used to obtain current frame and
@@ -543,7 +549,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return time interval between IMU measurements.
      */
     public Time getTimeIntervalAsTime() {
-<span class="fc" id="L546">        return new Time(mTimeInterval, TimeUnit.SECOND);</span>
+<span class="fc" id="L552">        return new Time(mTimeInterval, TimeUnit.SECOND);</span>
     }
 
     /**
@@ -553,9 +559,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param result instance where result will be stored.
      */
     public void getTimeIntervalAsTime(final Time result) {
-<span class="fc" id="L556">        result.setValue(mTimeInterval);</span>
-<span class="fc" id="L557">        result.setUnit(TimeUnit.SECOND);</span>
-<span class="fc" id="L558">    }</span>
+<span class="fc" id="L562">        result.setValue(mTimeInterval);</span>
+<span class="fc" id="L563">        result.setUnit(TimeUnit.SECOND);</span>
+<span class="fc" id="L564">    }</span>
 
     /**
      * Sets time interval between IMU measurements used to obtain current frame and
@@ -565,10 +571,10 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public void setTimeInterval(final Time timeInterval) {
-<span class="fc" id="L568">        setTimeInterval(TimeConverter.convert(</span>
-<span class="fc" id="L569">                timeInterval.getValue().doubleValue(), timeInterval.getUnit(),</span>
+<span class="fc" id="L574">        setTimeInterval(TimeConverter.convert(</span>
+<span class="fc" id="L575">                timeInterval.getValue().doubleValue(), timeInterval.getUnit(),</span>
                 TimeUnit.SECOND));
-<span class="fc" id="L571">    }</span>
+<span class="fc" id="L577">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -576,38 +582,38 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param input instance to copy dara from.
      */
     public void copyFrom(final FrameBodyKinematics input) {
-<span class="fc bfc" id="L579" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
-<span class="fc bfc" id="L580" title="All 2 branches covered.">            if (mKinematics == null) {</span>
-<span class="fc" id="L581">                mKinematics = new BodyKinematics(input.mKinematics);</span>
+<span class="fc bfc" id="L585" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
+<span class="fc bfc" id="L586" title="All 2 branches covered.">            if (mKinematics == null) {</span>
+<span class="fc" id="L587">                mKinematics = new BodyKinematics(input.mKinematics);</span>
             } else {
-<span class="fc" id="L583">                mKinematics.copyFrom(input.mKinematics);</span>
+<span class="fc" id="L589">                mKinematics.copyFrom(input.mKinematics);</span>
             }
         } else {
-<span class="fc" id="L586">            mKinematics = null;</span>
+<span class="fc" id="L592">            mKinematics = null;</span>
         }
 
-<span class="fc bfc" id="L589" title="All 2 branches covered.">        if (input.mFrame != null) {</span>
-<span class="fc bfc" id="L590" title="All 2 branches covered.">            if (mFrame == null) {</span>
-<span class="fc" id="L591">                mFrame = new ECEFFrame(input.mFrame);</span>
+<span class="fc bfc" id="L595" title="All 2 branches covered.">        if (input.mFrame != null) {</span>
+<span class="fc bfc" id="L596" title="All 2 branches covered.">            if (mFrame == null) {</span>
+<span class="fc" id="L597">                mFrame = new ECEFFrame(input.mFrame);</span>
             } else {
-<span class="fc" id="L593">                mFrame.copyFrom(input.mFrame);</span>
+<span class="fc" id="L599">                mFrame.copyFrom(input.mFrame);</span>
             }
         } else {
-<span class="fc" id="L596">            mFrame = null;</span>
+<span class="fc" id="L602">            mFrame = null;</span>
         }
 
-<span class="fc bfc" id="L599" title="All 2 branches covered.">        if (input.mPreviousFrame != null) {</span>
-<span class="fc bfc" id="L600" title="All 2 branches covered.">            if (mPreviousFrame == null) {</span>
-<span class="fc" id="L601">                mPreviousFrame = new ECEFFrame(input.mPreviousFrame);</span>
+<span class="fc bfc" id="L605" title="All 2 branches covered.">        if (input.mPreviousFrame != null) {</span>
+<span class="fc bfc" id="L606" title="All 2 branches covered.">            if (mPreviousFrame == null) {</span>
+<span class="fc" id="L607">                mPreviousFrame = new ECEFFrame(input.mPreviousFrame);</span>
             } else {
-<span class="fc" id="L603">                mPreviousFrame.copyFrom(input.mPreviousFrame);</span>
+<span class="fc" id="L609">                mPreviousFrame.copyFrom(input.mPreviousFrame);</span>
             }
         } else {
-<span class="fc" id="L606">            mPreviousFrame = null;</span>
+<span class="fc" id="L612">            mPreviousFrame = null;</span>
         }
 
-<span class="fc" id="L609">        mTimeInterval = input.mTimeInterval;</span>
-<span class="fc" id="L610">    }</span>
+<span class="fc" id="L615">        mTimeInterval = input.mTimeInterval;</span>
+<span class="fc" id="L616">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -615,8 +621,8 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final FrameBodyKinematics output) {
-<span class="fc" id="L618">        output.copyFrom(this);</span>
-<span class="fc" id="L619">    }</span>
+<span class="fc" id="L624">        output.copyFrom(this);</span>
+<span class="fc" id="L625">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -626,7 +632,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L629">        return Objects.hash(mKinematics, mFrame, mPreviousFrame, mTimeInterval);</span>
+<span class="fc" id="L635">        return Objects.hash(mKinematics, mFrame, mPreviousFrame, mTimeInterval);</span>
     }
 
     /**
@@ -636,7 +642,7 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final FrameBodyKinematics other) {
-<span class="fc" id="L639">        return equals(other, 0.0);</span>
+<span class="fc" id="L645">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -649,17 +655,17 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      * threshold), false otherwise.
      */
     public boolean equals(final FrameBodyKinematics other, final double threshold) {
-<span class="fc bfc" id="L652" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L653">            return false;</span>
+<span class="fc bfc" id="L658" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L659">            return false;</span>
         }
 
-<span class="pc bpc" id="L656" title="2 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
-<span class="pc bpc" id="L657" title="4 of 8 branches missed.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
+<span class="pc bpc" id="L662" title="2 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
+<span class="pc bpc" id="L663" title="4 of 8 branches missed.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
                 &amp;&amp; ((other.mFrame == null &amp;&amp; mFrame == null)
-<span class="pc bpc" id="L659" title="5 of 8 branches missed.">                || (mFrame != null &amp;&amp; mFrame.equals(other.mFrame, threshold)))</span>
+<span class="pc bpc" id="L665" title="5 of 8 branches missed.">                || (mFrame != null &amp;&amp; mFrame.equals(other.mFrame, threshold)))</span>
                 &amp;&amp; ((other.mPreviousFrame == null &amp;&amp; mPreviousFrame == null)
-<span class="pc bpc" id="L661" title="1 of 2 branches missed.">                || (mPreviousFrame != null &amp;&amp; mPreviousFrame.equals(other.mPreviousFrame, threshold)))</span>
-<span class="pc bpc" id="L662" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimeInterval - mTimeInterval) &lt;= threshold;</span>
+<span class="pc bpc" id="L667" title="1 of 2 branches missed.">                || (mPreviousFrame != null &amp;&amp; mPreviousFrame.equals(other.mPreviousFrame, threshold)))</span>
+<span class="pc bpc" id="L668" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(other.mTimeInterval - mTimeInterval) &lt;= threshold;</span>
     }
 
     /**
@@ -671,14 +677,14 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L674" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L675">            return true;</span>
+<span class="fc bfc" id="L680" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L681">            return true;</span>
         }
-<span class="fc bfc" id="L677" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L678">            return false;</span>
+<span class="fc bfc" id="L683" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L684">            return false;</span>
         }
-<span class="fc" id="L680">        final FrameBodyKinematics other = (FrameBodyKinematics) obj;</span>
-<span class="fc" id="L681">        return equals(other);</span>
+<span class="fc" id="L686">        final FrameBodyKinematics other = (FrameBodyKinematics) obj;</span>
+<span class="fc" id="L687">        return equals(other);</span>
     }
 
     /**
@@ -689,9 +695,9 @@ public class FrameBodyKinematics implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L692">        final FrameBodyKinematics result = (FrameBodyKinematics) super.clone();</span>
-<span class="fc" id="L693">        copyTo(result);</span>
-<span class="fc" id="L694">        return result;</span>
+<span class="fc" id="L698">        final FrameBodyKinematics result = (FrameBodyKinematics) super.clone();</span>
+<span class="fc" id="L699">        copyTo(result);</span>
+<span class="fc" id="L700">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

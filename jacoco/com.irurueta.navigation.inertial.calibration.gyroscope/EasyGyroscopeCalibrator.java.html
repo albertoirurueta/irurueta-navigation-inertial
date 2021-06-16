@@ -3005,10 +3005,10 @@ public class EasyGyroscopeCalibrator implements
 <span class="fc" id="L3005">                mListener.onCalibrateEnd(this);</span>
             }
 
-<span class="fc" id="L3008">        } catch (final FittingException</span>
+<span class="nc" id="L3008">        } catch (final FittingException</span>
                 | AlgebraException
                 | com.irurueta.numerical.NotReadyException e) {
-<span class="fc" id="L3011">            throw new CalibrationException(e);</span>
+<span class="nc" id="L3011">            throw new CalibrationException(e);</span>
         } finally {
 <span class="fc" id="L3013">            mRunning = false;</span>
         }

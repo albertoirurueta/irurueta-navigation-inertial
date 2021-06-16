@@ -25,6 +25,12 @@ import java.util.Objects;
 public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Cloneable {
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Body kinematics containing sensed specific force and angular rate.
      */
     private BodyKinematics mKinematics;
@@ -37,8 +43,8 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
     /**
      * Constructor.
      */
-<span class="fc" id="L40">    public BodyKinematicsAndMagneticFluxDensity() {</span>
-<span class="fc" id="L41">    }</span>
+<span class="fc" id="L46">    public BodyKinematicsAndMagneticFluxDensity() {</span>
+<span class="fc" id="L47">    }</span>
 
     /**
      * Constructor.
@@ -46,9 +52,9 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param kinematics body kinematics containing sensed specific force
      *                   and angular rate.
      */
-<span class="fc" id="L49">    public BodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics) {</span>
-<span class="fc" id="L50">        mKinematics = kinematics;</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L55">    public BodyKinematicsAndMagneticFluxDensity(final BodyKinematics kinematics) {</span>
+<span class="fc" id="L56">        mKinematics = kinematics;</span>
+<span class="fc" id="L57">    }</span>
 
     /**
      * Constructor.
@@ -56,9 +62,9 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param magneticFluxDensity body magnetic flux density.
      */
     public BodyKinematicsAndMagneticFluxDensity(
-<span class="fc" id="L59">            final BodyMagneticFluxDensity magneticFluxDensity) {</span>
-<span class="fc" id="L60">        mMagneticFluxDensity = magneticFluxDensity;</span>
-<span class="fc" id="L61">    }</span>
+<span class="fc" id="L65">            final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L66">        mMagneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L67">    }</span>
 
     /**
      * Constructor.
@@ -69,10 +75,10 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     public BodyKinematicsAndMagneticFluxDensity(
             final BodyKinematics kinematics,
-<span class="fc" id="L72">            final BodyMagneticFluxDensity magneticFluxDensity) {</span>
-<span class="fc" id="L73">        mKinematics = kinematics;</span>
-<span class="fc" id="L74">        mMagneticFluxDensity = magneticFluxDensity;</span>
-<span class="fc" id="L75">    }</span>
+<span class="fc" id="L78">            final BodyMagneticFluxDensity magneticFluxDensity) {</span>
+<span class="fc" id="L79">        mKinematics = kinematics;</span>
+<span class="fc" id="L80">        mMagneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L81">    }</span>
 
     /**
      * Constructor.
@@ -80,9 +86,9 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param input instance to copy data from.
      */
     public BodyKinematicsAndMagneticFluxDensity(
-<span class="fc" id="L83">            final BodyKinematicsAndMagneticFluxDensity input) {</span>
-<span class="fc" id="L84">        copyFrom(input);</span>
-<span class="fc" id="L85">    }</span>
+<span class="fc" id="L89">            final BodyKinematicsAndMagneticFluxDensity input) {</span>
+<span class="fc" id="L90">        copyFrom(input);</span>
+<span class="fc" id="L91">    }</span>
 
     /**
      * Gets body kinematics containing sensed specific force and angular rate.
@@ -90,7 +96,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return body kinematics containing sensed specific force and angular rate.
      */
     public BodyKinematics getKinematics() {
-<span class="fc" id="L93">        return mKinematics;</span>
+<span class="fc" id="L99">        return mKinematics;</span>
     }
 
     /**
@@ -100,8 +106,8 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      *                   angular rate.
      */
     public void setKinematics(final BodyKinematics kinematics) {
-<span class="fc" id="L103">        mKinematics = kinematics;</span>
-<span class="fc" id="L104">    }</span>
+<span class="fc" id="L109">        mKinematics = kinematics;</span>
+<span class="fc" id="L110">    }</span>
 
     /**
      * Gets body magnetic flux density.
@@ -109,7 +115,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return body magnetic flux density.
      */
     public BodyMagneticFluxDensity getMagneticFluxDensity() {
-<span class="fc" id="L112">        return mMagneticFluxDensity;</span>
+<span class="fc" id="L118">        return mMagneticFluxDensity;</span>
     }
 
     /**
@@ -119,8 +125,8 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     public void setMagneticFluxDensity(
             final BodyMagneticFluxDensity magneticFluxDensity) {
-<span class="fc" id="L122">        mMagneticFluxDensity = magneticFluxDensity;</span>
-<span class="fc" id="L123">    }</span>
+<span class="fc" id="L128">        mMagneticFluxDensity = magneticFluxDensity;</span>
+<span class="fc" id="L129">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -128,27 +134,27 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param input instance to copy data from.
      */
     public void copyFrom(final BodyKinematicsAndMagneticFluxDensity input) {
-<span class="fc bfc" id="L131" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
-<span class="fc bfc" id="L132" title="All 2 branches covered.">            if (mKinematics == null) {</span>
-<span class="fc" id="L133">                mKinematics = new BodyKinematics(input.mKinematics);</span>
+<span class="fc bfc" id="L137" title="All 2 branches covered.">        if (input.mKinematics != null) {</span>
+<span class="fc bfc" id="L138" title="All 2 branches covered.">            if (mKinematics == null) {</span>
+<span class="fc" id="L139">                mKinematics = new BodyKinematics(input.mKinematics);</span>
             } else {
-<span class="fc" id="L135">                mKinematics.copyFrom(input.mKinematics);</span>
+<span class="fc" id="L141">                mKinematics.copyFrom(input.mKinematics);</span>
             }
         } else {
-<span class="fc" id="L138">            mKinematics = null;</span>
+<span class="fc" id="L144">            mKinematics = null;</span>
         }
 
-<span class="fc bfc" id="L141" title="All 2 branches covered.">        if (input.mMagneticFluxDensity != null) {</span>
-<span class="fc bfc" id="L142" title="All 2 branches covered.">            if (mMagneticFluxDensity == null) {</span>
-<span class="fc" id="L143">                mMagneticFluxDensity = new BodyMagneticFluxDensity(</span>
+<span class="fc bfc" id="L147" title="All 2 branches covered.">        if (input.mMagneticFluxDensity != null) {</span>
+<span class="fc bfc" id="L148" title="All 2 branches covered.">            if (mMagneticFluxDensity == null) {</span>
+<span class="fc" id="L149">                mMagneticFluxDensity = new BodyMagneticFluxDensity(</span>
                         input.mMagneticFluxDensity);
             } else {
-<span class="fc" id="L146">                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);</span>
+<span class="fc" id="L152">                mMagneticFluxDensity.copyFrom(input.mMagneticFluxDensity);</span>
             }
         } else {
-<span class="fc" id="L149">            mMagneticFluxDensity = null;</span>
+<span class="fc" id="L155">            mMagneticFluxDensity = null;</span>
         }
-<span class="fc" id="L151">    }</span>
+<span class="fc" id="L157">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -156,8 +162,8 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final BodyKinematicsAndMagneticFluxDensity output) {
-<span class="fc" id="L159">        output.copyFrom(this);</span>
-<span class="fc" id="L160">    }</span>
+<span class="fc" id="L165">        output.copyFrom(this);</span>
+<span class="fc" id="L166">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -168,7 +174,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L171">        return Objects.hash(mKinematics, mMagneticFluxDensity);</span>
+<span class="fc" id="L177">        return Objects.hash(mKinematics, mMagneticFluxDensity);</span>
     }
 
     /**
@@ -178,7 +184,7 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final BodyKinematicsAndMagneticFluxDensity other) {
-<span class="fc" id="L181">        return equals(other, 0.0);</span>
+<span class="fc" id="L187">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -192,14 +198,14 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     public boolean equals(final BodyKinematicsAndMagneticFluxDensity other,
                           final double threshold) {
-<span class="fc bfc" id="L195" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L196">            return false;</span>
+<span class="fc bfc" id="L201" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L202">            return false;</span>
         }
 
-<span class="pc bpc" id="L199" title="2 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
-<span class="pc bpc" id="L200" title="2 of 8 branches missed.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
+<span class="pc bpc" id="L205" title="2 of 6 branches missed.">        return ((other.mKinematics == null &amp;&amp; mKinematics == null)</span>
+<span class="pc bpc" id="L206" title="2 of 8 branches missed.">                || (mKinematics != null &amp;&amp; mKinematics.equals(other.mKinematics, threshold)))</span>
                 &amp;&amp; ((other.mMagneticFluxDensity == null &amp;&amp; mMagneticFluxDensity == null)
-<span class="pc bpc" id="L202" title="1 of 2 branches missed.">                || (mMagneticFluxDensity != null &amp;&amp; mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)));</span>
+<span class="pc bpc" id="L208" title="1 of 2 branches missed.">                || (mMagneticFluxDensity != null &amp;&amp; mMagneticFluxDensity.equals(other.mMagneticFluxDensity, threshold)));</span>
     }
 
     /**
@@ -211,16 +217,16 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L214" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L215">            return true;</span>
+<span class="fc bfc" id="L220" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L221">            return true;</span>
         }
 
-<span class="fc bfc" id="L218" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L219">            return false;</span>
+<span class="fc bfc" id="L224" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L225">            return false;</span>
         }
 
-<span class="fc" id="L222">        final BodyKinematicsAndMagneticFluxDensity other = (BodyKinematicsAndMagneticFluxDensity) obj;</span>
-<span class="fc" id="L223">        return equals(other);</span>
+<span class="fc" id="L228">        final BodyKinematicsAndMagneticFluxDensity other = (BodyKinematicsAndMagneticFluxDensity) obj;</span>
+<span class="fc" id="L229">        return equals(other);</span>
     }
 
     /**
@@ -231,9 +237,9 @@ public class BodyKinematicsAndMagneticFluxDensity implements Serializable, Clone
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L234">        final BodyKinematicsAndMagneticFluxDensity result = (BodyKinematicsAndMagneticFluxDensity) super.clone();</span>
-<span class="fc" id="L235">        copyTo(result);</span>
-<span class="fc" id="L236">        return result;</span>
+<span class="fc" id="L240">        final BodyKinematicsAndMagneticFluxDensity result = (BodyKinematicsAndMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L241">        copyTo(result);</span>
+<span class="fc" id="L242">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

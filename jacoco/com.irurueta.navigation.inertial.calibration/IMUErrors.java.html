@@ -52,17 +52,23 @@ public class IMUErrors implements Serializable, Cloneable {
     private static final int COMPONENTS_MINUS_ONE = 2;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Accelerometer biases for each IMU axis expressed in meters per squared
      * second (m/s^2).
      * By default it is assumed to be all zeros.
      */
-<span class="fc" id="L59">    private double[] mAccelerometerBiases = new double[ACCELEROMETER_COMPONENTS];</span>
+<span class="fc" id="L65">    private double[] mAccelerometerBiases = new double[ACCELEROMETER_COMPONENTS];</span>
 
     /**
      * Gyro biases for each IMU axis expressed in radians per second (rad/s).
      * By default it is assumed to be all zeros.
      */
-<span class="fc" id="L65">    private double[] mGyroBiases = new double[GYRO_COMPONENTS];</span>
+<span class="fc" id="L71">    private double[] mGyroBiases = new double[GYRO_COMPONENTS];</span>
 
     /**
      * Contains accelerometer scale factors and cross coupling errors.
@@ -183,18 +189,18 @@ public class IMUErrors implements Serializable, Cloneable {
     /**
      * Constructor.
      */
-<span class="fc" id="L186">    public IMUErrors() {</span>
+<span class="fc" id="L192">    public IMUErrors() {</span>
         try {
-<span class="fc" id="L188">            mAccelerometerScaleFactorAndCrossCouplingErrors = Matrix.identity(</span>
+<span class="fc" id="L194">            mAccelerometerScaleFactorAndCrossCouplingErrors = Matrix.identity(</span>
                     ACCELEROMETER_COMPONENTS, ACCELEROMETER_COMPONENTS);
-<span class="fc" id="L190">            mGyroScaleFactorAndCrossCouplingErrors = Matrix.identity(</span>
+<span class="fc" id="L196">            mGyroScaleFactorAndCrossCouplingErrors = Matrix.identity(</span>
                     GYRO_COMPONENTS, GYRO_COMPONENTS);
-<span class="fc" id="L192">            mGyroGDependentBiases = new Matrix(</span>
+<span class="fc" id="L198">            mGyroGDependentBiases = new Matrix(</span>
                     ACCELEROMETER_COMPONENTS, ACCELEROMETER_COMPONENTS);
-<span class="nc" id="L194">        } catch (final WrongSizeException ignore) {</span>
+<span class="nc" id="L200">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L196">        }</span>
-<span class="fc" id="L197">    }</span>
+<span class="fc" id="L202">        }</span>
+<span class="fc" id="L203">    }</span>
 
     /**
      * Constructor.
@@ -216,16 +222,16 @@ public class IMUErrors implements Serializable, Cloneable {
                      final Matrix gyroScaleFactorAndCrossCouplingErrors,
                      final double accelerometerNoiseRootPSD,
                      final double gyroNoiseRootPSD) {
-<span class="fc" id="L219">        this();</span>
-<span class="fc" id="L220">        setAccelerometerBiases(accelerometerBiases);</span>
-<span class="fc" id="L221">        setGyroBiases(gyroBiases);</span>
-<span class="fc" id="L222">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L225">        this();</span>
+<span class="fc" id="L226">        setAccelerometerBiases(accelerometerBiases);</span>
+<span class="fc" id="L227">        setGyroBiases(gyroBiases);</span>
+<span class="fc" id="L228">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
                 accelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L224">        setGyroScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L230">        setGyroScaleFactorAndCrossCouplingErrors(</span>
                 gyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L226">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
-<span class="fc" id="L227">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
-<span class="fc" id="L228">    }</span>
+<span class="fc" id="L232">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
+<span class="fc" id="L233">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
+<span class="fc" id="L234">    }</span>
 
     /**
      * Constructor.
@@ -247,16 +253,16 @@ public class IMUErrors implements Serializable, Cloneable {
                      final Matrix gyroScaleFactorAndCrossCouplingErrors,
                      final double accelerometerNoiseRootPSD,
                      final double gyroNoiseRootPSD) {
-<span class="fc" id="L250">        this();</span>
-<span class="fc" id="L251">        setAccelerometerBiases(accelerometerBiases);</span>
-<span class="fc" id="L252">        setGyroBiases(gyroBiases);</span>
-<span class="fc" id="L253">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L256">        this();</span>
+<span class="fc" id="L257">        setAccelerometerBiases(accelerometerBiases);</span>
+<span class="fc" id="L258">        setGyroBiases(gyroBiases);</span>
+<span class="fc" id="L259">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
                 accelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L255">        setGyroScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L261">        setGyroScaleFactorAndCrossCouplingErrors(</span>
                 gyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L257">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
-<span class="fc" id="L258">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
-<span class="fc" id="L259">    }</span>
+<span class="fc" id="L263">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
+<span class="fc" id="L264">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
+<span class="fc" id="L265">    }</span>
 
     /**
      * Constructor.
@@ -276,16 +282,16 @@ public class IMUErrors implements Serializable, Cloneable {
                      final Matrix gyroScaleFactorAndCrossCouplingErrors,
                      final double accelerometerNoiseRootPSD,
                      final double gyroNoiseRootPSD) {
-<span class="fc" id="L279">        this();</span>
-<span class="fc" id="L280">        setAccelerometerBiases(accelerometerBiases);</span>
-<span class="fc" id="L281">        setGyroBiases(gyroBiases);</span>
-<span class="fc" id="L282">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L285">        this();</span>
+<span class="fc" id="L286">        setAccelerometerBiases(accelerometerBiases);</span>
+<span class="fc" id="L287">        setGyroBiases(gyroBiases);</span>
+<span class="fc" id="L288">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
                 accelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L284">        setGyroScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L290">        setGyroScaleFactorAndCrossCouplingErrors(</span>
                 gyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L286">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
-<span class="fc" id="L287">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
-<span class="fc" id="L288">    }</span>
+<span class="fc" id="L292">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
+<span class="fc" id="L293">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
+<span class="fc" id="L294">    }</span>
 
     /**
      * Constructor.
@@ -316,19 +322,19 @@ public class IMUErrors implements Serializable, Cloneable {
                      final double gyroNoiseRootPSD,
                      final double accelerometerQuantizationLevel,
                      final double gyroQuantizationLevel) {
-<span class="fc" id="L319">        this();</span>
-<span class="fc" id="L320">        setAccelerometerBiases(accelerometerBiases);</span>
-<span class="fc" id="L321">        setGyroBiases(gyroBiases);</span>
-<span class="fc" id="L322">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L325">        this();</span>
+<span class="fc" id="L326">        setAccelerometerBiases(accelerometerBiases);</span>
+<span class="fc" id="L327">        setGyroBiases(gyroBiases);</span>
+<span class="fc" id="L328">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
                 accelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L324">        setGyroScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L330">        setGyroScaleFactorAndCrossCouplingErrors(</span>
                 gyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L326">        setGyroGDependentBiases(gyroGDependentBiases);</span>
-<span class="fc" id="L327">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
-<span class="fc" id="L328">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
-<span class="fc" id="L329">        setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);</span>
-<span class="fc" id="L330">        setGyroQuantizationLevel(gyroQuantizationLevel);</span>
-<span class="fc" id="L331">    }</span>
+<span class="fc" id="L332">        setGyroGDependentBiases(gyroGDependentBiases);</span>
+<span class="fc" id="L333">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
+<span class="fc" id="L334">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
+<span class="fc" id="L335">        setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);</span>
+<span class="fc" id="L336">        setGyroQuantizationLevel(gyroQuantizationLevel);</span>
+<span class="fc" id="L337">    }</span>
 
     /**
      * Constructor.
@@ -359,19 +365,19 @@ public class IMUErrors implements Serializable, Cloneable {
                      final double gyroNoiseRootPSD,
                      final double accelerometerQuantizationLevel,
                      final double gyroQuantizationLevel) {
-<span class="fc" id="L362">        this();</span>
-<span class="fc" id="L363">        setAccelerometerBiases(accelerometerBiases);</span>
-<span class="fc" id="L364">        setGyroBiases(gyroBiases);</span>
-<span class="fc" id="L365">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L368">        this();</span>
+<span class="fc" id="L369">        setAccelerometerBiases(accelerometerBiases);</span>
+<span class="fc" id="L370">        setGyroBiases(gyroBiases);</span>
+<span class="fc" id="L371">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
                 accelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L367">        setGyroScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L373">        setGyroScaleFactorAndCrossCouplingErrors(</span>
                 gyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L369">        setGyroGDependentBiases(gyroGDependentBiases);</span>
-<span class="fc" id="L370">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
-<span class="fc" id="L371">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
-<span class="fc" id="L372">        setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);</span>
-<span class="fc" id="L373">        setGyroQuantizationLevel(gyroQuantizationLevel);</span>
-<span class="fc" id="L374">    }</span>
+<span class="fc" id="L375">        setGyroGDependentBiases(gyroGDependentBiases);</span>
+<span class="fc" id="L376">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
+<span class="fc" id="L377">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
+<span class="fc" id="L378">        setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);</span>
+<span class="fc" id="L379">        setGyroQuantizationLevel(gyroQuantizationLevel);</span>
+<span class="fc" id="L380">    }</span>
 
     /**
      * Constructor.
@@ -398,19 +404,19 @@ public class IMUErrors implements Serializable, Cloneable {
                      final double gyroNoiseRootPSD,
                      final Acceleration accelerometerQuantizationLevel,
                      final AngularSpeed gyroQuantizationLevel) {
-<span class="fc" id="L401">        this();</span>
-<span class="fc" id="L402">        setAccelerometerBiases(accelerometerBiases);</span>
-<span class="fc" id="L403">        setGyroBiases(gyroBiases);</span>
-<span class="fc" id="L404">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L407">        this();</span>
+<span class="fc" id="L408">        setAccelerometerBiases(accelerometerBiases);</span>
+<span class="fc" id="L409">        setGyroBiases(gyroBiases);</span>
+<span class="fc" id="L410">        setAccelerometerScaleFactorAndCrossCouplingErrors(</span>
                 accelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L406">        setGyroScaleFactorAndCrossCouplingErrors(</span>
+<span class="fc" id="L412">        setGyroScaleFactorAndCrossCouplingErrors(</span>
                 gyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L408">        setGyroGDependentBiases(gyroGDependentBiases);</span>
-<span class="fc" id="L409">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
-<span class="fc" id="L410">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
-<span class="fc" id="L411">        setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);</span>
-<span class="fc" id="L412">        setGyroQuantizationLevel(gyroQuantizationLevel);</span>
-<span class="fc" id="L413">    }</span>
+<span class="fc" id="L414">        setGyroGDependentBiases(gyroGDependentBiases);</span>
+<span class="fc" id="L415">        setAccelerometerNoiseRootPSD(accelerometerNoiseRootPSD);</span>
+<span class="fc" id="L416">        setGyroNoiseRootPSD(gyroNoiseRootPSD);</span>
+<span class="fc" id="L417">        setAccelerometerQuantizationLevel(accelerometerQuantizationLevel);</span>
+<span class="fc" id="L418">        setGyroQuantizationLevel(gyroQuantizationLevel);</span>
+<span class="fc" id="L419">    }</span>
 
     /**
      * Constructor.
@@ -419,9 +425,9 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     @SuppressWarnings(&quot;CopyConstructorMissesField&quot;)
     public IMUErrors(final IMUErrors input) {
-<span class="fc" id="L422">        this();</span>
-<span class="fc" id="L423">        copyFrom(input);</span>
-<span class="fc" id="L424">    }</span>
+<span class="fc" id="L428">        this();</span>
+<span class="fc" id="L429">        copyFrom(input);</span>
+<span class="fc" id="L430">    }</span>
 
     /**
      * Gets accelerometer biases for each IMU axis expressed in meters per squared
@@ -431,9 +437,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer biases for each IMU axis.
      */
     public double[] getAccelerometerBiases() {
-<span class="fc" id="L434">        final double[] result = new double[ACCELEROMETER_COMPONENTS];</span>
-<span class="fc" id="L435">        getAccelerometerBiases(result);</span>
-<span class="fc" id="L436">        return result;</span>
+<span class="fc" id="L440">        final double[] result = new double[ACCELEROMETER_COMPONENTS];</span>
+<span class="fc" id="L441">        getAccelerometerBiases(result);</span>
+<span class="fc" id="L442">        return result;</span>
     }
 
     /**
@@ -445,13 +451,13 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getAccelerometerBiases(final double[] result) {
-<span class="fc bfc" id="L448" title="All 2 branches covered.">        if (result.length != ACCELEROMETER_COMPONENTS) {</span>
-<span class="fc" id="L449">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L454" title="All 2 branches covered.">        if (result.length != ACCELEROMETER_COMPONENTS) {</span>
+<span class="fc" id="L455">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L452">        System.arraycopy(mAccelerometerBiases, 0, result, 0,</span>
+<span class="fc" id="L458">        System.arraycopy(mAccelerometerBiases, 0, result, 0,</span>
                 ACCELEROMETER_COMPONENTS);
-<span class="fc" id="L454">    }</span>
+<span class="fc" id="L460">    }</span>
 
     /**
      * Sets accelerometer biases for each IMU axis expressed in meters per squared
@@ -461,12 +467,12 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setAccelerometerBiases(final double[] accelerometerBiases) {
-<span class="fc bfc" id="L464" title="All 2 branches covered.">        if (accelerometerBiases.length != ACCELEROMETER_COMPONENTS) {</span>
-<span class="fc" id="L465">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L470" title="All 2 branches covered.">        if (accelerometerBiases.length != ACCELEROMETER_COMPONENTS) {</span>
+<span class="fc" id="L471">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L468">        mAccelerometerBiases = accelerometerBiases;</span>
-<span class="fc" id="L469">    }</span>
+<span class="fc" id="L474">        mAccelerometerBiases = accelerometerBiases;</span>
+<span class="fc" id="L475">    }</span>
 
     /**
      * Gets accelerometer biases for each IMU axis expressed in meters per squared
@@ -476,7 +482,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return 3x1 column matrix containing accelerometer biases for each IMU axis.
      */
     public Matrix getAccelerometerBiasesAsMatrix() {
-<span class="fc" id="L479">        return Matrix.newFromArray(mAccelerometerBiases);</span>
+<span class="fc" id="L485">        return Matrix.newFromArray(mAccelerometerBiases);</span>
     }
 
     /**
@@ -488,10 +494,10 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void getAccelerometerBiasesAsMatrix(final Matrix result) {
-<span class="fc" id="L491">        result.setSubmatrix(0, 0,</span>
+<span class="fc" id="L497">        result.setSubmatrix(0, 0,</span>
                 COMPONENTS_MINUS_ONE, 0,
                 mAccelerometerBiases);
-<span class="fc" id="L494">    }</span>
+<span class="fc" id="L500">    }</span>
 
     /**
      * Sets accelerometer biases for each IMU axis expressed in meters per squared
@@ -501,18 +507,18 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setAccelerometerBiases(final Matrix accelerometerBiases) {
-<span class="fc bfc" id="L504" title="All 2 branches covered.">        if (accelerometerBiases.getRows() != ACCELEROMETER_COMPONENTS ||</span>
-<span class="fc bfc" id="L505" title="All 2 branches covered.">                accelerometerBiases.getColumns() != 1) {</span>
-<span class="fc" id="L506">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L510" title="All 2 branches covered.">        if (accelerometerBiases.getRows() != ACCELEROMETER_COMPONENTS ||</span>
+<span class="fc bfc" id="L511" title="All 2 branches covered.">                accelerometerBiases.getColumns() != 1) {</span>
+<span class="fc" id="L512">            throw new IllegalArgumentException();</span>
         }
 
         try {
-<span class="fc" id="L510">            accelerometerBiases.getSubmatrixAsArray(0, 0,</span>
+<span class="fc" id="L516">            accelerometerBiases.getSubmatrixAsArray(0, 0,</span>
                     COMPONENTS_MINUS_ONE, 0, mAccelerometerBiases);
-<span class="nc" id="L512">        } catch (final WrongSizeException ignore) {</span>
+<span class="nc" id="L518">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L514">        }</span>
-<span class="fc" id="L515">    }</span>
+<span class="fc" id="L520">        }</span>
+<span class="fc" id="L521">    }</span>
 
     /**
      * Gets accelerometer biases for each IMU axis.
@@ -521,9 +527,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer biases for each IMU axis.
      */
     public Acceleration[] getAccelerometerBiasesAsAcceleration() {
-<span class="fc" id="L524">        final Acceleration[] result = new Acceleration[ACCELEROMETER_COMPONENTS];</span>
-<span class="fc" id="L525">        getAccelerometerBiasesAsAcceleration(result);</span>
-<span class="fc" id="L526">        return result;</span>
+<span class="fc" id="L530">        final Acceleration[] result = new Acceleration[ACCELEROMETER_COMPONENTS];</span>
+<span class="fc" id="L531">        getAccelerometerBiasesAsAcceleration(result);</span>
+<span class="fc" id="L532">        return result;</span>
     }
 
     /**
@@ -534,21 +540,21 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getAccelerometerBiasesAsAcceleration(final Acceleration[] result) {
-<span class="fc bfc" id="L537" title="All 2 branches covered.">        if (result.length != ACCELEROMETER_COMPONENTS) {</span>
-<span class="fc" id="L538">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L543" title="All 2 branches covered.">        if (result.length != ACCELEROMETER_COMPONENTS) {</span>
+<span class="fc" id="L544">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L541" title="All 2 branches covered.">        for (int i = 0; i &lt; ACCELEROMETER_COMPONENTS; i++) {</span>
-<span class="fc" id="L542">            Acceleration a = result[i];</span>
-<span class="fc bfc" id="L543" title="All 2 branches covered.">            if (a == null) {</span>
-<span class="fc" id="L544">                result[i] = new Acceleration(mAccelerometerBiases[i],</span>
+<span class="fc bfc" id="L547" title="All 2 branches covered.">        for (int i = 0; i &lt; ACCELEROMETER_COMPONENTS; i++) {</span>
+<span class="fc" id="L548">            Acceleration a = result[i];</span>
+<span class="fc bfc" id="L549" title="All 2 branches covered.">            if (a == null) {</span>
+<span class="fc" id="L550">                result[i] = new Acceleration(mAccelerometerBiases[i],</span>
                         AccelerationUnit.METERS_PER_SQUARED_SECOND);
             } else {
-<span class="fc" id="L547">                a.setValue(mAccelerometerBiases[i]);</span>
-<span class="fc" id="L548">                a.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L553">                a.setValue(mAccelerometerBiases[i]);</span>
+<span class="fc" id="L554">                a.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
             }
         }
-<span class="fc" id="L551">    }</span>
+<span class="fc" id="L557">    }</span>
 
     /**
      * Sets accelerometer biases for each IMU axis.
@@ -557,14 +563,14 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setAccelerometerBiases(final Acceleration[] accelerometerBiases) {
-<span class="fc bfc" id="L560" title="All 2 branches covered.">        if (accelerometerBiases.length != ACCELEROMETER_COMPONENTS) {</span>
-<span class="fc" id="L561">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L566" title="All 2 branches covered.">        if (accelerometerBiases.length != ACCELEROMETER_COMPONENTS) {</span>
+<span class="fc" id="L567">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L564" title="All 2 branches covered.">        for (int i = 0; i &lt; ACCELEROMETER_COMPONENTS; i++) {</span>
-<span class="fc" id="L565">            mAccelerometerBiases[i] = convertAcceleration(accelerometerBiases[i]);</span>
+<span class="fc bfc" id="L570" title="All 2 branches covered.">        for (int i = 0; i &lt; ACCELEROMETER_COMPONENTS; i++) {</span>
+<span class="fc" id="L571">            mAccelerometerBiases[i] = convertAcceleration(accelerometerBiases[i]);</span>
         }
-<span class="fc" id="L567">    }</span>
+<span class="fc" id="L573">    }</span>
 
     /**
      * Gets gyro biases for each IMU axis expressed in radians per second (rad/s).
@@ -573,9 +579,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro biases for each IMU axis.
      */
     public double[] getGyroBiases() {
-<span class="fc" id="L576">        final double[] result = new double[GYRO_COMPONENTS];</span>
-<span class="fc" id="L577">        getGyroBiases(result);</span>
-<span class="fc" id="L578">        return result;</span>
+<span class="fc" id="L582">        final double[] result = new double[GYRO_COMPONENTS];</span>
+<span class="fc" id="L583">        getGyroBiases(result);</span>
+<span class="fc" id="L584">        return result;</span>
     }
 
     /**
@@ -586,12 +592,12 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getGyroBiases(final double[] result) {
-<span class="fc bfc" id="L589" title="All 2 branches covered.">        if (result.length != GYRO_COMPONENTS) {</span>
-<span class="fc" id="L590">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L595" title="All 2 branches covered.">        if (result.length != GYRO_COMPONENTS) {</span>
+<span class="fc" id="L596">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L593">        System.arraycopy(mGyroBiases, 0, result, 0, GYRO_COMPONENTS);</span>
-<span class="fc" id="L594">    }</span>
+<span class="fc" id="L599">        System.arraycopy(mGyroBiases, 0, result, 0, GYRO_COMPONENTS);</span>
+<span class="fc" id="L600">    }</span>
 
     /**
      * Sets gyro biases for each IMU axis expressed in radians per second (rad/s).
@@ -600,12 +606,12 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setGyroBiases(final double[] gyroBiases) {
-<span class="fc bfc" id="L603" title="All 2 branches covered.">        if (gyroBiases.length != GYRO_COMPONENTS) {</span>
-<span class="fc" id="L604">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L609" title="All 2 branches covered.">        if (gyroBiases.length != GYRO_COMPONENTS) {</span>
+<span class="fc" id="L610">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L607">        mGyroBiases = gyroBiases;</span>
-<span class="fc" id="L608">    }</span>
+<span class="fc" id="L613">        mGyroBiases = gyroBiases;</span>
+<span class="fc" id="L614">    }</span>
 
     /**
      * Gets gyro biases for each IMU axis expressed in radians per second (rad/s)
@@ -615,7 +621,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return 3x1 column matrix containing gyro biases for each IMU axis.
      */
     public Matrix getGyroBiasesAsMatrix() {
-<span class="fc" id="L618">        return Matrix.newFromArray(mGyroBiases);</span>
+<span class="fc" id="L624">        return Matrix.newFromArray(mGyroBiases);</span>
     }
 
     /**
@@ -627,9 +633,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided result matrix is not 3x1.
      */
     public void getGyroBiasesAsMatrix(final Matrix result) {
-<span class="fc" id="L630">        result.setSubmatrix(0, 0,</span>
+<span class="fc" id="L636">        result.setSubmatrix(0, 0,</span>
                 COMPONENTS_MINUS_ONE, 0, mGyroBiases);
-<span class="fc" id="L632">    }</span>
+<span class="fc" id="L638">    }</span>
 
     /**
      * Sets gyro biases for each IMU axis expressed in radians per second (rad/s)
@@ -639,18 +645,18 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided matrix is not 3x1.
      */
     public void setGyroBiases(final Matrix gyroBiases) {
-<span class="fc bfc" id="L642" title="All 2 branches covered.">        if (gyroBiases.getRows() != GYRO_COMPONENTS ||</span>
-<span class="fc bfc" id="L643" title="All 2 branches covered.">                gyroBiases.getColumns() != 1) {</span>
-<span class="fc" id="L644">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L648" title="All 2 branches covered.">        if (gyroBiases.getRows() != GYRO_COMPONENTS ||</span>
+<span class="fc bfc" id="L649" title="All 2 branches covered.">                gyroBiases.getColumns() != 1) {</span>
+<span class="fc" id="L650">            throw new IllegalArgumentException();</span>
         }
 
         try {
-<span class="fc" id="L648">            gyroBiases.getSubmatrixAsArray(0, 0,</span>
+<span class="fc" id="L654">            gyroBiases.getSubmatrixAsArray(0, 0,</span>
                     COMPONENTS_MINUS_ONE, 0, mGyroBiases);
-<span class="nc" id="L650">        } catch (final WrongSizeException ignore) {</span>
+<span class="nc" id="L656">        } catch (final WrongSizeException ignore) {</span>
             // never happens
-<span class="fc" id="L652">        }</span>
-<span class="fc" id="L653">    }</span>
+<span class="fc" id="L658">        }</span>
+<span class="fc" id="L659">    }</span>
 
     /**
      * Gets gyro biases for each IMU axis.
@@ -659,9 +665,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro biases for each IMU axis.
      */
     public AngularSpeed[] getGyroBiasesAsAngularSpeed() {
-<span class="fc" id="L662">        final AngularSpeed[] result = new AngularSpeed[GYRO_COMPONENTS];</span>
-<span class="fc" id="L663">        getGyroBiasesAsAngularSpeed(result);</span>
-<span class="fc" id="L664">        return result;</span>
+<span class="fc" id="L668">        final AngularSpeed[] result = new AngularSpeed[GYRO_COMPONENTS];</span>
+<span class="fc" id="L669">        getGyroBiasesAsAngularSpeed(result);</span>
+<span class="fc" id="L670">        return result;</span>
     }
 
     /**
@@ -672,21 +678,21 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void getGyroBiasesAsAngularSpeed(final AngularSpeed[] result) {
-<span class="fc bfc" id="L675" title="All 2 branches covered.">        if (result.length != GYRO_COMPONENTS) {</span>
-<span class="fc" id="L676">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L681" title="All 2 branches covered.">        if (result.length != GYRO_COMPONENTS) {</span>
+<span class="fc" id="L682">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L679" title="All 2 branches covered.">        for (int i = 0; i &lt; GYRO_COMPONENTS; i++) {</span>
-<span class="fc" id="L680">            AngularSpeed as = result[i];</span>
-<span class="fc bfc" id="L681" title="All 2 branches covered.">            if (as == null) {</span>
-<span class="fc" id="L682">                result[i] = new AngularSpeed(mGyroBiases[i],</span>
+<span class="fc bfc" id="L685" title="All 2 branches covered.">        for (int i = 0; i &lt; GYRO_COMPONENTS; i++) {</span>
+<span class="fc" id="L686">            AngularSpeed as = result[i];</span>
+<span class="fc bfc" id="L687" title="All 2 branches covered.">            if (as == null) {</span>
+<span class="fc" id="L688">                result[i] = new AngularSpeed(mGyroBiases[i],</span>
                         AngularSpeedUnit.RADIANS_PER_SECOND);
             } else {
-<span class="fc" id="L685">                as.setValue(mGyroBiases[i]);</span>
-<span class="fc" id="L686">                as.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L691">                as.setValue(mGyroBiases[i]);</span>
+<span class="fc" id="L692">                as.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
             }
         }
-<span class="fc" id="L689">    }</span>
+<span class="fc" id="L695">    }</span>
 
     /**
      * Sets gyro biases for each IMU axis.
@@ -695,14 +701,14 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided array does not have length 3.
      */
     public void setGyroBiases(final AngularSpeed[] gyroBiases) {
-<span class="fc bfc" id="L698" title="All 2 branches covered.">        if (gyroBiases.length != GYRO_COMPONENTS) {</span>
-<span class="fc" id="L699">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L704" title="All 2 branches covered.">        if (gyroBiases.length != GYRO_COMPONENTS) {</span>
+<span class="fc" id="L705">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc bfc" id="L702" title="All 2 branches covered.">        for (int i = 0; i &lt; GYRO_COMPONENTS; i++) {</span>
-<span class="fc" id="L703">            mGyroBiases[i] = convertAngularSpeed(gyroBiases[i]);</span>
+<span class="fc bfc" id="L708" title="All 2 branches covered.">        for (int i = 0; i &lt; GYRO_COMPONENTS; i++) {</span>
+<span class="fc" id="L709">            mGyroBiases[i] = convertAngularSpeed(gyroBiases[i]);</span>
         }
-<span class="fc" id="L705">    }</span>
+<span class="fc" id="L711">    }</span>
 
     /**
      * Gets accelerometer scale factors and cross coupling errors.
@@ -747,7 +753,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer scale factors and cross coupling errors.
      */
     public Matrix getAccelerometerScaleFactorAndCrossCouplingErrors() {
-<span class="fc" id="L750">        return new Matrix(mAccelerometerScaleFactorAndCrossCouplingErrors);</span>
+<span class="fc" id="L756">        return new Matrix(mAccelerometerScaleFactorAndCrossCouplingErrors);</span>
     }
 
     /**
@@ -794,8 +800,8 @@ public class IMUErrors implements Serializable, Cloneable {
      *               be copied to. If needed, result instance will be resized.
      */
     public void getAccelerometerScaleFactorAndCrossCouplingErrors(final Matrix result) {
-<span class="fc" id="L797">        result.copyFrom(mAccelerometerScaleFactorAndCrossCouplingErrors);</span>
-<span class="fc" id="L798">    }</span>
+<span class="fc" id="L803">        result.copyFrom(mAccelerometerScaleFactorAndCrossCouplingErrors);</span>
+<span class="fc" id="L804">    }</span>
 
     /**
      * Sets accelerometer scale factors and cross coupling errors.
@@ -842,14 +848,14 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     public void setAccelerometerScaleFactorAndCrossCouplingErrors(
             final Matrix accelerometerScaleFactorAndCrossCouplingErrors) {
-<span class="fc bfc" id="L845" title="All 2 branches covered.">        if (accelerometerScaleFactorAndCrossCouplingErrors.getRows() != ACCELEROMETER_COMPONENTS</span>
-<span class="fc bfc" id="L846" title="All 2 branches covered.">                || accelerometerScaleFactorAndCrossCouplingErrors.getColumns() != ACCELEROMETER_COMPONENTS) {</span>
-<span class="fc" id="L847">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L851" title="All 2 branches covered.">        if (accelerometerScaleFactorAndCrossCouplingErrors.getRows() != ACCELEROMETER_COMPONENTS</span>
+<span class="fc bfc" id="L852" title="All 2 branches covered.">                || accelerometerScaleFactorAndCrossCouplingErrors.getColumns() != ACCELEROMETER_COMPONENTS) {</span>
+<span class="fc" id="L853">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L850">        mAccelerometerScaleFactorAndCrossCouplingErrors</span>
-<span class="fc" id="L851">                .copyFrom(accelerometerScaleFactorAndCrossCouplingErrors);</span>
-<span class="fc" id="L852">    }</span>
+<span class="fc" id="L856">        mAccelerometerScaleFactorAndCrossCouplingErrors</span>
+<span class="fc" id="L857">                .copyFrom(accelerometerScaleFactorAndCrossCouplingErrors);</span>
+<span class="fc" id="L858">    }</span>
 
     /**
      * Gets gyro scale factors and cross coupling errors.
@@ -894,7 +900,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro scale factors and cross coupling errors.
      */
     public Matrix getGyroScaleFactorAndCrossCouplingErrors() {
-<span class="fc" id="L897">        return new Matrix(mGyroScaleFactorAndCrossCouplingErrors);</span>
+<span class="fc" id="L903">        return new Matrix(mGyroScaleFactorAndCrossCouplingErrors);</span>
     }
 
     /**
@@ -941,8 +947,8 @@ public class IMUErrors implements Serializable, Cloneable {
      *               be copied to. If needed, result instance will be resized.
      */
     public void getGyroScaleFactorAndCrossCouplingErrors(final Matrix result) {
-<span class="fc" id="L944">        result.copyFrom(mGyroScaleFactorAndCrossCouplingErrors);</span>
-<span class="fc" id="L945">    }</span>
+<span class="fc" id="L950">        result.copyFrom(mGyroScaleFactorAndCrossCouplingErrors);</span>
+<span class="fc" id="L951">    }</span>
 
     /**
      * Sets gyro scale factors and cross coupling errors.
@@ -989,14 +995,14 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     public void setGyroScaleFactorAndCrossCouplingErrors(
             final Matrix gyroScaleFactorAndCrossCouplingErrors) {
-<span class="fc bfc" id="L992" title="All 2 branches covered.">        if (gyroScaleFactorAndCrossCouplingErrors.getRows() != GYRO_COMPONENTS</span>
-<span class="fc bfc" id="L993" title="All 2 branches covered.">                || gyroScaleFactorAndCrossCouplingErrors.getColumns() != GYRO_COMPONENTS) {</span>
-<span class="fc" id="L994">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L998" title="All 2 branches covered.">        if (gyroScaleFactorAndCrossCouplingErrors.getRows() != GYRO_COMPONENTS</span>
+<span class="fc bfc" id="L999" title="All 2 branches covered.">                || gyroScaleFactorAndCrossCouplingErrors.getColumns() != GYRO_COMPONENTS) {</span>
+<span class="fc" id="L1000">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L997">        mGyroScaleFactorAndCrossCouplingErrors</span>
-<span class="fc" id="L998">                .copyFrom(gyroScaleFactorAndCrossCouplingErrors);</span>
-<span class="fc" id="L999">    }</span>
+<span class="fc" id="L1003">        mGyroScaleFactorAndCrossCouplingErrors</span>
+<span class="fc" id="L1004">                .copyFrom(gyroScaleFactorAndCrossCouplingErrors);</span>
+<span class="fc" id="L1005">    }</span>
 
     /**
      * Gets 3x3 matrix containing cross biases introduced by the specific forces
@@ -1008,7 +1014,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * accelerometer.
      */
     public Matrix getGyroGDependentBiases() {
-<span class="fc" id="L1011">        return new Matrix(mGyroGDependentBiases);</span>
+<span class="fc" id="L1017">        return new Matrix(mGyroGDependentBiases);</span>
     }
 
     /**
@@ -1021,8 +1027,8 @@ public class IMUErrors implements Serializable, Cloneable {
      *               will be resized.
      */
     public void getGyroGDependentBiases(final Matrix result) {
-<span class="fc" id="L1024">        result.copyFrom(mGyroGDependentBiases);</span>
-<span class="fc" id="L1025">    }</span>
+<span class="fc" id="L1030">        result.copyFrom(mGyroGDependentBiases);</span>
+<span class="fc" id="L1031">    }</span>
 
     /**
      * Sets 3x3 matrix containing cross biases introduced by the specific forces
@@ -1034,13 +1040,13 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided matrix is not 3x3.
      */
     public void setGyroGDependentBiases(final Matrix gyroGDependentBiases) {
-<span class="fc bfc" id="L1037" title="All 2 branches covered.">        if (gyroGDependentBiases.getRows() != ACCELEROMETER_COMPONENTS</span>
-<span class="fc bfc" id="L1038" title="All 2 branches covered.">                || gyroGDependentBiases.getColumns() != ACCELEROMETER_COMPONENTS) {</span>
-<span class="fc" id="L1039">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1043" title="All 2 branches covered.">        if (gyroGDependentBiases.getRows() != ACCELEROMETER_COMPONENTS</span>
+<span class="fc bfc" id="L1044" title="All 2 branches covered.">                || gyroGDependentBiases.getColumns() != ACCELEROMETER_COMPONENTS) {</span>
+<span class="fc" id="L1045">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1042">        mGyroGDependentBiases.copyFrom(gyroGDependentBiases);</span>
-<span class="fc" id="L1043">    }</span>
+<span class="fc" id="L1048">        mGyroGDependentBiases.copyFrom(gyroGDependentBiases);</span>
+<span class="fc" id="L1049">    }</span>
 
     /**
      * Gets accelerometer noise root PSD expressed in (m * s^-1.5).
@@ -1049,7 +1055,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer noise root PSD.
      */
     public double getAccelerometerNoiseRootPSD() {
-<span class="fc" id="L1052">        return mAccelerometerNoiseRootPSD;</span>
+<span class="fc" id="L1058">        return mAccelerometerNoiseRootPSD;</span>
     }
 
     /**
@@ -1058,8 +1064,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param accelerometerNoiseRootPSD accelerometer noise root PSD to be set.
      */
     public void setAccelerometerNoiseRootPSD(final double accelerometerNoiseRootPSD) {
-<span class="fc" id="L1061">        mAccelerometerNoiseRootPSD = accelerometerNoiseRootPSD;</span>
-<span class="fc" id="L1062">    }</span>
+<span class="fc" id="L1067">        mAccelerometerNoiseRootPSD = accelerometerNoiseRootPSD;</span>
+<span class="fc" id="L1068">    }</span>
 
     /**
      * Gets accelerometer noise PSD expressed in (m^2 * s^-3).
@@ -1068,7 +1074,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer noise PSD.
      */
     public double getAccelerometerNoisePSD() {
-<span class="fc" id="L1071">        return mAccelerometerNoiseRootPSD * mAccelerometerNoiseRootPSD;</span>
+<span class="fc" id="L1077">        return mAccelerometerNoiseRootPSD * mAccelerometerNoiseRootPSD;</span>
     }
 
     /**
@@ -1078,12 +1084,12 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public void setAccelerometerNoisePSD(final double accelerometerNoisePSD) {
-<span class="fc bfc" id="L1081" title="All 2 branches covered.">        if (accelerometerNoisePSD &lt; 0.0) {</span>
-<span class="fc" id="L1082">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1087" title="All 2 branches covered.">        if (accelerometerNoisePSD &lt; 0.0) {</span>
+<span class="fc" id="L1088">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1085">        mAccelerometerNoiseRootPSD = Math.sqrt(accelerometerNoisePSD);</span>
-<span class="fc" id="L1086">    }</span>
+<span class="fc" id="L1091">        mAccelerometerNoiseRootPSD = Math.sqrt(accelerometerNoisePSD);</span>
+<span class="fc" id="L1092">    }</span>
 
     /**
      * Gets gyro noise root PSD expressed in (rad * s^-0.5).
@@ -1092,7 +1098,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro noise root PSD.
      */
     public double getGyroNoiseRootPSD() {
-<span class="fc" id="L1095">        return mGyroNoiseRootPSD;</span>
+<span class="fc" id="L1101">        return mGyroNoiseRootPSD;</span>
     }
 
     /**
@@ -1101,8 +1107,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroNoiseRootPSD gyro noise root PSD to be set.
      */
     public void setGyroNoiseRootPSD(final double gyroNoiseRootPSD) {
-<span class="fc" id="L1104">        mGyroNoiseRootPSD = gyroNoiseRootPSD;</span>
-<span class="fc" id="L1105">    }</span>
+<span class="fc" id="L1110">        mGyroNoiseRootPSD = gyroNoiseRootPSD;</span>
+<span class="fc" id="L1111">    }</span>
 
     /**
      * Gets gyro noise PSD expressed in (rad^2/s).
@@ -1111,7 +1117,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro noise PSD.
      */
     public double getGyroNoisePSD() {
-<span class="fc" id="L1114">        return mGyroNoiseRootPSD * mGyroNoiseRootPSD;</span>
+<span class="fc" id="L1120">        return mGyroNoiseRootPSD * mGyroNoiseRootPSD;</span>
     }
 
     /**
@@ -1121,12 +1127,12 @@ public class IMUErrors implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided value is negative.
      */
     public void setGyroNoisePSD(final double gyroNoisePSD) {
-<span class="fc bfc" id="L1124" title="All 2 branches covered.">        if (gyroNoisePSD &lt; 0.0) {</span>
-<span class="fc" id="L1125">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1130" title="All 2 branches covered.">        if (gyroNoisePSD &lt; 0.0) {</span>
+<span class="fc" id="L1131">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1128">        mGyroNoiseRootPSD = Math.sqrt(gyroNoisePSD);</span>
-<span class="fc" id="L1129">    }</span>
+<span class="fc" id="L1134">        mGyroNoiseRootPSD = Math.sqrt(gyroNoisePSD);</span>
+<span class="fc" id="L1135">    }</span>
 
     /**
      * Gets accelerometer quantization level expressed in meters per squared second
@@ -1136,7 +1142,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer quantization level.
      */
     public double getAccelerometerQuantizationLevel() {
-<span class="fc" id="L1139">        return mAccelerometerQuantizationLevel;</span>
+<span class="fc" id="L1145">        return mAccelerometerQuantizationLevel;</span>
     }
 
     /**
@@ -1148,8 +1154,8 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     public void setAccelerometerQuantizationLevel(
             final double accelerometerQuantizationLevel) {
-<span class="fc" id="L1151">        mAccelerometerQuantizationLevel = accelerometerQuantizationLevel;</span>
-<span class="fc" id="L1152">    }</span>
+<span class="fc" id="L1157">        mAccelerometerQuantizationLevel = accelerometerQuantizationLevel;</span>
+<span class="fc" id="L1158">    }</span>
 
     /**
      * Gets accelerometer quantization level.
@@ -1158,7 +1164,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return accelerometer quantization level.
      */
     public Acceleration getAccelerometerQuantizationLevelAsAcceleration() {
-<span class="fc" id="L1161">        return new Acceleration(mAccelerometerQuantizationLevel,</span>
+<span class="fc" id="L1167">        return new Acceleration(mAccelerometerQuantizationLevel,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1169,9 +1175,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param result instance where value will be stored.
      */
     public void getAccelerometerQuantizationLevelAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1172">        result.setValue(mAccelerometerQuantizationLevel);</span>
-<span class="fc" id="L1173">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1174">    }</span>
+<span class="fc" id="L1178">        result.setValue(mAccelerometerQuantizationLevel);</span>
+<span class="fc" id="L1179">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1180">    }</span>
 
     /**
      * Sets accelerometer quantization level.
@@ -1180,9 +1186,9 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     public void setAccelerometerQuantizationLevel(
             final Acceleration accelerometerQuantizationLevel) {
-<span class="fc" id="L1183">        mAccelerometerQuantizationLevel = convertAcceleration(</span>
+<span class="fc" id="L1189">        mAccelerometerQuantizationLevel = convertAcceleration(</span>
                 accelerometerQuantizationLevel);
-<span class="fc" id="L1185">    }</span>
+<span class="fc" id="L1191">    }</span>
 
     /**
      * Gets gyro quantization level expressed in radians per second (rad/s).
@@ -1191,7 +1197,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro quantization level expressed in radians per second.
      */
     public double getGyroQuantizationLevel() {
-<span class="fc" id="L1194">        return mGyroQuantizationLevel;</span>
+<span class="fc" id="L1200">        return mGyroQuantizationLevel;</span>
     }
 
     /**
@@ -1200,8 +1206,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroQuantizationLevel gyro quantization level to be set.
      */
     public void setGyroQuantizationLevel(final double gyroQuantizationLevel) {
-<span class="fc" id="L1203">        mGyroQuantizationLevel = gyroQuantizationLevel;</span>
-<span class="fc" id="L1204">    }</span>
+<span class="fc" id="L1209">        mGyroQuantizationLevel = gyroQuantizationLevel;</span>
+<span class="fc" id="L1210">    }</span>
 
     /**
      * Gets gyro quantization level.
@@ -1210,7 +1216,7 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return gyro quantization level.
      */
     public AngularSpeed getGyroQuantizationLevelAsAngularSpeed() {
-<span class="fc" id="L1213">        return new AngularSpeed(mGyroQuantizationLevel,</span>
+<span class="fc" id="L1219">        return new AngularSpeed(mGyroQuantizationLevel,</span>
                 AngularSpeedUnit.RADIANS_PER_SECOND);
     }
 
@@ -1221,9 +1227,9 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param result instance where value will be stored.
      */
     public void getGyroQuantizationLevelAsAngularSpeed(final AngularSpeed result) {
-<span class="fc" id="L1224">        result.setValue(mGyroQuantizationLevel);</span>
-<span class="fc" id="L1225">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L1226">    }</span>
+<span class="fc" id="L1230">        result.setValue(mGyroQuantizationLevel);</span>
+<span class="fc" id="L1231">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1232">    }</span>
 
     /**
      * Sets gyro quantization level.
@@ -1231,8 +1237,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param gyroQuantizationLevel gyro quantization level.
      */
     public void setGyroQuantizationLevel(final AngularSpeed gyroQuantizationLevel) {
-<span class="fc" id="L1234">        mGyroQuantizationLevel = convertAngularSpeed(gyroQuantizationLevel);</span>
-<span class="fc" id="L1235">    }</span>
+<span class="fc" id="L1240">        mGyroQuantizationLevel = convertAngularSpeed(gyroQuantizationLevel);</span>
+<span class="fc" id="L1241">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -1240,8 +1246,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final IMUErrors output) {
-<span class="fc" id="L1243">        output.copyFrom(this);</span>
-<span class="fc" id="L1244">    }</span>
+<span class="fc" id="L1249">        output.copyFrom(this);</span>
+<span class="fc" id="L1250">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -1249,18 +1255,18 @@ public class IMUErrors implements Serializable, Cloneable {
      * @param input instance to copy data from.
      */
     public void copyFrom(final IMUErrors input) {
-<span class="fc" id="L1252">        input.getAccelerometerBiases(mAccelerometerBiases);</span>
-<span class="fc" id="L1253">        input.getGyroBiases(mGyroBiases);</span>
-<span class="fc" id="L1254">        mAccelerometerScaleFactorAndCrossCouplingErrors.copyFrom(</span>
+<span class="fc" id="L1258">        input.getAccelerometerBiases(mAccelerometerBiases);</span>
+<span class="fc" id="L1259">        input.getGyroBiases(mGyroBiases);</span>
+<span class="fc" id="L1260">        mAccelerometerScaleFactorAndCrossCouplingErrors.copyFrom(</span>
                 input.mAccelerometerScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L1256">        mGyroScaleFactorAndCrossCouplingErrors.copyFrom(</span>
+<span class="fc" id="L1262">        mGyroScaleFactorAndCrossCouplingErrors.copyFrom(</span>
                 input.mGyroScaleFactorAndCrossCouplingErrors);
-<span class="fc" id="L1258">        mGyroGDependentBiases.copyFrom(input.mGyroGDependentBiases);</span>
-<span class="fc" id="L1259">        mAccelerometerNoiseRootPSD = input.mAccelerometerNoiseRootPSD;</span>
-<span class="fc" id="L1260">        mGyroNoiseRootPSD = input.mGyroNoiseRootPSD;</span>
-<span class="fc" id="L1261">        mAccelerometerQuantizationLevel = input.mAccelerometerQuantizationLevel;</span>
-<span class="fc" id="L1262">        mGyroQuantizationLevel = input.mGyroQuantizationLevel;</span>
-<span class="fc" id="L1263">    }</span>
+<span class="fc" id="L1264">        mGyroGDependentBiases.copyFrom(input.mGyroGDependentBiases);</span>
+<span class="fc" id="L1265">        mAccelerometerNoiseRootPSD = input.mAccelerometerNoiseRootPSD;</span>
+<span class="fc" id="L1266">        mGyroNoiseRootPSD = input.mGyroNoiseRootPSD;</span>
+<span class="fc" id="L1267">        mAccelerometerQuantizationLevel = input.mAccelerometerQuantizationLevel;</span>
+<span class="fc" id="L1268">        mGyroQuantizationLevel = input.mGyroQuantizationLevel;</span>
+<span class="fc" id="L1269">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -1271,13 +1277,11 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L1274">        int result = Objects.hash(mAccelerometerScaleFactorAndCrossCouplingErrors,</span>
+<span class="fc" id="L1280">        return Objects.hash(mAccelerometerScaleFactorAndCrossCouplingErrors,</span>
                 mGyroScaleFactorAndCrossCouplingErrors, mGyroGDependentBiases,
-<span class="fc" id="L1276">                mAccelerometerNoiseRootPSD, mGyroNoiseRootPSD,</span>
-<span class="fc" id="L1277">                mAccelerometerQuantizationLevel, mGyroQuantizationLevel);</span>
-<span class="fc" id="L1278">        result = 31 * result + Arrays.hashCode(mAccelerometerBiases);</span>
-<span class="fc" id="L1279">        result = 31 * result + Arrays.hashCode(mGyroBiases);</span>
-<span class="fc" id="L1280">        return result;</span>
+<span class="fc" id="L1282">                mAccelerometerNoiseRootPSD, mGyroNoiseRootPSD,</span>
+<span class="fc" id="L1283">                mAccelerometerQuantizationLevel, mGyroQuantizationLevel,</span>
+<span class="fc" id="L1284">                Arrays.hashCode(mAccelerometerBiases), Arrays.hashCode(mGyroBiases));</span>
     }
 
     /**
@@ -1289,24 +1293,24 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(Object o) {
-<span class="fc bfc" id="L1292" title="All 2 branches covered.">        if (this == o) {</span>
-<span class="fc" id="L1293">            return true;</span>
+<span class="fc bfc" id="L1296" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L1297">            return true;</span>
         }
-<span class="fc bfc" id="L1295" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
-<span class="fc" id="L1296">            return false;</span>
+<span class="fc bfc" id="L1299" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L1300">            return false;</span>
         }
 
-<span class="fc" id="L1299">        final IMUErrors imuErrors = (IMUErrors) o;</span>
-<span class="fc bfc" id="L1300" title="All 2 branches covered.">        return Double.compare(imuErrors.mAccelerometerNoiseRootPSD, mAccelerometerNoiseRootPSD) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L1301" title="1 of 2 branches missed.">                Double.compare(imuErrors.mGyroNoiseRootPSD, mGyroNoiseRootPSD) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L1302" title="1 of 2 branches missed.">                Double.compare(imuErrors.mAccelerometerQuantizationLevel, mAccelerometerQuantizationLevel) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L1303" title="1 of 2 branches missed.">                Double.compare(imuErrors.mGyroQuantizationLevel, mGyroQuantizationLevel) == 0 &amp;&amp;</span>
-<span class="pc bpc" id="L1304" title="1 of 2 branches missed.">                Arrays.equals(mAccelerometerBiases, imuErrors.mAccelerometerBiases) &amp;&amp;</span>
-<span class="pc bpc" id="L1305" title="1 of 2 branches missed.">                Arrays.equals(mGyroBiases, imuErrors.mGyroBiases) &amp;&amp;</span>
-<span class="pc bpc" id="L1306" title="1 of 2 branches missed.">                mAccelerometerScaleFactorAndCrossCouplingErrors.equals(</span>
+<span class="fc" id="L1303">        final IMUErrors imuErrors = (IMUErrors) o;</span>
+<span class="fc bfc" id="L1304" title="All 2 branches covered.">        return Double.compare(imuErrors.mAccelerometerNoiseRootPSD, mAccelerometerNoiseRootPSD) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L1305" title="1 of 2 branches missed.">                Double.compare(imuErrors.mGyroNoiseRootPSD, mGyroNoiseRootPSD) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L1306" title="1 of 2 branches missed.">                Double.compare(imuErrors.mAccelerometerQuantizationLevel, mAccelerometerQuantizationLevel) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L1307" title="1 of 2 branches missed.">                Double.compare(imuErrors.mGyroQuantizationLevel, mGyroQuantizationLevel) == 0 &amp;&amp;</span>
+<span class="pc bpc" id="L1308" title="1 of 2 branches missed.">                Arrays.equals(mAccelerometerBiases, imuErrors.mAccelerometerBiases) &amp;&amp;</span>
+<span class="pc bpc" id="L1309" title="1 of 2 branches missed.">                Arrays.equals(mGyroBiases, imuErrors.mGyroBiases) &amp;&amp;</span>
+<span class="pc bpc" id="L1310" title="1 of 2 branches missed.">                mAccelerometerScaleFactorAndCrossCouplingErrors.equals(</span>
                         imuErrors.mAccelerometerScaleFactorAndCrossCouplingErrors) &amp;&amp;
-<span class="pc bpc" id="L1308" title="1 of 2 branches missed.">                mGyroScaleFactorAndCrossCouplingErrors.equals(imuErrors.mGyroScaleFactorAndCrossCouplingErrors) &amp;&amp;</span>
-<span class="pc bpc" id="L1309" title="1 of 2 branches missed.">                mGyroGDependentBiases.equals(imuErrors.mGyroGDependentBiases);</span>
+<span class="pc bpc" id="L1312" title="1 of 2 branches missed.">                mGyroScaleFactorAndCrossCouplingErrors.equals(imuErrors.mGyroScaleFactorAndCrossCouplingErrors) &amp;&amp;</span>
+<span class="pc bpc" id="L1313" title="1 of 2 branches missed.">                mGyroGDependentBiases.equals(imuErrors.mGyroGDependentBiases);</span>
     }
 
     /**
@@ -1317,9 +1321,9 @@ public class IMUErrors implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L1320">        final IMUErrors result = (IMUErrors) super.clone();</span>
-<span class="fc" id="L1321">        copyTo(result);</span>
-<span class="fc" id="L1322">        return result;</span>
+<span class="fc" id="L1324">        final IMUErrors result = (IMUErrors) super.clone();</span>
+<span class="fc" id="L1325">        copyTo(result);</span>
+<span class="fc" id="L1326">        return result;</span>
     }
 
     /**
@@ -1329,8 +1333,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertAcceleration(final Acceleration acceleration) {
-<span class="fc" id="L1332">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
-<span class="fc" id="L1333">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1336">        return AccelerationConverter.convert(acceleration.getValue().doubleValue(),</span>
+<span class="fc" id="L1337">                acceleration.getUnit(), AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
     }
 
     /**
@@ -1340,8 +1344,8 @@ public class IMUErrors implements Serializable, Cloneable {
      * @return converted value.
      */
     private double convertAngularSpeed(final AngularSpeed angularSpeed) {
-<span class="fc" id="L1343">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),</span>
-<span class="fc" id="L1344">                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L1347">        return AngularSpeedConverter.convert(angularSpeed.getValue().doubleValue(),</span>
+<span class="fc" id="L1348">                angularSpeed.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

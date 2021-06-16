@@ -43,6 +43,12 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     public static final int NUM_PARAMS = 17;
 
     /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
      * Estimated body to ECEF coordinate transformation matrix.
      */
     private Matrix mBodyToEcefCoordinateTransformationMatrix;
@@ -138,8 +144,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     /**
      * Constructor.
      */
-<span class="fc" id="L141">    public INSTightlyCoupledKalmanState() {</span>
-<span class="fc" id="L142">    }</span>
+<span class="fc" id="L147">    public INSTightlyCoupledKalmanState() {</span>
+<span class="fc" id="L148">    }</span>
 
     /**
      * Constructor.
@@ -188,16 +194,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L191">            final Matrix covariance) {</span>
-<span class="fc" id="L192">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L193">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L194">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L195">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L196">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L197">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L198">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L199">        setCovariance(covariance);</span>
-<span class="fc" id="L200">    }</span>
+<span class="fc" id="L197">            final Matrix covariance) {</span>
+<span class="fc" id="L198">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L199">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L200">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L201">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L202">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L203">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L204">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L205">        setCovariance(covariance);</span>
+<span class="fc" id="L206">    }</span>
 
     /**
      * Constructor.
@@ -239,16 +245,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L242">            final Matrix covariance) {</span>
-<span class="fc" id="L243">        setC(c);</span>
-<span class="fc" id="L244">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L245">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L246">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L247">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L248">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L249">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L250">        setCovariance(covariance);</span>
-<span class="fc" id="L251">    }</span>
+<span class="fc" id="L248">            final Matrix covariance) {</span>
+<span class="fc" id="L249">        setC(c);</span>
+<span class="fc" id="L250">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L251">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L252">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L253">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L254">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L255">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L256">        setCovariance(covariance);</span>
+<span class="fc" id="L257">    }</span>
 
     /**
      * Constructor.
@@ -288,16 +294,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L291">            final Matrix covariance) {</span>
-<span class="fc" id="L292">        setC(c);</span>
-<span class="fc" id="L293">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L294">        setPosition(position);</span>
-<span class="fc" id="L295">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L296">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L297">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L298">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L299">        setCovariance(covariance);</span>
-<span class="fc" id="L300">    }</span>
+<span class="fc" id="L297">            final Matrix covariance) {</span>
+<span class="fc" id="L298">        setC(c);</span>
+<span class="fc" id="L299">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L300">        setPosition(position);</span>
+<span class="fc" id="L301">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L302">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L303">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L304">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L305">        setCovariance(covariance);</span>
+<span class="fc" id="L306">    }</span>
 
     /**
      * Constructor.
@@ -335,16 +341,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L338">            final Matrix covariance) {</span>
-<span class="fc" id="L339">        setC(c);</span>
-<span class="fc" id="L340">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L341">        setEcefPosition(position);</span>
-<span class="fc" id="L342">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L343">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L344">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L345">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L346">        setCovariance(covariance);</span>
-<span class="fc" id="L347">    }</span>
+<span class="fc" id="L344">            final Matrix covariance) {</span>
+<span class="fc" id="L345">        setC(c);</span>
+<span class="fc" id="L346">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L347">        setEcefPosition(position);</span>
+<span class="fc" id="L348">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L349">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L350">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L351">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L352">        setCovariance(covariance);</span>
+<span class="fc" id="L353">    }</span>
 
     /**
      * Constructor.
@@ -380,15 +386,15 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L383">            final Matrix covariance) {</span>
-<span class="fc" id="L384">        setC(c);</span>
-<span class="fc" id="L385">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L386">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L387">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L388">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L389">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L390">        setCovariance(covariance);</span>
-<span class="fc" id="L391">    }</span>
+<span class="fc" id="L389">            final Matrix covariance) {</span>
+<span class="fc" id="L390">        setC(c);</span>
+<span class="fc" id="L391">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L392">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L393">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L394">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L395">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L396">        setCovariance(covariance);</span>
+<span class="fc" id="L397">    }</span>
 
     /**
      * Constructor.
@@ -422,14 +428,14 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L425">            final Matrix covariance) {</span>
-<span class="fc" id="L426">        setFrame(frame);</span>
-<span class="fc" id="L427">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L428">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L429">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L430">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L431">        setCovariance(covariance);</span>
-<span class="fc" id="L432">    }</span>
+<span class="fc" id="L431">            final Matrix covariance) {</span>
+<span class="fc" id="L432">        setFrame(frame);</span>
+<span class="fc" id="L433">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L434">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L435">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L436">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L437">        setCovariance(covariance);</span>
+<span class="fc" id="L438">    }</span>
 
     /**
      * Constructor.
@@ -464,16 +470,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L467">            final Matrix covariance) {</span>
-<span class="fc" id="L468">        setC(c);</span>
-<span class="fc" id="L469">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L470">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L471">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L472">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L473">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L474">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L475">        setCovariance(covariance);</span>
-<span class="fc" id="L476">    }</span>
+<span class="fc" id="L473">            final Matrix covariance) {</span>
+<span class="fc" id="L474">        setC(c);</span>
+<span class="fc" id="L475">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L476">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L477">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L478">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L479">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L480">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L481">        setCovariance(covariance);</span>
+<span class="fc" id="L482">    }</span>
 
     /**
      * Constructor.
@@ -506,16 +512,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L509">            final Matrix covariance) {</span>
-<span class="fc" id="L510">        setC(c);</span>
-<span class="fc" id="L511">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L512">        setPosition(position);</span>
-<span class="fc" id="L513">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L514">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L515">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L516">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L517">        setCovariance(covariance);</span>
-<span class="fc" id="L518">    }</span>
+<span class="fc" id="L515">            final Matrix covariance) {</span>
+<span class="fc" id="L516">        setC(c);</span>
+<span class="fc" id="L517">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L518">        setPosition(position);</span>
+<span class="fc" id="L519">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L520">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L521">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L522">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L523">        setCovariance(covariance);</span>
+<span class="fc" id="L524">    }</span>
 
     /**
      * Constructor.
@@ -546,16 +552,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L549">            final Matrix covariance) {</span>
-<span class="fc" id="L550">        setC(c);</span>
-<span class="fc" id="L551">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L552">        setEcefPosition(position);</span>
-<span class="fc" id="L553">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L554">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L555">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L556">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L557">        setCovariance(covariance);</span>
-<span class="fc" id="L558">    }</span>
+<span class="fc" id="L555">            final Matrix covariance) {</span>
+<span class="fc" id="L556">        setC(c);</span>
+<span class="fc" id="L557">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L558">        setEcefPosition(position);</span>
+<span class="fc" id="L559">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L560">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L561">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L562">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L563">        setCovariance(covariance);</span>
+<span class="fc" id="L564">    }</span>
 
     /**
      * Constructor.
@@ -584,15 +590,15 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L587">            final Matrix covariance) {</span>
-<span class="fc" id="L588">        setC(c);</span>
-<span class="fc" id="L589">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L590">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L591">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L592">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L593">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L594">        setCovariance(covariance);</span>
-<span class="fc" id="L595">    }</span>
+<span class="fc" id="L593">            final Matrix covariance) {</span>
+<span class="fc" id="L594">        setC(c);</span>
+<span class="fc" id="L595">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L596">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L597">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L598">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L599">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L600">        setCovariance(covariance);</span>
+<span class="fc" id="L601">    }</span>
 
     /**
      * Constructor.
@@ -619,14 +625,14 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L622">            final Matrix covariance) {</span>
-<span class="fc" id="L623">        setFrame(frame);</span>
-<span class="fc" id="L624">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L625">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L626">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L627">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L628">        setCovariance(covariance);</span>
-<span class="fc" id="L629">    }</span>
+<span class="fc" id="L628">            final Matrix covariance) {</span>
+<span class="fc" id="L629">        setFrame(frame);</span>
+<span class="fc" id="L630">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L631">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L632">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L633">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L634">        setCovariance(covariance);</span>
+<span class="fc" id="L635">    }</span>
 
     /**
      * Constructor.
@@ -669,16 +675,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L672">            final Matrix covariance) {</span>
-<span class="fc" id="L673">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L674">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L675">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L676">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L677">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L678">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L679">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L680">        setCovariance(covariance);</span>
-<span class="fc" id="L681">    }</span>
+<span class="fc" id="L678">            final Matrix covariance) {</span>
+<span class="fc" id="L679">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L680">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L681">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L682">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L683">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L684">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L685">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L686">        setCovariance(covariance);</span>
+<span class="fc" id="L687">    }</span>
 
     /**
      * Constructor.
@@ -719,16 +725,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L722">            final Matrix covariance) {</span>
-<span class="fc" id="L723">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L724">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L725">        setPosition(position);</span>
-<span class="fc" id="L726">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L727">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L728">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L729">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L730">        setCovariance(covariance);</span>
-<span class="fc" id="L731">    }</span>
+<span class="fc" id="L728">            final Matrix covariance) {</span>
+<span class="fc" id="L729">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L730">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L731">        setPosition(position);</span>
+<span class="fc" id="L732">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L733">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L734">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L735">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L736">        setCovariance(covariance);</span>
+<span class="fc" id="L737">    }</span>
 
     /**
      * Constructor.
@@ -767,16 +773,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L770">            final Matrix covariance) {</span>
-<span class="fc" id="L771">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L772">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L773">        setEcefPosition(position);</span>
-<span class="fc" id="L774">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L775">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L776">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L777">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L778">        setCovariance(covariance);</span>
-<span class="fc" id="L779">    }</span>
+<span class="fc" id="L776">            final Matrix covariance) {</span>
+<span class="fc" id="L777">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L778">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L779">        setEcefPosition(position);</span>
+<span class="fc" id="L780">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L781">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L782">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L783">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L784">        setCovariance(covariance);</span>
+<span class="fc" id="L785">    }</span>
 
     /**
      * Constructor.
@@ -813,15 +819,15 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final double gyroBiasZ,
             final double receiverClockOffset,
             final double receiverClockDrift,
-<span class="fc" id="L816">            final Matrix covariance) {</span>
-<span class="fc" id="L817">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L818">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L819">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L820">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L821">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L822">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L823">        setCovariance(covariance);</span>
-<span class="fc" id="L824">    }</span>
+<span class="fc" id="L822">            final Matrix covariance) {</span>
+<span class="fc" id="L823">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L824">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L825">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L826">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L827">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L828">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L829">        setCovariance(covariance);</span>
+<span class="fc" id="L830">    }</span>
 
     /**
      * Constructor.
@@ -857,16 +863,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L860">            final Matrix covariance) {</span>
-<span class="fc" id="L861">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L862">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L863">        setPositionCoordinates(x, y, z);</span>
-<span class="fc" id="L864">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L865">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L866">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L867">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L868">        setCovariance(covariance);</span>
-<span class="fc" id="L869">    }</span>
+<span class="fc" id="L866">            final Matrix covariance) {</span>
+<span class="fc" id="L867">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L868">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L869">        setPositionCoordinates(x, y, z);</span>
+<span class="fc" id="L870">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L871">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L872">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L873">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L874">        setCovariance(covariance);</span>
+<span class="fc" id="L875">    }</span>
 
     /**
      * Constructor.
@@ -900,16 +906,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L903">            final Matrix covariance) {</span>
-<span class="fc" id="L904">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L905">        setVelocityCoordinates(vx, vy, vz);</span>
-<span class="fc" id="L906">        setPosition(position);</span>
-<span class="fc" id="L907">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L908">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L909">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L910">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L911">        setCovariance(covariance);</span>
-<span class="fc" id="L912">    }</span>
+<span class="fc" id="L909">            final Matrix covariance) {</span>
+<span class="fc" id="L910">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L911">        setVelocityCoordinates(vx, vy, vz);</span>
+<span class="fc" id="L912">        setPosition(position);</span>
+<span class="fc" id="L913">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L914">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L915">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L916">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L917">        setCovariance(covariance);</span>
+<span class="fc" id="L918">    }</span>
 
     /**
      * Constructor.
@@ -941,16 +947,16 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L944">            final Matrix covariance) {</span>
-<span class="fc" id="L945">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L946">        setEcefVelocity(velocity);</span>
-<span class="fc" id="L947">        setEcefPosition(position);</span>
-<span class="fc" id="L948">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L949">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L950">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L951">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L952">        setCovariance(covariance);</span>
-<span class="fc" id="L953">    }</span>
+<span class="fc" id="L950">            final Matrix covariance) {</span>
+<span class="fc" id="L951">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L952">        setEcefVelocity(velocity);</span>
+<span class="fc" id="L953">        setEcefPosition(position);</span>
+<span class="fc" id="L954">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L955">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L956">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L957">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L958">        setCovariance(covariance);</span>
+<span class="fc" id="L959">    }</span>
 
     /**
      * Constructor.
@@ -980,24 +986,24 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
             final AngularSpeed gyroBiasZ,
             final Distance receiverClockOffset,
             final Speed receiverClockDrift,
-<span class="fc" id="L983">            final Matrix covariance) {</span>
-<span class="fc" id="L984">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L985">        setPositionAndVelocity(positionAndVelocity);</span>
-<span class="fc" id="L986">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
-<span class="fc" id="L987">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
-<span class="fc" id="L988">        setReceiverClockOffset(receiverClockOffset);</span>
-<span class="fc" id="L989">        setReceiverClockDrift(receiverClockDrift);</span>
-<span class="fc" id="L990">        setCovariance(covariance);</span>
-<span class="fc" id="L991">    }</span>
+<span class="fc" id="L989">            final Matrix covariance) {</span>
+<span class="fc" id="L990">        setBodyToEcefCoordinateTransformationMatrix(bodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L991">        setPositionAndVelocity(positionAndVelocity);</span>
+<span class="fc" id="L992">        setAccelerationBiasCoordinates(accelerationBiasX, accelerationBiasY, accelerationBiasZ);</span>
+<span class="fc" id="L993">        setGyroBiasCoordinates(gyroBiasX, gyroBiasY, gyroBiasZ);</span>
+<span class="fc" id="L994">        setReceiverClockOffset(receiverClockOffset);</span>
+<span class="fc" id="L995">        setReceiverClockDrift(receiverClockDrift);</span>
+<span class="fc" id="L996">        setCovariance(covariance);</span>
+<span class="fc" id="L997">    }</span>
 
     /**
      * Copy constructor.
      *
      * @param input input instance to copy data from.
      */
-<span class="fc" id="L998">    public INSTightlyCoupledKalmanState(final INSTightlyCoupledKalmanState input) {</span>
-<span class="fc" id="L999">        copyFrom(input);</span>
-<span class="fc" id="L1000">    }</span>
+<span class="fc" id="L1004">    public INSTightlyCoupledKalmanState(final INSTightlyCoupledKalmanState input) {</span>
+<span class="fc" id="L1005">        copyFrom(input);</span>
+<span class="fc" id="L1006">    }</span>
 
     /**
      * Gets estimated body to ECEF coordinate transformation matrix.
@@ -1005,7 +1011,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated body to ECEF coordinate transformation matrix.
      */
     public Matrix getBodyToEcefCoordinateTransformationMatrix() {
-<span class="fc" id="L1008">        return mBodyToEcefCoordinateTransformationMatrix;</span>
+<span class="fc" id="L1014">        return mBodyToEcefCoordinateTransformationMatrix;</span>
     }
 
     /**
@@ -1017,13 +1023,13 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setBodyToEcefCoordinateTransformationMatrix(
             final Matrix bodyToEcefCoordinateTransformationMatrix) {
-<span class="fc bfc" id="L1020" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix.getRows() != CoordinateTransformation.ROWS ||</span>
-<span class="fc bfc" id="L1021" title="All 2 branches covered.">                bodyToEcefCoordinateTransformationMatrix.getColumns() != CoordinateTransformation.COLS) {</span>
-<span class="fc" id="L1022">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1026" title="All 2 branches covered.">        if (bodyToEcefCoordinateTransformationMatrix.getRows() != CoordinateTransformation.ROWS ||</span>
+<span class="fc bfc" id="L1027" title="All 2 branches covered.">                bodyToEcefCoordinateTransformationMatrix.getColumns() != CoordinateTransformation.COLS) {</span>
+<span class="fc" id="L1028">            throw new IllegalArgumentException();</span>
         }
-<span class="fc" id="L1024">        mBodyToEcefCoordinateTransformationMatrix =</span>
+<span class="fc" id="L1030">        mBodyToEcefCoordinateTransformationMatrix =</span>
                 bodyToEcefCoordinateTransformationMatrix;
-<span class="fc" id="L1026">    }</span>
+<span class="fc" id="L1032">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
@@ -1031,7 +1037,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
      */
     public double getVx() {
-<span class="fc" id="L1034">        return mVx;</span>
+<span class="fc" id="L1040">        return mVx;</span>
     }
 
     /**
@@ -1040,8 +1046,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vx estimated ECEF user velocity resolved around x axis and expressed in meters per second (m/s).
      */
     public void setVx(final double vx) {
-<span class="fc" id="L1043">        mVx = vx;</span>
-<span class="fc" id="L1044">    }</span>
+<span class="fc" id="L1049">        mVx = vx;</span>
+<span class="fc" id="L1050">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
@@ -1049,7 +1055,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      */
     public double getVy() {
-<span class="fc" id="L1052">        return mVy;</span>
+<span class="fc" id="L1058">        return mVy;</span>
     }
 
     /**
@@ -1058,8 +1064,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF user velocity resolved around y axis and expressed in meters per second (m/s).
      */
     public void setVy(final double vy) {
-<span class="fc" id="L1061">        mVy = vy;</span>
-<span class="fc" id="L1062">    }</span>
+<span class="fc" id="L1067">        mVy = vy;</span>
+<span class="fc" id="L1068">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
@@ -1067,7 +1073,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
     public double getVz() {
-<span class="fc" id="L1070">        return mVz;</span>
+<span class="fc" id="L1076">        return mVz;</span>
     }
 
     /**
@@ -1076,8 +1082,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vz estimated ECEF user velocity resolved around z axis and expressed in meters per second (m/s).
      */
     public void setVz(final double vz) {
-<span class="fc" id="L1079">        mVz = vz;</span>
-<span class="fc" id="L1080">    }</span>
+<span class="fc" id="L1085">        mVz = vz;</span>
+<span class="fc" id="L1086">    }</span>
 
     /**
      * Sets estimated ECEF user velocity coordinates.
@@ -1088,10 +1094,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setVelocityCoordinates(
             final double vx, final double vy, final double vz) {
-<span class="fc" id="L1091">        mVx = vx;</span>
-<span class="fc" id="L1092">        mVy = vy;</span>
-<span class="fc" id="L1093">        mVz = vz;</span>
-<span class="fc" id="L1094">    }</span>
+<span class="fc" id="L1097">        mVx = vx;</span>
+<span class="fc" id="L1098">        mVy = vy;</span>
+<span class="fc" id="L1099">        mVz = vz;</span>
+<span class="fc" id="L1100">    }</span>
 
     /**
      * Gets x coordinate of estimated ECEF user position expressed in meters (m).
@@ -1099,7 +1105,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return x coordinate of estimated ECEF user position expressed in meters (m).
      */
     public double getX() {
-<span class="fc" id="L1102">        return mX;</span>
+<span class="fc" id="L1108">        return mX;</span>
     }
 
     /**
@@ -1108,8 +1114,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param x x coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setX(final double x) {
-<span class="fc" id="L1111">        mX = x;</span>
-<span class="fc" id="L1112">    }</span>
+<span class="fc" id="L1117">        mX = x;</span>
+<span class="fc" id="L1118">    }</span>
 
     /**
      * Gets y coordinate of estimated ECEF user position expressed in meters (m).
@@ -1117,7 +1123,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return y coordinate of estimated ECEF user position expressed in meters (m).
      */
     public double getY() {
-<span class="fc" id="L1120">        return mY;</span>
+<span class="fc" id="L1126">        return mY;</span>
     }
 
     /**
@@ -1126,8 +1132,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setY(final double y) {
-<span class="fc" id="L1129">        mY = y;</span>
-<span class="fc" id="L1130">    }</span>
+<span class="fc" id="L1135">        mY = y;</span>
+<span class="fc" id="L1136">    }</span>
 
     /**
      * Gets z coordinate of estimated ECEF user position expressed in meters (m).
@@ -1135,7 +1141,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return z coordinate of estimated ECEF user position expressed in meters (m).
      */
     public double getZ() {
-<span class="fc" id="L1138">        return mZ;</span>
+<span class="fc" id="L1144">        return mZ;</span>
     }
 
     /**
@@ -1144,8 +1150,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param z z coordinate of estimated ECEF user position expressed in meters (m).
      */
     public void setZ(final double z) {
-<span class="fc" id="L1147">        mZ = z;</span>
-<span class="fc" id="L1148">    }</span>
+<span class="fc" id="L1153">        mZ = z;</span>
+<span class="fc" id="L1154">    }</span>
 
     /**
      * Sets estimated ECEF user position coordinates.
@@ -1156,10 +1162,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setPositionCoordinates(
             final double x, final double y, final double z) {
-<span class="fc" id="L1159">        mX = x;</span>
-<span class="fc" id="L1160">        mY = y;</span>
-<span class="fc" id="L1161">        mZ = z;</span>
-<span class="fc" id="L1162">    }</span>
+<span class="fc" id="L1165">        mX = x;</span>
+<span class="fc" id="L1166">        mY = y;</span>
+<span class="fc" id="L1167">        mZ = z;</span>
+<span class="fc" id="L1168">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around x axis and expressed in
@@ -1169,7 +1175,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * meters per squared second (m/s^2).
      */
     public double getAccelerationBiasX() {
-<span class="fc" id="L1172">        return mAccelerationBiasX;</span>
+<span class="fc" id="L1178">        return mAccelerationBiasX;</span>
     }
 
     /**
@@ -1180,8 +1186,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasX(final double accelerationBiasX) {
-<span class="fc" id="L1183">        mAccelerationBiasX = accelerationBiasX;</span>
-<span class="fc" id="L1184">    }</span>
+<span class="fc" id="L1189">        mAccelerationBiasX = accelerationBiasX;</span>
+<span class="fc" id="L1190">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around y axis and expressed in
@@ -1191,7 +1197,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * meters per squared second (m/s^2).
      */
     public double getAccelerationBiasY() {
-<span class="fc" id="L1194">        return mAccelerationBiasY;</span>
+<span class="fc" id="L1200">        return mAccelerationBiasY;</span>
     }
 
     /**
@@ -1202,8 +1208,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          and expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasY(final double accelerationBiasY) {
-<span class="fc" id="L1205">        mAccelerationBiasY = accelerationBiasY;</span>
-<span class="fc" id="L1206">    }</span>
+<span class="fc" id="L1211">        mAccelerationBiasY = accelerationBiasY;</span>
+<span class="fc" id="L1212">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around z axis and expressed in
@@ -1213,7 +1219,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * expressed in meters per squared second (m/s^2).
      */
     public double getAccelerationBiasZ() {
-<span class="fc" id="L1216">        return mAccelerationBiasZ;</span>
+<span class="fc" id="L1222">        return mAccelerationBiasZ;</span>
     }
 
     /**
@@ -1224,8 +1230,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          and expressed in meters per squared second (m/s^2).
      */
     public void setAccelerationBiasZ(final double accelerationBiasZ) {
-<span class="fc" id="L1227">        mAccelerationBiasZ = accelerationBiasZ;</span>
-<span class="fc" id="L1228">    }</span>
+<span class="fc" id="L1233">        mAccelerationBiasZ = accelerationBiasZ;</span>
+<span class="fc" id="L1234">    }</span>
 
     /**
      * Sets estimated accelerometer bias expressed in meters per squared second (m/s^2).
@@ -1240,10 +1246,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     public void setAccelerationBiasCoordinates(
             final double accelerationBiasX, final double accelerationBiasY,
             final double accelerationBiasZ) {
-<span class="fc" id="L1243">        mAccelerationBiasX = accelerationBiasX;</span>
-<span class="fc" id="L1244">        mAccelerationBiasY = accelerationBiasY;</span>
-<span class="fc" id="L1245">        mAccelerationBiasZ = accelerationBiasZ;</span>
-<span class="fc" id="L1246">    }</span>
+<span class="fc" id="L1249">        mAccelerationBiasX = accelerationBiasX;</span>
+<span class="fc" id="L1250">        mAccelerationBiasY = accelerationBiasY;</span>
+<span class="fc" id="L1251">        mAccelerationBiasZ = accelerationBiasZ;</span>
+<span class="fc" id="L1252">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around x axis and expressed in
@@ -1253,7 +1259,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * radians per second (rad/s).
      */
     public double getGyroBiasX() {
-<span class="fc" id="L1256">        return mGyroBiasX;</span>
+<span class="fc" id="L1262">        return mGyroBiasX;</span>
     }
 
     /**
@@ -1264,8 +1270,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                  expressed in radians per second (rad/s).
      */
     public void setGyroBiasX(final double gyroBiasX) {
-<span class="fc" id="L1267">        mGyroBiasX = gyroBiasX;</span>
-<span class="fc" id="L1268">    }</span>
+<span class="fc" id="L1273">        mGyroBiasX = gyroBiasX;</span>
+<span class="fc" id="L1274">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around y axis and expressed in
@@ -1275,7 +1281,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * in radians per second (rad/s).
      */
     public double getGyroBiasY() {
-<span class="fc" id="L1278">        return mGyroBiasY;</span>
+<span class="fc" id="L1284">        return mGyroBiasY;</span>
     }
 
     /**
@@ -1286,8 +1292,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                  expressed in radians per second (rad/s).
      */
     public void setGyroBiasY(final double gyroBiasY) {
-<span class="fc" id="L1289">        mGyroBiasY = gyroBiasY;</span>
-<span class="fc" id="L1290">    }</span>
+<span class="fc" id="L1295">        mGyroBiasY = gyroBiasY;</span>
+<span class="fc" id="L1296">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around z axis and expressed in
@@ -1297,7 +1303,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * in radians per second (rad/s).
      */
     public double getGyroBiasZ() {
-<span class="fc" id="L1300">        return mGyroBiasZ;</span>
+<span class="fc" id="L1306">        return mGyroBiasZ;</span>
     }
 
     /**
@@ -1308,8 +1314,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                  expressed in radians per second (rad/s).
      */
     public void setGyroBiasZ(final double gyroBiasZ) {
-<span class="fc" id="L1311">        mGyroBiasZ = gyroBiasZ;</span>
-<span class="fc" id="L1312">    }</span>
+<span class="fc" id="L1317">        mGyroBiasZ = gyroBiasZ;</span>
+<span class="fc" id="L1318">    }</span>
 
     /**
      * Sets estimated gyroscope bias coordinates expressed in radians
@@ -1324,10 +1330,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setGyroBiasCoordinates(
             final double gyroBiasX, final double gyroBiasY, final double gyroBiasZ) {
-<span class="fc" id="L1327">        mGyroBiasX = gyroBiasX;</span>
-<span class="fc" id="L1328">        mGyroBiasY = gyroBiasY;</span>
-<span class="fc" id="L1329">        mGyroBiasZ = gyroBiasZ;</span>
-<span class="fc" id="L1330">    }</span>
+<span class="fc" id="L1333">        mGyroBiasX = gyroBiasX;</span>
+<span class="fc" id="L1334">        mGyroBiasY = gyroBiasY;</span>
+<span class="fc" id="L1335">        mGyroBiasZ = gyroBiasZ;</span>
+<span class="fc" id="L1336">    }</span>
 
     /**
      * Gets estimated receiver clock offset expressed in meters (m).
@@ -1335,7 +1341,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated receiver clock offset expressed in meters (m).
      */
     public double getReceiverClockOffset() {
-<span class="fc" id="L1338">        return mReceiverClockOffset;</span>
+<span class="fc" id="L1344">        return mReceiverClockOffset;</span>
     }
 
     /**
@@ -1345,8 +1351,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                            in meters (m).
      */
     public void setReceiverClockOffset(final double receiverClockOffset) {
-<span class="fc" id="L1348">        mReceiverClockOffset = receiverClockOffset;</span>
-<span class="fc" id="L1349">    }</span>
+<span class="fc" id="L1354">        mReceiverClockOffset = receiverClockOffset;</span>
+<span class="fc" id="L1355">    }</span>
 
     /**
      * Gets estimated receiver clock drift expressed in meters per second (m/s).
@@ -1354,7 +1360,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated receiver clock drift expressed in meters per second (m/s).
      */
     public double getReceiverClockDrift() {
-<span class="fc" id="L1357">        return mReceiverClockDrift;</span>
+<span class="fc" id="L1363">        return mReceiverClockDrift;</span>
     }
 
     /**
@@ -1364,8 +1370,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                           meters per second (m/s).
      */
     public void setReceiverClockDrift(final double receiverClockDrift) {
-<span class="fc" id="L1367">        mReceiverClockDrift = receiverClockDrift;</span>
-<span class="fc" id="L1368">    }</span>
+<span class="fc" id="L1373">        mReceiverClockDrift = receiverClockDrift;</span>
+<span class="fc" id="L1374">    }</span>
 
     /**
      * Gets Kalman filter error covariance matrix.
@@ -1381,11 +1387,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return true if result data has been copied, false otherwise.
      */
     public boolean getCovariance(final Matrix result) {
-<span class="fc bfc" id="L1384" title="All 2 branches covered.">        if (mCovariance != null) {</span>
-<span class="fc" id="L1385">            mCovariance.copyTo(result);</span>
-<span class="fc" id="L1386">            return true;</span>
+<span class="fc bfc" id="L1390" title="All 2 branches covered.">        if (mCovariance != null) {</span>
+<span class="fc" id="L1391">            mCovariance.copyTo(result);</span>
+<span class="fc" id="L1392">            return true;</span>
         } else {
-<span class="fc" id="L1388">            return false;</span>
+<span class="fc" id="L1394">            return false;</span>
         }
     }
 
@@ -1402,7 +1408,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return Kalman filter error covariance matrix.
      */
     public Matrix getCovariance() {
-<span class="fc" id="L1405">        return mCovariance;</span>
+<span class="fc" id="L1411">        return mCovariance;</span>
     }
 
     /**
@@ -1412,13 +1418,13 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @throws IllegalArgumentException if provided covariance matrix is not 17x17.
      */
     public void setCovariance(final Matrix covariance) {
-<span class="fc bfc" id="L1415" title="All 2 branches covered.">        if (covariance.getRows() != NUM_PARAMS ||</span>
-<span class="pc bpc" id="L1416" title="1 of 2 branches missed.">                covariance.getColumns() != NUM_PARAMS) {</span>
-<span class="fc" id="L1417">            throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1421" title="All 2 branches covered.">        if (covariance.getRows() != NUM_PARAMS ||</span>
+<span class="pc bpc" id="L1422" title="1 of 2 branches missed.">                covariance.getColumns() != NUM_PARAMS) {</span>
+<span class="fc" id="L1423">            throw new IllegalArgumentException();</span>
         }
 
-<span class="fc" id="L1420">        mCovariance = covariance;</span>
-<span class="fc" id="L1421">    }</span>
+<span class="fc" id="L1426">        mCovariance = covariance;</span>
+<span class="fc" id="L1427">    }</span>
 
     /**
      * Gets body to ECEF coordinate transformation.
@@ -1428,9 +1434,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                        not valid (is not a 3x3 orthonormal matrix).
      */
     public CoordinateTransformation getC() throws InvalidRotationMatrixException {
-<span class="fc bfc" id="L1431" title="All 2 branches covered.">        return mBodyToEcefCoordinateTransformationMatrix != null ?</span>
-<span class="fc" id="L1432">                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,</span>
-<span class="fc" id="L1433">                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) : null;</span>
+<span class="fc bfc" id="L1437" title="All 2 branches covered.">        return mBodyToEcefCoordinateTransformationMatrix != null ?</span>
+<span class="fc" id="L1438">                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="fc" id="L1439">                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) : null;</span>
     }
 
     /**
@@ -1443,9 +1449,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                        is considered not valid (is not a 3x3 orthonormal matrix) with provided threshold.
      */
     public CoordinateTransformation getC(final double threshold) throws InvalidRotationMatrixException {
-<span class="pc bpc" id="L1446" title="1 of 2 branches missed.">        return mBodyToEcefCoordinateTransformationMatrix != null ?</span>
-<span class="nc" id="L1447">                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,</span>
-<span class="fc" id="L1448">                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;</span>
+<span class="pc bpc" id="L1452" title="1 of 2 branches missed.">        return mBodyToEcefCoordinateTransformationMatrix != null ?</span>
+<span class="nc" id="L1453">                new CoordinateTransformation(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="fc" id="L1454">                        FrameType.BODY_FRAME, FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME, threshold) : null;</span>
     }
 
     /**
@@ -1457,13 +1463,13 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                        is not valid (is not a 3x3 orthonormal matrix).
      */
     public boolean getC(final CoordinateTransformation result) throws InvalidRotationMatrixException {
-<span class="fc bfc" id="L1460" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1461">            result.setSourceType(FrameType.BODY_FRAME);</span>
-<span class="fc" id="L1462">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
-<span class="fc" id="L1463">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
-<span class="fc" id="L1464">            return true;</span>
+<span class="fc bfc" id="L1466" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1467">            result.setSourceType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L1468">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
+<span class="fc" id="L1469">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc" id="L1470">            return true;</span>
         } else {
-<span class="fc" id="L1466">            return false;</span>
+<span class="fc" id="L1472">            return false;</span>
         }
     }
 
@@ -1479,13 +1485,13 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public boolean getC(final CoordinateTransformation result,
                         final double threshold) throws InvalidRotationMatrixException {
-<span class="fc bfc" id="L1482" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1483">            result.setSourceType(FrameType.BODY_FRAME);</span>
-<span class="fc" id="L1484">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
-<span class="fc" id="L1485">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix, threshold);</span>
-<span class="fc" id="L1486">            return true;</span>
+<span class="fc bfc" id="L1488" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1489">            result.setSourceType(FrameType.BODY_FRAME);</span>
+<span class="fc" id="L1490">            result.setDestinationType(FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME);</span>
+<span class="fc" id="L1491">            result.setMatrix(mBodyToEcefCoordinateTransformationMatrix, threshold);</span>
+<span class="fc" id="L1492">            return true;</span>
         } else {
-<span class="fc" id="L1488">            return false;</span>
+<span class="fc" id="L1494">            return false;</span>
         }
     }
 
@@ -1497,23 +1503,23 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                                  not null and is not a body to ECEF transformation.
      */
     public void setC(final CoordinateTransformation c) {
-<span class="fc bfc" id="L1500" title="All 2 branches covered.">        if (c == null) {</span>
-<span class="fc" id="L1501">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
+<span class="fc bfc" id="L1506" title="All 2 branches covered.">        if (c == null) {</span>
+<span class="fc" id="L1507">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
 
         } else {
 
-<span class="fc bfc" id="L1505" title="All 2 branches covered.">            if (c.getSourceType() != FrameType.BODY_FRAME ||</span>
-<span class="pc bpc" id="L1506" title="1 of 2 branches missed.">                    c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {</span>
-<span class="fc" id="L1507">                throw new IllegalArgumentException();</span>
+<span class="fc bfc" id="L1511" title="All 2 branches covered.">            if (c.getSourceType() != FrameType.BODY_FRAME ||</span>
+<span class="pc bpc" id="L1512" title="1 of 2 branches missed.">                    c.getDestinationType() != FrameType.EARTH_CENTERED_EARTH_FIXED_FRAME) {</span>
+<span class="fc" id="L1513">                throw new IllegalArgumentException();</span>
             }
 
-<span class="fc bfc" id="L1510" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1511">                c.getMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc bfc" id="L1516" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1517">                c.getMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
             } else {
-<span class="fc" id="L1513">                mBodyToEcefCoordinateTransformationMatrix = c.getMatrix();</span>
+<span class="fc" id="L1519">                mBodyToEcefCoordinateTransformationMatrix = c.getMatrix();</span>
             }
         }
-<span class="fc" id="L1516">    }</span>
+<span class="fc" id="L1522">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around x axis.
@@ -1521,9 +1527,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity resolved around x axis will be stored.
      */
     public void getSpeedX(final Speed result) {
-<span class="fc" id="L1524">        result.setValue(mVx);</span>
-<span class="fc" id="L1525">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1526">    }</span>
+<span class="fc" id="L1530">        result.setValue(mVx);</span>
+<span class="fc" id="L1531">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1532">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around x axis.
@@ -1531,7 +1537,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity resolved around x axis.
      */
     public Speed getSpeedX() {
-<span class="fc" id="L1534">        return new Speed(mVx, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1540">        return new Speed(mVx, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -1540,9 +1546,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vx estimated ECEF user velocity resolved around x axis.
      */
     public void setSpeedX(final Speed vx) {
-<span class="fc" id="L1543">        mVx = SpeedConverter.convert(vx.getValue().doubleValue(),</span>
-<span class="fc" id="L1544">                vx.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1545">    }</span>
+<span class="fc" id="L1549">        mVx = SpeedConverter.convert(vx.getValue().doubleValue(),</span>
+<span class="fc" id="L1550">                vx.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1551">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around y axis.
@@ -1550,9 +1556,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity resolved around y axis will be stored.
      */
     public void getSpeedY(final Speed result) {
-<span class="fc" id="L1553">        result.setValue(mVy);</span>
-<span class="fc" id="L1554">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1555">    }</span>
+<span class="fc" id="L1559">        result.setValue(mVy);</span>
+<span class="fc" id="L1560">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1561">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around y axis.
@@ -1560,7 +1566,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF velocity resolved around y axis.
      */
     public Speed getSpeedY() {
-<span class="fc" id="L1563">        return new Speed(mVy, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1569">        return new Speed(mVy, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -1569,9 +1575,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vy estimated ECEF user velocity resolved around y axis.
      */
     public void setSpeedY(final Speed vy) {
-<span class="fc" id="L1572">        mVy = SpeedConverter.convert(vy.getValue().doubleValue(),</span>
-<span class="fc" id="L1573">                vy.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1574">    }</span>
+<span class="fc" id="L1578">        mVy = SpeedConverter.convert(vy.getValue().doubleValue(),</span>
+<span class="fc" id="L1579">                vy.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1580">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around z axis.
@@ -1579,9 +1585,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity resolved around z axis will be stored.
      */
     public void getSpeedZ(final Speed result) {
-<span class="fc" id="L1582">        result.setValue(mVz);</span>
-<span class="fc" id="L1583">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1584">    }</span>
+<span class="fc" id="L1588">        result.setValue(mVz);</span>
+<span class="fc" id="L1589">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1590">    }</span>
 
     /**
      * Gets estimated ECEF user velocity resolved around z axis.
@@ -1589,7 +1595,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF velocity resolved around z axis.
      */
     public Speed getSpeedZ() {
-<span class="fc" id="L1592">        return new Speed(mVz, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1598">        return new Speed(mVz, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -1598,9 +1604,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param vz estimated ECEF velocity resolved around z axis.
      */
     public void setSpeedZ(final Speed vz) {
-<span class="fc" id="L1601">        mVz = SpeedConverter.convert(vz.getValue().doubleValue(),</span>
-<span class="fc" id="L1602">                vz.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L1603">    }</span>
+<span class="fc" id="L1607">        mVz = SpeedConverter.convert(vz.getValue().doubleValue(),</span>
+<span class="fc" id="L1608">                vz.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L1609">    }</span>
 
     /**
      * Sets estimated ECEF user velocity.
@@ -1611,10 +1617,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setVelocityCoordinates(
             final Speed vx, final Speed vy, final Speed vz) {
-<span class="fc" id="L1614">        setSpeedX(vx);</span>
-<span class="fc" id="L1615">        setSpeedY(vy);</span>
-<span class="fc" id="L1616">        setSpeedZ(vz);</span>
-<span class="fc" id="L1617">    }</span>
+<span class="fc" id="L1620">        setSpeedX(vx);</span>
+<span class="fc" id="L1621">        setSpeedY(vy);</span>
+<span class="fc" id="L1622">        setSpeedZ(vz);</span>
+<span class="fc" id="L1623">    }</span>
 
     /**
      * Gets estimated ECEF user velocity.
@@ -1622,8 +1628,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated ECEF user velocity will be stored.
      */
     public void getEcefVelocity(final com.irurueta.navigation.frames.ECEFVelocity result) {
-<span class="fc" id="L1625">        result.setCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L1626">    }</span>
+<span class="fc" id="L1631">        result.setCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L1632">    }</span>
 
     /**
      * Gets estimated ECEF user velocity.
@@ -1631,7 +1637,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user velocity.
      */
     public ECEFVelocity getEcefVelocity() {
-<span class="fc" id="L1634">        return new ECEFVelocity(mVx, mVy, mVz);</span>
+<span class="fc" id="L1640">        return new ECEFVelocity(mVx, mVy, mVz);</span>
     }
 
     /**
@@ -1640,10 +1646,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param ecefVelocity estimated ECEF user velocity.
      */
     public void setEcefVelocity(final ECEFVelocity ecefVelocity) {
-<span class="fc" id="L1643">        mVx = ecefVelocity.getVx();</span>
-<span class="fc" id="L1644">        mVy = ecefVelocity.getVy();</span>
-<span class="fc" id="L1645">        mVz = ecefVelocity.getVz();</span>
-<span class="fc" id="L1646">    }</span>
+<span class="fc" id="L1649">        mVx = ecefVelocity.getVx();</span>
+<span class="fc" id="L1650">        mVy = ecefVelocity.getVy();</span>
+<span class="fc" id="L1651">        mVz = ecefVelocity.getVz();</span>
+<span class="fc" id="L1652">    }</span>
 
     /**
      * Gets x coordinate of estimated ECEF user position.
@@ -1652,9 +1658,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getDistanceX(final Distance result) {
-<span class="fc" id="L1655">        result.setValue(mX);</span>
-<span class="fc" id="L1656">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L1657">    }</span>
+<span class="fc" id="L1661">        result.setValue(mX);</span>
+<span class="fc" id="L1662">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1663">    }</span>
 
     /**
      * Gets x coordinate of estimated ECEF user position.
@@ -1662,7 +1668,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return x coordinate of estimated ECEF user position.
      */
     public Distance getDistanceX() {
-<span class="fc" id="L1665">        return new Distance(mX, DistanceUnit.METER);</span>
+<span class="fc" id="L1671">        return new Distance(mX, DistanceUnit.METER);</span>
     }
 
     /**
@@ -1671,9 +1677,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param x x coordinate of estimated ECEF user position.
      */
     public void setDistanceX(final Distance x) {
-<span class="fc" id="L1674">        mX = DistanceConverter.convert(x.getValue().doubleValue(),</span>
-<span class="fc" id="L1675">                x.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L1676">    }</span>
+<span class="fc" id="L1680">        mX = DistanceConverter.convert(x.getValue().doubleValue(),</span>
+<span class="fc" id="L1681">                x.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1682">    }</span>
 
     /**
      * Gets y coordinate of estimated ECEF user position.
@@ -1682,9 +1688,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getDistanceY(final Distance result) {
-<span class="fc" id="L1685">        result.setValue(mY);</span>
-<span class="fc" id="L1686">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L1687">    }</span>
+<span class="fc" id="L1691">        result.setValue(mY);</span>
+<span class="fc" id="L1692">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1693">    }</span>
 
     /**
      * Gets y coordinate of estimated ECEF user position.
@@ -1692,7 +1698,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return y coordinate of estimated ECEF user position.
      */
     public Distance getDistanceY() {
-<span class="fc" id="L1695">        return new Distance(mY, DistanceUnit.METER);</span>
+<span class="fc" id="L1701">        return new Distance(mY, DistanceUnit.METER);</span>
     }
 
     /**
@@ -1701,9 +1707,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param y y coordinate of estimated ECEF user position.
      */
     public void setDistanceY(final Distance y) {
-<span class="fc" id="L1704">        mY = DistanceConverter.convert(y.getValue().doubleValue(),</span>
-<span class="fc" id="L1705">                y.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L1706">    }</span>
+<span class="fc" id="L1710">        mY = DistanceConverter.convert(y.getValue().doubleValue(),</span>
+<span class="fc" id="L1711">                y.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1712">    }</span>
 
     /**
      * Gets z coordinate of estimated ECEF user position.
@@ -1712,9 +1718,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getDistanceZ(final Distance result) {
-<span class="fc" id="L1715">        result.setValue(mZ);</span>
-<span class="fc" id="L1716">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L1717">    }</span>
+<span class="fc" id="L1721">        result.setValue(mZ);</span>
+<span class="fc" id="L1722">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L1723">    }</span>
 
     /**
      * Gets z coordinate of estimated ECEF user position.
@@ -1722,7 +1728,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return z coordinate of estimated ECEF user position.
      */
     public Distance getDistanceZ() {
-<span class="fc" id="L1725">        return new Distance(mZ, DistanceUnit.METER);</span>
+<span class="fc" id="L1731">        return new Distance(mZ, DistanceUnit.METER);</span>
     }
 
     /**
@@ -1731,9 +1737,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param z z coordinate of estimated ECEF user position.
      */
     public void setDistanceZ(final Distance z) {
-<span class="fc" id="L1734">        mZ = DistanceConverter.convert(z.getValue().doubleValue(),</span>
-<span class="fc" id="L1735">                z.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L1736">    }</span>
+<span class="fc" id="L1740">        mZ = DistanceConverter.convert(z.getValue().doubleValue(),</span>
+<span class="fc" id="L1741">                z.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L1742">    }</span>
 
     /**
      * Sets coordinates of estimated ECEF user position.
@@ -1744,10 +1750,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void setPositionCoordinates(
             final Distance x, final Distance y, final Distance z) {
-<span class="fc" id="L1747">        setDistanceX(x);</span>
-<span class="fc" id="L1748">        setDistanceY(y);</span>
-<span class="fc" id="L1749">        setDistanceZ(z);</span>
-<span class="fc" id="L1750">    }</span>
+<span class="fc" id="L1753">        setDistanceX(x);</span>
+<span class="fc" id="L1754">        setDistanceY(y);</span>
+<span class="fc" id="L1755">        setDistanceZ(z);</span>
+<span class="fc" id="L1756">    }</span>
 
     /**
      * Gets estimated ECEF user position expressed in meters (m).
@@ -1756,8 +1762,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               in meters (m) will be stored.
      */
     public void getPosition(final Point3D result) {
-<span class="fc" id="L1759">        result.setInhomogeneousCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1760">    }</span>
+<span class="fc" id="L1765">        result.setInhomogeneousCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1766">    }</span>
 
     /**
      * Gets estimated ECEF user position expressed in meters (m).
@@ -1765,7 +1771,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user position expressed in meters (m).
      */
     public Point3D getPosition() {
-<span class="fc" id="L1768">        return new InhomogeneousPoint3D(mX, mY, mZ);</span>
+<span class="fc" id="L1774">        return new InhomogeneousPoint3D(mX, mY, mZ);</span>
     }
 
     /**
@@ -1775,10 +1781,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                 meters (m).
      */
     public void setPosition(final Point3D position) {
-<span class="fc" id="L1778">        mX = position.getInhomX();</span>
-<span class="fc" id="L1779">        mY = position.getInhomY();</span>
-<span class="fc" id="L1780">        mZ = position.getInhomZ();</span>
-<span class="fc" id="L1781">    }</span>
+<span class="fc" id="L1784">        mX = position.getInhomX();</span>
+<span class="fc" id="L1785">        mY = position.getInhomY();</span>
+<span class="fc" id="L1786">        mZ = position.getInhomZ();</span>
+<span class="fc" id="L1787">    }</span>
 
     /**
      * Gets estimated ECEF user position.
@@ -1787,8 +1793,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getEcefPosition(final ECEFPosition result) {
-<span class="fc" id="L1790">        result.setCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1791">    }</span>
+<span class="fc" id="L1796">        result.setCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1797">    }</span>
 
     /**
      * Gets estimated ECEF user position.
@@ -1796,7 +1802,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user position.
      */
     public ECEFPosition getEcefPosition() {
-<span class="fc" id="L1799">        return new ECEFPosition(mX, mY, mZ);</span>
+<span class="fc" id="L1805">        return new ECEFPosition(mX, mY, mZ);</span>
     }
 
     /**
@@ -1805,10 +1811,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param ecefPosition estimated ECEF user position.
      */
     public void setEcefPosition(final ECEFPosition ecefPosition) {
-<span class="fc" id="L1808">        mX = ecefPosition.getX();</span>
-<span class="fc" id="L1809">        mY = ecefPosition.getY();</span>
-<span class="fc" id="L1810">        mZ = ecefPosition.getZ();</span>
-<span class="fc" id="L1811">    }</span>
+<span class="fc" id="L1814">        mX = ecefPosition.getX();</span>
+<span class="fc" id="L1815">        mY = ecefPosition.getY();</span>
+<span class="fc" id="L1816">        mZ = ecefPosition.getZ();</span>
+<span class="fc" id="L1817">    }</span>
 
     /**
      * Gets estimated ECEF user position and velocity.
@@ -1817,9 +1823,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               will be stored.
      */
     public void getPositionAndVelocity(final ECEFPositionAndVelocity result) {
-<span class="fc" id="L1820">        result.setPositionCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1821">        result.setVelocityCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L1822">    }</span>
+<span class="fc" id="L1826">        result.setPositionCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1827">        result.setVelocityCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L1828">    }</span>
 
     /**
      * Gets estimated ECEF user position and velocity.
@@ -1827,7 +1833,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated ECEF user position and velocity.
      */
     public ECEFPositionAndVelocity getPositionAndVelocity() {
-<span class="fc" id="L1830">        return new ECEFPositionAndVelocity(mX, mY, mZ, mVx, mVy, mVz);</span>
+<span class="fc" id="L1836">        return new ECEFPositionAndVelocity(mX, mY, mZ, mVx, mVy, mVz);</span>
     }
 
     /**
@@ -1836,13 +1842,13 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param positionAndVelocity estimated ECEF user position and velocity.
      */
     public void setPositionAndVelocity(final ECEFPositionAndVelocity positionAndVelocity) {
-<span class="fc" id="L1839">        mX = positionAndVelocity.getX();</span>
-<span class="fc" id="L1840">        mY = positionAndVelocity.getY();</span>
-<span class="fc" id="L1841">        mZ = positionAndVelocity.getZ();</span>
-<span class="fc" id="L1842">        mVx = positionAndVelocity.getVx();</span>
-<span class="fc" id="L1843">        mVy = positionAndVelocity.getVy();</span>
-<span class="fc" id="L1844">        mVz = positionAndVelocity.getVz();</span>
-<span class="fc" id="L1845">    }</span>
+<span class="fc" id="L1845">        mX = positionAndVelocity.getX();</span>
+<span class="fc" id="L1846">        mY = positionAndVelocity.getY();</span>
+<span class="fc" id="L1847">        mZ = positionAndVelocity.getZ();</span>
+<span class="fc" id="L1848">        mVx = positionAndVelocity.getVx();</span>
+<span class="fc" id="L1849">        mVy = positionAndVelocity.getVy();</span>
+<span class="fc" id="L1850">        mVz = positionAndVelocity.getVz();</span>
+<span class="fc" id="L1851">    }</span>
 
     /**
      * Gets body to ECEF frame containing coordinate transformation, position and
@@ -1852,18 +1858,18 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return true if result was updated, false otherwise.
      */
     public boolean getFrame(final ECEFFrame result) {
-<span class="fc bfc" id="L1855" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc bfc" id="L1861" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
             try {
-<span class="fc" id="L1857">                result.setCoordinateTransformation(getC());</span>
-<span class="fc" id="L1858">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
+<span class="fc" id="L1863">                result.setCoordinateTransformation(getC());</span>
+<span class="fc" id="L1864">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
                     | InvalidRotationMatrixException e) {
-<span class="fc" id="L1860">                return false;</span>
-<span class="fc" id="L1861">            }</span>
-<span class="fc" id="L1862">            result.setCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L1863">            result.setVelocityCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L1864">            return true;</span>
+<span class="fc" id="L1866">                return false;</span>
+<span class="fc" id="L1867">            }</span>
+<span class="fc" id="L1868">            result.setCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L1869">            result.setVelocityCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L1870">            return true;</span>
         } else {
-<span class="fc" id="L1866">            return false;</span>
+<span class="fc" id="L1872">            return false;</span>
         }
     }
 
@@ -1874,15 +1880,15 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return body to ECEF frame.
      */
     public ECEFFrame getFrame() {
-<span class="fc bfc" id="L1877" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc bfc" id="L1883" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
             try {
-<span class="fc" id="L1879">                return new ECEFFrame(mX, mY, mZ, mVx, mVy, mVz, getC());</span>
-<span class="fc" id="L1880">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
+<span class="fc" id="L1885">                return new ECEFFrame(mX, mY, mZ, mVx, mVy, mVz, getC());</span>
+<span class="fc" id="L1886">            } catch (final InvalidSourceAndDestinationFrameTypeException</span>
                     | InvalidRotationMatrixException e) {
-<span class="fc" id="L1882">                return null;</span>
+<span class="fc" id="L1888">                return null;</span>
             }
         } else {
-<span class="fc" id="L1885">            return null;</span>
+<span class="fc" id="L1891">            return null;</span>
         }
     }
 
@@ -1893,20 +1899,20 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param frame body to ECEF frame to be set.
      */
     public void setFrame(final ECEFFrame frame) {
-<span class="fc" id="L1896">        mX = frame.getX();</span>
-<span class="fc" id="L1897">        mY = frame.getY();</span>
-<span class="fc" id="L1898">        mZ = frame.getZ();</span>
+<span class="fc" id="L1902">        mX = frame.getX();</span>
+<span class="fc" id="L1903">        mY = frame.getY();</span>
+<span class="fc" id="L1904">        mZ = frame.getZ();</span>
 
-<span class="fc" id="L1900">        mVx = frame.getVx();</span>
-<span class="fc" id="L1901">        mVy = frame.getVy();</span>
-<span class="fc" id="L1902">        mVz = frame.getVz();</span>
+<span class="fc" id="L1906">        mVx = frame.getVx();</span>
+<span class="fc" id="L1907">        mVy = frame.getVy();</span>
+<span class="fc" id="L1908">        mVz = frame.getVz();</span>
 
-<span class="fc bfc" id="L1904" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
-<span class="fc" id="L1905">            frame.getCoordinateTransformationMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
+<span class="fc bfc" id="L1910" title="All 2 branches covered.">        if (mBodyToEcefCoordinateTransformationMatrix != null) {</span>
+<span class="fc" id="L1911">            frame.getCoordinateTransformationMatrix(mBodyToEcefCoordinateTransformationMatrix);</span>
         } else {
-<span class="fc" id="L1907">            mBodyToEcefCoordinateTransformationMatrix = frame.getCoordinateTransformationMatrix();</span>
+<span class="fc" id="L1913">            mBodyToEcefCoordinateTransformationMatrix = frame.getCoordinateTransformationMatrix();</span>
         }
-<span class="fc" id="L1909">    }</span>
+<span class="fc" id="L1915">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around x axis.
@@ -1915,9 +1921,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               x axis will be stored.
      */
     public void getAccelerationBiasXAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1918">        result.setValue(mAccelerationBiasX);</span>
-<span class="fc" id="L1919">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1920">    }</span>
+<span class="fc" id="L1924">        result.setValue(mAccelerationBiasX);</span>
+<span class="fc" id="L1925">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1926">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around x axis.
@@ -1925,7 +1931,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around x axis.
      */
     public Acceleration getAccelerationBiasXAsAcceleration() {
-<span class="fc" id="L1928">        return new Acceleration(mAccelerationBiasX,</span>
+<span class="fc" id="L1934">        return new Acceleration(mAccelerationBiasX,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1936,11 +1942,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          around x axis.
      */
     public void setAccelerationBiasX(final Acceleration accelerationBiasX) {
-<span class="fc" id="L1939">        mAccelerationBiasX = AccelerationConverter.convert(</span>
-<span class="fc" id="L1940">                accelerationBiasX.getValue().doubleValue(),</span>
-<span class="fc" id="L1941">                accelerationBiasX.getUnit(),</span>
+<span class="fc" id="L1945">        mAccelerationBiasX = AccelerationConverter.convert(</span>
+<span class="fc" id="L1946">                accelerationBiasX.getValue().doubleValue(),</span>
+<span class="fc" id="L1947">                accelerationBiasX.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L1943">    }</span>
+<span class="fc" id="L1949">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around y axis.
@@ -1949,9 +1955,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               y axis will be stored.
      */
     public void getAccelerationBiasYAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1952">        result.setValue(mAccelerationBiasY);</span>
-<span class="fc" id="L1953">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1954">    }</span>
+<span class="fc" id="L1958">        result.setValue(mAccelerationBiasY);</span>
+<span class="fc" id="L1959">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1960">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around y axis.
@@ -1959,7 +1965,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around y axis.
      */
     public Acceleration getAccelerationBiasYAsAcceleration() {
-<span class="fc" id="L1962">        return new Acceleration(mAccelerationBiasY,</span>
+<span class="fc" id="L1968">        return new Acceleration(mAccelerationBiasY,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -1970,11 +1976,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          around y axis.
      */
     public void setAccelerationBiasY(final Acceleration accelerationBiasY) {
-<span class="fc" id="L1973">        mAccelerationBiasY = AccelerationConverter.convert(</span>
-<span class="fc" id="L1974">                accelerationBiasY.getValue().doubleValue(),</span>
-<span class="fc" id="L1975">                accelerationBiasY.getUnit(),</span>
+<span class="fc" id="L1979">        mAccelerationBiasY = AccelerationConverter.convert(</span>
+<span class="fc" id="L1980">                accelerationBiasY.getValue().doubleValue(),</span>
+<span class="fc" id="L1981">                accelerationBiasY.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L1977">    }</span>
+<span class="fc" id="L1983">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around z axis.
@@ -1983,9 +1989,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               z axis will be stored.
      */
     public void getAccelerationBiasZAsAcceleration(final Acceleration result) {
-<span class="fc" id="L1986">        result.setValue(mAccelerationBiasZ);</span>
-<span class="fc" id="L1987">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
-<span class="fc" id="L1988">    }</span>
+<span class="fc" id="L1992">        result.setValue(mAccelerationBiasZ);</span>
+<span class="fc" id="L1993">        result.setUnit(AccelerationUnit.METERS_PER_SQUARED_SECOND);</span>
+<span class="fc" id="L1994">    }</span>
 
     /**
      * Gets estimated accelerometer bias resolved around z axis.
@@ -1993,7 +1999,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated accelerometer bias resolved around z axis.
      */
     public Acceleration getAccelerationBiasZAsAcceleration() {
-<span class="fc" id="L1996">        return new Acceleration(mAccelerationBiasZ,</span>
+<span class="fc" id="L2002">        return new Acceleration(mAccelerationBiasZ,</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
     }
 
@@ -2004,11 +2010,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *                          around z axis.
      */
     public void setAccelerationBiasZ(final Acceleration accelerationBiasZ) {
-<span class="fc" id="L2007">        mAccelerationBiasZ = AccelerationConverter.convert(</span>
-<span class="fc" id="L2008">                accelerationBiasZ.getValue().doubleValue(),</span>
-<span class="fc" id="L2009">                accelerationBiasZ.getUnit(),</span>
+<span class="fc" id="L2013">        mAccelerationBiasZ = AccelerationConverter.convert(</span>
+<span class="fc" id="L2014">                accelerationBiasZ.getValue().doubleValue(),</span>
+<span class="fc" id="L2015">                accelerationBiasZ.getUnit(),</span>
                 AccelerationUnit.METERS_PER_SQUARED_SECOND);
-<span class="fc" id="L2011">    }</span>
+<span class="fc" id="L2017">    }</span>
 
     /**
      * Sets estimated accelerometer bias coordinates.
@@ -2020,10 +2026,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     public void setAccelerationBiasCoordinates(
             final Acceleration accelerationBiasX, final Acceleration accelerationBiasY,
             final Acceleration accelerationBiasZ) {
-<span class="fc" id="L2023">        setAccelerationBiasX(accelerationBiasX);</span>
-<span class="fc" id="L2024">        setAccelerationBiasY(accelerationBiasY);</span>
-<span class="fc" id="L2025">        setAccelerationBiasZ(accelerationBiasZ);</span>
-<span class="fc" id="L2026">    }</span>
+<span class="fc" id="L2029">        setAccelerationBiasX(accelerationBiasX);</span>
+<span class="fc" id="L2030">        setAccelerationBiasY(accelerationBiasY);</span>
+<span class="fc" id="L2031">        setAccelerationBiasZ(accelerationBiasZ);</span>
+<span class="fc" id="L2032">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around x axis.
@@ -2032,9 +2038,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               be stored.
      */
     public void getAngularSpeedGyroBiasX(final AngularSpeed result) {
-<span class="fc" id="L2035">        result.setValue(mGyroBiasX);</span>
-<span class="fc" id="L2036">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L2037">    }</span>
+<span class="fc" id="L2041">        result.setValue(mGyroBiasX);</span>
+<span class="fc" id="L2042">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2043">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around x axis.
@@ -2042,7 +2048,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated gyroscope bias resolved around x axis.
      */
     public AngularSpeed getAngularSpeedGyroBiasX() {
-<span class="fc" id="L2045">        return new AngularSpeed(mGyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2051">        return new AngularSpeed(mGyroBiasX, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 
     /**
@@ -2051,10 +2057,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasX estimated gyroscope bias resolved around x axis.
      */
     public void setGyroBiasX(final AngularSpeed gyroBiasX) {
-<span class="fc" id="L2054">        mGyroBiasX = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L2055">                gyroBiasX.getValue().doubleValue(),</span>
-<span class="fc" id="L2056">                gyroBiasX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L2057">    }</span>
+<span class="fc" id="L2060">        mGyroBiasX = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L2061">                gyroBiasX.getValue().doubleValue(),</span>
+<span class="fc" id="L2062">                gyroBiasX.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2063">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around y axis.
@@ -2063,9 +2069,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               be stored.
      */
     public void getAngularSpeedGyroBiasY(final AngularSpeed result) {
-<span class="fc" id="L2066">        result.setValue(mGyroBiasY);</span>
-<span class="fc" id="L2067">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L2068">    }</span>
+<span class="fc" id="L2072">        result.setValue(mGyroBiasY);</span>
+<span class="fc" id="L2073">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2074">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around y axis.
@@ -2073,7 +2079,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated gyroscope bias resolved around y axis.
      */
     public AngularSpeed getAngularSpeedGyroBiasY() {
-<span class="fc" id="L2076">        return new AngularSpeed(mGyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2082">        return new AngularSpeed(mGyroBiasY, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 
     /**
@@ -2082,10 +2088,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasY estimated gyroscope bias resolved around y axis.
      */
     public void setGyroBiasY(final AngularSpeed gyroBiasY) {
-<span class="fc" id="L2085">        mGyroBiasY = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L2086">                gyroBiasY.getValue().doubleValue(),</span>
-<span class="fc" id="L2087">                gyroBiasY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L2088">    }</span>
+<span class="fc" id="L2091">        mGyroBiasY = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L2092">                gyroBiasY.getValue().doubleValue(),</span>
+<span class="fc" id="L2093">                gyroBiasY.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2094">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around z axis.
@@ -2094,9 +2100,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      *               be stored.
      */
     public void getAngularSpeedGyroBiasZ(final AngularSpeed result) {
-<span class="fc" id="L2097">        result.setValue(mGyroBiasZ);</span>
-<span class="fc" id="L2098">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L2099">    }</span>
+<span class="fc" id="L2103">        result.setValue(mGyroBiasZ);</span>
+<span class="fc" id="L2104">        result.setUnit(AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2105">    }</span>
 
     /**
      * Gets estimated gyroscope bias resolved around z axis.
@@ -2104,7 +2110,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated gyroscope bias resolved around z axis.
      */
     public AngularSpeed getAngularSpeedGyroBiasZ() {
-<span class="fc" id="L2107">        return new AngularSpeed(mGyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2113">        return new AngularSpeed(mGyroBiasZ, AngularSpeedUnit.RADIANS_PER_SECOND);</span>
     }
 
     /**
@@ -2113,10 +2119,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gyroBiasZ estimated gyroscope bias resolved around z axis.
      */
     public void setGyroBiasZ(final AngularSpeed gyroBiasZ) {
-<span class="fc" id="L2116">        mGyroBiasZ = AngularSpeedConverter.convert(</span>
-<span class="fc" id="L2117">                gyroBiasZ.getValue().doubleValue(),</span>
-<span class="fc" id="L2118">                gyroBiasZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
-<span class="fc" id="L2119">    }</span>
+<span class="fc" id="L2122">        mGyroBiasZ = AngularSpeedConverter.convert(</span>
+<span class="fc" id="L2123">                gyroBiasZ.getValue().doubleValue(),</span>
+<span class="fc" id="L2124">                gyroBiasZ.getUnit(), AngularSpeedUnit.RADIANS_PER_SECOND);</span>
+<span class="fc" id="L2125">    }</span>
 
     /**
      * Sets estimated gyroscope bias coordinates.
@@ -2128,10 +2134,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
     public void setGyroBiasCoordinates(
             final AngularSpeed gyroBiasX, final AngularSpeed gyroBiasY,
             final AngularSpeed gyroBiasZ) {
-<span class="fc" id="L2131">        setGyroBiasX(gyroBiasX);</span>
-<span class="fc" id="L2132">        setGyroBiasY(gyroBiasY);</span>
-<span class="fc" id="L2133">        setGyroBiasZ(gyroBiasZ);</span>
-<span class="fc" id="L2134">    }</span>
+<span class="fc" id="L2137">        setGyroBiasX(gyroBiasX);</span>
+<span class="fc" id="L2138">        setGyroBiasY(gyroBiasY);</span>
+<span class="fc" id="L2139">        setGyroBiasZ(gyroBiasZ);</span>
+<span class="fc" id="L2140">    }</span>
 
     /**
      * Gets estimated receiver clock offset.
@@ -2139,9 +2145,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated receiver clock offset will be stored.
      */
     public void getReceiverClockOffsetAsDistance(final Distance result) {
-<span class="fc" id="L2142">        result.setValue(mReceiverClockOffset);</span>
-<span class="fc" id="L2143">        result.setUnit(DistanceUnit.METER);</span>
-<span class="fc" id="L2144">    }</span>
+<span class="fc" id="L2148">        result.setValue(mReceiverClockOffset);</span>
+<span class="fc" id="L2149">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L2150">    }</span>
 
     /**
      * Gets estimated receiver clock offset.
@@ -2149,7 +2155,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated receiver clock offset.
      */
     public Distance getReceiverClockOffsetAsDistance() {
-<span class="fc" id="L2152">        return new Distance(mReceiverClockOffset, DistanceUnit.METER);</span>
+<span class="fc" id="L2158">        return new Distance(mReceiverClockOffset, DistanceUnit.METER);</span>
     }
 
     /**
@@ -2158,10 +2164,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param receiverClockOffset estimated receiver clock offset.
      */
     public void setReceiverClockOffset(final Distance receiverClockOffset) {
-<span class="fc" id="L2161">        mReceiverClockOffset = DistanceConverter.convert(</span>
-<span class="fc" id="L2162">                receiverClockOffset.getValue().doubleValue(),</span>
-<span class="fc" id="L2163">                receiverClockOffset.getUnit(), DistanceUnit.METER);</span>
-<span class="fc" id="L2164">    }</span>
+<span class="fc" id="L2167">        mReceiverClockOffset = DistanceConverter.convert(</span>
+<span class="fc" id="L2168">                receiverClockOffset.getValue().doubleValue(),</span>
+<span class="fc" id="L2169">                receiverClockOffset.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L2170">    }</span>
 
     /**
      * Gets estimated receiver clock drift.
@@ -2169,9 +2175,9 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where estimated receiver clock drift will be stored.
      */
     public void getReceiverClockDriftAsSpeed(final Speed result) {
-<span class="fc" id="L2172">        result.setValue(mReceiverClockDrift);</span>
-<span class="fc" id="L2173">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L2174">    }</span>
+<span class="fc" id="L2178">        result.setValue(mReceiverClockDrift);</span>
+<span class="fc" id="L2179">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L2180">    }</span>
 
     /**
      * Gets estimated receiver clock drift.
@@ -2179,7 +2185,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return estimated receiver clock drift.
      */
     public Speed getReceiverClockDriftAsSpeed() {
-<span class="fc" id="L2182">        return new Speed(mReceiverClockDrift, SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L2188">        return new Speed(mReceiverClockDrift, SpeedUnit.METERS_PER_SECOND);</span>
     }
 
     /**
@@ -2188,10 +2194,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param receiverClockDrift estimated receiver clock drift.
      */
     public void setReceiverClockDrift(final Speed receiverClockDrift) {
-<span class="fc" id="L2191">        mReceiverClockDrift = SpeedConverter.convert(</span>
-<span class="fc" id="L2192">                receiverClockDrift.getValue().doubleValue(),</span>
-<span class="fc" id="L2193">                receiverClockDrift.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
-<span class="fc" id="L2194">    }</span>
+<span class="fc" id="L2197">        mReceiverClockDrift = SpeedConverter.convert(</span>
+<span class="fc" id="L2198">                receiverClockDrift.getValue().doubleValue(),</span>
+<span class="fc" id="L2199">                receiverClockDrift.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L2200">    }</span>
 
     /**
      * Gets GNSS estimation from data contained into this instance.
@@ -2199,11 +2205,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param result instance where GNSS estimation data will be stored.
      */
     public void getGNSSEstimation(final GNSSEstimation result) {
-<span class="fc" id="L2202">        result.setPositionCoordinates(mX, mY, mZ);</span>
-<span class="fc" id="L2203">        result.setVelocityCoordinates(mVx, mVy, mVz);</span>
-<span class="fc" id="L2204">        result.setClockOffset(mReceiverClockOffset);</span>
-<span class="fc" id="L2205">        result.setClockDrift(mReceiverClockDrift);</span>
-<span class="fc" id="L2206">    }</span>
+<span class="fc" id="L2208">        result.setPositionCoordinates(mX, mY, mZ);</span>
+<span class="fc" id="L2209">        result.setVelocityCoordinates(mVx, mVy, mVz);</span>
+<span class="fc" id="L2210">        result.setClockOffset(mReceiverClockOffset);</span>
+<span class="fc" id="L2211">        result.setClockDrift(mReceiverClockDrift);</span>
+<span class="fc" id="L2212">    }</span>
 
     /**
      * Gets GNSS estimation from data contained into this instance.
@@ -2211,7 +2217,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return a new GNSS estimation instance.
      */
     public GNSSEstimation getGNSSEstimation() {
-<span class="fc" id="L2214">        return new GNSSEstimation(mX, mY, mZ, mVx, mVy, mVz, mReceiverClockOffset,</span>
+<span class="fc" id="L2220">        return new GNSSEstimation(mX, mY, mZ, mVx, mVy, mVz, mReceiverClockOffset,</span>
                 mReceiverClockDrift);
     }
 
@@ -2221,17 +2227,17 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param gnssEstimation GNSS estimation data to be set.
      */
     public void setGNSSEstimation(final GNSSEstimation gnssEstimation) {
-<span class="fc" id="L2224">        mX = gnssEstimation.getX();</span>
-<span class="fc" id="L2225">        mY = gnssEstimation.getY();</span>
-<span class="fc" id="L2226">        mZ = gnssEstimation.getZ();</span>
+<span class="fc" id="L2230">        mX = gnssEstimation.getX();</span>
+<span class="fc" id="L2231">        mY = gnssEstimation.getY();</span>
+<span class="fc" id="L2232">        mZ = gnssEstimation.getZ();</span>
 
-<span class="fc" id="L2228">        mVx = gnssEstimation.getVx();</span>
-<span class="fc" id="L2229">        mVy = gnssEstimation.getVy();</span>
-<span class="fc" id="L2230">        mVz = gnssEstimation.getVz();</span>
+<span class="fc" id="L2234">        mVx = gnssEstimation.getVx();</span>
+<span class="fc" id="L2235">        mVy = gnssEstimation.getVy();</span>
+<span class="fc" id="L2236">        mVz = gnssEstimation.getVz();</span>
 
-<span class="fc" id="L2232">        mReceiverClockOffset = gnssEstimation.getClockOffset();</span>
-<span class="fc" id="L2233">        mReceiverClockDrift = gnssEstimation.getClockDrift();</span>
-<span class="fc" id="L2234">    }</span>
+<span class="fc" id="L2238">        mReceiverClockOffset = gnssEstimation.getClockOffset();</span>
+<span class="fc" id="L2239">        mReceiverClockDrift = gnssEstimation.getClockDrift();</span>
+<span class="fc" id="L2240">    }</span>
 
     /**
      * Copies this instance data into provided instance.
@@ -2239,8 +2245,8 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @param output destination instance where data will be copied to.
      */
     public void copyTo(final INSTightlyCoupledKalmanState output) {
-<span class="fc" id="L2242">        output.copyFrom(this);</span>
-<span class="fc" id="L2243">    }</span>
+<span class="fc" id="L2248">        output.copyFrom(this);</span>
+<span class="fc" id="L2249">    }</span>
 
     /**
      * Copies data of provided instance into this instance.
@@ -2249,48 +2255,48 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public void copyFrom(final INSTightlyCoupledKalmanState input) {
         // copy coordinate transformation matrix
-<span class="fc bfc" id="L2252" title="All 2 branches covered.">        if (input.mBodyToEcefCoordinateTransformationMatrix == null) {</span>
-<span class="fc" id="L2253">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
+<span class="fc bfc" id="L2258" title="All 2 branches covered.">        if (input.mBodyToEcefCoordinateTransformationMatrix == null) {</span>
+<span class="fc" id="L2259">            mBodyToEcefCoordinateTransformationMatrix = null;</span>
         } else {
-<span class="fc bfc" id="L2255" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix == null) {</span>
-<span class="fc" id="L2256">                mBodyToEcefCoordinateTransformationMatrix =</span>
+<span class="fc bfc" id="L2261" title="All 2 branches covered.">            if (mBodyToEcefCoordinateTransformationMatrix == null) {</span>
+<span class="fc" id="L2262">                mBodyToEcefCoordinateTransformationMatrix =</span>
                         new Matrix(input.mBodyToEcefCoordinateTransformationMatrix);
             } else {
-<span class="fc" id="L2259">                mBodyToEcefCoordinateTransformationMatrix.copyFrom(</span>
+<span class="fc" id="L2265">                mBodyToEcefCoordinateTransformationMatrix.copyFrom(</span>
                         input.mBodyToEcefCoordinateTransformationMatrix);
             }
         }
 
-<span class="fc" id="L2264">        mVx = input.mVx;</span>
-<span class="fc" id="L2265">        mVy = input.mVy;</span>
-<span class="fc" id="L2266">        mVz = input.mVz;</span>
+<span class="fc" id="L2270">        mVx = input.mVx;</span>
+<span class="fc" id="L2271">        mVy = input.mVy;</span>
+<span class="fc" id="L2272">        mVz = input.mVz;</span>
 
-<span class="fc" id="L2268">        mX = input.mX;</span>
-<span class="fc" id="L2269">        mY = input.mY;</span>
-<span class="fc" id="L2270">        mZ = input.mZ;</span>
+<span class="fc" id="L2274">        mX = input.mX;</span>
+<span class="fc" id="L2275">        mY = input.mY;</span>
+<span class="fc" id="L2276">        mZ = input.mZ;</span>
 
-<span class="fc" id="L2272">        mAccelerationBiasX = input.mAccelerationBiasX;</span>
-<span class="fc" id="L2273">        mAccelerationBiasY = input.mAccelerationBiasY;</span>
-<span class="fc" id="L2274">        mAccelerationBiasZ = input.mAccelerationBiasZ;</span>
+<span class="fc" id="L2278">        mAccelerationBiasX = input.mAccelerationBiasX;</span>
+<span class="fc" id="L2279">        mAccelerationBiasY = input.mAccelerationBiasY;</span>
+<span class="fc" id="L2280">        mAccelerationBiasZ = input.mAccelerationBiasZ;</span>
 
-<span class="fc" id="L2276">        mGyroBiasX = input.mGyroBiasX;</span>
-<span class="fc" id="L2277">        mGyroBiasY = input.mGyroBiasY;</span>
-<span class="fc" id="L2278">        mGyroBiasZ = input.mGyroBiasZ;</span>
+<span class="fc" id="L2282">        mGyroBiasX = input.mGyroBiasX;</span>
+<span class="fc" id="L2283">        mGyroBiasY = input.mGyroBiasY;</span>
+<span class="fc" id="L2284">        mGyroBiasZ = input.mGyroBiasZ;</span>
 
-<span class="fc" id="L2280">        mReceiverClockOffset = input.mReceiverClockOffset;</span>
-<span class="fc" id="L2281">        mReceiverClockDrift = input.mReceiverClockDrift;</span>
+<span class="fc" id="L2286">        mReceiverClockOffset = input.mReceiverClockOffset;</span>
+<span class="fc" id="L2287">        mReceiverClockDrift = input.mReceiverClockDrift;</span>
 
         // copy covariance
-<span class="fc bfc" id="L2284" title="All 2 branches covered.">        if (input.mCovariance == null) {</span>
-<span class="fc" id="L2285">            mCovariance = null;</span>
+<span class="fc bfc" id="L2290" title="All 2 branches covered.">        if (input.mCovariance == null) {</span>
+<span class="fc" id="L2291">            mCovariance = null;</span>
         } else {
-<span class="fc bfc" id="L2287" title="All 2 branches covered.">            if (mCovariance == null) {</span>
-<span class="fc" id="L2288">                mCovariance = new Matrix(input.mCovariance);</span>
+<span class="fc bfc" id="L2293" title="All 2 branches covered.">            if (mCovariance == null) {</span>
+<span class="fc" id="L2294">                mCovariance = new Matrix(input.mCovariance);</span>
             } else {
-<span class="fc" id="L2290">                mCovariance.copyFrom(input.mCovariance);</span>
+<span class="fc" id="L2296">                mCovariance.copyFrom(input.mCovariance);</span>
             }
         }
-<span class="fc" id="L2293">    }</span>
+<span class="fc" id="L2299">    }</span>
 
     /**
      * Computes and returns hash code for this instance. Hash codes are almost unique
@@ -2300,11 +2306,11 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     public int hashCode() {
-<span class="fc" id="L2303">        return Objects.hash(mBodyToEcefCoordinateTransformationMatrix,</span>
-<span class="fc" id="L2304">                mVx, mVy, mVz, mX, mY, mZ,</span>
-<span class="fc" id="L2305">                mAccelerationBiasX, mAccelerationBiasY, mAccelerationBiasZ,</span>
-<span class="fc" id="L2306">                mGyroBiasX, mGyroBiasY, mGyroBiasZ,</span>
-<span class="fc" id="L2307">                mReceiverClockOffset, mReceiverClockDrift, mCovariance);</span>
+<span class="fc" id="L2309">        return Objects.hash(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="fc" id="L2310">                mVx, mVy, mVz, mX, mY, mZ,</span>
+<span class="fc" id="L2311">                mAccelerationBiasX, mAccelerationBiasY, mAccelerationBiasZ,</span>
+<span class="fc" id="L2312">                mGyroBiasX, mGyroBiasY, mGyroBiasZ,</span>
+<span class="fc" id="L2313">                mReceiverClockOffset, mReceiverClockDrift, mCovariance);</span>
     }
 
     /**
@@ -2316,14 +2322,14 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     public boolean equals(final Object obj) {
-<span class="fc bfc" id="L2319" title="All 2 branches covered.">        if (this == obj) {</span>
-<span class="fc" id="L2320">            return true;</span>
+<span class="fc bfc" id="L2325" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L2326">            return true;</span>
         }
-<span class="fc bfc" id="L2322" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
-<span class="fc" id="L2323">            return false;</span>
+<span class="fc bfc" id="L2328" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L2329">            return false;</span>
         }
-<span class="fc" id="L2325">        final INSTightlyCoupledKalmanState other = (INSTightlyCoupledKalmanState) obj;</span>
-<span class="fc" id="L2326">        return equals(other);</span>
+<span class="fc" id="L2331">        final INSTightlyCoupledKalmanState other = (INSTightlyCoupledKalmanState) obj;</span>
+<span class="fc" id="L2332">        return equals(other);</span>
     }
 
     /**
@@ -2333,7 +2339,7 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      * @return true if both instances are considered to be equal, false otherwise.
      */
     public boolean equals(final INSTightlyCoupledKalmanState other) {
-<span class="fc" id="L2336">        return equals(other, 0.0);</span>
+<span class="fc" id="L2342">        return equals(other, 0.0);</span>
     }
 
     /**
@@ -2347,28 +2353,28 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     public boolean equals(final INSTightlyCoupledKalmanState other,
                           final double threshold) {
-<span class="fc bfc" id="L2350" title="All 2 branches covered.">        if (other == null) {</span>
-<span class="fc" id="L2351">            return false;</span>
+<span class="fc bfc" id="L2356" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L2357">            return false;</span>
         }
 
-<span class="fc bfc" id="L2354" title="All 2 branches covered.">        return Math.abs(mVx - other.mVx) &lt;= threshold</span>
-<span class="pc bpc" id="L2355" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVy - other.mVy) &lt;= threshold</span>
-<span class="pc bpc" id="L2356" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVz - other.mVz) &lt;= threshold</span>
-<span class="pc bpc" id="L2357" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mX - other.mX) &lt;= threshold</span>
-<span class="pc bpc" id="L2358" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mY - other.mY) &lt;= threshold</span>
-<span class="pc bpc" id="L2359" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mZ - other.mZ) &lt;= threshold</span>
-<span class="pc bpc" id="L2360" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasX - other.mAccelerationBiasX) &lt;= threshold</span>
-<span class="pc bpc" id="L2361" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasY - other.mAccelerationBiasY) &lt;= threshold</span>
-<span class="pc bpc" id="L2362" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasZ - other.mAccelerationBiasZ) &lt;= threshold</span>
-<span class="pc bpc" id="L2363" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasX - other.mGyroBiasX) &lt;= threshold</span>
-<span class="pc bpc" id="L2364" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasY - other.mGyroBiasY) &lt;= threshold</span>
-<span class="pc bpc" id="L2365" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasZ - other.mGyroBiasZ) &lt;= threshold</span>
-<span class="pc bpc" id="L2366" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mReceiverClockOffset - other.mReceiverClockOffset) &lt;= threshold</span>
-<span class="pc bpc" id="L2367" title="2 of 4 branches missed.">                &amp;&amp; Math.abs(mReceiverClockDrift - other.mReceiverClockDrift) &lt;= threshold</span>
+<span class="fc bfc" id="L2360" title="All 2 branches covered.">        return Math.abs(mVx - other.mVx) &lt;= threshold</span>
+<span class="pc bpc" id="L2361" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVy - other.mVy) &lt;= threshold</span>
+<span class="pc bpc" id="L2362" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVz - other.mVz) &lt;= threshold</span>
+<span class="pc bpc" id="L2363" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mX - other.mX) &lt;= threshold</span>
+<span class="pc bpc" id="L2364" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mY - other.mY) &lt;= threshold</span>
+<span class="pc bpc" id="L2365" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mZ - other.mZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2366" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasX - other.mAccelerationBiasX) &lt;= threshold</span>
+<span class="pc bpc" id="L2367" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasY - other.mAccelerationBiasY) &lt;= threshold</span>
+<span class="pc bpc" id="L2368" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerationBiasZ - other.mAccelerationBiasZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2369" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasX - other.mGyroBiasX) &lt;= threshold</span>
+<span class="pc bpc" id="L2370" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasY - other.mGyroBiasY) &lt;= threshold</span>
+<span class="pc bpc" id="L2371" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasZ - other.mGyroBiasZ) &lt;= threshold</span>
+<span class="pc bpc" id="L2372" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mReceiverClockOffset - other.mReceiverClockOffset) &lt;= threshold</span>
+<span class="pc bpc" id="L2373" title="2 of 4 branches missed.">                &amp;&amp; Math.abs(mReceiverClockDrift - other.mReceiverClockDrift) &lt;= threshold</span>
                 &amp;&amp; other.mBodyToEcefCoordinateTransformationMatrix != null &amp;&amp;
-<span class="pc bpc" id="L2369" title="2 of 4 branches missed.">                other.mBodyToEcefCoordinateTransformationMatrix.equals(mBodyToEcefCoordinateTransformationMatrix,</span>
+<span class="pc bpc" id="L2375" title="2 of 4 branches missed.">                other.mBodyToEcefCoordinateTransformationMatrix.equals(mBodyToEcefCoordinateTransformationMatrix,</span>
                         threshold)
-<span class="pc bpc" id="L2371" title="1 of 2 branches missed.">                &amp;&amp; other.mCovariance != null &amp;&amp; other.mCovariance.equals(mCovariance, threshold);</span>
+<span class="pc bpc" id="L2377" title="1 of 2 branches missed.">                &amp;&amp; other.mCovariance != null &amp;&amp; other.mCovariance.equals(mCovariance, threshold);</span>
     }
 
     /**
@@ -2379,10 +2385,10 @@ public class INSTightlyCoupledKalmanState implements Serializable, Cloneable {
      */
     @Override
     protected Object clone() throws CloneNotSupportedException {
-<span class="fc" id="L2382">        final INSTightlyCoupledKalmanState result =</span>
-<span class="fc" id="L2383">                (INSTightlyCoupledKalmanState) super.clone();</span>
-<span class="fc" id="L2384">        copyTo(result);</span>
-<span class="fc" id="L2385">        return result;</span>
+<span class="fc" id="L2388">        final INSTightlyCoupledKalmanState result =</span>
+<span class="fc" id="L2389">                (INSTightlyCoupledKalmanState) super.clone();</span>
+<span class="fc" id="L2390">        copyTo(result);</span>
+<span class="fc" id="L2391">        return result;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
