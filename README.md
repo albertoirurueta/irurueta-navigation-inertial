@@ -35,3 +35,13 @@ Latest release:
 </dependency>
 ```
 
+Latest snapshot:
+```
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-navigation-inertial</artifactId>
+    <version>1.1.0-SNAPSHOT</version>
+    <scope>compile</scope>
+</dependency>
+```
+
