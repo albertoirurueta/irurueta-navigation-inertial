@@ -1,8 +1,8 @@
 # irurueta-navigation-inertial
 An indoor GNSS/INS navigation library
 
-[![Build Status](https://travis-ci.com/albertoirurueta/irurueta-navigation-inertial.svg?branch=master)](https://travis-ci.com/albertoirurueta/irurueta-navigation-inertial)
-
+[![Build Status](https://github.com/albertoirurueta/irurueta-navigation-inertial/actions/workflows/master.yml/badge.svg)](https://github.com/albertoirurueta/irurueta-navigation-inertial/actions)
+[![Build Status](https://github.com/albertoirurueta/irurueta-navigation-inertial/actions/workflows/develop.yml/badge.svg)](https://github.com/albertoirurueta/irurueta-navigation-inertial/actions)
 
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-navigation-inertial&metric=bugs)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial)
 [![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-navigation-inertial&metric=code_smells)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial)
@@ -20,4 +20,18 @@ An indoor GNSS/INS navigation library
 [![Vulnerabilities](https://sonarcloud.io/api/project_badges/measure?project=albertoirurueta_irurueta-navigation-inertial&metric=vulnerabilities)](https://sonarcloud.io/dashboard?id=albertoirurueta_irurueta-navigation-inertial)
 
 [Maven Site Report](http://albertoirurueta.github.io/irurueta-navigation-inertial)
+
+## Usage
+
+Add the following dependency to your project:
+
+Latest release:
+```
+<dependency>
+    <groupId>com.irurueta</groupId>
+    <artifactId>irurueta-navigation-inertial</artifactId>
+    <version>1.0.0</version>
+    <scope>compile</scope>
+</dependency>
+```
 
