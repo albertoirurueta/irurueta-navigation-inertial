@@ -196,7 +196,6 @@ public class BodyKinematicsGeneratorTest {
         } catch (final IllegalArgumentException ignore) {
         }
 
-        result = null;
         try {
             result = BodyKinematicsGenerator.generate(timeInterval,
                     trueKinematics, errors, random, new double[1],
@@ -270,7 +269,7 @@ public class BodyKinematicsGeneratorTest {
         assertArrayEquals(expectedQuantizationResiduals, quantizationResiduals1,
                 ABSOLUTE_ERROR);
 
-        verifyZeroInteractions(random);
+        verifyNoInteractions(random);
     }
 
     @Test
