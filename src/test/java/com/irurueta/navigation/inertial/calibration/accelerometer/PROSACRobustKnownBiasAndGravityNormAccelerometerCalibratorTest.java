@@ -44,7 +44,6 @@ import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.Acceleration;
 import com.irurueta.units.AccelerationUnit;
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -168,17 +167,17 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
-        Assert.assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -195,7 +194,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -280,16 +279,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -306,7 +305,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -394,16 +393,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -420,7 +419,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -505,16 +504,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -531,7 +530,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -620,16 +619,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -646,7 +645,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -745,16 +744,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -771,7 +770,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -886,16 +885,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -912,7 +911,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNull(calibrator.getGroundTruthGravityNorm());
         assertNull(calibrator.getGroundTruthGravityNormAsAcceleration());
         assertFalse(calibrator.getGroundTruthGravityNormAsAcceleration(null));
@@ -1041,16 +1040,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1067,7 +1066,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -1177,16 +1176,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1203,7 +1202,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -1313,16 +1312,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1339,7 +1338,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -1449,16 +1448,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1475,7 +1474,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -1585,16 +1584,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1611,7 +1610,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -1725,16 +1724,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1751,7 +1750,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -1875,16 +1874,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -1901,7 +1900,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2025,16 +2024,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2051,7 +2050,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2175,16 +2174,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2201,7 +2200,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2326,16 +2325,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2352,7 +2351,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2482,16 +2481,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2508,7 +2507,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2640,16 +2639,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2666,7 +2665,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2798,16 +2797,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2824,7 +2823,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -2966,16 +2965,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -2992,7 +2991,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -3144,16 +3143,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3170,7 +3169,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -3326,16 +3325,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3352,7 +3351,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -3508,16 +3507,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3534,7 +3533,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -3672,16 +3671,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3698,7 +3697,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -3808,16 +3807,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3834,7 +3833,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -3944,16 +3943,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -3970,7 +3969,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4080,16 +4079,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4106,7 +4105,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4216,16 +4215,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4242,7 +4241,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4356,16 +4355,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4382,7 +4381,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4506,16 +4505,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4532,7 +4531,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4656,16 +4655,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4682,7 +4681,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4806,16 +4805,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4832,7 +4831,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -4957,16 +4956,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -4983,7 +4982,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5113,16 +5112,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5139,7 +5138,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5271,16 +5270,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5297,7 +5296,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5429,16 +5428,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5455,7 +5454,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5597,16 +5596,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5623,7 +5622,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5775,16 +5774,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5801,7 +5800,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -5957,16 +5956,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -5983,7 +5982,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6139,16 +6138,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6165,7 +6164,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6309,16 +6308,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6335,7 +6334,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6351,7 +6350,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements);
+                    new double[9], gravityNorm, measurements);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -6457,16 +6456,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6483,7 +6482,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6499,7 +6498,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements,
+                    new double[9], gravityNorm, measurements,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -6608,16 +6607,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6634,7 +6633,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6650,7 +6649,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -6758,16 +6757,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6784,7 +6783,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6800,7 +6799,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -6912,16 +6911,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -6938,7 +6937,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -6954,7 +6953,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, bias);
+                    new double[9], gravityNorm, measurements, bias);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -7072,16 +7071,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7098,7 +7097,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -7114,7 +7113,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, bias,
+                    new double[9], gravityNorm, measurements, bias,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -7233,16 +7232,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7259,7 +7258,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -7275,7 +7274,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, bias);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -7394,16 +7393,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7420,7 +7419,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -7436,7 +7435,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, bias, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -7555,16 +7554,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7581,7 +7580,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -7597,7 +7596,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, ba);
+                    new double[9], gravityNorm, measurements, ba);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -7722,16 +7721,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7748,7 +7747,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -7764,7 +7763,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm,
+                    new double[9], gravityNorm,
                     measurements, ba, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -7891,16 +7890,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -7917,7 +7916,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -7933,7 +7932,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true, ba);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -8061,16 +8060,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8087,7 +8086,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -8103,7 +8102,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, ba, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -8241,16 +8240,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8267,7 +8266,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -8283,7 +8282,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm,
+                    new double[9], gravityNorm,
                     measurements, ba, ma);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -8433,16 +8432,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8459,7 +8458,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -8475,7 +8474,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm,
+                    new double[9], gravityNorm,
                     measurements, ba, ma, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -8629,16 +8628,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8655,7 +8654,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -8671,7 +8670,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true, ba, ma);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -8825,16 +8824,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -8851,7 +8850,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravityNorm, calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -8867,7 +8866,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, ba, ma, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -9003,16 +9002,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9029,7 +9028,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9045,7 +9044,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm);
+                    new double[9], gravityNorm);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -9151,16 +9150,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9177,7 +9176,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9193,7 +9192,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements);
+                    new double[9], gravityNorm, measurements);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -9300,16 +9299,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9326,7 +9325,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9342,7 +9341,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, this);
+                    new double[9], gravityNorm, measurements, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -9449,16 +9448,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9475,7 +9474,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9491,7 +9490,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -9599,16 +9598,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9625,7 +9624,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9641,7 +9640,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -9753,16 +9752,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9779,7 +9778,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9795,7 +9794,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, bias);
+                    new double[9], gravityNorm, measurements, bias);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -9912,16 +9911,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -9938,7 +9937,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -9954,7 +9953,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm,
+                    new double[9], gravityNorm,
                     measurements, bias, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -10073,16 +10072,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10099,7 +10098,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -10115,7 +10114,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true, bias);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -10234,16 +10233,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10260,7 +10259,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -10276,7 +10275,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, bias, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -10394,16 +10393,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10420,7 +10419,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -10436,7 +10435,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, ba);
+                    new double[9], gravityNorm, measurements, ba);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -10561,16 +10560,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10587,7 +10586,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -10603,7 +10602,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, ba,
+                    new double[9], gravityNorm, measurements, ba,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -10731,16 +10730,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10757,7 +10756,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -10773,7 +10772,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm,
+                    new double[6], gravityNorm,
                     measurements, true, ba);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -10899,16 +10898,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -10925,7 +10924,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -10941,7 +10940,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, ba, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -11076,16 +11075,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11102,7 +11101,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -11118,7 +11117,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, ba, ma);
+                    new double[9], gravityNorm, measurements, ba, ma);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -11267,16 +11266,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertFalse(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11293,7 +11292,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -11309,7 +11308,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[12], gravityNorm, measurements, ba, ma,
+                    new double[6], gravityNorm, measurements, ba, ma,
                     this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -11459,16 +11458,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11485,7 +11484,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -11501,7 +11500,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, ba, ma);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -11651,16 +11650,16 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertTrue(calibrator.isCommonAxisUsed());
         assertSame(calibrator.getListener(), this);
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
         assertEquals(calibrator.getProgressDelta(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_PROGRESS_DELTA,
                 0.0);
         assertEquals(calibrator.getConfidence(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_CONFIDENCE, 0.0);
         assertEquals(calibrator.getMaxIterations(),
-                RobustKnownPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.DEFAULT_MAX_ITERATIONS, 0.0);
         assertNull(calibrator.getInliersData());
         assertTrue(calibrator.isResultRefined());
         assertTrue(calibrator.isCovarianceKept());
@@ -11677,7 +11676,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         assertNull(calibrator.getEstimatedMzy());
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getPreliminarySubsetSize(),
-                RobustKnownPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                RobustKnownBiasAndPositionAccelerometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertNotNull(calibrator.getGroundTruthGravityNorm());
         assertEquals(gravity.getNorm(), calibrator.getGroundTruthGravityNorm(), ABSOLUTE_ERROR);
         assertNotNull(calibrator.getGroundTruthGravityNormAsAcceleration());
@@ -11693,7 +11692,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
         calibrator = null;
         try {
             calibrator = new PROSACRobustKnownBiasAndGravityNormAccelerometerCalibrator(
-                    new double[9], gravityNorm, measurements,
+                    new double[6], gravityNorm, measurements,
                     true, ba, ma, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -12742,7 +12741,7 @@ public class PROSACRobustKnownBiasAndGravityNormAccelerometerCalibratorTest impl
 
         // Force IllegalArgumentException
         try {
-            calibrator.setQualityScores(new double[12]);
+            calibrator.setQualityScores(new double[9]);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }

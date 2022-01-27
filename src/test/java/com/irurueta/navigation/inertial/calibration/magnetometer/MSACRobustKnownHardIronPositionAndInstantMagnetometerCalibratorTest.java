@@ -7081,8 +7081,6 @@ public class MSACRobustKnownHardIronPositionAndInstantMagnetometerCalibratorTest
             assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
 
             assertEstimatedResult(estimatedMm, calibrator);
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
-            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
 
             numValid++;
             break;
