@@ -1301,6 +1301,35 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
     }
 
     /**
+     * Gets ground truth magnetic flux density norm to be expected at location where measurements have been made,
+     * expressed in Teslas (T).
+     *
+     * @return ground truth magnetic flux density or null.
+     */
+    public Double getGroundTruthMagneticFluxDensityNorm() {
+        return mInnerCalibrator.getGroundTruthMagneticFluxDensityNorm();
+    }
+
+    /**
+     * Gets ground truth magnetic flux density norm to be expected at location where measurements have been made.
+     *
+     * @return ground truth magnetic flux density or null.
+     */
+    public MagneticFluxDensity getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity() {
+        return mInnerCalibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+    }
+
+    /**
+     * Gets ground truth magnetic flux density norm to be expected at location where measurements have been made.
+     *
+     * @param result instance where result will be stored.
+     * @return true if ground truth magnetic flux density norm has been defined, false if it is not available yet.
+     */
+    public boolean getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(final MagneticFluxDensity result) {
+        return mInnerCalibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(result);
+    }
+
+    /**
      * Gets initial x-coordinate of magnetometer hard-iron bias to be used
      * to find a solution.
      * This is expressed in Teslas (T).
@@ -2412,7 +2441,6 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      *
      * @return Earth's magnetic model or null if not provided.
      */
-    @Override
     public WorldMagneticModel getMagneticModel() {
         return mMagneticModel;
     }
@@ -2423,7 +2451,6 @@ public abstract class RobustKnownPositionAndInstantMagnetometerCalibrator implem
      * @param magneticModel Earth's magnetic model to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    @Override
     public void setMagneticModel(final WorldMagneticModel magneticModel)
             throws LockedException {
         if (mRunning) {

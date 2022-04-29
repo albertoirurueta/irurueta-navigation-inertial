@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,9 +16,10 @@
 package com.irurueta.navigation.inertial.calibration.magnetometer;
 
 /**
- * Contains listener for magnetometer calibrator when the same position
- * and instant is known for all measurements and orientation is unknown.
+ * Contains listener for magnetometer calibrator when theposition
+ * and instant and orientation is unknown for all measurements, and
+ * hard-iron is known.
  */
-public interface KnownPositionAndInstantMagnetometerCalibratorListener extends
-        BaseMagneticFluxDensityNormMagnetometerCalibratorListener<KnownPositionAndInstantMagnetometerCalibrator> {
+public interface KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener extends
+        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator> {
 }

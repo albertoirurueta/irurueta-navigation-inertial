@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,10 +16,25 @@
 package com.irurueta.navigation.inertial.calibration.magnetometer;
 
 /**
- * Contains listener for magnetometer calibrator when the same position
- * and instant is known for all measurements, hard-iron is known and
+ * Contains listener for magnetometer calibrator when the same unknown position
+ * is used for all measurements, hard-iron is known and
  * orientation is unknown.
+ *
+ * @param <C> a calibrator type.
  */
-public interface KnownHardIronPositionAndInstantMagnetometerCalibratorListener extends
-        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<KnownHardIronPositionAndInstantMagnetometerCalibrator> {
+public interface BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<C> {
+
+    /**
+     * Called when calibration starts.
+     *
+     * @param calibrator calibrator that raised the event.
+     */
+    void onCalibrateStart(final C calibrator);
+
+    /**
+     * Called when calibration ends.
+     *
+     * @param calibrator calibrator that raised the event.
+     */
+    void onCalibrateEnd(final C calibrator);
 }

@@ -215,6 +215,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -321,6 +325,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -430,6 +438,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -537,6 +549,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -645,6 +661,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -760,6 +780,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -885,6 +909,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1028,6 +1056,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1175,6 +1207,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -1296,6 +1332,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -1417,6 +1457,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -1538,6 +1582,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -1659,6 +1707,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -1786,6 +1838,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -1923,6 +1979,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2060,6 +2120,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2198,6 +2262,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2336,6 +2404,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2479,6 +2551,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2624,6 +2700,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2770,6 +2850,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -2928,6 +3012,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3100,6 +3188,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3273,6 +3365,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3446,6 +3542,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -3598,6 +3698,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -3720,6 +3824,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -3842,6 +3950,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -3964,6 +4076,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -4086,6 +4202,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
     }
 
     @Test
@@ -4214,6 +4334,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4352,6 +4476,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4490,6 +4618,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4629,6 +4761,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4768,6 +4904,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -4912,6 +5052,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5058,6 +5202,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5205,6 +5353,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5364,6 +5516,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5537,6 +5693,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5711,6 +5871,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -5885,6 +6049,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6027,6 +6195,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6145,6 +6317,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6264,6 +6440,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6391,6 +6571,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6524,6 +6708,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6675,6 +6863,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6830,6 +7022,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -6963,6 +7159,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7096,6 +7296,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7230,6 +7434,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7364,6 +7572,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7504,6 +7716,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7650,6 +7866,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7797,6 +8017,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -7945,6 +8169,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8092,6 +8320,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8246,6 +8478,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8401,6 +8637,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8556,6 +8796,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8723,6 +8967,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -8904,6 +9152,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9085,6 +9337,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9266,6 +9522,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9431,6 +9691,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9565,6 +9829,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9699,6 +9967,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9833,6 +10105,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -9967,6 +10243,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10107,6 +10387,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10254,6 +10538,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10402,6 +10690,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10550,6 +10842,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10698,6 +10994,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -10852,6 +11152,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -11006,6 +11310,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -11161,6 +11469,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -11331,6 +11643,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -11513,6 +11829,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -11696,6 +12016,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -11879,6 +12203,10 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
         assertEquals(calibrator.getMethod(), RobustEstimatorMethod.PROMedS);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
 
         // Force IllegalArgumentException
         calibrator = null;
@@ -13780,6 +14108,15 @@ public class PROMedSRobustKnownHardIronPositionAndInstantMagnetometerCalibratorT
                 0.0);
         assertEquals(mm.getElementAt(2, 1), calibrator.getEstimatedMzy(),
                 0.0);
+
+        assertNotNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        final MagneticFluxDensity b1 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertNotNull(b1);
+        assertEquals(calibrator.getGroundTruthMagneticFluxDensityNorm(), b1.getValue());
+        assertEquals(MagneticFluxDensityUnit.TESLA, b1.getUnit());
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b2));
+        assertEquals(b1, b2);
     }
 
     private void checkCommonAxisCovariance(final Matrix covariance) {

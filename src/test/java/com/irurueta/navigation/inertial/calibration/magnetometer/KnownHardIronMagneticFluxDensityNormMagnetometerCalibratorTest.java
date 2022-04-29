@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +20,8 @@ import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
-import com.irurueta.navigation.frames.ECEFPosition;
-import com.irurueta.navigation.frames.ECEFVelocity;
 import com.irurueta.navigation.frames.FrameType;
 import com.irurueta.navigation.frames.NEDPosition;
-import com.irurueta.navigation.frames.NEDVelocity;
-import com.irurueta.navigation.frames.converters.NEDtoECEFPositionVelocityConverter;
 import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
 import com.irurueta.navigation.inertial.calibration.BodyMagneticFluxDensityGenerator;
 import com.irurueta.navigation.inertial.calibration.CalibrationException;
@@ -34,7 +30,6 @@ import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneti
 import com.irurueta.navigation.inertial.estimators.BodyMagneticFluxDensityEstimator;
 import com.irurueta.navigation.inertial.wmm.NEDMagneticFluxDensity;
 import com.irurueta.navigation.inertial.wmm.WMMEarthMagneticFluxDensityEstimator;
-import com.irurueta.navigation.inertial.wmm.WorldMagneticModel;
 import com.irurueta.statistics.GaussianRandomizer;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.MagneticFluxDensity;
@@ -52,8 +47,8 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
-public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implements
-        KnownHardIronPositionAndInstantMagnetometerCalibratorListener {
+public class KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorTest implements
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener {
 
     private static final double MIN_HARD_IRON = -1e-5;
     private static final double MAX_HARD_IRON = 1e-5;
@@ -78,7 +73,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     private static final double MAGNETOMETER_NOISE_STD = 200e-9;
 
     private static final double ABSOLUTE_ERROR = 1e-9;
-    private static final double LARGE_ABSOLUTE_ERROR = 5e-5;
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-2;
 
     private static final int TIMES = 100;
@@ -104,8 +98,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testConstructor1() throws WrongSizeException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -160,11 +154,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertNull(calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -176,7 +165,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -198,8 +186,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testConstructor2() throws WrongSizeException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                         this);
 
         // check default values
@@ -255,11 +243,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertNull(calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -271,7 +254,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -295,8 +277,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     public void testConstructor3() throws WrongSizeException {
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                         measurements);
 
         // check default values
@@ -352,11 +334,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -368,7 +345,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -390,8 +366,99 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testConstructor4() throws WrongSizeException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), new double[3],
+                0.0);
+        final double[] hardIron = new double[3];
+        calibrator.getHardIron(hardIron);
+        assertArrayEquals(hardIron, new double[3], 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                new Matrix(3, 1));
+        final Matrix hardIronMatrix = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix);
+        assertEquals(hardIronMatrix, new Matrix(3, 1));
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+    }
+
+    @Test
+    public void testConstructor5() throws WrongSizeException {
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                         true);
 
         // check default values
@@ -447,11 +514,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertNull(calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -463,103 +525,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-    }
-
-    @Test
-    public void testConstructor5() throws WrongSizeException {
-        final WorldMagneticModel magneticModel = new WorldMagneticModel();
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        magneticModel);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), new double[3],
-                0.0);
-        final double[] hardIron = new double[3];
-        calibrator.getHardIron(hardIron);
-        assertArrayEquals(hardIron, new double[3], 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                new Matrix(3, 1));
-        final Matrix hardIronMatrix = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix);
-        assertEquals(hardIronMatrix, new Matrix(3, 1));
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertNull(calibrator.getMeasurements());
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertSame(calibrator.getMagneticModel(), magneticModel);
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -581,22 +546,16 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testConstructor6() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIron);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true);
 
         // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
         assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
         assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
@@ -606,37 +565,37 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
+        assertArrayEquals(calibrator.getHardIron(), new double[3],
                 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron1, hardIron, 0.0);
+        final double[] hardIron = new double[3];
+        calibrator.getHardIron(hardIron);
+        assertArrayEquals(hardIron, new double[3], 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
+                new Matrix(3, 1));
+        final Matrix hardIronMatrix = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix);
+        assertEquals(hardIronMatrix, new Matrix(3, 1));
         MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
         final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
                 MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(b2);
         assertEquals(b1, b2);
         b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronYAsMagneticFluxDensity(b2);
         assertEquals(b1, b2);
         b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronZAsMagneticFluxDensity(b2);
         assertEquals(b1, b2);
         final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
         assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(hardIronTriad2);
@@ -646,23 +605,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertNull(calibrator.getMeasurements());
+        assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -680,36 +633,20 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
     }
 
     @Test
     public void testConstructor7() throws WrongSizeException {
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        hardIronMatrix);
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, this);
 
         // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
         assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
         assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
@@ -719,37 +656,37 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
+        assertArrayEquals(calibrator.getHardIron(), new double[3],
                 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron1, hardIron, 0.0);
+        final double[] hardIron = new double[3];
+        calibrator.getHardIron(hardIron);
+        assertArrayEquals(hardIron, new double[3], 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
+                new Matrix(3, 1));
+        final Matrix hardIronMatrix = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix);
+        assertEquals(hardIronMatrix, new Matrix(3, 1));
         MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
         final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
                 MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronXAsMagneticFluxDensity(b2);
         assertEquals(b1, b2);
         b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronYAsMagneticFluxDensity(b2);
         assertEquals(b1, b2);
         b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
         calibrator.getHardIronZAsMagneticFluxDensity(b2);
         assertEquals(b1, b2);
         final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
         assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(hardIronTriad2);
@@ -759,23 +696,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertNull(calibrator.getMeasurements());
+        assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -793,22 +724,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
         final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
         assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
     }
 
     @Test
@@ -821,6 +736,1122 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        hardIron);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertNull(calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor9() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, hardIron);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor10() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, hardIron, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor11() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, hardIron);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor12() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, hardIron, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor13() throws WrongSizeException {
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        hardIronMatrix);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertNull(calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    new Matrix(1, 1));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    new Matrix(3, 3));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor14() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, hardIronMatrix);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(1, 1));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(3, 3));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor15() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, hardIronMatrix, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(1, 1), this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(3, 3), this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor16() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, hardIronMatrix);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(1, 1));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(3, 3));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor17() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, hardIronMatrix, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(1, 1), this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(3, 3), this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor18() throws WrongSizeException {
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
         final Matrix mm = generateSoftIronGeneral();
         assertNotNull(mm);
 
@@ -834,8 +1865,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                         hardIronMatrix, mm);
 
         // check default values
@@ -890,11 +1921,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm1 = new Matrix(3, 3);
         calibrator.getInitialMm(mm1);
         assertEquals(mm, mm1);
-        assertNull(calibrator.getNedPosition());
-        assertNull(calibrator.getEcefPosition());
-        assertFalse(calibrator.getEcefPosition(null));
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertNull(calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -906,7 +1932,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -928,1188 +1953,26 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                     new Matrix(1, 1), mm);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                     new Matrix(3, 3), mm);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                     hardIronMatrix, new Matrix(1, 3));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
                     hardIronMatrix, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor9() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), new double[3],
-                0.0);
-        final double[] hardIron = new double[3];
-        calibrator.getHardIron(hardIron);
-        assertArrayEquals(hardIron, new double[3], 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                new Matrix(3, 1));
-        final Matrix hardIronMatrix = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix);
-        assertEquals(hardIronMatrix, new Matrix(3, 1));
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertNull(calibrator.getMeasurements());
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-    }
-
-    @Test
-    public void testConstructor10() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), new double[3],
-                0.0);
-        final double[] hardIron = new double[3];
-        calibrator.getHardIron(hardIron);
-        assertArrayEquals(hardIron, new double[3], 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                new Matrix(3, 1));
-        final Matrix hardIronMatrix = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix);
-        assertEquals(hardIronMatrix, new Matrix(3, 1));
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-    }
-
-    @Test
-    public void testConstructor11() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), new double[3],
-                0.0);
-        final double[] hardIron = new double[3];
-        calibrator.getHardIron(hardIron);
-        assertArrayEquals(hardIron, new double[3], 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                new Matrix(3, 1));
-        final Matrix hardIronMatrix = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix);
-        assertEquals(hardIronMatrix, new Matrix(3, 1));
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-    }
-
-    @Test
-    public void testConstructor12() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), new double[3],
-                0.0);
-        final double[] hardIron = new double[3];
-        calibrator.getHardIron(hardIron);
-        assertArrayEquals(hardIron, new double[3], 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                new Matrix(3, 1));
-        final Matrix hardIronMatrix = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix);
-        assertEquals(hardIronMatrix, new Matrix(3, 1));
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-    }
-
-    @Test
-    public void testConstructor13() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
-        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), new double[3],
-                0.0);
-        final double[] hardIron = new double[3];
-        calibrator.getHardIron(hardIron);
-        assertArrayEquals(hardIron, new double[3], 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                new Matrix(3, 1));
-        final Matrix hardIronMatrix = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix);
-        assertEquals(hardIronMatrix, new Matrix(3, 1));
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-    }
-
-    @Test
-    public void testConstructor14() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIron);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor15() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIron, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor16() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIron);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor17() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIron, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor18() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIronMatrix);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            nedPosition, measurements,
-                            new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            nedPosition, measurements,
-                            new Matrix(3, 3));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -2118,15 +1981,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testConstructor19() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
         final UniformRandomizer randomizer = new UniformRandomizer(
                 new Random());
         final double[] hardIron = generateHardIron(randomizer);
@@ -2135,28 +1991,41 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIronMatrix,
-                        this);
+        final Matrix mm = generateSoftIronGeneral();
+        assertNotNull(mm);
+
+        final double sx = mm.getElementAt(0, 0);
+        final double sy = mm.getElementAt(1, 1);
+        final double sz = mm.getElementAt(2, 2);
+        final double mxy = mm.getElementAt(0, 1);
+        final double mxz = mm.getElementAt(0, 2);
+        final double myx = mm.getElementAt(1, 0);
+        final double myz = mm.getElementAt(1, 2);
+        final double mzx = mm.getElementAt(2, 0);
+        final double mzy = mm.getElementAt(2, 1);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, hardIronMatrix, mm);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
         assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
         assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertEquals(calibrator.getInitialSx(), sx, 0.0);
+        assertEquals(calibrator.getInitialSy(), sy, 0.0);
+        assertEquals(calibrator.getInitialSz(), sz, 0.0);
+        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
+        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
+        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
+        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
+        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
+        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -2187,30 +2056,21 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(hardIronTriad2);
         assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getInitialMm(), mm);
+        final Matrix mm1 = new Matrix(3, 3);
+        calibrator.getInitialMm(mm1);
+        assertEquals(mm, mm1);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -2232,16 +2092,26 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements,
-                    new Matrix(1, 1), this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(1, 1), mm);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements,
-                    new Matrix(1, 1), this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(3, 3), mm);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIronMatrix, new Matrix(1, 3));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIronMatrix, new Matrix(3, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -2250,279 +2120,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testConstructor20() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIronMatrix);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor21() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIronMatrix, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor22() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
         final UniformRandomizer randomizer = new UniformRandomizer(
                 new Random());
         final double[] hardIron = generateHardIron(randomizer);
@@ -2544,9 +2143,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIronMatrix, mm);
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, hardIronMatrix, mm, this);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
@@ -2561,10 +2160,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), myz, 0.0);
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -2599,25 +2199,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm1 = new Matrix(3, 3);
         calibrator.getInitialMm(mm1);
         assertEquals(mm, mm1);
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -2639,30 +2231,26 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements,
-                    new Matrix(1, 1), mm);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(1, 1), mm, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements,
-                    new Matrix(3, 3), mm);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, new Matrix(3, 3), mm, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, hardIronMatrix,
-                    new Matrix(1, 3));
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIronMatrix, new Matrix(1, 3), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, hardIronMatrix,
-                    new Matrix(3, 1));
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, hardIronMatrix, new Matrix(3, 1), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -2670,16 +2258,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor23() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor21() throws WrongSizeException {
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
         final UniformRandomizer randomizer = new UniformRandomizer(
                 new Random());
         final double[] hardIron = generateHardIron(randomizer);
@@ -2701,9 +2282,148 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, hardIronMatrix, mm,
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, hardIronMatrix, mm);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), sx, 0.0);
+        assertEquals(calibrator.getInitialSy(), sy, 0.0);
+        assertEquals(calibrator.getInitialSz(), sz, 0.0);
+        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
+        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
+        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
+        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
+        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
+        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(), mm);
+        final Matrix mm1 = new Matrix(3, 3);
+        calibrator.getInitialMm(mm1);
+        assertEquals(mm, mm1);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(1, 1), mm);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(3, 3), mm);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, hardIronMatrix, new Matrix(1, 3));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, hardIronMatrix, new Matrix(3, 1));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor22() throws WrongSizeException {
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final UniformRandomizer randomizer = new UniformRandomizer(
+                new Random());
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        final Matrix mm = generateSoftIronGeneral();
+        assertNotNull(mm);
+
+        final double sx = mm.getElementAt(0, 0);
+        final double sy = mm.getElementAt(1, 1);
+        final double sz = mm.getElementAt(2, 2);
+        final double mxy = mm.getElementAt(0, 1);
+        final double mxz = mm.getElementAt(0, 2);
+        final double myx = mm.getElementAt(1, 0);
+        final double myz = mm.getElementAt(1, 2);
+        final double mzx = mm.getElementAt(2, 0);
+        final double mzy = mm.getElementAt(2, 1);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        measurements, true, hardIronMatrix, mm,
                         this);
 
         // check default values
@@ -2719,10 +2439,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), myz, 0.0);
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -2757,25 +2478,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm1 = new Matrix(3, 3);
         calibrator.getInitialMm(mm1);
         assertEquals(mm, mm1);
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -2797,29 +2510,29 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements,
-                    new Matrix(1, 1), mm, this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(1, 1), mm,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements,
-                    new Matrix(3, 3), mm, this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, new Matrix(3, 3), mm,
+                    this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, hardIronMatrix,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, hardIronMatrix,
                     new Matrix(1, 3), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, hardIronMatrix,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    measurements, true, hardIronMatrix,
                     new Matrix(3, 1), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -2828,335 +2541,16 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor24() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
+    public void testConstructor23() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        final Matrix mm = generateSoftIronGeneral();
-        assertNotNull(mm);
-
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIronMatrix, mm);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(), mm);
-        final Matrix mm1 = new Matrix(3, 3);
-        calibrator.getInitialMm(mm1);
-        assertEquals(mm, mm1);
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    hardIronMatrix, new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    hardIronMatrix, new Matrix(3, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor25() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        final Matrix mm = generateSoftIronGeneral();
-        assertNotNull(mm);
-
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        nedPosition, measurements, true,
-                        hardIronMatrix, mm, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(), mm);
-        final Matrix mm1 = new Matrix(3, 3);
-        calibrator.getInitialMm(mm1);
-        assertEquals(mm, mm1);
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        assertEquals(calibrator.getEcefPosition(), ecefPosition);
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(1, 1), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    new Matrix(3, 3), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    hardIronMatrix, new Matrix(1, 3),
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    nedPosition, measurements, true,
-                    hardIronMatrix, new Matrix(3, 1),
-                    this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor26() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition);
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(groundTruthMagneticFluxDensityNorm);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -3181,6 +2575,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix hardIronMatrix = new Matrix(3, 1);
         calibrator.getHardIronMatrix(hardIronMatrix);
         assertEquals(hardIronMatrix, new Matrix(3, 1));
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
         MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
         assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
         assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
@@ -3206,20 +2602,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(hardIronTriad2);
         assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertNull(calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -3231,7 +2616,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -3245,26 +2629,128 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
     }
 
     @Test
-    public void testConstructor27() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor24() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
+        assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), new double[3],
+                0.0);
+        final double[] hardIron = new double[3];
+        calibrator.getHardIron(hardIron);
+        assertArrayEquals(hardIron, new double[3], 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                new Matrix(3, 1));
+        final Matrix hardIronMatrix = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix);
+        assertEquals(hardIronMatrix, new Matrix(3, 1));
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), 0.0, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), 0.0, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertNull(calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
+    }
+
+    @Test
+    public void testConstructor25() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements);
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -3319,15 +2805,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -3339,7 +2816,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -3353,26 +2829,29 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
     }
 
     @Test
-    public void testConstructor28() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor26() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, this);
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements, this);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -3427,27 +2906,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -3461,26 +2930,30 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
     }
 
     @Test
-    public void testConstructor29() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor27() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true);
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -3535,15 +3008,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
@@ -3555,7 +3019,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -3569,27 +3032,30 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
     }
 
     @Test
-    public void testConstructor30() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor28() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
-                        this);
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, this);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -3644,27 +3110,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
         assertSame(calibrator.getMeasurements(), measurements);
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -3678,34 +3134,35 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
     }
 
     @Test
-    public void testConstructor31() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor29() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIron);
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements, hardIron);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
@@ -3724,7 +3181,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -3760,16 +3217,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
@@ -3780,7 +3228,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -3794,16 +3241,20 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new double[1]);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm,
+                    measurements, new double[1]);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -3811,544 +3262,25 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor32() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor30() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIron, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor33() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
-                        hardIron);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new double[1]);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor34() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
-                        hardIron, this);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron,
-                0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    new double[1], this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor35() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIronMatrix);
-
-        // check default values
-        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
-        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
-        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
-        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
-        final double[] hardIron1 = new double[3];
-        calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
-        assertEquals(calibrator.getHardIronMatrix(),
-                hardIronMatrix);
-        final Matrix hardIronMatrix1 = new Matrix(3, 1);
-        calibrator.getHardIronMatrix(hardIronMatrix1);
-        assertEquals(hardIronMatrix, hardIronMatrix1);
-        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
-                MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronXAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronYAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
-        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
-        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        calibrator.getHardIronZAsMagneticFluxDensity(b2);
-        assertEquals(b1, b2);
-        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
-        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
-        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
-        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
-        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
-        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
-        calibrator.getHardIronAsTriad(hardIronTriad2);
-        assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(),
-                new Matrix(3, 3));
-        final Matrix mm = new Matrix(3, 3);
-        calibrator.getInitialMm(mm);
-        assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
-        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
-                calibrator.getMeasurementType());
-        assertFalse(calibrator.isOrderedMeasurementsRequired());
-        assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertNull(calibrator.getListener());
-        assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
-        assertFalse(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
-        assertNull(calibrator.getEstimatedMm());
-        assertNull(calibrator.getEstimatedSx());
-        assertNull(calibrator.getEstimatedSy());
-        assertNull(calibrator.getEstimatedSz());
-        assertNull(calibrator.getEstimatedMxy());
-        assertNull(calibrator.getEstimatedMxz());
-        assertNull(calibrator.getEstimatedMyx());
-        assertNull(calibrator.getEstimatedMyz());
-        assertNull(calibrator.getEstimatedMzx());
-        assertNull(calibrator.getEstimatedMzy());
-        assertNull(calibrator.getEstimatedCovariance());
-        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
-        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
-
-        // Force IllegalArgumentException
-        calibrator = null;
-        try {
-            calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            ecefPosition, measurements,
-                            new Matrix(1, 1));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            ecefPosition, measurements,
-                            new Matrix(3, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        assertNull(calibrator);
-    }
-
-    @Test
-    public void testConstructor36() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
-                Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final double[] hardIron = generateHardIron(randomizer);
-        final double hardIronX = hardIron[0];
-        final double hardIronY = hardIron[1];
-        final double hardIronZ = hardIron[2];
-        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIronMatrix,
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements, hardIron,
                         this);
 
         // check default values
@@ -4364,10 +3296,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -4403,27 +3336,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
         assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
                 KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -4437,24 +3360,20 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements,
-                    new Matrix(1, 1), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements,
-                    new Matrix(1, 1), this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm,
+                    measurements, new double[1], this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -4462,27 +3381,263 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor37() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor31() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, hardIron);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor32() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, hardIron, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new double[1]);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor33() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
                         hardIronMatrix);
 
         // check default values
@@ -4498,10 +3653,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -4537,27 +3693,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -4571,23 +3717,26 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(3, 3));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -4596,27 +3745,25 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor38() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor34() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
                         hardIronMatrix, this);
 
         // check default values
@@ -4632,10 +3779,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -4671,27 +3819,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm = new Matrix(3, 3);
         calibrator.getInitialMm(mm);
         assertEquals(mm, new Matrix(3, 3));
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -4705,23 +3843,26 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(1, 1), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(3, 3), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -4730,58 +3871,45 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor39() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor35() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        final Matrix mm = generateSoftIronGeneral();
-        assertNotNull(mm);
-
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIronMatrix, mm);
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, hardIronMatrix);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
         assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
         assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -4812,31 +3940,22 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(hardIronTriad2);
         assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(), mm);
-        final Matrix mm1 = new Matrix(3, 3);
-        calibrator.getInitialMm(mm1);
-        assertEquals(mm, mm1);
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
+        assertTrue(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -4850,38 +3969,27 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements,
-                    new Matrix(1, 1), mm);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(1, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements,
-                    new Matrix(3, 3), mm);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, hardIronMatrix,
-                    new Matrix(1, 3));
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, hardIronMatrix,
-                    new Matrix(3, 1));
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(3, 3));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -4889,59 +3997,45 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor40() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor36() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
         final double hardIronZ = hardIron[2];
         final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
 
-        final Matrix mm = generateSoftIronGeneral();
-        assertNotNull(mm);
-
-        final double sx = mm.getElementAt(0, 0);
-        final double sy = mm.getElementAt(1, 1);
-        final double sz = mm.getElementAt(2, 2);
-        final double mxy = mm.getElementAt(0, 1);
-        final double mxz = mm.getElementAt(0, 2);
-        final double myx = mm.getElementAt(1, 0);
-        final double myz = mm.getElementAt(1, 2);
-        final double mzx = mm.getElementAt(2, 0);
-        final double mzy = mm.getElementAt(2, 1);
-
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, hardIronMatrix, mm,
-                        this);
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, hardIronMatrix, this);
 
         // check default values
         assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
         assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
         assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
-        assertEquals(calibrator.getInitialSx(), sx, 0.0);
-        assertEquals(calibrator.getInitialSy(), sy, 0.0);
-        assertEquals(calibrator.getInitialSz(), sz, 0.0);
-        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
-        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
-        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
-        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
-        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
-        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
+        assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -4972,31 +4066,22 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
         calibrator.getHardIronAsTriad(hardIronTriad2);
         assertEquals(hardIronTriad1, hardIronTriad2);
-        assertEquals(calibrator.getInitialMm(), mm);
-        final Matrix mm1 = new Matrix(3, 3);
-        calibrator.getInitialMm(mm1);
-        assertEquals(mm, mm1);
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertEquals(calibrator.getInitialMm(),
+                new Matrix(3, 3));
+        final Matrix mm = new Matrix(3, 3);
+        calibrator.getInitialMm(mm);
+        assertEquals(mm, new Matrix(3, 3));
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertFalse(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -5010,38 +4095,27 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements,
-                    new Matrix(1, 1), mm, this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(1, 1), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements,
-                    new Matrix(3, 3), mm, this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, hardIronMatrix,
-                    new Matrix(1, 3), this);
-            fail("IllegalArgumentException expected but not thrown");
-        } catch (final IllegalArgumentException ignore) {
-        }
-        try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, hardIronMatrix,
-                    new Matrix(3, 1), this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(3, 3), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -5049,18 +4123,16 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor41() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor37() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
@@ -5080,9 +4152,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
                         hardIronMatrix, mm);
 
         // check default values
@@ -5098,10 +4170,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), myz, 0.0);
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -5136,27 +4209,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm1 = new Matrix(3, 3);
         calibrator.getInitialMm(mm1);
         assertEquals(mm, mm1);
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
+        assertFalse(calibrator.isCommonAxisUsed());
         assertNull(calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -5170,37 +4233,40 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(1, 1), mm);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(3, 3), mm);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     hardIronMatrix, new Matrix(1, 3));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     hardIronMatrix, new Matrix(3, 1));
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
@@ -5209,18 +4275,16 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testConstructor42() throws WrongSizeException {
-        final NEDPosition nedPosition = new NEDPosition();
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
+    public void testConstructor38() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
         final List<StandardDeviationBodyMagneticFluxDensity> measurements =
                 Collections.emptyList();
-
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
         final double[] hardIron = generateHardIron(randomizer);
         final double hardIronX = hardIron[0];
         final double hardIronY = hardIron[1];
@@ -5240,9 +4304,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final double mzx = mm.getElementAt(2, 0);
         final double mzy = mm.getElementAt(2, 1);
 
-        KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                        ecefPosition, measurements, true,
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
                         hardIronMatrix, mm, this);
 
         // check default values
@@ -5258,10 +4322,11 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertEquals(calibrator.getInitialMyz(), myz, 0.0);
         assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
         assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
-        assertArrayEquals(calibrator.getHardIron(), hardIron, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
         final double[] hardIron1 = new double[3];
         calibrator.getHardIron(hardIron1);
-        assertArrayEquals(hardIron, hardIron1, 0.0);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
         assertEquals(calibrator.getHardIronMatrix(),
                 hardIronMatrix);
         final Matrix hardIronMatrix1 = new Matrix(3, 1);
@@ -5296,27 +4361,17 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         final Matrix mm1 = new Matrix(3, 3);
         calibrator.getInitialMm(mm1);
         assertEquals(mm, mm1);
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, ABSOLUTE_ERROR));
-        assertTrue(calibrator.getEcefPosition()
-                .equals(ecefPosition, ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition1));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertNotNull(calibrator.getYear());
-        assertNotEquals(calibrator.getYear(), 0.0);
-        assertSame(calibrator.getMeasurements(), measurements);
+        assertSame(measurements, calibrator.getMeasurements());
         assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
                 calibrator.getMeasurementType());
         assertFalse(calibrator.isOrderedMeasurementsRequired());
         assertFalse(calibrator.isQualityScoresRequired());
-        assertTrue(calibrator.isCommonAxisUsed());
-        assertSame(calibrator.getListener(), this);
+        assertFalse(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
         assertEquals(calibrator.getMinimumRequiredMeasurements(),
-                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL);
         assertFalse(calibrator.isReady());
         assertFalse(calibrator.isRunning());
-        assertNull(calibrator.getMagneticModel());
         assertNull(calibrator.getEstimatedMm());
         assertNull(calibrator.getEstimatedSx());
         assertNull(calibrator.getEstimatedSy());
@@ -5330,40 +4385,41 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         assertNull(calibrator.getEstimatedCovariance());
         assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
         assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
-        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
-        final MagneticFluxDensity b = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
-        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b));
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
 
         // Force IllegalArgumentException
         calibrator = null;
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(1, 1), mm, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
                     new Matrix(3, 3), mm, this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    hardIronMatrix, new Matrix(1, 3),
-                    this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    hardIronMatrix, new Matrix(1, 3), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
         try {
-            calibrator = new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                    ecefPosition, measurements, true,
-                    hardIronMatrix, new Matrix(3, 1),
-                    this);
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    hardIronMatrix, new Matrix(3, 1), this);
             fail("IllegalArgumentException expected but not thrown");
         } catch (final IllegalArgumentException ignore) {
         }
@@ -5371,9 +4427,402 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
+    public void testConstructor39() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        final Matrix mm = generateSoftIronGeneral();
+        assertNotNull(mm);
+
+        final double sx = mm.getElementAt(0, 0);
+        final double sy = mm.getElementAt(1, 1);
+        final double sz = mm.getElementAt(2, 2);
+        final double mxy = mm.getElementAt(0, 1);
+        final double mxz = mm.getElementAt(0, 2);
+        final double myx = mm.getElementAt(1, 0);
+        final double myz = mm.getElementAt(1, 2);
+        final double mzx = mm.getElementAt(2, 0);
+        final double mzy = mm.getElementAt(2, 1);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, hardIronMatrix, mm);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), sx, 0.0);
+        assertEquals(calibrator.getInitialSy(), sy, 0.0);
+        assertEquals(calibrator.getInitialSz(), sz, 0.0);
+        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
+        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
+        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
+        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
+        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
+        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(), mm);
+        final Matrix mm1 = new Matrix(3, 3);
+        calibrator.getInitialMm(mm1);
+        assertEquals(mm, mm1);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertNull(calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(1, 1), mm);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(3, 3), mm);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, hardIronMatrix, new Matrix(1, 3));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, hardIronMatrix, new Matrix(3, 1));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testConstructor40() throws WrongSizeException, IOException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final NEDPosition position = createPosition(randomizer);
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(new Date(createTimestamp(randomizer)));
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
+        final List<StandardDeviationBodyMagneticFluxDensity> measurements =
+                Collections.emptyList();
+        final double[] hardIron = generateHardIron(randomizer);
+        final double hardIronX = hardIron[0];
+        final double hardIronY = hardIron[1];
+        final double hardIronZ = hardIron[2];
+        final Matrix hardIronMatrix = Matrix.newFromArray(hardIron);
+
+        final Matrix mm = generateSoftIronGeneral();
+        assertNotNull(mm);
+
+        final double sx = mm.getElementAt(0, 0);
+        final double sy = mm.getElementAt(1, 1);
+        final double sz = mm.getElementAt(2, 2);
+        final double mxy = mm.getElementAt(0, 1);
+        final double mxz = mm.getElementAt(0, 2);
+        final double myx = mm.getElementAt(1, 0);
+        final double myz = mm.getElementAt(1, 2);
+        final double mzx = mm.getElementAt(2, 0);
+        final double mzy = mm.getElementAt(2, 1);
+
+        KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                        groundTruthMagneticFluxDensityNorm, measurements,
+                        true, hardIronMatrix, mm, this);
+
+        // check default values
+        assertEquals(calibrator.getHardIronX(), hardIronX, 0.0);
+        assertEquals(calibrator.getHardIronY(), hardIronY, 0.0);
+        assertEquals(calibrator.getHardIronZ(), hardIronZ, 0.0);
+        assertEquals(calibrator.getInitialSx(), sx, 0.0);
+        assertEquals(calibrator.getInitialSy(), sy, 0.0);
+        assertEquals(calibrator.getInitialSz(), sz, 0.0);
+        assertEquals(calibrator.getInitialMxy(), mxy, 0.0);
+        assertEquals(calibrator.getInitialMxz(), mxz, 0.0);
+        assertEquals(calibrator.getInitialMyx(), myx, 0.0);
+        assertEquals(calibrator.getInitialMyz(), myz, 0.0);
+        assertEquals(calibrator.getInitialMzx(), mzx, 0.0);
+        assertEquals(calibrator.getInitialMzy(), mzy, 0.0);
+        assertArrayEquals(calibrator.getHardIron(), hardIron,
+                0.0);
+        final double[] hardIron1 = new double[3];
+        calibrator.getHardIron(hardIron1);
+        assertArrayEquals(hardIron1, hardIron, 0.0);
+        assertEquals(calibrator.getHardIronMatrix(),
+                hardIronMatrix);
+        final Matrix hardIronMatrix1 = new Matrix(3, 1);
+        calibrator.getHardIronMatrix(hardIronMatrix1);
+        assertEquals(hardIronMatrix, hardIronMatrix1);
+        MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronX, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensity b2 = new MagneticFluxDensity(1.0,
+                MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronXAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronYAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronY, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronYAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        b1 = calibrator.getHardIronZAsMagneticFluxDensity();
+        assertEquals(b1.getValue().doubleValue(), hardIronZ, 0.0);
+        assertEquals(b1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        calibrator.getHardIronZAsMagneticFluxDensity(b2);
+        assertEquals(b1, b2);
+        final MagneticFluxDensityTriad hardIronTriad1 = calibrator.getHardIronAsTriad();
+        assertEquals(hardIronTriad1.getValueX(), hardIronX, 0.0);
+        assertEquals(hardIronTriad1.getValueY(), hardIronY, 0.0);
+        assertEquals(hardIronTriad1.getValueZ(), hardIronZ, 0.0);
+        assertEquals(hardIronTriad1.getUnit(), MagneticFluxDensityUnit.TESLA);
+        final MagneticFluxDensityTriad hardIronTriad2 = new MagneticFluxDensityTriad();
+        calibrator.getHardIronAsTriad(hardIronTriad2);
+        assertEquals(hardIronTriad1, hardIronTriad2);
+        assertEquals(calibrator.getInitialMm(), mm);
+        final Matrix mm1 = new Matrix(3, 3);
+        calibrator.getInitialMm(mm1);
+        assertEquals(mm, mm1);
+        assertSame(measurements, calibrator.getMeasurements());
+        assertEquals(MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY,
+                calibrator.getMeasurementType());
+        assertFalse(calibrator.isOrderedMeasurementsRequired());
+        assertFalse(calibrator.isQualityScoresRequired());
+        assertTrue(calibrator.isCommonAxisUsed());
+        assertSame(this, calibrator.getListener());
+        assertEquals(calibrator.getMinimumRequiredMeasurements(),
+                KnownHardIronPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_COMMON_Z_AXIS);
+        assertFalse(calibrator.isReady());
+        assertFalse(calibrator.isRunning());
+        assertNull(calibrator.getEstimatedMm());
+        assertNull(calibrator.getEstimatedSx());
+        assertNull(calibrator.getEstimatedSy());
+        assertNull(calibrator.getEstimatedSz());
+        assertNull(calibrator.getEstimatedMxy());
+        assertNull(calibrator.getEstimatedMxz());
+        assertNull(calibrator.getEstimatedMyx());
+        assertNull(calibrator.getEstimatedMyz());
+        assertNull(calibrator.getEstimatedMzx());
+        assertNull(calibrator.getEstimatedMzy());
+        assertNull(calibrator.getEstimatedCovariance());
+        assertEquals(calibrator.getEstimatedChiSq(), 0.0, 0.0);
+        assertEquals(calibrator.getEstimatedMse(), 0.0, 0.0);
+        assertEquals(groundTruthMagneticFluxDensityNorm, calibrator.getGroundTruthMagneticFluxDensityNorm(), 0.0);
+        final MagneticFluxDensity b3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensityNorm, b3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, b3.getUnit());
+        final MagneticFluxDensity b4 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(b4));
+        assertEquals(b3, b4);
+
+        // Force IllegalArgumentException
+        calibrator = null;
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(1, 1), mm,
+                    this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, new Matrix(3, 3), mm,
+                    this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, hardIronMatrix,
+                    new Matrix(1, 3), this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        try {
+            calibrator = new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                    groundTruthMagneticFluxDensityNorm, measurements,
+                    true, hardIronMatrix,
+                    new Matrix(3, 1), this);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+        assertNull(calibrator);
+    }
+
+    @Test
+    public void testGetSetGroundTruthMagneticFluxDensityNorm1() throws LockedException {
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+
+        // check default value
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity norm1 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
+
+        // set new value
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final double groundTruthMagneticFluxDensity = randomizer.nextDouble();
+        calibrator.setGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensity);
+
+        // check
+        final Double value = calibrator.getGroundTruthMagneticFluxDensityNorm();
+        assertEquals(groundTruthMagneticFluxDensity, value, 0.0);
+
+        final MagneticFluxDensity norm2 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensity, norm2.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, norm2.getUnit());
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
+        assertEquals(norm1, norm2);
+
+        // set new value
+        calibrator.setGroundTruthMagneticFluxDensityNorm((Double) null);
+
+        // check
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
+
+        // Force IllegalArgumentException
+        try {
+            calibrator.setGroundTruthMagneticFluxDensityNorm(-1.0);
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+    }
+
+    @Test
+    public void testGetSetGroundTruthMagneticFluxDensityNorm2() throws LockedException {
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
+
+        // check default value
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity());
+        final MagneticFluxDensity norm1 = new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA);
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
+
+        // set new value
+        final UniformRandomizer randomizer = new UniformRandomizer();
+        final double groundTruthMagneticFluxDensity = randomizer.nextDouble();
+        final MagneticFluxDensity norm2 =
+                new MagneticFluxDensity(groundTruthMagneticFluxDensity, MagneticFluxDensityUnit.TESLA);
+        calibrator.setGroundTruthMagneticFluxDensityNorm(norm2);
+
+        // check
+        final Double value = calibrator.getGroundTruthMagneticFluxDensityNorm();
+        assertEquals(groundTruthMagneticFluxDensity, value, 0.0);
+
+        final MagneticFluxDensity norm3 = calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity();
+        assertEquals(groundTruthMagneticFluxDensity, norm3.getValue().doubleValue(), 0.0);
+        assertEquals(MagneticFluxDensityUnit.TESLA, norm3.getUnit());
+        assertTrue(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
+        assertEquals(norm1, norm3);
+
+        // set new value
+        calibrator.setGroundTruthMagneticFluxDensityNorm((MagneticFluxDensity) null);
+
+        // check
+        assertNull(calibrator.getGroundTruthMagneticFluxDensityNorm());
+        assertFalse(calibrator.getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(norm1));
+
+        // Force IllegalArgumentException
+        try {
+            calibrator.setGroundTruthMagneticFluxDensityNorm(
+                    new MagneticFluxDensity(-1.0, MagneticFluxDensityUnit.TESLA));
+            fail("IllegalArgumentException expected but not thrown");
+        } catch (final IllegalArgumentException ignore) {
+        }
+    }
+
+    @Test
     public void testGetSetHardIronX() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -5392,8 +4841,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetHardIronY() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getHardIronY(), 0.0, 0.0);
@@ -5412,8 +4861,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetHardIronZ() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getHardIronZ(), 0.0, 0.0);
@@ -5433,8 +4882,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     @Test
     public void testGetSetHardIronXAsMagneticFluxDensity()
             throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         final MagneticFluxDensity b1 = calibrator.getHardIronXAsMagneticFluxDensity();
@@ -5464,8 +4913,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     @Test
     public void testGetSetHardIronYAsMagneticFluxDensity()
             throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         final MagneticFluxDensity b1 = calibrator.getHardIronYAsMagneticFluxDensity();
@@ -5495,8 +4944,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     @Test
     public void testGetSetHardIronZAsMagneticFluxDensity()
             throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         final MagneticFluxDensity b1 = calibrator.getHardIronZAsMagneticFluxDensity();
@@ -5525,8 +4974,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testSetHardIronCoordinates1() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -5551,8 +5000,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testSetHardIronCoordinates2() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getHardIronX(), 0.0, 0.0);
@@ -5580,8 +5029,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetHardIronAsTriad() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         final MagneticFluxDensityTriad triad1 = calibrator.getHardIronAsTriad();
@@ -5615,8 +5064,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialSx() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
@@ -5635,8 +5084,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialSy() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialSy(), 0.0, 0.0);
@@ -5655,8 +5104,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialSz() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialSz(), 0.0, 0.0);
@@ -5675,8 +5124,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMxy() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
@@ -5695,8 +5144,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMxz() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialMxz(), 0.0, 0.0);
@@ -5715,8 +5164,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMyx() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialMyx(), 0.0, 0.0);
@@ -5735,8 +5184,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMyz() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialMyz(), 0.0, 0.0);
@@ -5755,8 +5204,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMzx() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialMzx(), 0.0, 0.0);
@@ -5775,8 +5224,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMzy() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getInitialMzy(), 0.0, 0.0);
@@ -5795,8 +5244,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testSetInitialScalingFactors() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
@@ -5821,8 +5270,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testSetInitialCrossCouplingErrors() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(calibrator.getInitialMxy(), 0.0, 0.0);
@@ -5857,8 +5306,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     @Test
     public void testSetInitialScalingFactorsAndCrossCouplingErrors()
             throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         assertEquals(calibrator.getInitialSx(), 0.0, 0.0);
@@ -5901,8 +5350,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetHardIron() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         final double[] hardIron1 = calibrator.getHardIron();
@@ -5942,8 +5391,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     @Test
     public void testGetSetHardIronMatrix() throws WrongSizeException,
             LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default values
         final Matrix hardIron1 = calibrator.getHardIronMatrix();
@@ -5993,8 +5442,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetInitialMm() throws WrongSizeException, LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         final Matrix mm1 = calibrator.getInitialMm();
@@ -6041,163 +5490,9 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Test
-    public void testGetSetNedPosition() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertNull(calibrator.getNedPosition());
-
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-
-        calibrator.setPosition(nedPosition);
-
-        // check
-        assertSame(calibrator.getNedPosition(), nedPosition);
-        final ECEFPosition ecefPosition1 = calibrator.getEcefPosition();
-        final ECEFPosition ecefPosition2 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition2));
-        assertEquals(ecefPosition, ecefPosition1);
-        assertEquals(ecefPosition, ecefPosition2);
-    }
-
-    @Test
-    public void testGetSetEcefPosition() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertFalse(calibrator.getEcefPosition(null));
-
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        final NEDPosition nedPosition = createPosition(randomizer);
-        final NEDVelocity nedVelocity = new NEDVelocity();
-        final ECEFPosition ecefPosition = new ECEFPosition();
-        final ECEFVelocity ecefVelocity = new ECEFVelocity();
-        NEDtoECEFPositionVelocityConverter.convertNEDtoECEF(
-                nedPosition, nedVelocity, ecefPosition, ecefVelocity);
-
-        calibrator.setPosition(ecefPosition);
-
-        // check
-        assertTrue(calibrator.getNedPosition()
-                .equals(nedPosition, LARGE_ABSOLUTE_ERROR));
-        final ECEFPosition ecefPosition1 = calibrator.getEcefPosition();
-        final ECEFPosition ecefPosition2 = new ECEFPosition();
-        assertTrue(calibrator.getEcefPosition(ecefPosition2));
-        assertTrue(ecefPosition.equals(ecefPosition1, LARGE_ABSOLUTE_ERROR));
-        assertTrue(ecefPosition.equals(ecefPosition2, LARGE_ABSOLUTE_ERROR));
-        assertEquals(ecefPosition1, ecefPosition2);
-    }
-
-    @Test
-    public void testGetSetYear() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertNotNull(calibrator.getYear());
-
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        long timestamp = createTimestamp(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
-
-        calibrator.setYear(year);
-
-        // check
-        assertEquals(calibrator.getYear(), year, 0.0);
-    }
-
-    @Test
-    public void testSetTime1() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertNotNull(calibrator.getYear());
-
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        long timestamp = createTimestamp(randomizer);
-        final Date date = new Date(timestamp);
-        final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
-
-        calibrator.setTime(date);
-
-        // check
-        assertEquals(calibrator.getYear(), year, 0.0);
-    }
-
-    @Test
-    public void testSetTime2() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertNotNull(calibrator.getYear());
-
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        long timestamp = createTimestamp(randomizer);
-        final Date date = new Date(timestamp);
-        final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
-
-        calibrator.setTime(date.getTime());
-
-        // check
-        assertEquals(calibrator.getYear(), year, 0.0);
-    }
-
-    @Test
-    public void testSetTime3() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertNotNull(calibrator.getYear());
-
-        // set new value
-        final UniformRandomizer randomizer = new UniformRandomizer(
-                new Random());
-        long timestamp = createTimestamp(randomizer);
-        final GregorianCalendar calendar = new GregorianCalendar();
-        calendar.setTimeInMillis(timestamp);
-        final double year = WMMEarthMagneticFluxDensityEstimator
-                .convertTime(calendar);
-
-        calibrator.setTime(calendar);
-
-        // check
-        assertEquals(calibrator.getYear(), year, 0.0);
-    }
-
-    @Test
     public void testGetSetMeasurements() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getMeasurements());
@@ -6213,8 +5508,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testIsSetCommonAxisUsed() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertFalse(calibrator.isCommonAxisUsed());
@@ -6228,8 +5523,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetSetListener() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertNull(calibrator.getListener());
@@ -6243,8 +5538,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testGetMinimumRequiredMeasurements() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // check default value
         assertEquals(calibrator.getMinimumRequiredMeasurements(), 10);
@@ -6260,8 +5555,8 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     @Test
     public void testIsReady() throws LockedException, IOException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
+        final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator();
 
         // initially there are no measurements
         assertFalse(calibrator.isReady());
@@ -6294,33 +5589,19 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         // check
         assertFalse(calibrator.isReady());
 
-        // set position
-        calibrator.setPosition(position);
+        // set ground truth magnetic flux density norm
+        final GregorianCalendar calendar = new GregorianCalendar();
+        calendar.setTime(timestamp);
+        final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+        final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
+
+        calibrator.setGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);
 
         // check
         assertTrue(calibrator.isReady());
 
-        // unset year
-        calibrator.setYear(null);
-
         // check
-        assertFalse(calibrator.isReady());
-    }
-
-    @Test
-    public void testGetSetMagneticModel() throws LockedException {
-        final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                new KnownHardIronPositionAndInstantMagnetometerCalibrator();
-
-        // check default value
-        assertNull(calibrator.getMagneticModel());
-
-        // set new value
-        final WorldMagneticModel magneticModel = new WorldMagneticModel();
-        calibrator.setMagneticModel(magneticModel);
-
-        // check
-        assertSame(calibrator.getMagneticModel(), magneticModel);
+        assertTrue(calibrator.isReady());
     }
 
     @Test
@@ -6343,12 +5624,16 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                             KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
                             wmmEstimator, randomizer, null,
                             position, timestamp);
+            final GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(timestamp);
+            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, false, hardIron,
+            final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                    new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                            groundTruthMagneticFluxDensityNorm,
+                            measurements, false, hardIron,
                             mm, this);
-            calibrator.setTime(timestamp);
 
             // estimate
             reset();
@@ -6416,12 +5701,15 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                             LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer,
                             position, timestamp);
+            final GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(timestamp);
+            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, false, hardIron,
-                            mm, this);
-            calibrator.setTime(timestamp);
+            final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                    new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                            groundTruthMagneticFluxDensityNorm, measurements,
+                            false, hardIron, mm, this);
 
             // estimate
             reset();
@@ -6481,12 +5769,15 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                             KnownPositionAndInstantMagnetometerCalibrator.MINIMUM_MEASUREMENTS_GENERAL,
                             wmmEstimator, randomizer, null,
                             position, timestamp);
+            final GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(timestamp);
+            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, true, hardIron,
+            final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                    new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                            groundTruthMagneticFluxDensityNorm, measurements, true, hardIron,
                             mm, this);
-            calibrator.setTime(timestamp);
 
             // estimate
             reset();
@@ -6553,12 +5844,15 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
                             LARGE_MEASUREMENT_NUMBER,
                             wmmEstimator, randomizer, noiseRandomizer,
                             position, timestamp);
+            final GregorianCalendar calendar = new GregorianCalendar();
+            calendar.setTime(timestamp);
+            final double year = WMMEarthMagneticFluxDensityEstimator.convertTime(calendar);
+            final double groundTruthMagneticFluxDensityNorm = getMagneticFluxDensityAtPosition(position, year).getNorm();
 
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator =
-                    new KnownHardIronPositionAndInstantMagnetometerCalibrator(
-                            position, measurements, true, hardIron,
+            final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator =
+                    new KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator(
+                            groundTruthMagneticFluxDensityNorm, measurements, true, hardIron,
                             mm, this);
-            calibrator.setTime(timestamp);
 
             // estimate
             reset();
@@ -6599,15 +5893,13 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     @Override
-    public void onCalibrateStart(
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+    public void onCalibrateStart(final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateStart++;
     }
 
     @Override
-    public void onCalibrateEnd(
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+    public void onCalibrateEnd(final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator) {
         checkLocked(calibrator);
         mCalibrateEnd++;
     }
@@ -6618,8 +5910,19 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
     }
 
     private void checkLocked(
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+            final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator) {
         assertTrue(calibrator.isRunning());
+        try {
+            calibrator.setGroundTruthMagneticFluxDensityNorm(1.0);
+            fail("LockedException expected but not thrown");
+        } catch (final LockedException ignore) {
+        }
+        try {
+            calibrator.setGroundTruthMagneticFluxDensityNorm(
+                    new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA));
+            fail("LockedException expected but not thrown");
+        } catch (final LockedException ignore) {
+        }
         try {
             calibrator.setHardIronX(0.0);
             fail("LockedException expected but not thrown");
@@ -6748,32 +6051,13 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         } catch (final LockedException ignore) {
         }
         try {
-            calibrator.setPosition((NEDPosition) null);
+            calibrator.setGroundTruthMagneticFluxDensityNorm(1.0);
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }
         try {
-            calibrator.setPosition((ECEFPosition) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setYear(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setTime((Long) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setTime((Date) null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
-            calibrator.setTime((GregorianCalendar) null);
+            calibrator.setGroundTruthMagneticFluxDensityNorm(
+                    new MagneticFluxDensity(0.0, MagneticFluxDensityUnit.TESLA));
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
         }
@@ -6793,11 +6077,6 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         } catch (final LockedException ignore) {
         }
         try {
-            calibrator.setMagneticModel(null);
-            fail("LockedException expected but not thrown");
-        } catch (final LockedException ignore) {
-        }
-        try {
             calibrator.calibrate();
             fail("LockedException expected but not thrown");
         } catch (final LockedException ignore) {
@@ -6808,7 +6087,7 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
 
     private void assertEstimatedResult(
             final Matrix mm,
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator) {
+            final KnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator) {
 
         assertEquals(mm.getElementAt(0, 0), calibrator.getEstimatedSx(),
                 0.0);
@@ -6861,6 +6140,12 @@ public class KnownHardIronPositionAndInstantMagnetometerCalibratorTest implement
         for (int i = 0; i < 9; i++) {
             assertNotEquals(covariance.getElementAt(i, i), 0.0);
         }
+    }
+
+    private static NEDMagneticFluxDensity getMagneticFluxDensityAtPosition(
+            final NEDPosition position, final double year) throws IOException {
+        final WMMEarthMagneticFluxDensityEstimator wmmEstimator = new WMMEarthMagneticFluxDensityEstimator();
+        return wmmEstimator.estimate(position, year);
     }
 
     private static List<StandardDeviationBodyMagneticFluxDensity> generateMeasures(
