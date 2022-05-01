@@ -56,7 +56,7 @@ import java.util.List;
  * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
  * - w is measurement noise. This is a 3x1 vector.
  * Notice that this calibrator assumes that all measurements are taken in
- * a short span of time where Earth magnetic field can be assumed to be
+ * a short span of time, where Earth magnetic field can be assumed to be
  * constant at provided location and instant.
  */
 public class LMedSRobustKnownPositionAndInstantMagnetometerCalibrator extends

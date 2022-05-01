@@ -3924,7 +3924,6 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
      *
      * @return Earth's magnetic model or null if not provided.
      */
-    @Override
     public WorldMagneticModel getMagneticModel() {
         return mMagneticModel;
     }
@@ -3935,7 +3934,6 @@ public class KnownFrameMagnetometerNonLinearLeastSquaresCalibrator implements
      * @param magneticModel Earth's magnetic model to be set.
      * @throws LockedException if calibrator is currently running.
      */
-    @Override
     public void setMagneticModel(final WorldMagneticModel magneticModel)
             throws LockedException {
         if (mRunning) {

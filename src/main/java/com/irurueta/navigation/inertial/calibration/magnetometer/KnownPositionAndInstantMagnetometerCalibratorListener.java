@@ -19,21 +19,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
  * Contains listener for magnetometer calibrator when the same position
  * and instant is known for all measurements and orientation is unknown.
  */
-public interface KnownPositionAndInstantMagnetometerCalibratorListener {
-
-    /**
-     * Called when calibration starts.
-     *
-     * @param calibrator calibrator that raised the event.
-     */
-    void onCalibrateStart(
-            final KnownPositionAndInstantMagnetometerCalibrator calibrator);
-
-    /**
-     * Called when calibration ends.
-     *
-     * @param calibrator calibrator that raised the event.
-     */
-    void onCalibrateEnd(
-            final KnownPositionAndInstantMagnetometerCalibrator calibrator);
+public interface KnownPositionAndInstantMagnetometerCalibratorListener extends
+        BaseMagneticFluxDensityNormMagnetometerCalibratorListener<KnownPositionAndInstantMagnetometerCalibrator> {
 }

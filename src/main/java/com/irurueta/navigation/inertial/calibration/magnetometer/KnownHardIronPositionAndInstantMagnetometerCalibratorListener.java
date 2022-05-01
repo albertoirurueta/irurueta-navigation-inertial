@@ -20,21 +20,6 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
  * and instant is known for all measurements, hard-iron is known and
  * orientation is unknown.
  */
-public interface KnownHardIronPositionAndInstantMagnetometerCalibratorListener {
-
-    /**
-     * Called when calibration starts.
-     *
-     * @param calibrator calibrator that raised the event.
-     */
-    void onCalibrateStart(
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator);
-
-    /**
-     * Called when calibration ends.
-     *
-     * @param calibrator calibrator that raised the event.
-     */
-    void onCalibrateEnd(
-            final KnownHardIronPositionAndInstantMagnetometerCalibrator calibrator);
+public interface KnownHardIronPositionAndInstantMagnetometerCalibratorListener extends
+        BaseKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener<KnownHardIronPositionAndInstantMagnetometerCalibrator> {
 }
