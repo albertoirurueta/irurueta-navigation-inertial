@@ -19,7 +19,7 @@ package com.irurueta.navigation.inertial.calibration.magnetometer;
  * Contains listener for robust magnetometer calibrators when a common
  * position, instant and orientation are unknown.
  */
-public interface RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListener {
+public interface RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibratorListener {
 
     /**
      * Called when calibration starts.
@@ -27,7 +27,7 @@ public interface RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListene
      * @param calibrator calibrator that raised the event.
      */
     void onCalibrateStart(
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibrator calibrator);
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibration ends.
@@ -35,7 +35,7 @@ public interface RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListene
      * @param calibrator calibrator that raised the event.
      */
     void onCalibrateEnd(
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibrator calibrator);
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator);
 
     /**
      * Called when calibrator iterates to refine a possible solution.
@@ -44,7 +44,7 @@ public interface RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListene
      * @param iteration  current iteration.
      */
     void onCalibrateNextIteration(
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibrator calibrator,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator,
             final int iteration);
 
     /**
@@ -54,6 +54,6 @@ public interface RobustKnownMagneticFluxDensityNormMagnetometerCalibratorListene
      * @param progress   progress of calibration expressed as a value between 0.0 and 1.0.
      */
     void onCalibrateProgressChange(
-            final RobustKnownMagneticFluxDensityNormMagnetometerCalibrator calibrator,
+            final RobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibrator calibrator,
             final float progress);
 }
