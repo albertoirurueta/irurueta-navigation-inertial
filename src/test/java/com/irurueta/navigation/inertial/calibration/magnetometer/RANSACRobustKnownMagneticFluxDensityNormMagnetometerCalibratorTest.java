@@ -9390,7 +9390,7 @@ public class RANSACRobustKnownMagneticFluxDensityNormMagnetometerCalibratorTest 
 
             assertNotNull(calibrator.getEstimatedCovariance());
             checkGeneralCovariance(calibrator.getEstimatedCovariance());
-            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertTrue(calibrator.getEstimatedMse() >= 0.0);
             assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
 
             numValid++;
