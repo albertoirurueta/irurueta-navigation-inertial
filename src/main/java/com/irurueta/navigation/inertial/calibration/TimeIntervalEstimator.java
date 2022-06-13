@@ -116,6 +116,15 @@ public class TimeIntervalEstimator {
     }
 
     /**
+     * Copy constructor.
+     *
+     * @param input instance to get a copy from.
+     */
+    public TimeIntervalEstimator(final TimeIntervalEstimator input) {
+        copyFrom(input);
+    }
+
+    /**
      * Gets total samples to be processed to finish estimation.
      *
      * @return total samples to be processed to finish estimation.
@@ -414,5 +423,30 @@ public class TimeIntervalEstimator {
         mRunning = false;
 
         return true;
+    }
+
+    /**
+     * Copies instance from provided one into this one.
+     *
+     * @param input input instance to be copied.
+     */
+    public void copyFrom(final TimeIntervalEstimator input) {
+        mTotalSamples = input.mTotalSamples;
+        mListener = input.mListener;
+        mLastTimestamp = input.mLastTimestamp;
+        mAverageTimeInterval = input.mAverageTimeInterval;
+        mTimeIntervalVariance = input.mTimeIntervalVariance;
+        mNumberOfProcessedSamples = input.mNumberOfProcessedSamples;
+        mNumberOfProcessedSamplesPlusOne = input.mNumberOfProcessedSamplesPlusOne;
+        mRunning = input.mRunning;
+    }
+
+    /**
+     * Copies current instance into provided instance.
+     *
+     * @param output output instance to copy to.
+     */
+    public void copyTo(final TimeIntervalEstimator output) {
+        output.copyFrom(this);
     }
 }

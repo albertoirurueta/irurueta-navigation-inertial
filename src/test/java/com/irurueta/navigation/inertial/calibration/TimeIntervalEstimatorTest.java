@@ -120,6 +120,35 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         } catch (final IllegalArgumentException ignore) {
         }
         assertNull(estimator);
+
+        // test copy constructor
+        estimator = new TimeIntervalEstimator(1, this);
+
+        // check default values
+        assertEquals(estimator.getTotalSamples(), 1);
+        assertSame(estimator.getListener(), this);
+        assertNull(estimator.getLastTimestamp());
+        assertNull(estimator.getLastTimestampAsTime());
+        assertFalse(estimator.getLastTimestampAsTime(null));
+        assertEquals(estimator.getAverageTimeInterval(), 0.0, 0.0);
+        assertEquals(estimator.getTimeIntervalVariance(), 0.0, 0.0);
+        assertEquals(estimator.getNumberOfProcessedSamples(), 0);
+        assertFalse(estimator.isRunning());
+        assertFalse(estimator.isFinished());
+
+        final TimeIntervalEstimator estimator2 = new TimeIntervalEstimator(estimator);
+
+        // check
+        assertEquals(estimator.getTotalSamples(), estimator2.getTotalSamples());
+        assertSame(estimator.getListener(), estimator2.getListener());
+        assertNull(estimator2.getLastTimestamp());
+        assertNull(estimator2.getLastTimestampAsTime());
+        assertFalse(estimator2.getLastTimestampAsTime(null));
+        assertEquals(estimator.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
+        assertEquals(estimator.getTimeIntervalVariance(), estimator2.getTimeIntervalVariance(), 0.0);
+        assertEquals(estimator.getNumberOfProcessedSamples(), estimator2.getNumberOfProcessedSamples());
+        assertFalse(estimator2.isRunning());
+        assertFalse(estimator2.isFinished());
     }
 
     @Test
@@ -354,6 +383,250 @@ public class TimeIntervalEstimatorTest implements TimeIntervalEstimatorListener 
         assertNull(estimator.getLastTimestamp());
         assertFalse(estimator.isRunning());
         assertEquals(mReset, 1);
+    }
+
+    @Test
+    public void testCopyFrom() throws LockedException {
+        final TimeIntervalEstimator estimator1 =
+                new TimeIntervalEstimator(this);
+
+        reset();
+        assertFalse(estimator1.isFinished());
+        assertEquals(estimator1.getNumberOfProcessedSamples(), 0);
+        assertNull(estimator1.getLastTimestamp());
+        assertFalse(estimator1.isRunning());
+
+        GaussianRandomizer randomizer = new GaussianRandomizer(new Random(),
+                0.0, TIME_INTERVAL_STD);
+        final int totalSamples = estimator1.getTotalSamples();
+        Double lastTimestamp = null;
+        final Time lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
+        Time lastTimestampTime2;
+        for (int i = 0; i < totalSamples; i++) {
+            if (lastTimestamp != null) {
+                assertEquals(estimator1.getLastTimestamp(), lastTimestamp);
+            }
+
+            final double noise = randomizer.nextDouble();
+            final double timestamp = i * TIME_INTERVAL_SECONDS + noise;
+
+            estimator1.addTimestamp(timestamp);
+
+            assertEquals(estimator1.getLastTimestamp(), timestamp, 0.0);
+            assertEquals(estimator1.getNumberOfProcessedSamples(), i + 1);
+            assertFalse(estimator1.isRunning());
+
+            assertTrue(estimator1.getLastTimestampAsTime(lastTimestampTime1));
+            lastTimestampTime2 = estimator1.getLastTimestampAsTime();
+
+            assertEquals(lastTimestampTime1, lastTimestampTime2);
+            assertEquals(lastTimestampTime1.getValue().doubleValue(), timestamp,
+                    0.0);
+            assertEquals(lastTimestampTime1.getUnit(), TimeUnit.SECOND);
+
+            lastTimestamp = timestamp;
+        }
+
+        assertEquals(estimator1.getNumberOfProcessedSamples(), totalSamples);
+        assertTrue(estimator1.isFinished());
+        assertFalse(estimator1.isRunning());
+        assertEquals(mStart, 1);
+        assertEquals(mTimestampAdded, totalSamples);
+        assertEquals(mFinish, 1);
+        assertEquals(mReset, 0);
+
+        final double averageTimeInterval = estimator1.getAverageTimeInterval();
+        final Time averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
+        estimator1.getAverageTimeIntervalAsTime(averageTimeInterval1);
+        final Time averageTimeInterval2 = estimator1.getAverageTimeIntervalAsTime();
+
+        assertEquals(averageTimeInterval1, averageTimeInterval2);
+        assertEquals(averageTimeInterval1.getValue().doubleValue(),
+                averageTimeInterval, 0.0);
+        assertEquals(averageTimeInterval1.getUnit(), TimeUnit.SECOND);
+
+        assertEquals(averageTimeInterval, TIME_INTERVAL_SECONDS, ABSOLUTE_ERROR);
+
+        final double timeIntervalVariance = estimator1.getTimeIntervalVariance();
+        final double timeIntervalStandardDeviation = estimator1
+                .getTimeIntervalStandardDeviation();
+
+        assertEquals(timeIntervalVariance,
+                timeIntervalStandardDeviation * timeIntervalStandardDeviation,
+                SMALL_ABSOLUTE_ERROR);
+
+        final Time timeIntervalStd1 = estimator1
+                .getTimeIntervalStandardDeviationAsTime();
+        final Time timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
+        estimator1.getTimeIntervalStandardDeviationAsTime(timeIntervalStd2);
+
+        assertEquals(timeIntervalStd1, timeIntervalStd2);
+        assertEquals(timeIntervalStd1.getValue().doubleValue(),
+                timeIntervalStandardDeviation, 0.0);
+        assertEquals(timeIntervalStd1.getUnit(), TimeUnit.SECOND);
+
+        assertEquals(timeIntervalStandardDeviation, TIME_INTERVAL_STD,
+                LARGE_ABSOLUTE_ERROR);
+
+        assertFalse(estimator1.addTimestamp(0.0));
+
+        // copy from
+        final TimeIntervalEstimator estimator2 = new TimeIntervalEstimator();
+        estimator2.copyFrom(estimator1);
+
+        // check
+        assertEquals(estimator1.isFinished(), estimator2.isFinished());
+        assertEquals(estimator1.getNumberOfProcessedSamples(), estimator2.getNumberOfProcessedSamples());
+        assertEquals(estimator1.getLastTimestamp(), estimator2.getLastTimestamp());
+        assertEquals(estimator2.isRunning(), estimator1.isRunning());
+        assertEquals(estimator1.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
+        assertEquals(estimator1.getAverageTimeIntervalAsTime(), estimator2.getAverageTimeIntervalAsTime());
+        assertEquals(estimator1.getTimeIntervalStandardDeviation(),
+                estimator2.getTimeIntervalStandardDeviation(), 0.0);
+        assertEquals(estimator1.getTimeIntervalStandardDeviationAsTime(),
+                estimator2.getTimeIntervalStandardDeviationAsTime());
+
+        // reset
+        assertTrue(estimator1.reset());
+
+        assertFalse(estimator1.isFinished());
+        assertEquals(estimator1.getNumberOfProcessedSamples(), 0);
+        assertNull(estimator1.getLastTimestamp());
+        assertFalse(estimator1.isRunning());
+
+        // check that values are no longer equal since they have been copied
+        assertNotEquals(estimator1.isFinished(), estimator2.isFinished());
+        assertNotEquals(estimator1.getNumberOfProcessedSamples(), estimator2.getNumberOfProcessedSamples());
+        assertNotEquals(estimator1.getLastTimestamp(), estimator2.getLastTimestamp());
+        assertEquals(estimator2.isRunning(), estimator1.isRunning());
+        assertNotEquals(estimator1.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
+        assertNotEquals(estimator1.getAverageTimeIntervalAsTime(), estimator2.getAverageTimeIntervalAsTime());
+        assertNotEquals(estimator1.getTimeIntervalStandardDeviation(),
+                estimator2.getTimeIntervalStandardDeviation(), 0.0);
+        assertNotEquals(estimator1.getTimeIntervalStandardDeviationAsTime(),
+                estimator2.getTimeIntervalStandardDeviationAsTime());
+    }
+
+    @Test
+    public void testCopyTo() throws LockedException {
+        final TimeIntervalEstimator estimator1 =
+                new TimeIntervalEstimator(this);
+
+        reset();
+        assertFalse(estimator1.isFinished());
+        assertEquals(estimator1.getNumberOfProcessedSamples(), 0);
+        assertNull(estimator1.getLastTimestamp());
+        assertFalse(estimator1.isRunning());
+
+        GaussianRandomizer randomizer = new GaussianRandomizer(new Random(),
+                0.0, TIME_INTERVAL_STD);
+        final int totalSamples = estimator1.getTotalSamples();
+        Double lastTimestamp = null;
+        final Time lastTimestampTime1 = new Time(0.0, TimeUnit.MINUTE);
+        Time lastTimestampTime2;
+        for (int i = 0; i < totalSamples; i++) {
+            if (lastTimestamp != null) {
+                assertEquals(estimator1.getLastTimestamp(), lastTimestamp);
+            }
+
+            final double noise = randomizer.nextDouble();
+            final double timestamp = i * TIME_INTERVAL_SECONDS + noise;
+
+            estimator1.addTimestamp(timestamp);
+
+            assertEquals(estimator1.getLastTimestamp(), timestamp, 0.0);
+            assertEquals(estimator1.getNumberOfProcessedSamples(), i + 1);
+            assertFalse(estimator1.isRunning());
+
+            assertTrue(estimator1.getLastTimestampAsTime(lastTimestampTime1));
+            lastTimestampTime2 = estimator1.getLastTimestampAsTime();
+
+            assertEquals(lastTimestampTime1, lastTimestampTime2);
+            assertEquals(lastTimestampTime1.getValue().doubleValue(), timestamp,
+                    0.0);
+            assertEquals(lastTimestampTime1.getUnit(), TimeUnit.SECOND);
+
+            lastTimestamp = timestamp;
+        }
+
+        assertEquals(estimator1.getNumberOfProcessedSamples(), totalSamples);
+        assertTrue(estimator1.isFinished());
+        assertFalse(estimator1.isRunning());
+        assertEquals(mStart, 1);
+        assertEquals(mTimestampAdded, totalSamples);
+        assertEquals(mFinish, 1);
+        assertEquals(mReset, 0);
+
+        final double averageTimeInterval = estimator1.getAverageTimeInterval();
+        final Time averageTimeInterval1 = new Time(0.0, TimeUnit.MILLISECOND);
+        estimator1.getAverageTimeIntervalAsTime(averageTimeInterval1);
+        final Time averageTimeInterval2 = estimator1.getAverageTimeIntervalAsTime();
+
+        assertEquals(averageTimeInterval1, averageTimeInterval2);
+        assertEquals(averageTimeInterval1.getValue().doubleValue(),
+                averageTimeInterval, 0.0);
+        assertEquals(averageTimeInterval1.getUnit(), TimeUnit.SECOND);
+
+        assertEquals(averageTimeInterval, TIME_INTERVAL_SECONDS, ABSOLUTE_ERROR);
+
+        final double timeIntervalVariance = estimator1.getTimeIntervalVariance();
+        final double timeIntervalStandardDeviation = estimator1
+                .getTimeIntervalStandardDeviation();
+
+        assertEquals(timeIntervalVariance,
+                timeIntervalStandardDeviation * timeIntervalStandardDeviation,
+                SMALL_ABSOLUTE_ERROR);
+
+        final Time timeIntervalStd1 = estimator1
+                .getTimeIntervalStandardDeviationAsTime();
+        final Time timeIntervalStd2 = new Time(0.0, TimeUnit.MILLISECOND);
+        estimator1.getTimeIntervalStandardDeviationAsTime(timeIntervalStd2);
+
+        assertEquals(timeIntervalStd1, timeIntervalStd2);
+        assertEquals(timeIntervalStd1.getValue().doubleValue(),
+                timeIntervalStandardDeviation, 0.0);
+        assertEquals(timeIntervalStd1.getUnit(), TimeUnit.SECOND);
+
+        assertEquals(timeIntervalStandardDeviation, TIME_INTERVAL_STD,
+                LARGE_ABSOLUTE_ERROR);
+
+        assertFalse(estimator1.addTimestamp(0.0));
+
+        // copy from
+        final TimeIntervalEstimator estimator2 = new TimeIntervalEstimator();
+        estimator1.copyTo(estimator2);
+
+        // check
+        assertEquals(estimator1.isFinished(), estimator2.isFinished());
+        assertEquals(estimator1.getNumberOfProcessedSamples(), estimator2.getNumberOfProcessedSamples());
+        assertEquals(estimator1.getLastTimestamp(), estimator2.getLastTimestamp());
+        assertEquals(estimator2.isRunning(), estimator1.isRunning());
+        assertEquals(estimator1.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
+        assertEquals(estimator1.getAverageTimeIntervalAsTime(), estimator2.getAverageTimeIntervalAsTime());
+        assertEquals(estimator1.getTimeIntervalStandardDeviation(),
+                estimator2.getTimeIntervalStandardDeviation(), 0.0);
+        assertEquals(estimator1.getTimeIntervalStandardDeviationAsTime(),
+                estimator2.getTimeIntervalStandardDeviationAsTime());
+
+        // reset
+        assertTrue(estimator1.reset());
+
+        assertFalse(estimator1.isFinished());
+        assertEquals(estimator1.getNumberOfProcessedSamples(), 0);
+        assertNull(estimator1.getLastTimestamp());
+        assertFalse(estimator1.isRunning());
+
+        // check that values are no longer equal since they have been copied
+        assertNotEquals(estimator1.isFinished(), estimator2.isFinished());
+        assertNotEquals(estimator1.getNumberOfProcessedSamples(), estimator2.getNumberOfProcessedSamples());
+        assertNotEquals(estimator1.getLastTimestamp(), estimator2.getLastTimestamp());
+        assertEquals(estimator2.isRunning(), estimator1.isRunning());
+        assertNotEquals(estimator1.getAverageTimeInterval(), estimator2.getAverageTimeInterval(), 0.0);
+        assertNotEquals(estimator1.getAverageTimeIntervalAsTime(), estimator2.getAverageTimeIntervalAsTime());
+        assertNotEquals(estimator1.getTimeIntervalStandardDeviation(),
+                estimator2.getTimeIntervalStandardDeviation(), 0.0);
+        assertNotEquals(estimator1.getTimeIntervalStandardDeviationAsTime(),
+                estimator2.getTimeIntervalStandardDeviationAsTime());
     }
 
     @Override
