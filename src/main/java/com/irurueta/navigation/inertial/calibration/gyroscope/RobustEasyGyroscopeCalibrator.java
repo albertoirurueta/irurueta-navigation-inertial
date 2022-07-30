@@ -21,6 +21,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.RotationException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.inertial.BodyKinematics;
@@ -6629,7 +6630,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             }
 
             // integrate fixed sequence to obtain attitude change
-            QuaternionIntegrator.integrateGyroSequence(fixedSequence, mQ);
+            QuaternionIntegrator.integrateGyroSequence(fixedSequence, QuaternionStepIntegratorType.RUNGE_KUTTA, mQ);
 
             // fix before coordinates
             mMeasuredSpecificForce[0] = sequence.getBeforeMeanFx();
@@ -6662,7 +6663,7 @@ public abstract class RobustEasyGyroscopeCalibrator implements
             // ones
             return mExpectedEndPoint.distanceTo(mEndPoint);
 
-        } catch (final AlgebraException e) {
+        } catch (final AlgebraException | RotationException e) {
             return Double.MAX_VALUE;
         }
     }

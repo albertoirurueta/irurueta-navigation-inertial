@@ -19,6 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InvalidRotationMatrixException;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.RotationException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -36,6 +37,7 @@ import com.irurueta.navigation.inertial.calibration.*;
 import com.irurueta.navigation.inertial.calibration.accelerometer.KnownGravityNormAccelerometerCalibrator;
 import com.irurueta.navigation.inertial.calibration.gyroscope.EasyGyroscopeCalibrator;
 import com.irurueta.navigation.inertial.calibration.gyroscope.QuaternionIntegrator;
+import com.irurueta.navigation.inertial.calibration.gyroscope.QuaternionStepIntegratorType;
 import com.irurueta.navigation.inertial.calibration.intervals.AccelerationTriadStaticIntervalDetector;
 import com.irurueta.navigation.inertial.calibration.intervals.TriadStaticIntervalDetector;
 import com.irurueta.navigation.inertial.calibration.magnetometer.KnownPositionAndInstantMagnetometerCalibrator;
@@ -610,7 +612,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessCalibrateAndResetWithNoiseMaCommonAxisAndNoGDependentCrossBiases() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, IOException {
+            NotReadyException, InvalidRotationMatrixException, IOException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -871,7 +873,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndNoGDependentCrossBiases()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, IOException {
+            NotReadyException, InvalidRotationMatrixException, IOException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -1120,7 +1122,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessCalibrateAndResetSmallNoiseMaCommonAxisAndNoGDependentCrossBiases()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, IOException {
+            NotReadyException, InvalidRotationMatrixException, IOException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -1370,7 +1372,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessCalibrateAndResetSmallNoiseMaGeneralAndWithGDependentCrossBiases() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, IOException {
+            NotReadyException, InvalidRotationMatrixException, IOException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -1619,7 +1621,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessSkipStaticInterval() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            InvalidRotationMatrixException, IOException {
+            InvalidRotationMatrixException, IOException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -1729,7 +1731,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessSkipDynamicInterval() throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            InvalidRotationMatrixException, IOException {
+            InvalidRotationMatrixException, IOException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -1958,7 +1960,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
     @Test
     public void testProcessCalibrateAndResetSmallNoiseWithRotationAndPositionChangeMaCommonAxisAndNoGDependentCrossBiases()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException, InvalidRotationMatrixException, IOException {
+            NotReadyException, InvalidRotationMatrixException, IOException, RotationException {
 
         final Matrix ba = generateBa();
         final Matrix bg = generateBg();
@@ -2649,7 +2651,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
             final int startSample,
             final boolean changePosition)
             throws InvalidSourceAndDestinationFrameTypeException,
-            LockedException, InvalidRotationMatrixException {
+            LockedException, InvalidRotationMatrixException, RotationException {
 
         final double sqrtTimeInterval = Math.sqrt(TIME_INTERVAL_SECONDS);
         final double specificForceStandardDeviation = getAccelNoiseRootPSD() / sqrtTimeInterval;
@@ -2791,7 +2793,7 @@ public class AccelerometerGyroscopeAndMagnetometerMeasurementsGeneratorTest impl
 
         final Quaternion afterQ = new Quaternion();
         QuaternionIntegrator.integrateGyroSequence(
-                trueSequence, beforeQ, afterQ);
+                trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
         final CoordinateTransformation newNedC =
                 new CoordinateTransformation(

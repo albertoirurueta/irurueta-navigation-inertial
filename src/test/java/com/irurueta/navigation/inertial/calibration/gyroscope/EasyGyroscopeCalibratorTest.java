@@ -19,6 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InvalidRotationMatrixException;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.RotationException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -6598,7 +6599,7 @@ public class EasyGyroscopeCalibratorTest implements
             throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException,
             LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -6750,7 +6751,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -6830,7 +6831,7 @@ public class EasyGyroscopeCalibratorTest implements
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithZeroInitialValues()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, InvalidRotationMatrixException {
+            LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -6982,7 +6983,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7072,7 +7073,7 @@ public class EasyGyroscopeCalibratorTest implements
     @Test
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithNoiseLargeNumberOfMeasurements()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, InvalidRotationMatrixException {
+            LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7223,7 +7224,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7312,7 +7313,7 @@ public class EasyGyroscopeCalibratorTest implements
             throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException,
             LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7464,7 +7465,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7546,7 +7547,7 @@ public class EasyGyroscopeCalibratorTest implements
             throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException,
             LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7698,7 +7699,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7790,7 +7791,7 @@ public class EasyGyroscopeCalibratorTest implements
             throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException,
             LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7942,7 +7943,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -8024,7 +8025,7 @@ public class EasyGyroscopeCalibratorTest implements
             throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException,
             LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8176,7 +8177,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -8269,7 +8270,7 @@ public class EasyGyroscopeCalibratorTest implements
     @Test
     public void testCalibrateGeneralCaseAndGDependentCrossBiasesEnabledAndNoNoise()
             throws WrongSizeException, InvalidSourceAndDestinationFrameTypeException,
-            LockedException, NotReadyException, InvalidRotationMatrixException {
+            LockedException, NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8421,7 +8422,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -8503,7 +8504,7 @@ public class EasyGyroscopeCalibratorTest implements
             throws WrongSizeException,
             InvalidSourceAndDestinationFrameTypeException,
             LockedException,
-            NotReadyException, InvalidRotationMatrixException {
+            NotReadyException, InvalidRotationMatrixException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8655,7 +8656,7 @@ public class EasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(

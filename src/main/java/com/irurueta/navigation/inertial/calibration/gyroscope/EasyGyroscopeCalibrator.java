@@ -22,6 +22,7 @@ import com.irurueta.algebra.Utils;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InhomogeneousPoint3D;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.RotationException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.inertial.BodyKinematics;
@@ -5406,7 +5407,7 @@ public class EasyGyroscopeCalibrator implements
 
 
             // integrate fixed sequence to obtain attitude change
-            QuaternionIntegrator.integrateGyroSequence(fixedSequence, mQ);
+            QuaternionIntegrator.integrateGyroSequence(fixedSequence, QuaternionStepIntegratorType.RUNGE_KUTTA, mQ);
 
             mStartPoint.setInhomogeneousCoordinates(
                     mPoint[0], mPoint[1], mPoint[2]);
@@ -5418,7 +5419,7 @@ public class EasyGyroscopeCalibrator implements
 
             return mExpectedEndPoint.distanceTo(mEndPoint);
 
-        } catch (final AlgebraException e) {
+        } catch (final AlgebraException | RotationException e) {
             throw new EvaluationException(e);
         }
     }

@@ -19,6 +19,7 @@ import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.WrongSizeException;
 import com.irurueta.geometry.InvalidRotationMatrixException;
 import com.irurueta.geometry.Quaternion;
+import com.irurueta.geometry.RotationException;
 import com.irurueta.navigation.LockedException;
 import com.irurueta.navigation.NotReadyException;
 import com.irurueta.navigation.frames.CoordinateTransformation;
@@ -6583,7 +6584,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledAndNoInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -6753,7 +6754,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -6836,7 +6837,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateGeneralAndGDependentCrossBiasesDisabledAndNoInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7006,7 +7007,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7089,7 +7090,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledAndNoInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7259,7 +7260,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7350,7 +7351,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateGeneralAndGDependentCrossBiasesEnabledAndNoInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7520,7 +7521,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7611,7 +7612,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateCommonAxisAndGDependentCrossBiasesDisabledWithInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -7786,7 +7787,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -7878,7 +7879,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateGeneralAndGDependentCrossBiasesDisabledWithInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8053,7 +8054,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -8142,7 +8143,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateCommonAxisAndGDependentCrossBiasesEnabledWithInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8316,7 +8317,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
@@ -8408,7 +8409,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
     public void testCalibrateGeneralAndGDependentCrossBiasesEnabledWithInlierNoise()
             throws WrongSizeException, InvalidRotationMatrixException,
             InvalidSourceAndDestinationFrameTypeException, LockedException,
-            NotReadyException {
+            NotReadyException, RotationException {
 
         int numValid = 0;
         for (int t = 0; t < TIMES; t++) {
@@ -8582,7 +8583,7 @@ public class RANSACRobustKnownBiasEasyGyroscopeCalibratorTest implements
 
                 final Quaternion afterQ = new Quaternion();
                 QuaternionIntegrator.integrateGyroSequence(
-                        trueSequence, beforeQ, afterQ);
+                        trueSequence, beforeQ, QuaternionStepIntegratorType.RUNGE_KUTTA, afterQ);
 
                 final CoordinateTransformation newNedC =
                         new CoordinateTransformation(
