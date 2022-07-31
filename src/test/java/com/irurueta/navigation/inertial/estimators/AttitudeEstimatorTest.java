@@ -380,7 +380,7 @@ public class AttitudeEstimatorTest {
 
         assertEquals(roll1, roll2, LARGE_ABSOLUTE_ERROR);
         assertEquals(pitch1, pitch2, LARGE_ABSOLUTE_ERROR);
-        assertEquals(yaw1, yaw2, LARGE_ABSOLUTE_ERROR);
+        assertEquals(yaw1, yaw2, 2.0 * LARGE_ABSOLUTE_ERROR);
 
         assertEquals(result.getSourceType(),
                 FrameType.LOCAL_NAVIGATION_FRAME);

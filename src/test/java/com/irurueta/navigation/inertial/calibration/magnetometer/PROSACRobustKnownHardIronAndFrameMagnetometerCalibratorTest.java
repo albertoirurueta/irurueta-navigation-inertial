@@ -3034,77 +3034,88 @@ public class PROSACRobustKnownHardIronAndFrameMagnetometerCalibratorTest impleme
             InvalidSourceAndDestinationFrameTypeException,
             LockedException, CalibrationException, NotReadyException {
 
-        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
-        final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
-                new WMMEarthMagneticFluxDensityEstimator();
+        int numValid = 0;
+        for (int t = 0; t < TIMES; t++) {
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+            final WMMEarthMagneticFluxDensityEstimator wmmEstimator =
+                    new WMMEarthMagneticFluxDensityEstimator();
 
-        final double[] hardIron = generateHardIron(randomizer);
-        final Matrix mm = generateSoftIronCommonAxis();
-        assertNotNull(mm);
+            final double[] hardIron = generateHardIron(randomizer);
+            final Matrix mm = generateSoftIronCommonAxis();
+            assertNotNull(mm);
 
-        final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
-                new Random(), 0.0, MAGNETOMETER_NOISE_STD);
+            final GaussianRandomizer noiseRandomizer = new GaussianRandomizer(
+                    new Random(), 0.0, MAGNETOMETER_NOISE_STD);
 
-        final NEDPosition position = createPosition(randomizer);
-        final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
-                new ArrayList<>();
-        final double[] qualityScores = new double[MEASUREMENT_NUMBER];
-        double error;
-        for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
+            final NEDPosition position = createPosition(randomizer);
+            final List<StandardDeviationFrameBodyMagneticFluxDensity> measurements =
+                    new ArrayList<>();
+            final double[] qualityScores = new double[MEASUREMENT_NUMBER];
+            double error;
+            for (int i = 0; i < MEASUREMENT_NUMBER; i++) {
 
-            final StandardDeviationFrameBodyMagneticFluxDensity b;
-            if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
-                // outlier
-                b = generateMeasureAtPosition(hardIron, mm, wmmEstimator,
-                        randomizer, noiseRandomizer, position);
-                error = Math.abs(noiseRandomizer.nextDouble());
-            } else {
-                // inlier
-                b = generateMeasureAtPosition(hardIron, mm, wmmEstimator,
-                        randomizer, null, position);
-                error = 0.0;
+                final StandardDeviationFrameBodyMagneticFluxDensity b;
+                if (randomizer.nextInt(0, 100) < OUTLIER_PERCENTAGE) {
+                    // outlier
+                    b = generateMeasureAtPosition(hardIron, mm, wmmEstimator,
+                            randomizer, noiseRandomizer, position);
+                    error = Math.abs(noiseRandomizer.nextDouble());
+                } else {
+                    // inlier
+                    b = generateMeasureAtPosition(hardIron, mm, wmmEstimator,
+                            randomizer, null, position);
+                    error = 0.0;
+                }
+                measurements.add(b);
+
+                qualityScores[i] = 1.0 / (1.0 + error);
             }
-            measurements.add(b);
 
-            qualityScores[i] = 1.0 / (1.0 + error);
+            final PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator calibrator =
+                    new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
+                            qualityScores, measurements, true,
+                            this);
+            calibrator.setHardIron(hardIron);
+            calibrator.setThreshold(THRESHOLD);
+
+            // estimate
+            reset();
+            assertTrue(calibrator.isReady());
+            assertFalse(calibrator.isRunning());
+            assertEquals(mCalibrateStart, 0);
+            assertEquals(mCalibrateEnd, 0);
+            assertEquals(mCalibrateNextIteration, 0);
+            assertEquals(mCalibrateProgressChange, 0);
+
+            calibrator.calibrate();
+
+            // check
+            assertTrue(calibrator.isReady());
+            assertFalse(calibrator.isRunning());
+            assertEquals(mCalibrateStart, 1);
+            assertEquals(mCalibrateEnd, 1);
+            assertTrue(mCalibrateNextIteration > 0);
+            assertTrue(mCalibrateProgressChange >= 0);
+
+            final Matrix estimatedMm = calibrator.getEstimatedMm();
+
+            if (!mm.equals(estimatedMm, ABSOLUTE_ERROR)) {
+                continue;
+            }
+            assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
+
+            assertEstimatedResult(estimatedMm, calibrator);
+
+            assertNotNull(calibrator.getEstimatedCovariance());
+            checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
+            assertTrue(calibrator.getEstimatedMse() > 0.0);
+            assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+
+            numValid++;
+            break;
         }
 
-        final PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator calibrator =
-                new PROSACRobustKnownHardIronAndFrameMagnetometerCalibrator(
-                        qualityScores, measurements, true,
-                        this);
-        calibrator.setHardIron(hardIron);
-        calibrator.setThreshold(THRESHOLD);
-
-        // estimate
-        reset();
-        assertTrue(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 0);
-        assertEquals(mCalibrateEnd, 0);
-        assertEquals(mCalibrateNextIteration, 0);
-        assertEquals(mCalibrateProgressChange, 0);
-
-        calibrator.calibrate();
-
-        // check
-        assertTrue(calibrator.isReady());
-        assertFalse(calibrator.isRunning());
-        assertEquals(mCalibrateStart, 1);
-        assertEquals(mCalibrateEnd, 1);
-        assertTrue(mCalibrateNextIteration > 0);
-        assertTrue(mCalibrateProgressChange >= 0);
-
-        final Matrix estimatedMm = calibrator.getEstimatedMm();
-
-        assertTrue(mm.equals(estimatedMm, ABSOLUTE_ERROR));
-
-        assertEstimatedResult(estimatedMm, calibrator);
-
-        assertNotNull(calibrator.getEstimatedCovariance());
-        checkCommonAxisCovariance(calibrator.getEstimatedCovariance());
-        assertTrue(calibrator.getEstimatedMse() > 0.0);
-        assertNotEquals(calibrator.getEstimatedChiSq(), 0.0);
+        assertTrue(numValid > 0);
     }
 
     @Test

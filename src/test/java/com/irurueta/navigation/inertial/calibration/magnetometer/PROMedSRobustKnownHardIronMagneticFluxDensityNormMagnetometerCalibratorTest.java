@@ -13780,7 +13780,11 @@ public class PROMedSRobustKnownHardIronMagneticFluxDensityNormMagnetometerCalibr
             assertEquals(mCalibrateNextIteration, 0);
             assertEquals(mCalibrateProgressChange, 0);
 
-            calibrator.calibrate();
+            try {
+                calibrator.calibrate();
+            } catch (final CalibrationException e) {
+                continue;
+            }
 
             // check
             assertTrue(calibrator.isReady());

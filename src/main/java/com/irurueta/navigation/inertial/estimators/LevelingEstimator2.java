@@ -19,7 +19,6 @@ import com.irurueta.algebra.ArrayUtils;
 import com.irurueta.algebra.Matrix;
 import com.irurueta.algebra.Utils;
 import com.irurueta.algebra.WrongSizeException;
-import com.irurueta.geometry.InvalidRotationMatrixException;
 import com.irurueta.geometry.Quaternion;
 import com.irurueta.navigation.frames.CoordinateTransformation;
 import com.irurueta.navigation.frames.FrameType;
@@ -322,10 +321,9 @@ public class LevelingEstimator2 {
             // to be fixed later on)
             result.setSourceType(FrameType.LOCAL_NAVIGATION_FRAME);
             result.setDestinationType(FrameType.BODY_FRAME);
-            result.setMatrix(q.asInhomogeneousMatrix());
+            result.fromRotation(q);
 
-        } catch (final WrongSizeException
-                | InvalidRotationMatrixException ignore) {
+        } catch (final WrongSizeException ignore) {
             // never happens
         }
     }
