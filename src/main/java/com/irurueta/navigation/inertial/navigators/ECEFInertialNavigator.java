@@ -37,7 +37,7 @@ import com.irurueta.units.*;
  * Runs precision ECEF-frame inertial navigation equations.
  * This implementation is based on the equations defined in "Principles of GNSS, Inertial, and Multisensor
  * Integrated Navigation Systems, Second Edition" and on the companion software available at:
- * https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECEF.m
+ * <a href="https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECEF.m">https://github.com/ymjdz/MATLAB-Codes/blob/master/Nav_equations_ECEF.m</a>
  */
 public class ECEFInertialNavigator {
 
@@ -7869,9 +7869,9 @@ public class ECEFInertialNavigator {
             // Attitude update
             // From (2.145) determine the Earth rotation over the update interval
             final double alpha = EARTH_ROTATION_RATE * timeInterval;
-            final Matrix cEarth = CoordinateTransformation.ecefToEciMatrixFromAngle(alpha);
+            final Matrix cEarth = CoordinateTransformation.eciToEcefMatrixFromAngle(alpha);
 
-            // Calculate attidue increment, magnitude, and skew-symmetric matrix
+            // Calculate attitude increment, magnitude, and skew-symmetric matrix
             final double alphaX = angularRateX * timeInterval;
             final double alphaY = angularRateY * timeInterval;
             final double alphaZ = angularRateZ * timeInterval;
@@ -7907,6 +7907,12 @@ public class ECEFInertialNavigator {
             // Specific force frame transformation
             // Calculate the average body-to-ECEF-frame coordinate transformation
             // matrix over the update interval using (5.84) and (5.85).
+            final Matrix alphaSkew2 = Utils.skewMatrix(
+                    new double[]{0.0, 0.0, alpha});
+            alphaSkew2.multiplyByScalar(0.5);
+            // 0.5 * alphaSkew2 * oldCbe
+            alphaSkew2.multiply(oldCbe);
+
             if (alphaNorm > ALPHA_THRESHOLD) {
                 final double alphaNorm2 = alphaNorm * alphaNorm;
                 final double value1 = (1.0 - Math.cos(alphaNorm)) / alphaNorm2;
@@ -7922,12 +7928,6 @@ public class ECEFInertialNavigator {
 
                 oldCbe.multiply(tmp3);
             }
-
-            final Matrix alphaSkew2 = Utils.skewMatrix(
-                    new double[]{0.0, 0.0, alpha});
-            alphaSkew2.multiplyByScalar(0.5);
-            // 0.5 * alphaSkew2 * oldCbe
-            alphaSkew2.multiply(oldCbe);
 
             // oldCbe - 0.5 * alphaSkew2 * oldCbe
             oldCbe.subtract(alphaSkew2);

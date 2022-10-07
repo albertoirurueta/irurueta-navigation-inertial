@@ -33,6 +33,7 @@ import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.ECEFGravity;
 import com.irurueta.navigation.inertial.estimators.ECEFGravityEstimator;
+import com.irurueta.navigation.inertial.estimators.ECEFKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.*;
 import org.junit.Test;
@@ -68,6 +69,8 @@ public class ECEFInertialNavigatorTest {
     private static final double ABSOLUTE_ERROR = 1e-8;
     private static final double LARGE_ABSOLUTE_ERROR = 1e-2;
     private static final double VERY_LARGE_ABSOLUTE_ERROR = 1e-1;
+
+    private static final double NAVIGATE_ABSOLUTE_ERROR = 1e-5;
 
     private static final int TIMES = 100;
 
@@ -2486,7 +2489,8 @@ public class ECEFInertialNavigatorTest {
             final ECEFGravity gravity = ECEFGravityEstimator.estimateGravityAndReturnNew(oldFrame);
             final Matrix g = gravity.asMatrix();
             final Matrix cbe = oldFrame.getCoordinateTransformationMatrix();
-            final Matrix f = cbe.multiplyAndReturnNew(g);
+            final Matrix invCbe = cbe.transposeAndReturnNew();
+            final Matrix f = invCbe.multiplyAndReturnNew(g);
 
             final double fx = f.getElementAtIndex(0);
             final double fy = f.getElementAtIndex(1);
@@ -2821,5 +2825,93 @@ public class ECEFInertialNavigatorTest {
         }
 
         assertEquals(numValid, TIMES);
+    }
+
+    @Test
+    public void testNavigateWhenFrameRemainsConstant() throws InvalidSourceAndDestinationFrameTypeException,
+            InertialNavigatorException {
+        int numValid = 0;
+        for (int t = 0; t < TIMES; t++) {
+            final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+
+            final double latitude = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double longitude = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+
+            final double vn = 0.0;
+            final double ve = 0.0;
+            final double vd = 0.0;
+
+            final double roll = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final Quaternion q = new Quaternion(roll, pitch, yaw);
+
+            final CoordinateTransformation c = new CoordinateTransformation(
+                    q, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
+
+            final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+            final BodyKinematics bodyKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
+
+            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(
+                    TIME_INTERVAL_SECONDS, oldFrame, bodyKinematics);
+
+            assertTrue(oldFrame.equals(newFrame, NAVIGATE_ABSOLUTE_ERROR));
+
+            numValid++;
+        }
+
+        assertEquals(numValid, TIMES);
+    }
+
+    @Test
+    public void testNavigateWhenFrameRemainsConstant2() throws InvalidSourceAndDestinationFrameTypeException,
+            InertialNavigatorException {
+        final UniformRandomizer randomizer = new UniformRandomizer(new Random());
+
+        final double latitude = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+
+        final double vn = 0.0;
+        final double ve = 0.0;
+        final double vd = 0.0;
+
+        final double roll = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final Quaternion q = new Quaternion(roll, pitch, yaw);
+
+        final CoordinateTransformation c = new CoordinateTransformation(
+                q, FrameType.BODY_FRAME,
+                FrameType.LOCAL_NAVIGATION_FRAME);
+
+        final NEDFrame oldNedFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+        final ECEFFrame oldFrame = NEDtoECEFFrameConverter.convertNEDtoECEFAndReturnNew(oldNedFrame);
+        final BodyKinematics bodyKinematics = ECEFKinematicsEstimator.estimateKinematicsAndReturnNew(
+                TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
+        final ECEFFrame initialFrame = new ECEFFrame(oldFrame);
+
+        for (int t = 0; t < TIMES; t++) {
+            final ECEFFrame newFrame = ECEFInertialNavigator.navigateECEFAndReturnNew(
+                    TIME_INTERVAL_SECONDS, oldFrame, bodyKinematics);
+
+            assertTrue(initialFrame.equals(newFrame, NAVIGATE_ABSOLUTE_ERROR));
+
+            newFrame.copyTo(oldFrame);
+        }
     }
 }

@@ -31,6 +31,7 @@ import com.irurueta.navigation.frames.converters.NEDtoECEFFrameConverter;
 import com.irurueta.navigation.inertial.BodyKinematics;
 import com.irurueta.navigation.inertial.NEDGravity;
 import com.irurueta.navigation.inertial.estimators.NEDGravityEstimator;
+import com.irurueta.navigation.inertial.estimators.NEDKinematicsEstimator;
 import com.irurueta.statistics.UniformRandomizer;
 import com.irurueta.units.*;
 import org.junit.Test;
@@ -69,6 +70,8 @@ public class NEDInertialNavigatorTest {
 
     private static final int TIMES = 100;
 
+    private static final double ACCURACY_THRESHOLD = 1e-6;
+
     @Test(expected = InvalidSourceAndDestinationFrameTypeException.class)
     public void testNavigateNEDWhenInvalidCoordinateTransformationMatrix()
             throws InvalidSourceAndDestinationFrameTypeException,
@@ -81,7 +84,8 @@ public class NEDInertialNavigatorTest {
                 0.0, 0.0, 0.0, c,
                 0.0, 0.0, 0.0,
                 0.0, 0.0, 0.0,
-                0.0, 0.0, 0.0, result);
+                0.0, 0.0, 0.0, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result);
     }
 
     @Test
@@ -1202,41 +1206,45 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result1 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result1);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result1);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final NEDFrame result2 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result2);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result2);
 
         final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
         final NEDFrame result3 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result3);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result3);
 
         final NEDFrame result4 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result4);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result4);
 
         final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
         final NEDFrame result5 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result5);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result5);
 
         final NEDFrame result6 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ, result6);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result6);
 
         final NEDFrame result7 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result7);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result7);
 
         final NEDFrame result8 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result8);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result8);
 
         final NEDFrame result9 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
@@ -1276,22 +1284,22 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result17 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result17);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result17);
 
         final NEDFrame result18 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result18);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result18);
 
         final NEDFrame result19 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ, result19);
+                angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result19);
 
         final NEDFrame result20 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ, result20);
+                angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result20);
 
         final NEDFrame result21 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
@@ -1316,22 +1324,22 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result25 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result25);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result25);
 
         final NEDFrame result26 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result26);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result26);
 
         final NEDFrame result27 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result27);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result27);
 
         final NEDFrame result28 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ, result28);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result28);
 
         final NEDFrame result29 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
@@ -1361,179 +1369,183 @@ public class NEDInertialNavigatorTest {
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result33);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result33);
 
         final NEDFrame result34 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result34);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result34);
 
         final NEDFrame result35 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result35);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result35);
 
         final NEDFrame result36 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result36);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result36);
 
         final NEDFrame result37 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result37);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result37);
 
         final NEDFrame result38 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result38);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result38);
 
         final NEDFrame result39 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVelocity, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ, result39);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result39);
 
         final NEDFrame result40 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularRateX,
-                angularRateY, angularRateZ, result40);
+                angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result40);
 
         final NEDFrame result41 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result41);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result41);
 
         final NEDFrame result42 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result42);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result42);
 
         final NEDFrame result43 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe,
                 oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
-                result43);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result43);
 
         final NEDFrame result44 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
-                result44);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result44);
 
         final NEDFrame result45 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldVelocity, fx, fy, fz, angularSpeedX,
-                angularSpeedY, angularSpeedZ, result45);
+                angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result45);
 
         final NEDFrame result46 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY,
-                angularSpeedZ, result46);
+                angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result46);
 
         final NEDFrame result47 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
-                result47);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result47);
 
         final NEDFrame result48 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity,
                 fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
-                result48);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result48);
 
         final NEDFrame result49 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result49);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result49);
 
         final NEDFrame result50 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ, result50);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD,
+                result50);
 
         final NEDFrame result51 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result51);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result51);
 
         final NEDFrame result52 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result52);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result52);
 
         final NEDFrame result53 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
                 accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
-                result53);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result53);
 
         final NEDFrame result54 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
                 accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
-                result54);
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result54);
 
         final NEDFrame result55 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN,
                 oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result55);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result55);
 
         final NEDFrame result56 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldSpeedN,
                 oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result56);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result56);
 
         final NEDFrame result57 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, accelerationX, accelerationY,
-                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result57);
+                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result57);
 
         final NEDFrame result58 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, accelerationX, accelerationY,
-                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ, result58);
+                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result58);
 
         final NEDFrame result59 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX,
-                angularSpeedY, angularSpeedZ, result59);
+                angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result59);
 
         final NEDFrame result60 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVelocity,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX,
-                angularSpeedY, angularSpeedZ, result60);
+                angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result60);
 
         final NEDFrame result61 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result61);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result61);
 
         final NEDFrame result62 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result62);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result62);
 
         final NEDFrame result63 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result63);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result63);
 
         final NEDFrame result64 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX,
-                angularSpeedY, angularSpeedZ, result64);
+                angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result64);
 
         final NEDFrame result65 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result65);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result65);
 
         final NEDFrame result66 = new NEDFrame();
         NEDInertialNavigator.navigateNED(timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ, result66);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD, result66);
 
         final NEDFrame result67 = new NEDFrame();
         NEDInertialNavigator.navigateNED(TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
@@ -1732,33 +1744,33 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result1 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final Time timeInterval = new Time(TIME_INTERVAL_SECONDS, TimeUnit.SECOND);
         final NEDFrame result2 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDPosition oldPosition = new NEDPosition(oldLatitude, oldLongitude, HEIGHT);
         final NEDFrame result3 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe, oldVd,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result4 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDVelocity oldVelocity = new NEDVelocity(oldVn, oldVe, oldVd);
         final NEDFrame result5 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result6 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, fx, fy, fz, angularRateX, angularRateY,
-                angularRateZ);
+                angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result7 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
@@ -1806,22 +1818,22 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result17 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result18 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result19 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ);
+                angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result20 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, fx, fy, fz, angularRateX,
-                angularRateY, angularRateZ);
+                angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result21 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
@@ -1845,22 +1857,22 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result25 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result26 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result27 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result28 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldPosition, oldC,
                 oldSpeedN, oldSpeedE, oldSpeedD, fx, fy, fz,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result29 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
@@ -1888,32 +1900,32 @@ public class NEDInertialNavigatorTest {
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result34 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result35 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result36 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldPosition, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result37 = NEDInertialNavigator.navigateNEDAndReturnNew(TIME_INTERVAL_SECONDS, oldLatitude,
                 oldLongitude, HEIGHT, oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result38 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, accelerationX, accelerationY, accelerationZ,
-                angularRateX, angularRateY, angularRateZ);
+                angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result39 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC,
@@ -1928,30 +1940,32 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result41 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result42 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, fx, fy, fz,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result43 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVn, oldVe,
-                oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+                oldVd, fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result44 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
-                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ);
+                fx, fy, fz, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result45 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude,
                 HEIGHT, oldC, oldVelocity, fx, fy, fz, angularSpeedX,
-                angularSpeedY, angularSpeedZ);
+                angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result46 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVelocity, fx, fy, fz, angularSpeedX, angularSpeedY,
-                angularSpeedZ);
+                angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result47 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
@@ -1964,54 +1978,58 @@ public class NEDInertialNavigatorTest {
         final NEDFrame result49 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result50 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
-                fx, fy, fz, angularRateX, angularRateY, angularRateZ);
+                fx, fy, fz, angularRateX, angularRateY, angularRateZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result51 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result52 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldSpeedN, oldSpeedE, oldSpeedD,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result53 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
-                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
+                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result54 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldSpeedN, oldSpeedE, oldSpeedD, accelerationX, accelerationY,
-                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
+                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result55 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC, oldSpeedN,
                 oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result56 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldPosition, oldC, oldSpeedN,
                 oldSpeedE, oldSpeedD, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result57 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, accelerationX, accelerationY,
-                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
+                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result58 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVelocity, accelerationX, accelerationY,
-                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ);
+                accelerationZ, angularSpeedX, angularSpeedY, angularSpeedZ,
+                NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result59 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC, oldVelocity,
@@ -2027,33 +2045,33 @@ public class NEDInertialNavigatorTest {
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result62 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitudeAngle, oldLongitudeAngle,
                 oldHeightDistance, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result63 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldPosition, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result64 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldPosition, oldC, oldVn, oldVe, oldVd,
                 accelerationX, accelerationY, accelerationZ, angularSpeedX,
-                angularSpeedY, angularSpeedZ);
+                angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result65 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitude, oldLongitude, HEIGHT,
                 oldC, oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result66 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 timeInterval, oldLatitude, oldLongitude, HEIGHT, oldC,
                 oldVn, oldVe, oldVd, accelerationX, accelerationY, accelerationZ,
-                angularSpeedX, angularSpeedY, angularSpeedZ);
+                angularSpeedX, angularSpeedY, angularSpeedZ, NEDInertialNavigator.DEFAULT_ACCURACY_THRESHOLD);
 
         final NEDFrame result67 = NEDInertialNavigator.navigateNEDAndReturnNew(
                 TIME_INTERVAL_SECONDS, oldLatitudeAngle, oldLongitudeAngle,
@@ -2630,5 +2648,93 @@ public class NEDInertialNavigatorTest {
         }
 
         assertEquals(numValid, TIMES);
+    }
+
+    @Test
+    public void testNavigateWhenFrameRemainsConstant()
+            throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
+        int numValid = 0;
+        for (int t = 0; t < TIMES; t++) {
+            final UniformRandomizer randomizer = new UniformRandomizer();
+
+            final double latitude = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double longitude = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+
+            final double vn = 0.0;
+            final double ve = 0.0;
+            final double vd = 0.0;
+
+            final double roll = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double pitch = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final double yaw = Math.toRadians(
+                    randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+            final Quaternion q = new Quaternion(roll, pitch, yaw);
+
+            final Matrix m = q.asInhomogeneousMatrix();
+            final CoordinateTransformation c = new CoordinateTransformation(
+                    m, FrameType.BODY_FRAME,
+                    FrameType.LOCAL_NAVIGATION_FRAME);
+
+            final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+            final BodyKinematics bodyKinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(
+                    TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
+
+            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(
+                    TIME_INTERVAL_SECONDS, oldFrame, bodyKinematics);
+
+            assertTrue(oldFrame.equals(newFrame, ABSOLUTE_ERROR));
+
+            numValid++;
+        }
+
+        assertEquals(numValid, TIMES);
+    }
+
+    @Test
+    public void testNavigateWhenFrameRemainsConstant2()
+            throws InvalidRotationMatrixException, InvalidSourceAndDestinationFrameTypeException, InertialNavigatorException {
+        final UniformRandomizer randomizer = new UniformRandomizer();
+
+        final double latitude = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double longitude = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double height = randomizer.nextDouble(MIN_HEIGHT, MAX_HEIGHT);
+
+        final double vn = 0.0;
+        final double ve = 0.0;
+        final double vd = 0.0;
+
+        final double roll = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double pitch = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final double yaw = Math.toRadians(
+                randomizer.nextDouble(MIN_ANGLE_DEGREES, MAX_ANGLE_DEGREES));
+        final Quaternion q = new Quaternion(roll, pitch, yaw);
+
+        final Matrix m = q.asInhomogeneousMatrix();
+        final CoordinateTransformation c = new CoordinateTransformation(
+                m, FrameType.BODY_FRAME,
+                FrameType.LOCAL_NAVIGATION_FRAME);
+
+        final NEDFrame oldFrame = new NEDFrame(latitude, longitude, height, vn, ve, vd, c);
+        final BodyKinematics bodyKinematics = NEDKinematicsEstimator.estimateKinematicsAndReturnNew(
+                TIME_INTERVAL_SECONDS, oldFrame, oldFrame);
+        final NEDFrame initialFrame = new NEDFrame(oldFrame);
+
+        for (int t = 0; t < TIMES; t++) {
+            final NEDFrame newFrame = NEDInertialNavigator.navigateNEDAndReturnNew(
+                    TIME_INTERVAL_SECONDS, oldFrame, bodyKinematics, ACCURACY_THRESHOLD);
+
+            assertTrue(initialFrame.equals(newFrame, ABSOLUTE_ERROR));
+
+            newFrame.copyTo(oldFrame);
+        }
     }
 }
