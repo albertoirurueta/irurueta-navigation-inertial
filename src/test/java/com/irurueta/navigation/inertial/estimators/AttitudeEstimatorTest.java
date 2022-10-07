@@ -2230,10 +2230,11 @@ public class AttitudeEstimatorTest {
         final double magneticHeading5 = AttitudeEstimator
                 .getMagneticHeading(b, rollAngle, pitchAngle);
 
-        assertEquals(magneticHeading1, magneticHeading2, ABSOLUTE_ERROR);
-        assertEquals(magneticHeading1, magneticHeading3, ABSOLUTE_ERROR);
-        assertEquals(magneticHeading1, magneticHeading4, ABSOLUTE_ERROR);
-        assertEquals(magneticHeading1, magneticHeading5, ABSOLUTE_ERROR);
+        assertTrue(Math.abs(magneticHeading1 - magneticHeading2) <= ABSOLUTE_ERROR
+                || Math.abs(2 * Math.PI + magneticHeading1 - magneticHeading2) <= ABSOLUTE_ERROR);
+        assertEquals(magneticHeading2, magneticHeading3, 0.0);
+        assertEquals(magneticHeading2, magneticHeading4, 0.0);
+        assertEquals(magneticHeading2, magneticHeading5, 0.0);
     }
 
     @Test
@@ -2302,8 +2303,8 @@ public class AttitudeEstimatorTest {
         final Angle magneticHeading9 = AttitudeEstimator
                 .getMagneticHeadingAsAngle(b, rollAngle, pitchAngle);
 
-        assertEquals(magneticHeading1,
-                magneticHeading2.getValue().doubleValue(), ABSOLUTE_ERROR);
+        assertTrue(Math.abs(magneticHeading1 - magneticHeading2.getValue().doubleValue()) <= ABSOLUTE_ERROR
+                || Math.abs(2 * Math.PI + magneticHeading1 - magneticHeading2.getValue().doubleValue()) <= ABSOLUTE_ERROR);
         assertEquals(magneticHeading2.getUnit(), AngleUnit.RADIANS);
         assertEquals(magneticHeading2, magneticHeading3);
         assertEquals(magneticHeading2, magneticHeading4);
