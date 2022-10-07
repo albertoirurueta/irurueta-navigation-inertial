@@ -1,0 +1,486 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>INSLooselyCoupledKalmanConfig.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial</a> &gt; <span class="el_source">INSLooselyCoupledKalmanConfig.java</span></div><h1>INSLooselyCoupledKalmanConfig.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial;
+
+import com.irurueta.units.Distance;
+import com.irurueta.units.DistanceConverter;
+import com.irurueta.units.DistanceUnit;
+import com.irurueta.units.Speed;
+import com.irurueta.units.SpeedConverter;
+import com.irurueta.units.SpeedUnit;
+
+import java.io.Serializable;
+import java.util.Objects;
+
+/**
+ * Contains configuration parameters (usually obtained through calibration)
+ * for INS/GNSS Loosely Coupled Kalman filter.
+ */
+public class INSLooselyCoupledKalmanConfig implements Serializable, Cloneable {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Gyro noise PSD (Power Spectral Density) expressed in squared radians per
+     * second (rad^2/s).
+     */
+    private double mGyroNoisePSD;
+
+    /**
+     * Accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3).
+     */
+    private double mAccelerometerNoisePSD;
+
+    /**
+     * Accelerometer bias random walk PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-5).
+     */
+    private double mAccelerometerBiasPSD;
+
+    /**
+     * Gyro bias random walk PSD (Power Spectral Density) expressed in (rad^2 * s^-3).
+     */
+    private double mGyroBiasPSD;
+
+    /**
+     * Position measurement noise SD (Standard Deviation) per axis expressed in
+     * meters (m).
+     */
+    private double mPositionNoiseSD;
+
+    /**
+     * Velocity measurement noise SD (Standard Deviation) per axis expressed in
+     * meters per second (m/s).
+     */
+    private double mVelocityNoiseSD;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L77">    public INSLooselyCoupledKalmanConfig() {</span>
+<span class="fc" id="L78">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed in
+     *                              squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param positionNoiseSD       position measurement noise SD (Standard Deviation)
+     *                              per axis expressed in meters (m).
+     * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
+     *                              per axis expressed in meters per second (m/s).
+     */
+    public INSLooselyCoupledKalmanConfig(final double gyroNoisePSD,
+                                         final double accelerometerNoisePSD,
+                                         final double accelerometerBiasPSD,
+                                         final double gyroBiasPSD,
+                                         final double positionNoiseSD,
+<span class="fc" id="L101">                                         final double velocityNoiseSD) {</span>
+<span class="fc" id="L102">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
+                gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+<span class="fc" id="L104">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed in
+     *                              squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param positionNoiseSD       position measurement noise SD (Standard Deviation)
+     *                              per axis.
+     * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
+     *                              per axis.
+     */
+    public INSLooselyCoupledKalmanConfig(final double gyroNoisePSD,
+                                         final double accelerometerNoisePSD,
+                                         final double accelerometerBiasPSD,
+                                         final double gyroBiasPSD,
+                                         final Distance positionNoiseSD,
+<span class="fc" id="L127">                                         final Speed velocityNoiseSD) {</span>
+<span class="fc" id="L128">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
+                gyroBiasPSD, positionNoiseSD, velocityNoiseSD);
+<span class="fc" id="L130">    }</span>
+
+    /**
+     * Copy constructor.
+     *
+     * @param input input instance to copy data from.
+     */
+<span class="fc" id="L137">    public INSLooselyCoupledKalmanConfig(final INSLooselyCoupledKalmanConfig input) {</span>
+<span class="fc" id="L138">        copyFrom(input);</span>
+<span class="fc" id="L139">    }</span>
+
+    /**
+     * Gets gyro noise PSD (Power Spectral Density) expressed in squared radians per
+     * second (rad^2/s).
+     *
+     * @return gyro noise PSD.
+     */
+    public double getGyroNoisePSD() {
+<span class="fc" id="L148">        return mGyroNoisePSD;</span>
+    }
+
+    /**
+     * Sets gyro noise PSD (Power Spectral Density) expressed in squared radians per
+     * second (rad^2/s).
+     *
+     * @param gyroNoisePSD gyro noise PSD.
+     */
+    public void setGyroNoisePSD(final double gyroNoisePSD) {
+<span class="fc" id="L158">        mGyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L159">    }</span>
+
+    /**
+     * Gets accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3).
+     *
+     * @return accelerometer noise PSD.
+     */
+    public double getAccelerometerNoisePSD() {
+<span class="fc" id="L167">        return mAccelerometerNoisePSD;</span>
+    }
+
+    /**
+     * Sets accelerometer noise PSD (Power Spectral Density) expressed in (m^2 * s^-3).
+     *
+     * @param accelerometerNoisePSD accelerometer noise PSD.
+     */
+    public void setAccelerometerNoisePSD(final double accelerometerNoisePSD) {
+<span class="fc" id="L176">        mAccelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L177">    }</span>
+
+    /**
+     * Gets accelerometer bias random walk PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-5).
+     *
+     * @return accelerometer bias random walk PSD.
+     */
+    public double getAccelerometerBiasPSD() {
+<span class="fc" id="L186">        return mAccelerometerBiasPSD;</span>
+    }
+
+    /**
+     * Sets accelerometer bias random walk PSD (Power Spectral Density) expressed
+     * in (m^2 * s^-5).
+     *
+     * @param accelerometerBiasPSD accelerometer bias random walk PSD.
+     */
+    public void setAccelerometerBiasPSD(final double accelerometerBiasPSD) {
+<span class="fc" id="L196">        mAccelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L197">    }</span>
+
+    /**
+     * Gets gyro bias random walk PSD (Power Spectral Density) expressed in
+     * (rad^2 * s^-3).
+     *
+     * @return gyro bias random walk PSD.
+     */
+    public double getGyroBiasPSD() {
+<span class="fc" id="L206">        return mGyroBiasPSD;</span>
+    }
+
+    /**
+     * Sets gyro bias random walk PSD (Power Spectral Density) expressed in
+     * (rad^2 * s^-3).
+     *
+     * @param gyroBiasPSD gyro bias random walk PSD.
+     */
+    public void setGyroBiasPSD(final double gyroBiasPSD) {
+<span class="fc" id="L216">        mGyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Gets position measurement noise SD (Standard Deviation) per axis expressed
+     * in meters (m).
+     *
+     * @return position measurement noise SD.
+     */
+    public double getPositionNoiseSD() {
+<span class="fc" id="L226">        return mPositionNoiseSD;</span>
+    }
+
+    /**
+     * Sets position measurement noise SD (Standard Deviation) per axis expressed
+     * in meters (m).
+     *
+     * @param positionNoiseSD position measurement noise SD.
+     */
+    public void setPositionNoiseSD(final double positionNoiseSD) {
+<span class="fc" id="L236">        mPositionNoiseSD = positionNoiseSD;</span>
+<span class="fc" id="L237">    }</span>
+
+    /**
+     * Gets velocity measurement noise SD (Standard Deviation) per axis expressed in
+     * meters per second (m/s).
+     *
+     * @return velocity measurement noise SD.
+     */
+    public double getVelocityNoiseSD() {
+<span class="fc" id="L246">        return mVelocityNoiseSD;</span>
+    }
+
+    /**
+     * Sets velocity measurement noise SD (Standard Deviation) per axis expressed in
+     * meters per second (m/s).
+     *
+     * @param velocityNoiseSD velocity measurement noise SD.
+     */
+    public void setVelocityNoiseSD(final double velocityNoiseSD) {
+<span class="fc" id="L256">        mVelocityNoiseSD = velocityNoiseSD;</span>
+<span class="fc" id="L257">    }</span>
+
+    /**
+     * Sets configuration parameters.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed in
+     *                              squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param positionNoiseSD       position measurement noise SD (Standard Deviation)
+     *                              per axis expressed in meters (m).
+     * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
+     *                              per axis expressed in meters per second (m/s).
+     */
+    public void setValues(final double gyroNoisePSD,
+                          final double accelerometerNoisePSD,
+                          final double accelerometerBiasPSD,
+                          final double gyroBiasPSD,
+                          final double positionNoiseSD,
+                          final double velocityNoiseSD) {
+<span class="fc" id="L281">        mGyroNoisePSD = gyroNoisePSD;</span>
+<span class="fc" id="L282">        mAccelerometerNoisePSD = accelerometerNoisePSD;</span>
+<span class="fc" id="L283">        mAccelerometerBiasPSD = accelerometerBiasPSD;</span>
+<span class="fc" id="L284">        mGyroBiasPSD = gyroBiasPSD;</span>
+<span class="fc" id="L285">        mPositionNoiseSD = positionNoiseSD;</span>
+<span class="fc" id="L286">        mVelocityNoiseSD = velocityNoiseSD;</span>
+<span class="fc" id="L287">    }</span>
+
+    /**
+     * Gets position measurement noise SD (Standard Deviation) per axis.
+     *
+     * @param result instance where position measurement noise SD will be stored.
+     */
+    public void getPositionNoiseSDAsDistance(final Distance result) {
+<span class="fc" id="L295">        result.setValue(mPositionNoiseSD);</span>
+<span class="fc" id="L296">        result.setUnit(DistanceUnit.METER);</span>
+<span class="fc" id="L297">    }</span>
+
+    /**
+     * Gets position measurement noise SD (Standard Deviation) per axis.
+     *
+     * @return position measurement noise SD.
+     */
+    public Distance getPositionNoiseSDAsDistance() {
+<span class="fc" id="L305">        return new Distance(mPositionNoiseSD, DistanceUnit.METER);</span>
+    }
+
+    /**
+     * Sets position measurement noise SD (Standard Deviation) per axis.
+     *
+     * @param positionNoiseSD position measurement noise SD.
+     */
+    public void setPositionNoiseSD(final Distance positionNoiseSD) {
+<span class="fc" id="L314">        mPositionNoiseSD = DistanceConverter.convert(</span>
+<span class="fc" id="L315">                positionNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L316">                positionNoiseSD.getUnit(), DistanceUnit.METER);</span>
+<span class="fc" id="L317">    }</span>
+
+    /**
+     * Gets velocity measurement noise SD (Standard Deviation) per axis.
+     *
+     * @param result instance where velocity measurement noise SD will be stored.
+     */
+    public void getVelocityNoiseSDAsSpeed(final Speed result) {
+<span class="fc" id="L325">        result.setValue(mVelocityNoiseSD);</span>
+<span class="fc" id="L326">        result.setUnit(SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L327">    }</span>
+
+    /**
+     * Gets velocity measurement noise SD (Standard Deviation) per axis.
+     *
+     * @return velocity measurement noise SD per axis.
+     */
+    public Speed getVelocityNoiseSDAsSpeed() {
+<span class="fc" id="L335">        return new Speed(mVelocityNoiseSD, SpeedUnit.METERS_PER_SECOND);</span>
+    }
+
+    /**
+     * Sets velocity measurement noise SD (Standard Deviation) per axis.
+     *
+     * @param velocityNoiseSD velocity measurement noise SD per axis.
+     */
+    public void setVelocityNoiseSD(final Speed velocityNoiseSD) {
+<span class="fc" id="L344">        mVelocityNoiseSD = SpeedConverter.convert(</span>
+<span class="fc" id="L345">                velocityNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L346">                velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND);</span>
+<span class="fc" id="L347">    }</span>
+
+    /**
+     * Sets configuration parameters.
+     *
+     * @param gyroNoisePSD          gyro noise PSD (Power Spectral Density) expressed in
+     *                              squared radians per second (rad^2/s).
+     * @param accelerometerNoisePSD accelerometer noise PSD (Power Spectral Density)
+     *                              expressed in (m^2 * s^-3).
+     * @param accelerometerBiasPSD  accelerometer bias random walk PSD (Power Spectral
+     *                              Density) expressed in (m^2 * s^-5).
+     * @param gyroBiasPSD           gyro bias random walk PSD (Power Spectral Density)
+     *                              expressed in (rad^2 * s^-3).
+     * @param positionNoiseSD       position measurement noise SD (Standard Deviation)
+     *                              per axis.
+     * @param velocityNoiseSD       velocity measurement noise SD (Standard Deviation)
+     *                              per axis.
+     */
+    public void setValues(final double gyroNoisePSD,
+                          final double accelerometerNoisePSD,
+                          final double accelerometerBiasPSD,
+                          final double gyroBiasPSD,
+                          final Distance positionNoiseSD,
+                          final Speed velocityNoiseSD) {
+<span class="fc" id="L371">        setValues(gyroNoisePSD, accelerometerNoisePSD, accelerometerBiasPSD,</span>
+                gyroBiasPSD,
+<span class="fc" id="L373">                DistanceConverter.convert(positionNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L374">                        positionNoiseSD.getUnit(), DistanceUnit.METER),</span>
+<span class="fc" id="L375">                SpeedConverter.convert(velocityNoiseSD.getValue().doubleValue(),</span>
+<span class="fc" id="L376">                        velocityNoiseSD.getUnit(), SpeedUnit.METERS_PER_SECOND));</span>
+<span class="fc" id="L377">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final INSLooselyCoupledKalmanConfig output) {
+<span class="fc" id="L385">        output.mGyroNoisePSD = mGyroNoisePSD;</span>
+<span class="fc" id="L386">        output.mAccelerometerNoisePSD = mAccelerometerNoisePSD;</span>
+<span class="fc" id="L387">        output.mAccelerometerBiasPSD = mAccelerometerBiasPSD;</span>
+<span class="fc" id="L388">        output.mGyroBiasPSD = mGyroBiasPSD;</span>
+<span class="fc" id="L389">        output.mPositionNoiseSD = mPositionNoiseSD;</span>
+<span class="fc" id="L390">        output.mVelocityNoiseSD = mVelocityNoiseSD;</span>
+<span class="fc" id="L391">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final INSLooselyCoupledKalmanConfig input) {
+<span class="fc" id="L399">        mGyroNoisePSD = input.mGyroNoisePSD;</span>
+<span class="fc" id="L400">        mAccelerometerNoisePSD = input.mAccelerometerNoisePSD;</span>
+<span class="fc" id="L401">        mAccelerometerBiasPSD = input.mAccelerometerBiasPSD;</span>
+<span class="fc" id="L402">        mGyroBiasPSD = input.mGyroBiasPSD;</span>
+<span class="fc" id="L403">        mPositionNoiseSD = input.mPositionNoiseSD;</span>
+<span class="fc" id="L404">        mVelocityNoiseSD = input.mVelocityNoiseSD;</span>
+<span class="fc" id="L405">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L415">        return Objects.hash(mGyroNoisePSD, mAccelerometerNoisePSD,</span>
+<span class="fc" id="L416">                mAccelerometerBiasPSD, mGyroBiasPSD, mPositionNoiseSD,</span>
+<span class="fc" id="L417">                mVelocityNoiseSD);</span>
+    }
+
+    /**
+     * Checks if provided object is a INSLooselyCoupledKalmanConfig having exactly
+     * the same contents as this instance.
+     *
+     * @param obj Object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L429" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L430">            return true;</span>
+        }
+<span class="fc bfc" id="L432" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L433">            return false;</span>
+        }
+<span class="fc" id="L435">        final INSLooselyCoupledKalmanConfig other = (INSLooselyCoupledKalmanConfig) obj;</span>
+<span class="fc" id="L436">        return equals(other);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(final INSLooselyCoupledKalmanConfig other) {
+<span class="fc" id="L446">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum difference allowed for values.
+     * @return true if both instances are considered to be equal (up to provided threshold),
+     * false otherwise.
+     */
+    public boolean equals(final INSLooselyCoupledKalmanConfig other,
+                          final double threshold) {
+<span class="fc bfc" id="L460" title="All 2 branches covered.">        if (other == null) {</span>
+<span class="fc" id="L461">            return false;</span>
+        }
+
+<span class="fc bfc" id="L464" title="All 2 branches covered.">        return Math.abs(mGyroNoisePSD - other.mGyroNoisePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L465" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerometerNoisePSD - other.mAccelerometerNoisePSD) &lt;= threshold</span>
+<span class="pc bpc" id="L466" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mAccelerometerBiasPSD - other.mAccelerometerBiasPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L467" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mGyroBiasPSD - other.mGyroBiasPSD) &lt;= threshold</span>
+<span class="pc bpc" id="L468" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mPositionNoiseSD - other.mPositionNoiseSD) &lt;= threshold</span>
+<span class="pc bpc" id="L469" title="1 of 2 branches missed.">                &amp;&amp; Math.abs(mVelocityNoiseSD - other.mVelocityNoiseSD) &lt;= threshold;</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L480">        final INSLooselyCoupledKalmanConfig result =</span>
+<span class="fc" id="L481">                (INSLooselyCoupledKalmanConfig) super.clone();</span>
+<span class="fc" id="L482">        copyTo(result);</span>
+<span class="fc" id="L483">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

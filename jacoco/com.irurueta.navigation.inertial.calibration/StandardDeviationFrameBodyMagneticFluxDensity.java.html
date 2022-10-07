@@ -1,0 +1,903 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>StandardDeviationFrameBodyMagneticFluxDensity.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration</a> &gt; <span class="el_source">StandardDeviationFrameBodyMagneticFluxDensity.java</span></div><h1>StandardDeviationFrameBodyMagneticFluxDensity.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2020 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration;
+
+import com.irurueta.navigation.frames.ECEFFrame;
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+
+import java.util.Date;
+import java.util.GregorianCalendar;
+import java.util.Objects;
+
+/**
+ * Extension of FrameBodyMagneticFluxDensity containing standard deviations of
+ * measured magnetic flux densities besides their corresponding frame (position
+ * and orientation) and timestamp where measurement was made.
+ */
+public class StandardDeviationFrameBodyMagneticFluxDensity extends
+        FrameBodyMagneticFluxDensity {
+
+    /**
+     * Serialization version. This is used to ensure compatibility of deserialization of permanently stored serialized
+     * instances.
+     */
+    private static final long serialVersionUID = 0L;
+
+    /**
+     * Standard deviation of measured magnetic flux density expressed in Teslas
+     * (T).
+     */
+    private double mMagneticFluxDensityStandardDeviation;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L49">    public StandardDeviationFrameBodyMagneticFluxDensity() {</span>
+<span class="fc" id="L50">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L59">        super(magneticFluxDensity);</span>
+<span class="fc" id="L60">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame) {
+<span class="fc" id="L69">        super(frame);</span>
+<span class="fc" id="L70">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it
+     *              will be converted to its corresponding ECEF frame.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame) {
+<span class="fc" id="L80">        super(frame);</span>
+<span class="fc" id="L81">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame) {
+<span class="fc" id="L92">        super(magneticFluxDensity, frame);</span>
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame) {
+<span class="fc" id="L106">        super(magneticFluxDensity, frame);</span>
+<span class="fc" id="L107">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param year time expressed as decimal year.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final double year) {
+<span class="fc" id="L116">        super(year);</span>
+<span class="fc" id="L117">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param year                time expressed as decimal year.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final double year) {
+<span class="fc" id="L128">        super(magneticFluxDensity, year);</span>
+<span class="fc" id="L129">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     * @param year  time expressed as decimal year.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame,
+            final double year) {
+<span class="fc" id="L140">        super(frame, year);</span>
+<span class="fc" id="L141">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it
+     *              will be converted to its corresponding ECEF frame.
+     * @param year  time expressed as decimal year.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame, final double year) {
+<span class="fc" id="L152">        super(frame, year);</span>
+<span class="fc" id="L153">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     * @param year                time expressed as decimal year.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame,
+            final double year) {
+<span class="fc" id="L166">        super(magneticFluxDensity, frame, year);</span>
+<span class="fc" id="L167">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     * @param year                time expressed as decimal year.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame,
+            final double year) {
+<span class="fc" id="L182">        super(magneticFluxDensity, frame, year);</span>
+<span class="fc" id="L183">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param time a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final Date time) {
+<span class="fc" id="L192">        super(time);</span>
+<span class="fc" id="L193">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param time                a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final Date time) {
+<span class="fc" id="L204">        super(magneticFluxDensity, time);</span>
+<span class="fc" id="L205">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current ECEF frame associated to measurement.
+     * @param time  a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame,
+            final Date time) {
+<span class="fc" id="L216">        super(frame, time);</span>
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame current NED frame associated to measurement. Internally it
+     *              will be converted to its corresponding ECEF frame.
+     * @param time  a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame, final Date time) {
+<span class="fc" id="L228">        super(frame, time);</span>
+<span class="fc" id="L229">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     * @param time                a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame,
+            final Date time) {
+<span class="fc" id="L242">        super(magneticFluxDensity, frame, time);</span>
+<span class="fc" id="L243">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     * @param time                a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame,
+            final Date time) {
+<span class="fc" id="L258">        super(magneticFluxDensity, frame, time);</span>
+<span class="fc" id="L259">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param calendar calendar containing a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final GregorianCalendar calendar) {
+<span class="fc" id="L268">        super(calendar);</span>
+<span class="fc" id="L269">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param calendar            calendar containing a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final GregorianCalendar calendar) {
+<span class="fc" id="L280">        super(magneticFluxDensity, calendar);</span>
+<span class="fc" id="L281">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame    current ECEF frame associated to measurement.
+     * @param calendar calendar containing a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame,
+            final GregorianCalendar calendar) {
+<span class="fc" id="L292">        super(frame, calendar);</span>
+<span class="fc" id="L293">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame    current NED frame associated to measurement. Internally it
+     *                 will be converted to its corresponding ECEF frame.
+     * @param calendar calendar containing a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame, final GregorianCalendar calendar) {
+<span class="fc" id="L304">        super(frame, calendar);</span>
+<span class="fc" id="L305">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current ECEF frame associated to measurement.
+     * @param calendar            calendar containing a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame,
+            final GregorianCalendar calendar) {
+<span class="fc" id="L318">        super(magneticFluxDensity, frame, calendar);</span>
+<span class="fc" id="L319">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity current body magnetic flux density.
+     * @param frame               current NED frame associated to measurement.
+     *                            Internally it will be converted to its
+     *                            corresponding ECEF frame.
+     * @param calendar            calendar containing a timestamp.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame,
+            final GregorianCalendar calendar) {
+<span class="fc" id="L334">        super(magneticFluxDensity, frame, calendar);</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param year                                 time expressed as decimal
+     *                                             year.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final double year,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L351">        super(year);</span>
+<span class="fc" id="L352">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L354">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param year                                 time expressed as decimal
+     *                                             year.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final double year,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L373">        super(magneticFluxDensity, year);</span>
+<span class="fc" id="L374">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L376">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                                current ECEF frame
+     *                                             associated to measurement.
+     * @param year                                 time expressed as decimal
+     *                                             year.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame,
+            final double year,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L395">        super(frame, year);</span>
+<span class="fc" id="L396">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L398">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                                current NED frame
+     *                                             associated to measurement.
+     *                                             Internally it will be
+     *                                             converted to its
+     *                                             corresponding ECEF frame.
+     * @param year                                 time expressed as decimal
+     *                                             year.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame, final double year,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L419">        super(frame, year);</span>
+<span class="fc" id="L420">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L422">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param frame                                current ECEF frame
+     *                                             associated to measurement.
+     * @param year                                 time expressed as decimal
+     *                                             year.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame,
+            final double year,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L444">        super(magneticFluxDensity, frame, year);</span>
+<span class="fc" id="L445">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L447">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param frame                                current NED frame
+     *                                             associated to measurement.
+     *                                             Internally it will be
+     *                                             converted to its
+     *                                             corresponding ECEF frame.
+     * @param year                                 time expressed as decimal year.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame,
+            final double year,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L471">        super(magneticFluxDensity, frame, year);</span>
+<span class="fc" id="L472">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L474">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param time                                 a timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final Date time,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L489">        super(time);</span>
+<span class="fc" id="L490">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L492">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux density.
+     * @param time                                 a timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final Date time,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L509">        super(magneticFluxDensity, time);</span>
+<span class="fc" id="L510">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L512">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                                current ECEF frame
+     *                                             associated to measurement.
+     * @param time                                 a timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame,
+            final Date time,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L530">        super(frame, time);</span>
+<span class="fc" id="L531">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L533">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                                current NED frame associated
+     *                                             to measurement. Internally
+     *                                             it will be converted to its
+     *                                             corresponding ECEF frame.
+     * @param time                                 a timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame, final Date time,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L552">        super(frame, time);</span>
+<span class="fc" id="L553">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L555">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param frame                                current ECEF frame
+     *                                             associated to measurement.
+     * @param time                                 a timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame,
+            final Date time,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L576">        super(magneticFluxDensity, frame, time);</span>
+<span class="fc" id="L577">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L579">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param frame                                current NED frame
+     *                                             associated to measurement.
+     *                                             Internally it will be
+     *                                             converted to its
+     *                                             corresponding ECEF frame.
+     * @param time                                 a timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame,
+            final Date time,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L603">        super(magneticFluxDensity, frame, time);</span>
+<span class="fc" id="L604">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L606">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param calendar                             calendar containing a
+     *                                             timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final GregorianCalendar calendar,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L622">        super(calendar);</span>
+<span class="fc" id="L623">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L625">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param calendar                             calendar containing a
+     *                                             timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final GregorianCalendar calendar,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L644">        super(magneticFluxDensity, calendar);</span>
+<span class="fc" id="L645">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L647">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                                current ECEF frame
+     *                                             associated to measurement.
+     * @param calendar                             calendar containing a
+     *                                             timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final ECEFFrame frame,
+            final GregorianCalendar calendar,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L666">        super(frame, calendar);</span>
+<span class="fc" id="L667">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L669">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param frame                                current NED frame
+     *                                             associated to measurement.
+     *                                             Internally it will be
+     *                                             converted to its
+     *                                             corresponding ECEF frame.
+     * @param calendar                             calendar containing a
+     *                                             timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final NEDFrame frame, final GregorianCalendar calendar,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L690">        super(frame, calendar);</span>
+<span class="fc" id="L691">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L693">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param frame                                current ECEF frame
+     *                                             associated to measurement.
+     * @param calendar                             calendar containing a
+     *                                             timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final ECEFFrame frame,
+            final GregorianCalendar calendar,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L715">        super(magneticFluxDensity, frame, calendar);</span>
+<span class="fc" id="L716">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L718">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param magneticFluxDensity                  current body magnetic flux
+     *                                             density.
+     * @param frame                                current NED frame
+     *                                             associated to measurement.
+     *                                             Internally it will be
+     *                                             converted to its
+     *                                             corresponding ECEF frame.
+     * @param calendar                             calendar containing a
+     *                                             timestamp.
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided standard deviation is
+     *                                  negative.
+     */
+    public StandardDeviationFrameBodyMagneticFluxDensity(
+            final BodyMagneticFluxDensity magneticFluxDensity,
+            final NEDFrame frame,
+            final GregorianCalendar calendar,
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc" id="L743">        super(magneticFluxDensity, frame, calendar);</span>
+<span class="fc" id="L744">        setMagneticFluxDensityStandardDeviation(</span>
+                magneticFluxDensityStandardDeviation);
+<span class="fc" id="L746">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param input instance to copy data from.
+     */
+<span class="fc" id="L753">    public StandardDeviationFrameBodyMagneticFluxDensity(final StandardDeviationFrameBodyMagneticFluxDensity input) {</span>
+<span class="fc" id="L754">        copyFrom(input);</span>
+<span class="fc" id="L755">    }</span>
+
+    /**
+     * Gets standard deviation of measured magnetic flux density expressed in
+     * Teslas (T).
+     *
+     * @return standard deviation of measured magnetic flux density.
+     */
+    public double getMagneticFluxDensityStandardDeviation() {
+<span class="fc" id="L764">        return mMagneticFluxDensityStandardDeviation;</span>
+    }
+
+    /**
+     * Sets standard deviation of measured magnetic flux density expressed in
+     * Teslas (T).
+     *
+     * @param magneticFluxDensityStandardDeviation standard deviation of
+     *                                             measured magnetic flux
+     *                                             density.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    public void setMagneticFluxDensityStandardDeviation(
+            final double magneticFluxDensityStandardDeviation) {
+<span class="fc bfc" id="L778" title="All 2 branches covered.">        if (magneticFluxDensityStandardDeviation &lt; 0.0) {</span>
+<span class="fc" id="L779">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L782">        mMagneticFluxDensityStandardDeviation =</span>
+                magneticFluxDensityStandardDeviation;
+<span class="fc" id="L784">    }</span>
+
+    /**
+     * Copies data of provided instance into this instance.
+     *
+     * @param input instance to copy data from.
+     */
+    public void copyFrom(final StandardDeviationFrameBodyMagneticFluxDensity input) {
+<span class="fc" id="L792">        super.copyFrom(input);</span>
+
+<span class="fc" id="L794">        mMagneticFluxDensityStandardDeviation = input.mMagneticFluxDensityStandardDeviation;</span>
+<span class="fc" id="L795">    }</span>
+
+    /**
+     * Copies this instance data into provided instance.
+     *
+     * @param output destination instance where data will be copied to.
+     */
+    public void copyTo(final StandardDeviationFrameBodyMagneticFluxDensity output) {
+<span class="fc" id="L803">        super.copyTo(output);</span>
+
+<span class="fc" id="L805">        output.mMagneticFluxDensityStandardDeviation = mMagneticFluxDensityStandardDeviation;</span>
+<span class="fc" id="L806">    }</span>
+
+    /**
+     * Computes and returns hash code for this instance. Hash codes are almost unique
+     * values that are useful for fast classification and storage of objects in collections.
+     *
+     * @return Hash code.
+     */
+    @Override
+    public int hashCode() {
+<span class="fc" id="L816">        return Objects.hash(super.hashCode(), mMagneticFluxDensityStandardDeviation);</span>
+    }
+
+    /**
+     * Checks if provided instance has exactly the same contents as this instance.
+     *
+     * @param other instance to be compared.
+     * @return true if both instances are considered to be equal, false otherwise.
+     */
+    public boolean equals(
+            final StandardDeviationFrameBodyMagneticFluxDensity other) {
+<span class="fc" id="L827">        return equals(other, 0.0);</span>
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    public boolean equals(
+            final StandardDeviationFrameBodyMagneticFluxDensity other,
+            final double threshold) {
+<span class="fc bfc" id="L842" title="All 2 branches covered.">        return super.equals(other, threshold) &amp;&amp;</span>
+<span class="pc bpc" id="L843" title="1 of 2 branches missed.">                Math.abs(mMagneticFluxDensityStandardDeviation</span>
+                        - other.mMagneticFluxDensityStandardDeviation) &lt;= threshold;
+    }
+
+    /**
+     * Checks if provided instance has contents similar to this instance up to provided
+     * threshold value.
+     *
+     * @param other     instance to be compared.
+     * @param threshold maximum allowed difference between magnetic flux density and
+     *                  frame values.
+     * @return true if both instances are considered to be equal (up to provided
+     * threshold), false otherwise.
+     */
+    @Override
+    public boolean equals(final FrameBodyMagneticFluxDensity other, final double threshold) {
+<span class="nc bnc" id="L859" title="All 2 branches missed.">        if (this == other) {</span>
+<span class="nc" id="L860">            return true;</span>
+        }
+<span class="nc bnc" id="L862" title="All 4 branches missed.">        if (other == null || getClass() != other.getClass()) {</span>
+<span class="nc" id="L863">            return false;</span>
+        }
+<span class="nc" id="L865">        return super.equals(other, threshold);</span>
+    }
+
+    /**
+     * Checks if provided object is a
+     * StandardDeviationFrameBodyMagneticFluxDensity instance
+     * having exactly the same contents as this instance.
+     *
+     * @param obj object to be compared.
+     * @return true if both objects are considered to be equal, false otherwise.
+     */
+    @Override
+    public boolean equals(final Object obj) {
+<span class="fc bfc" id="L878" title="All 2 branches covered.">        if (this == obj) {</span>
+<span class="fc" id="L879">            return true;</span>
+        }
+<span class="fc bfc" id="L881" title="All 4 branches covered.">        if (obj == null || getClass() != obj.getClass()) {</span>
+<span class="fc" id="L882">            return false;</span>
+        }
+<span class="fc" id="L884">        final StandardDeviationFrameBodyMagneticFluxDensity other =</span>
+                (StandardDeviationFrameBodyMagneticFluxDensity) obj;
+<span class="fc" id="L886">        return equals(other);</span>
+    }
+
+    /**
+     * Makes a copy of this instance.
+     *
+     * @return a copy of this instance.
+     * @throws CloneNotSupportedException if clone fails for some reason.
+     */
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+<span class="fc" id="L897">        final StandardDeviationFrameBodyMagneticFluxDensity result =</span>
+<span class="fc" id="L898">                (StandardDeviationFrameBodyMagneticFluxDensity) super.clone();</span>
+<span class="fc" id="L899">        copyTo(result);</span>
+<span class="fc" id="L900">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

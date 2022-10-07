@@ -1,0 +1,3704 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseMagneticFluxDensityNormMagnetometerCalibrator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.calibration.magnetometer</a> &gt; <span class="el_source">BaseMagneticFluxDensityNormMagnetometerCalibrator.java</span></div><h1>BaseMagneticFluxDensityNormMagnetometerCalibrator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2022 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.calibration.magnetometer;
+
+import com.irurueta.algebra.AlgebraException;
+import com.irurueta.algebra.Matrix;
+import com.irurueta.algebra.Utils;
+import com.irurueta.algebra.WrongSizeException;
+import com.irurueta.navigation.LockedException;
+import com.irurueta.navigation.NotReadyException;
+import com.irurueta.navigation.inertial.BodyKinematics;
+import com.irurueta.navigation.inertial.BodyMagneticFluxDensity;
+import com.irurueta.navigation.inertial.calibration.CalibrationException;
+import com.irurueta.navigation.inertial.calibration.MagneticFluxDensityTriad;
+import com.irurueta.navigation.inertial.calibration.StandardDeviationBodyMagneticFluxDensity;
+import com.irurueta.numerical.EvaluationException;
+import com.irurueta.numerical.GradientEstimator;
+import com.irurueta.numerical.MultiDimensionFunctionEvaluatorListener;
+import com.irurueta.numerical.fitting.FittingException;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFitter;
+import com.irurueta.numerical.fitting.LevenbergMarquardtMultiDimensionFunctionEvaluator;
+import com.irurueta.units.MagneticFluxDensity;
+import com.irurueta.units.MagneticFluxDensityConverter;
+import com.irurueta.units.MagneticFluxDensityUnit;
+
+import java.util.Collection;
+
+/**
+ * Abstract class to estimate magnetometer hard-iron biases, cross couplings and scaling factors.
+ * This calibrator uses Levenberg-Marquardt to find a minimum least squared
+ * error solution.
+ * &lt;p&gt;
+ * To use this calibrator at least 10 measurements taken at a single unknown position and unknown orientations
+ * when common z-axis is assumed, otherwise at least 13 measurements are required.
+ * &lt;p&gt;
+ * Measured magnetic flux density is assumed to follow the model shown below:
+ * &lt;pre&gt;
+ *     mBmeas = bm + (I + Mm) * mBtrue + w
+ * &lt;/pre&gt;
+ * Where:
+ * - mBmeas is the measured magnetic flux density. This is a 3x1 vector.
+ * - bm is magnetometer hard-iron bias. Ideally, on a perfect magnetometer,
+ * this should be a 3x1 zero vector.
+ * - I is the 3x3 identity matrix.
+ * - Mm is the 3x3 soft-iron matrix containing cross-couplings and scaling
+ * factors. Ideally, on a perfect magnetometer, this should be a 3x3 zero
+ * matrix.
+ * - mBtrue is ground-truth magnetic flux density. This is a 3x1 vector.
+ * - w is measurement noise. This is a 3x1 vector.
+ * Notice that this calibrator assumes that all measurements are taken in a short span of time,
+ * where Earth magnetic field can be assumed to be constant.
+ *
+ * @param &lt;C&gt; Calibrator type.
+ * @param &lt;L&gt; Listener type.
+ */
+public abstract class BaseMagneticFluxDensityNormMagnetometerCalibrator&lt;C extends BaseMagneticFluxDensityNormMagnetometerCalibrator&lt;?, ?&gt;,
+        L extends BaseMagneticFluxDensityNormMagnetometerCalibratorListener&lt;C&gt;&gt; implements
+        MagnetometerNonLinearCalibrator, UnknownHardIronNonLinearMagnetometerCalibrator,
+        UnorderedStandardDeviationBodyMagneticFluxDensityMagnetometerCalibrator {
+
+    /**
+     * Indicates whether by default a common z-axis is assumed for the accelerometer,
+     * gyroscope and magnetometer.
+     */
+    public static final boolean DEFAULT_USE_COMMON_Z_AXIS = false;
+
+    /**
+     * Number of unknowns when common z-axis is assumed for the accelerometer,
+     * gyroscope and magnetometer.
+     */
+    private static final int COMMON_Z_AXIS_UNKNOWNS = 9;
+
+    /**
+     * Number of unknowns for the general case.
+     */
+    private static final int GENERAL_UNKNOWNS = 12;
+
+    /**
+     * Required minimum number of measurements when common z-axis is assumed.
+     */
+    public static final int MINIMUM_MEASUREMENTS_COMMON_Z_AXIS = COMMON_Z_AXIS_UNKNOWNS + 1;
+
+    /**
+     * Required minimum number of measurements for the general case.
+     */
+    public static final int MINIMUM_MEASUREMENTS_GENERAL = GENERAL_UNKNOWNS + 1;
+
+    /**
+     * Ground truth magnetic flux density norm to be expected at location where measurements have been made,
+     * expressed in Teslas (T).
+     */
+    protected Double mGroundTruthMagneticFluxDensityNorm;
+
+    /**
+     * Levenberg-Marquardt fitter to find a non-linear solution.
+     */
+<span class="fc" id="L110">    private final LevenbergMarquardtMultiDimensionFitter mFitter =</span>
+            new LevenbergMarquardtMultiDimensionFitter();
+
+    /**
+     * Initial x-coordinate of hard-iron bias to be used to find a solution.
+     * This is expressed in Teslas (T).
+     */
+    private double mInitialHardIronX;
+
+    /**
+     * Initial y-coordinate of hard-iron bias to be used to find a solution.
+     * This is expressed in Teslas (T).
+     */
+    private double mInitialHardIronY;
+
+    /**
+     * Initial z-coordinate of hard-iron bias to be used to find a solution.
+     * This is expressed in Teslas (T).
+     */
+    private double mInitialHardIronZ;
+
+    /**
+     * Initial x scaling factor.
+     */
+    private double mInitialSx;
+
+    /**
+     * Initial y scaling factor.
+     */
+    private double mInitialSy;
+
+    /**
+     * Initial z scaling factor.
+     */
+    private double mInitialSz;
+
+    /**
+     * Initial x-y cross coupling error.
+     */
+    private double mInitialMxy;
+
+    /**
+     * Initial x-z cross coupling error.
+     */
+    private double mInitialMxz;
+
+    /**
+     * Initial y-x cross coupling error.
+     */
+    private double mInitialMyx;
+
+    /**
+     * Initial y-z cross coupling error.
+     */
+    private double mInitialMyz;
+
+    /**
+     * Initial z-x cross coupling error.
+     */
+    private double mInitialMzx;
+
+    /**
+     * Initial z-y cross coupling error.
+     */
+    private double mInitialMzy;
+
+    /**
+     * Contains a collection of body magnetic flux density measurements taken
+     * at a given position with different unknown orientations and containing the
+     * standard deviation of magnetometer measurements.
+     */
+    private Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; mMeasurements;
+
+    /**
+     * This flag indicates whether z-axis is assumed to be common for accelerometer,
+     * gyroscope and magnetometer.
+     * When enabled, this eliminates 3 variables from Mm matrix.
+     */
+<span class="fc" id="L188">    private boolean mCommonAxisUsed = DEFAULT_USE_COMMON_Z_AXIS;</span>
+
+    /**
+     * Listener to handle events raised by this calibrator.
+     */
+    private L mListener;
+
+    /**
+     * Estimated magnetometer hard-iron biases for each magnetometer axis
+     * expressed in Teslas (T).
+     */
+    private double[] mEstimatedHardIron;
+
+    /**
+     * Estimated magnetometer soft-iron matrix containing scale factors
+     * and cross coupling errors.
+     * This is the product of matrix Tm containing cross coupling errors and Km
+     * containing scaling factors.
+     * So tat:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km
+     *          [myx   sy   myz]
+     *          [mzx   mzy  sz ]
+     * &lt;/pre&gt;
+     * Where:
+     * &lt;pre&gt;
+     *     Km = [sx 0   0 ]
+     *          [0  sy  0 ]
+     *          [0  0   sz]
+     * &lt;/pre&gt;
+     * and
+     * &lt;pre&gt;
+     *     Tm = [1          -alphaXy    alphaXz ]
+     *          [alphaYx    1           -alphaYz]
+     *          [-alphaZx   alphaZy     1       ]
+     * &lt;/pre&gt;
+     * Hence:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km =  [sx             -sy * alphaXy   sz * alphaXz ]
+     *          [myx   sy   myz]            [sx * alphaYx   sy              -sz * alphaYz]
+     *          [mzx   mzy  sz ]            [-sx * alphaZx  sy * alphaZy    sz           ]
+     * &lt;/pre&gt;
+     * This instance allows any 3x3 matrix however, typically alphaYx, alphaZx and alphaZy
+     * are considered to be zero if the accelerometer z-axis is assumed to be the same
+     * as the body z-axis. When this is assumed, myx = mzx = mzy = 0 and the Mm matrix
+     * becomes upper diagonal:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz]
+     *          [0     sy   myz]
+     *          [0     0    sz ]
+     * &lt;/pre&gt;
+     * Values of this matrix are unit-less.
+     */
+    private Matrix mEstimatedMm;
+
+    /**
+     * Estimated covariance matrix for estimated parameters.
+     */
+    private Matrix mEstimatedCovariance;
+
+    /**
+     * Estimated chi square value.
+     */
+    private double mEstimatedChiSq;
+
+    /**
+     * Estimated mean square error respect to provided measurements.
+     */
+    private double mEstimatedMse;
+
+    /**
+     * Indicates whether calibrator is running.
+     */
+    private boolean mRunning;
+
+    /**
+     * Internally holds x-coordinate of measured magnetic flux density
+     * during calibration.
+     */
+    private double mBmeasX;
+
+    /**
+     * Internally holds y-coordinate of measured magnetic flux density
+     * during calibration.
+     */
+    private double mBmeasY;
+
+    /**
+     * Internally holds z-coordinate of measured magnetic flux density
+     * during calibration.
+     */
+    private double mBmeasZ;
+
+    /**
+     * Internally holds measured magnetic flux density during calibration
+     * expressed as a column matrix.
+     */
+    private Matrix mBmeas;
+
+    /**
+     * Internally holds cross-coupling errors during calibration.
+     */
+    private Matrix mM;
+
+    /**
+     * Internally holds inverse of cross-coupling errors during calibration.
+     */
+    private Matrix mInvM;
+
+    /**
+     * Internally holds biases during calibration.
+     */
+    private Matrix mB;
+
+    /**
+     * Internally holds computed true magnetic flux density during
+     * calibration.
+     */
+    private Matrix mBtrue;
+
+    /**
+     * Constructor.
+     */
+<span class="fc" id="L311">    protected BaseMagneticFluxDensityNormMagnetometerCalibrator() {</span>
+<span class="fc" id="L312">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param listener listener to handle events raised by this calibrator.
+     */
+<span class="fc" id="L319">    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(final L listener) {</span>
+<span class="fc" id="L320">        mListener = listener;</span>
+<span class="fc" id="L321">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+<span class="fc" id="L333">            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {</span>
+<span class="fc" id="L334">        mMeasurements = measurements;</span>
+<span class="fc" id="L335">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+<span class="fc" id="L344">            final boolean commonAxisUsed) {</span>
+<span class="fc" id="L345">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L346">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+<span class="fc" id="L356">            final double[] initialHardIron) {</span>
+        try {
+<span class="fc" id="L358">            setInitialHardIron(initialHardIron);</span>
+<span class="nc" id="L359">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L361">        }</span>
+<span class="fc" id="L362">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+<span class="fc" id="L372">            final Matrix initialHardIron) {</span>
+        try {
+<span class="fc" id="L374">            setInitialHardIron(initialHardIron);</span>
+<span class="nc" id="L375">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L377">        }</span>
+<span class="fc" id="L378">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L392">        this(initialHardIron);</span>
+        try {
+<span class="fc" id="L394">            setInitialMm(initialMm);</span>
+<span class="nc" id="L395">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L397">        }</span>
+<span class="fc" id="L398">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements collection of body magnetic flux density
+     *                     measurements with standard deviation of
+     *                     magnetometer measurements taken at the same
+     *                     position with zero velocity and unknown different
+     *                     orientations.
+     * @param listener     listener to handle events raised by this calibrator.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final L listener) {
+<span class="fc" id="L413">        this(measurements);</span>
+<span class="fc" id="L414">        mListener = listener;</span>
+<span class="fc" id="L415">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L431">        this(measurements);</span>
+<span class="fc" id="L432">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L433">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements   collection of body magnetic flux density
+     *                       measurements with standard deviation of
+     *                       magnetometer measurements taken at the same
+     *                       position with zero velocity and unknown different
+     *                       orientations.
+     * @param commonAxisUsed indicates whether z-axis is assumed to be common
+     *                       for the accelerometer, gyroscope and magnetometer.
+     * @param listener       listener to handle events raised by this calibrator.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed,
+            final L listener) {
+<span class="fc" id="L451">        this(measurements, commonAxisUsed);</span>
+<span class="fc" id="L452">        mListener = listener;</span>
+<span class="fc" id="L453">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] initialHardIron) {
+<span class="fc" id="L470">        this(initialHardIron);</span>
+<span class="fc" id="L471">        mMeasurements = measurements;</span>
+<span class="fc" id="L472">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] initialHardIron,
+            final L listener) {
+<span class="fc" id="L491">        this(measurements, initialHardIron);</span>
+<span class="fc" id="L492">        mListener = listener;</span>
+<span class="fc" id="L493">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialHardIron) {
+<span class="fc" id="L512">        this(measurements, initialHardIron);</span>
+<span class="fc" id="L513">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L514">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialHardIron,
+            final L listener) {
+<span class="fc" id="L535">        this(measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L536">        mListener = listener;</span>
+<span class="fc" id="L537">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron) {
+<span class="fc" id="L554">        this(initialHardIron);</span>
+<span class="fc" id="L555">        mMeasurements = measurements;</span>
+<span class="fc" id="L556">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron,
+            final L listener) {
+<span class="fc" id="L575">        this(measurements, initialHardIron);</span>
+<span class="fc" id="L576">        mListener = listener;</span>
+<span class="fc" id="L577">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron) {
+<span class="fc" id="L596">        this(measurements, initialHardIron);</span>
+<span class="fc" id="L597">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L598">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final L listener) {
+<span class="fc" id="L619">        this(measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L620">        mListener = listener;</span>
+<span class="fc" id="L621">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L641">        this(initialHardIron, initialMm);</span>
+<span class="fc" id="L642">        mMeasurements = measurements;</span>
+<span class="fc" id="L643">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron, final Matrix initialMm,
+            final L listener) {
+<span class="fc" id="L665">        this(measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L666">        mListener = listener;</span>
+<span class="fc" id="L667">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L690">        this(measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L691">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L692">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param measurements    collection of body magnetic flux density
+     *                        measurements with standard deviation of
+     *                        magnetometer measurements taken at the same
+     *                        position with zero velocity and unknown different
+     *                        orientations.
+     * @param commonAxisUsed  indicates whether z-axis is assumed to be common
+     *                        for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @param initialMm       initial soft-iron matrix containing scale factors
+     *                        and cross coupling errors.
+     * @param listener        listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final Matrix initialMm,
+            final L listener) {
+<span class="fc" id="L717">        this(measurements, commonAxisUsed, initialHardIron,</span>
+                initialMm);
+<span class="fc" id="L719">        mListener = listener;</span>
+<span class="fc" id="L720">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+<span class="fc" id="L729">            final Double groundTruthMagneticFluxDensityNorm) {</span>
+<span class="fc" id="L730">        internalSetGroundTruthMagneticFluxDensityNorm(groundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L731">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final L listener) {
+<span class="fc" id="L743">        this(groundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L744">        mListener = listener;</span>
+<span class="fc" id="L745">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements) {
+<span class="fc" id="L761">        this(groundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L762">        mMeasurements = measurements;</span>
+<span class="fc" id="L763">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L776">        this(groundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L777">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L778">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron array does
+     *                                  not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final double[] initialHardIron) {
+<span class="fc" id="L792">        this(groundTruthMagneticFluxDensityNorm);</span>
+        try {
+<span class="fc" id="L794">            setInitialHardIron(initialHardIron);</span>
+<span class="nc" id="L795">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L797">        }</span>
+<span class="fc" id="L798">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron matrix is not
+     *                                  3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Matrix initialHardIron) {
+<span class="fc" id="L812">        this(groundTruthMagneticFluxDensityNorm);</span>
+        try {
+<span class="fc" id="L814">            setInitialHardIron(initialHardIron);</span>
+<span class="nc" id="L815">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L817">        }</span>
+<span class="fc" id="L818">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is
+     *                                  negative, or if provided hard-iron matrix is not
+     *                                  3x1 or if soft-iron matrix is not
+     *                                  3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L835">        this(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+        try {
+<span class="fc" id="L837">            setInitialMm(initialMm);</span>
+<span class="nc" id="L838">        } catch (final LockedException ignore) {</span>
+            // never happens
+<span class="fc" id="L840">        }</span>
+<span class="fc" id="L841">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final L listener) {
+<span class="fc" id="L859">        this(groundTruthMagneticFluxDensityNorm, measurements);</span>
+<span class="fc" id="L860">        mListener = listener;</span>
+<span class="fc" id="L861">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed) {
+<span class="fc" id="L880">        this(groundTruthMagneticFluxDensityNorm, measurements);</span>
+<span class="fc" id="L881">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L882">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed,
+            final L listener) {
+<span class="fc" id="L903">        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed);</span>
+<span class="fc" id="L904">        mListener = listener;</span>
+<span class="fc" id="L905">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] initialHardIron) {
+<span class="fc" id="L924">        this(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+<span class="fc" id="L925">        mMeasurements = measurements;</span>
+<span class="fc" id="L926">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final double[] initialHardIron,
+            final L listener) {
+<span class="fc" id="L947">        this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L948">        mListener = listener;</span>
+<span class="fc" id="L949">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialHardIron) {
+<span class="fc" id="L970">        this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L971">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L972">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron array does not have length 3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final double[] initialHardIron,
+            final L listener) {
+<span class="fc" id="L995">        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L996">        mListener = listener;</span>
+<span class="fc" id="L997">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron) {
+<span class="fc" id="L1016">        this(groundTruthMagneticFluxDensityNorm, initialHardIron);</span>
+<span class="fc" id="L1017">        mMeasurements = measurements;</span>
+<span class="fc" id="L1018">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron,
+            final L listener) {
+<span class="fc" id="L1039">        this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L1040">        mListener = listener;</span>
+<span class="fc" id="L1041">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron) {
+<span class="fc" id="L1062">        this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron);</span>
+<span class="fc" id="L1063">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1064">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final L listener) {
+<span class="fc" id="L1087">        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron);</span>
+<span class="fc" id="L1088">        mListener = listener;</span>
+<span class="fc" id="L1089">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron, final Matrix initialMm) {
+<span class="fc" id="L1111">        this(groundTruthMagneticFluxDensityNorm, initialHardIron, initialMm);</span>
+<span class="fc" id="L1112">        mMeasurements = measurements;</span>
+<span class="fc" id="L1113">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1 or if
+     *                                  soft-iron matrix is not 3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final Matrix initialHardIron, final Matrix initialMm,
+            final L listener) {
+<span class="fc" id="L1137">        this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L1138">        mListener = listener;</span>
+<span class="fc" id="L1139">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final Matrix initialMm) {
+<span class="fc" id="L1164">        this(groundTruthMagneticFluxDensityNorm, measurements, initialHardIron, initialMm);</span>
+<span class="fc" id="L1165">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L1166">    }</span>
+
+    /**
+     * Constructor.
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm expressed in Teslas (T).
+     * @param measurements                       collection of body magnetic flux density
+     *                                           measurements with standard deviation of
+     *                                           magnetometer measurements taken at the same
+     *                                           position with zero velocity and unknown different
+     *                                           orientations.
+     * @param commonAxisUsed                     indicates whether z-axis is assumed to be common
+     *                                           for the accelerometer, gyroscope and magnetometer.
+     * @param initialHardIron                    initial hard-iron to find a solution.
+     * @param initialMm                          initial soft-iron matrix containing scale factors
+     *                                           and cross coupling errors.
+     * @param listener                           listener to handle events raised by this calibrator.
+     * @throws IllegalArgumentException if provided magnetic flux norm value is negative,
+     *                                  or if provided hard-iron matrix is not 3x1
+     *                                  or if soft-iron matrix is not 3x3.
+     */
+    protected BaseMagneticFluxDensityNormMagnetometerCalibrator(
+            final Double groundTruthMagneticFluxDensityNorm,
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements,
+            final boolean commonAxisUsed, final Matrix initialHardIron,
+            final Matrix initialMm,
+            final L listener) {
+<span class="fc" id="L1193">        this(groundTruthMagneticFluxDensityNorm, measurements, commonAxisUsed, initialHardIron,</span>
+                initialMm);
+<span class="fc" id="L1195">        mListener = listener;</span>
+<span class="fc" id="L1196">    }</span>
+
+
+    /**
+     * Gets ground truth magnetic flux density norm to be expected at location where measurements have been made,
+     * expressed in Teslas (T).
+     *
+     * @return ground truth magnetic flux density or null.
+     */
+    public Double getGroundTruthMagneticFluxDensityNorm() {
+<span class="fc" id="L1206">        return mGroundTruthMagneticFluxDensityNorm;</span>
+    }
+
+    /**
+     * Gets ground truth magnetic flux density norm to be expected at location where measurements have been made.
+     *
+     * @return ground truth magnetic flux density or null.
+     */
+    public MagneticFluxDensity getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity() {
+<span class="fc bfc" id="L1215" title="All 2 branches covered.">        return mGroundTruthMagneticFluxDensityNorm != null</span>
+<span class="fc" id="L1216">                ? new MagneticFluxDensity(mGroundTruthMagneticFluxDensityNorm, MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets ground truth magnetic flux density norm to be expected at location where measurements have been made.
+     *
+     * @param result instance where result will be stored.
+     * @return true if ground truth magnetic flux density norm has been defined, false if it is not available yet.
+     */
+    public boolean getGroundTruthMagneticFluxDensityNormAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc bfc" id="L1226" title="All 2 branches covered.">        if (mGroundTruthMagneticFluxDensityNorm != null) {</span>
+<span class="fc" id="L1227">            result.setValue(mGroundTruthMagneticFluxDensityNorm);</span>
+<span class="fc" id="L1228">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L1229">            return true;</span>
+        } else {
+<span class="fc" id="L1231">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets initial x-coordinate of magnetometer hard-iron bias to be used
+     * to find a solution.
+     * This is expressed in Teslas (T).
+     *
+     * @return initial x-coordinate of magnetometer hard-iron bias.
+     */
+    @Override
+    public double getInitialHardIronX() {
+<span class="fc" id="L1244">        return mInitialHardIronX;</span>
+    }
+
+    /**
+     * Sets initial x-coordinate of magnetometer hard-iron bias to be used
+     * to find a solution.
+     * This is expressed in Teslas (T).
+     *
+     * @param initialHardIronX initial x-coordinate of magnetometer
+     *                         hard-iron bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIronX(final double initialHardIronX)
+            throws LockedException {
+<span class="fc bfc" id="L1259" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1260">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1262">        mInitialHardIronX = initialHardIronX;</span>
+<span class="fc" id="L1263">    }</span>
+
+    /**
+     * Gets initial y-coordinate of magnetometer hard-iron bias to be used
+     * to find a solution.
+     * This is expressed in Teslas (T).
+     *
+     * @return initial y-coordinate of magnetometer hard-iron bias.
+     */
+    @Override
+    public double getInitialHardIronY() {
+<span class="fc" id="L1274">        return mInitialHardIronY;</span>
+    }
+
+    /**
+     * Sets initial y-coordinate of magnetometer hard-iron bias to be used
+     * to find a solution.
+     * This is expressed in Teslas (T).
+     *
+     * @param initialHardIronY initial y-coordinate of magnetometer
+     *                         hard-iron bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIronY(final double initialHardIronY)
+            throws LockedException {
+<span class="fc bfc" id="L1289" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1290">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1292">        mInitialHardIronY = initialHardIronY;</span>
+<span class="fc" id="L1293">    }</span>
+
+    /**
+     * Gets initial z-coordinate of magnetometer hard-iron bias to be used
+     * to find a solution.
+     * This is expressed in Teslas (T).
+     *
+     * @return initial z-coordinate of magnetometer hard-iron bias.
+     */
+    @Override
+    public double getInitialHardIronZ() {
+<span class="fc" id="L1304">        return mInitialHardIronZ;</span>
+    }
+
+    /**
+     * Sets initial z-coordinate of magnetometer hard-iron bias to be used
+     * to find a solution.
+     * This is expressed in meters Teslas (T).
+     *
+     * @param initialHardIronZ initial z-coordinate of magnetometer
+     *                         hard-iron bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIronZ(final double initialHardIronZ)
+            throws LockedException {
+<span class="fc bfc" id="L1319" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1320">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1322">        mInitialHardIronZ = initialHardIronZ;</span>
+<span class="fc" id="L1323">    }</span>
+
+    /**
+     * Gets initial x-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @return initial x-coordinate of magnetometer hard-iron bias.
+     */
+    @Override
+    public MagneticFluxDensity getInitialHardIronXAsMagneticFluxDensity() {
+<span class="fc" id="L1333">        return new MagneticFluxDensity(mInitialHardIronX,</span>
+                MagneticFluxDensityUnit.TESLA);
+    }
+
+    /**
+     * Gets initial x-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getInitialHardIronXAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L1346">        result.setValue(mInitialHardIronX);</span>
+<span class="fc" id="L1347">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L1348">    }</span>
+
+    /**
+     * Sets initial x-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @param initialHardIronX initial x-coordinate of magnetometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIronX(final MagneticFluxDensity initialHardIronX)
+            throws LockedException {
+<span class="fc bfc" id="L1360" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1361">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1363">        mInitialHardIronX = convertMagneticFluxDensity(initialHardIronX);</span>
+<span class="fc" id="L1364">    }</span>
+
+    /**
+     * Gets initial y-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @return initial y-coordinate of magnetometer hard-iron bias.
+     */
+    @Override
+    public MagneticFluxDensity getInitialHardIronYAsMagneticFluxDensity() {
+<span class="fc" id="L1374">        return new MagneticFluxDensity(mInitialHardIronY,</span>
+                MagneticFluxDensityUnit.TESLA);
+    }
+
+    /**
+     * Gets initial y-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getInitialHardIronYAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L1387">        result.setValue(mInitialHardIronY);</span>
+<span class="fc" id="L1388">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L1389">    }</span>
+
+    /**
+     * Sets initial y-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @param initialHardIronY initial y-coordinate of magnetometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIronY(final MagneticFluxDensity initialHardIronY)
+            throws LockedException {
+<span class="fc bfc" id="L1401" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1402">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1404">        mInitialHardIronY = convertMagneticFluxDensity(initialHardIronY);</span>
+<span class="fc" id="L1405">    }</span>
+
+    /**
+     * Gets initial z-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @return initial z-coordinate of magnetometer hard-iron bias.
+     */
+    @Override
+    public MagneticFluxDensity getInitialHardIronZAsMagneticFluxDensity() {
+<span class="fc" id="L1415">        return new MagneticFluxDensity(mInitialHardIronZ,</span>
+                MagneticFluxDensityUnit.TESLA);
+    }
+
+    /**
+     * Gets initial z-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getInitialHardIronZAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc" id="L1428">        result.setValue(mInitialHardIronZ);</span>
+<span class="fc" id="L1429">        result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L1430">    }</span>
+
+    /**
+     * Sets initial z-coordinate of magnetometer hard iron bias to be used
+     * to find a solution.
+     *
+     * @param initialHardIronZ initial z-coordinate of magnetometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIronZ(final MagneticFluxDensity initialHardIronZ)
+            throws LockedException {
+<span class="fc bfc" id="L1442" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1443">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1445">        mInitialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);</span>
+<span class="fc" id="L1446">    }</span>
+
+    /**
+     * Sets initial hard-iron bias coordinates of magnetometer used to find
+     * a solution expressed in Teslas (T).
+     *
+     * @param initialHardIronX initial x-coordinate of magnetometer
+     *                         hard-iron bias.
+     * @param initialHardIronY initial y-coordinate of magnetometer
+     *                         hard-iron bias.
+     * @param initialHardIronZ initial z-coordinate of magnetometer
+     *                         hard-iron bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIron(
+            final double initialHardIronX, final double initialHardIronY,
+            final double initialHardIronZ) throws LockedException {
+<span class="fc bfc" id="L1464" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1465">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1467">        mInitialHardIronX = initialHardIronX;</span>
+<span class="fc" id="L1468">        mInitialHardIronY = initialHardIronY;</span>
+<span class="fc" id="L1469">        mInitialHardIronZ = initialHardIronZ;</span>
+<span class="fc" id="L1470">    }</span>
+
+    /**
+     * Sets initial hard iron coordinates of magnetometer used to find a solution.
+     *
+     * @param initialHardIronX initial x-coordinate of magnetometer bias.
+     * @param initialHardIronY initial y-coordinate of magnetometer bias.
+     * @param initialHardIronZ initial z-coordinate of magnetometer bias.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIron(
+            final MagneticFluxDensity initialHardIronX,
+            final MagneticFluxDensity initialHardIronY,
+            final MagneticFluxDensity initialHardIronZ) throws LockedException {
+<span class="fc bfc" id="L1485" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1486">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1489">        mInitialHardIronX = convertMagneticFluxDensity(initialHardIronX);</span>
+<span class="fc" id="L1490">        mInitialHardIronY = convertMagneticFluxDensity(initialHardIronY);</span>
+<span class="fc" id="L1491">        mInitialHardIronZ = convertMagneticFluxDensity(initialHardIronZ);</span>
+<span class="fc" id="L1492">    }</span>
+
+    /**
+     * Gets initial hard-iron used to find a solution.
+     *
+     * @return initial hard-iron.
+     */
+    @Override
+    public MagneticFluxDensityTriad getInitialHardIronAsTriad() {
+<span class="fc" id="L1501">        return new MagneticFluxDensityTriad(</span>
+                MagneticFluxDensityUnit.TESLA,
+                mInitialHardIronX, mInitialHardIronY, mInitialHardIronZ);
+    }
+
+    /**
+     * Gets initial hard-iron used to find a solution.
+     *
+     * @param result instance where result will be stored.
+     */
+    @Override
+    public void getInitialHardIronAsTriad(final MagneticFluxDensityTriad result) {
+<span class="fc" id="L1513">        result.setValueCoordinatesAndUnit(</span>
+                mInitialHardIronX, mInitialHardIronY, mInitialHardIronZ,
+                MagneticFluxDensityUnit.TESLA);
+<span class="fc" id="L1516">    }</span>
+
+    /**
+     * Sets initial hard-iron used to find a solution.
+     *
+     * @param initialHardIron initial hard-iron to be set.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialHardIron(final MagneticFluxDensityTriad initialHardIron)
+            throws LockedException {
+<span class="fc bfc" id="L1527" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1528">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L1531">        mInitialHardIronX = convertMagneticFluxDensity(</span>
+<span class="fc" id="L1532">                initialHardIron.getValueX(), initialHardIron.getUnit());</span>
+<span class="fc" id="L1533">        mInitialHardIronY = convertMagneticFluxDensity(</span>
+<span class="fc" id="L1534">                initialHardIron.getValueY(), initialHardIron.getUnit());</span>
+<span class="fc" id="L1535">        mInitialHardIronZ = convertMagneticFluxDensity(</span>
+<span class="fc" id="L1536">                initialHardIron.getValueZ(), initialHardIron.getUnit());</span>
+<span class="fc" id="L1537">    }</span>
+
+    /**
+     * Gets initial x scaling factor.
+     *
+     * @return initial x scaling factor.
+     */
+    @Override
+    public double getInitialSx() {
+<span class="fc" id="L1546">        return mInitialSx;</span>
+    }
+
+    /**
+     * Sets initial x scaling factor.
+     *
+     * @param initialSx initial x scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSx(final double initialSx)
+            throws LockedException {
+<span class="fc bfc" id="L1558" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1559">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1561">        mInitialSx = initialSx;</span>
+<span class="fc" id="L1562">    }</span>
+
+    /**
+     * Gets initial y scaling factor.
+     *
+     * @return initial y scaling factor.
+     */
+    @Override
+    public double getInitialSy() {
+<span class="fc" id="L1571">        return mInitialSy;</span>
+    }
+
+    /**
+     * Sets initial y scaling factor.
+     *
+     * @param initialSy initial y scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSy(final double initialSy)
+            throws LockedException {
+<span class="fc bfc" id="L1583" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1584">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1586">        mInitialSy = initialSy;</span>
+<span class="fc" id="L1587">    }</span>
+
+    /**
+     * Gets initial z scaling factor.
+     *
+     * @return initial z scaling factor.
+     */
+    @Override
+    public double getInitialSz() {
+<span class="fc" id="L1596">        return mInitialSz;</span>
+    }
+
+    /**
+     * Sets initial z scaling factor.
+     *
+     * @param initialSz initial z scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialSz(final double initialSz)
+            throws LockedException {
+<span class="fc bfc" id="L1608" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1609">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1611">        mInitialSz = initialSz;</span>
+<span class="fc" id="L1612">    }</span>
+
+    /**
+     * Gets initial x-y cross coupling error.
+     *
+     * @return initial x-y cross coupling error.
+     */
+    @Override
+    public double getInitialMxy() {
+<span class="fc" id="L1621">        return mInitialMxy;</span>
+    }
+
+    /**
+     * Sets initial x-y cross coupling error.
+     *
+     * @param initialMxy initial x-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMxy(final double initialMxy)
+            throws LockedException {
+<span class="fc bfc" id="L1633" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1634">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1636">        mInitialMxy = initialMxy;</span>
+<span class="fc" id="L1637">    }</span>
+
+    /**
+     * Gets initial x-z cross coupling error.
+     *
+     * @return initial x-z cross coupling error.
+     */
+    @Override
+    public double getInitialMxz() {
+<span class="fc" id="L1646">        return mInitialMxz;</span>
+    }
+
+    /**
+     * Sets initial x-z cross coupling error.
+     *
+     * @param initialMxz initial x-z cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMxz(final double initialMxz)
+            throws LockedException {
+<span class="fc bfc" id="L1658" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1659">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1661">        mInitialMxz = initialMxz;</span>
+<span class="fc" id="L1662">    }</span>
+
+    /**
+     * Gets initial y-x cross coupling error.
+     *
+     * @return initial y-x cross coupling error.
+     */
+    @Override
+    public double getInitialMyx() {
+<span class="fc" id="L1671">        return mInitialMyx;</span>
+    }
+
+    /**
+     * Sets initial y-x cross coupling error.
+     *
+     * @param initialMyx initial y-x cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMyx(final double initialMyx)
+            throws LockedException {
+<span class="fc bfc" id="L1683" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1684">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1686">        mInitialMyx = initialMyx;</span>
+<span class="fc" id="L1687">    }</span>
+
+    /**
+     * Gets initial y-z cross coupling error.
+     *
+     * @return initial y-z cross coupling error.
+     */
+    @Override
+    public double getInitialMyz() {
+<span class="fc" id="L1696">        return mInitialMyz;</span>
+    }
+
+    /**
+     * Sets initial y-z cross coupling error.
+     *
+     * @param initialMyz initial y-z cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMyz(final double initialMyz)
+            throws LockedException {
+<span class="fc bfc" id="L1708" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1709">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1711">        mInitialMyz = initialMyz;</span>
+<span class="fc" id="L1712">    }</span>
+
+    /**
+     * Gets initial z-x cross coupling error.
+     *
+     * @return initial z-x cross coupling error.
+     */
+    @Override
+    public double getInitialMzx() {
+<span class="fc" id="L1721">        return mInitialMzx;</span>
+    }
+
+    /**
+     * Sets initial z-x cross coupling error.
+     *
+     * @param initialMzx initial z-x cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMzx(final double initialMzx)
+            throws LockedException {
+<span class="fc bfc" id="L1733" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1734">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1736">        mInitialMzx = initialMzx;</span>
+<span class="fc" id="L1737">    }</span>
+
+    /**
+     * Gets initial z-y cross coupling error.
+     *
+     * @return initial z-y cross coupling error.
+     */
+    @Override
+    public double getInitialMzy() {
+<span class="fc" id="L1746">        return mInitialMzy;</span>
+    }
+
+    /**
+     * Sets initial z-y cross coupling error.
+     *
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMzy(final double initialMzy)
+            throws LockedException {
+<span class="fc bfc" id="L1758" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1759">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1761">        mInitialMzy = initialMzy;</span>
+<span class="fc" id="L1762">    }</span>
+
+    /**
+     * Sets initial scaling factors.
+     *
+     * @param initialSx initial x scaling factor.
+     * @param initialSy initial y scaling factor.
+     * @param initialSz initial z scaling factor.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialScalingFactors(
+            final double initialSx,
+            final double initialSy,
+            final double initialSz)
+            throws LockedException {
+<span class="fc bfc" id="L1778" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1779">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1781">        mInitialSx = initialSx;</span>
+<span class="fc" id="L1782">        mInitialSy = initialSy;</span>
+<span class="fc" id="L1783">        mInitialSz = initialSz;</span>
+<span class="fc" id="L1784">    }</span>
+
+    /**
+     * Sets initial cross coupling errors.
+     *
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialCrossCouplingErrors(
+            final double initialMxy,
+            final double initialMxz,
+            final double initialMyx,
+            final double initialMyz,
+            final double initialMzx,
+            final double initialMzy)
+            throws LockedException {
+<span class="fc bfc" id="L1806" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1807">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1809">        mInitialMxy = initialMxy;</span>
+<span class="fc" id="L1810">        mInitialMxz = initialMxz;</span>
+<span class="fc" id="L1811">        mInitialMyx = initialMyx;</span>
+<span class="fc" id="L1812">        mInitialMyz = initialMyz;</span>
+<span class="fc" id="L1813">        mInitialMzx = initialMzx;</span>
+<span class="fc" id="L1814">        mInitialMzy = initialMzy;</span>
+<span class="fc" id="L1815">    }</span>
+
+    /**
+     * Sets initial scaling factors and cross coupling errors.
+     *
+     * @param initialSx  initial x scaling factor.
+     * @param initialSy  initial y scaling factor.
+     * @param initialSz  initial z scaling factor.
+     * @param initialMxy initial x-y cross coupling error.
+     * @param initialMxz initial x-z cross coupling error.
+     * @param initialMyx initial y-x cross coupling error.
+     * @param initialMyz initial y-z cross coupling error.
+     * @param initialMzx initial z-x cross coupling error.
+     * @param initialMzy initial z-y cross coupling error.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setInitialScalingFactorsAndCrossCouplingErrors(
+            final double initialSx,
+            final double initialSy,
+            final double initialSz,
+            final double initialMxy,
+            final double initialMxz,
+            final double initialMyx,
+            final double initialMyz,
+            final double initialMzx,
+            final double initialMzy)
+            throws LockedException {
+<span class="fc bfc" id="L1843" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1844">            throw new LockedException();</span>
+        }
+<span class="fc" id="L1846">        setInitialScalingFactors(initialSx, initialSy, initialSz);</span>
+<span class="fc" id="L1847">        setInitialCrossCouplingErrors(initialMxy, initialMxz, initialMyx,</span>
+                initialMyz, initialMzx, initialMzy);
+<span class="fc" id="L1849">    }</span>
+
+    /**
+     * Gets initial hard-iron bias to be used to find a solution as an array.
+     * Array values are expressed in Teslas (T).
+     *
+     * @return array containing coordinates of initial bias.
+     */
+    @Override
+    public double[] getInitialHardIron() {
+<span class="fc" id="L1859">        final double[] result = new double[</span>
+                BodyMagneticFluxDensity.COMPONENTS];
+<span class="fc" id="L1861">        getInitialHardIron(result);</span>
+<span class="fc" id="L1862">        return result;</span>
+    }
+
+    /**
+     * Gets initial hard-iron  bias to be used to find a solution as an array.
+     * Array values are expressed in Teslas (T).
+     *
+     * @param result instance where result data will be copied to.
+     * @throws IllegalArgumentException if provided array does not have
+     *                                  length 3.
+     */
+    @Override
+    public void getInitialHardIron(final double[] result) {
+<span class="fc bfc" id="L1875" title="All 2 branches covered.">        if (result.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="fc" id="L1876">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1878">        result[0] = mInitialHardIronX;</span>
+<span class="fc" id="L1879">        result[1] = mInitialHardIronY;</span>
+<span class="fc" id="L1880">        result[2] = mInitialHardIronZ;</span>
+<span class="fc" id="L1881">    }</span>
+
+    /**
+     * Sets initial hard-iron bias to be used to find a solution as an array.
+     * Array values are expressed in Teslas (T).
+     *
+     * @param initialHardIron initial hard-iron to find a solution.
+     * @throws LockedException          if calibrator is currently running.
+     * @throws IllegalArgumentException if provided array does not have length 3.
+     */
+    @Override
+    public void setInitialHardIron(final double[] initialHardIron)
+            throws LockedException {
+<span class="fc bfc" id="L1894" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1895">            throw new LockedException();</span>
+        }
+
+<span class="fc bfc" id="L1898" title="All 2 branches covered.">        if (initialHardIron.length != BodyMagneticFluxDensity.COMPONENTS) {</span>
+<span class="fc" id="L1899">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1901">        mInitialHardIronX = initialHardIron[0];</span>
+<span class="fc" id="L1902">        mInitialHardIronY = initialHardIron[1];</span>
+<span class="fc" id="L1903">        mInitialHardIronZ = initialHardIron[2];</span>
+<span class="fc" id="L1904">    }</span>
+
+    /**
+     * Gets initial hard-iron bias to be used to find a solution as a
+     * column matrix.
+     * Values are expressed in Teslas (T).
+     *
+     * @return initial hard-iron bias to be used to find a solution as a
+     * column matrix.
+     */
+    @Override
+    public Matrix getInitialHardIronAsMatrix() {
+        Matrix result;
+        try {
+<span class="fc" id="L1918">            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                    1);
+<span class="fc" id="L1920">            getInitialHardIronAsMatrix(result);</span>
+<span class="nc" id="L1921">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L1923">            result = null;</span>
+<span class="fc" id="L1924">        }</span>
+<span class="fc" id="L1925">        return result;</span>
+    }
+
+    /**
+     * Gets initial hard-iron bias to be used to find a solution as a
+     * column matrix.
+     * Values are expressed in Teslas (T).
+     *
+     * @param result instance where result data will be copied to.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    @Override
+    public void getInitialHardIronAsMatrix(final Matrix result) {
+<span class="fc bfc" id="L1938" title="All 2 branches covered.">        if (result.getRows() != BodyMagneticFluxDensity.COMPONENTS</span>
+<span class="fc bfc" id="L1939" title="All 2 branches covered.">                || result.getColumns() != 1) {</span>
+<span class="fc" id="L1940">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L1942">        result.setElementAtIndex(0, mInitialHardIronX);</span>
+<span class="fc" id="L1943">        result.setElementAtIndex(1, mInitialHardIronY);</span>
+<span class="fc" id="L1944">        result.setElementAtIndex(2, mInitialHardIronZ);</span>
+<span class="fc" id="L1945">    }</span>
+
+    /**
+     * Sets initial hard-iron bias to be used to find a solution as a column
+     * matrix with values expressed in Teslas (T).
+     *
+     * @param initialHardIron initial hard-iron bias to find a solution.
+     * @throws LockedException          if calibrator is currently running.
+     * @throws IllegalArgumentException if provided matrix is not 3x1.
+     */
+    @Override
+    public void setInitialHardIron(final Matrix initialHardIron)
+            throws LockedException {
+<span class="fc bfc" id="L1958" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L1959">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L1961" title="All 2 branches covered.">        if (initialHardIron.getRows() != BodyMagneticFluxDensity.COMPONENTS</span>
+<span class="fc bfc" id="L1962" title="All 2 branches covered.">                || initialHardIron.getColumns() != 1) {</span>
+<span class="fc" id="L1963">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L1966">        mInitialHardIronX = initialHardIron.getElementAtIndex(0);</span>
+<span class="fc" id="L1967">        mInitialHardIronY = initialHardIron.getElementAtIndex(1);</span>
+<span class="fc" id="L1968">        mInitialHardIronZ = initialHardIron.getElementAtIndex(2);</span>
+<span class="fc" id="L1969">    }</span>
+
+    /**
+     * Gets initial scale factors and cross coupling errors matrix.
+     *
+     * @return initial scale factors and cross coupling errors matrix.
+     */
+    @Override
+    public Matrix getInitialMm() {
+        Matrix result;
+        try {
+<span class="fc" id="L1980">            result = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                    BodyMagneticFluxDensity.COMPONENTS);
+<span class="fc" id="L1982">            getInitialMm(result);</span>
+<span class="nc" id="L1983">        } catch (final WrongSizeException ignore) {</span>
+            // never happens
+<span class="nc" id="L1985">            result = null;</span>
+<span class="fc" id="L1986">        }</span>
+<span class="fc" id="L1987">        return result;</span>
+    }
+
+    /**
+     * Gets initial scale factors and cross coupling errors matrix.
+     *
+     * @param result instance where data will be stored.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     */
+    @Override
+    public void getInitialMm(final Matrix result) {
+<span class="fc bfc" id="L1998" title="All 2 branches covered.">        if (result.getRows() != BodyKinematics.COMPONENTS ||</span>
+<span class="fc bfc" id="L1999" title="All 2 branches covered.">                result.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L2000">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L2002">        result.setElementAtIndex(0, mInitialSx);</span>
+<span class="fc" id="L2003">        result.setElementAtIndex(1, mInitialMyx);</span>
+<span class="fc" id="L2004">        result.setElementAtIndex(2, mInitialMzx);</span>
+
+<span class="fc" id="L2006">        result.setElementAtIndex(3, mInitialMxy);</span>
+<span class="fc" id="L2007">        result.setElementAtIndex(4, mInitialSy);</span>
+<span class="fc" id="L2008">        result.setElementAtIndex(5, mInitialMzy);</span>
+
+<span class="fc" id="L2010">        result.setElementAtIndex(6, mInitialMxz);</span>
+<span class="fc" id="L2011">        result.setElementAtIndex(7, mInitialMyz);</span>
+<span class="fc" id="L2012">        result.setElementAtIndex(8, mInitialSz);</span>
+<span class="fc" id="L2013">    }</span>
+
+    /**
+     * Sets initial scale factors and cross coupling errors matrix.
+     *
+     * @param initialMm initial scale factors and cross coupling errors matrix.
+     * @throws IllegalArgumentException if provided matrix is not 3x3.
+     * @throws LockedException          if calibrator is currently running.
+     */
+    @Override
+    public void setInitialMm(final Matrix initialMm)
+            throws LockedException {
+<span class="fc bfc" id="L2025" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2026">            throw new LockedException();</span>
+        }
+<span class="fc bfc" id="L2028" title="All 2 branches covered.">        if (initialMm.getRows() != BodyKinematics.COMPONENTS ||</span>
+<span class="fc bfc" id="L2029" title="All 2 branches covered.">                initialMm.getColumns() != BodyKinematics.COMPONENTS) {</span>
+<span class="fc" id="L2030">            throw new IllegalArgumentException();</span>
+        }
+
+<span class="fc" id="L2033">        mInitialSx = initialMm.getElementAtIndex(0);</span>
+<span class="fc" id="L2034">        mInitialMyx = initialMm.getElementAtIndex(1);</span>
+<span class="fc" id="L2035">        mInitialMzx = initialMm.getElementAtIndex(2);</span>
+
+<span class="fc" id="L2037">        mInitialMxy = initialMm.getElementAtIndex(3);</span>
+<span class="fc" id="L2038">        mInitialSy = initialMm.getElementAtIndex(4);</span>
+<span class="fc" id="L2039">        mInitialMzy = initialMm.getElementAtIndex(5);</span>
+
+<span class="fc" id="L2041">        mInitialMxz = initialMm.getElementAtIndex(6);</span>
+<span class="fc" id="L2042">        mInitialMyz = initialMm.getElementAtIndex(7);</span>
+<span class="fc" id="L2043">        mInitialSz = initialMm.getElementAtIndex(8);</span>
+<span class="fc" id="L2044">    }</span>
+
+    /**
+     * Gets collection of body magnetic flux density measurements taken
+     * at a given position with different unknown orientations and containing the
+     * standard deviation of magnetometer measurements.
+     *
+     * @return collection of body magnetic flux density measurements at
+     * a known position and timestamp with unknown orientations.
+     */
+    @Override
+    public Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; getMeasurements() {
+<span class="fc" id="L2056">        return mMeasurements;</span>
+    }
+
+    /**
+     * Sets collection of body magnetic flux density measurements taken
+     * at a given position with different unknown orientations and containing the
+     * standard deviation of magnetometer measurements.
+     *
+     * @param measurements collection of body magnetic flux density
+     *                     measurements at a known position and timestamp
+     *                     with unknown orientations.
+     * @throws LockedException if calibrator is currently running.
+     */
+    @Override
+    public void setMeasurements(
+            final Collection&lt;StandardDeviationBodyMagneticFluxDensity&gt; measurements)
+            throws LockedException {
+<span class="fc bfc" id="L2073" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2074">            throw new LockedException();</span>
+        }
+<span class="fc" id="L2076">        mMeasurements = measurements;</span>
+<span class="fc" id="L2077">    }</span>
+
+    /**
+     * Indicates the type of measurement used by this calibrator.
+     *
+     * @return type of measurement used by this calibrator.
+     */
+    @Override
+    public MagnetometerCalibratorMeasurementType getMeasurementType() {
+<span class="fc" id="L2086">        return MagnetometerCalibratorMeasurementType.STANDARD_DEVIATION_BODY_MAGNETIC_FLUX_DENSITY;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires ordered measurements in a
+     * list or not.
+     *
+     * @return true if measurements must be ordered, false otherwise.
+     */
+    @Override
+    public boolean isOrderedMeasurementsRequired() {
+<span class="fc" id="L2097">        return false;</span>
+    }
+
+    /**
+     * Indicates whether this calibrator requires quality scores for each
+     * measurement or not.
+     *
+     * @return true if quality scores are required, false otherwise.
+     */
+    @Override
+    public boolean isQualityScoresRequired() {
+<span class="fc" id="L2108">        return false;</span>
+    }
+
+    /**
+     * Indicates whether z-axis is assumed to be common for accelerometer,
+     * gyroscope and magnetometer.
+     * When enabled, this eliminates 3 variables from Mm (soft-iron) matrix.
+     *
+     * @return true if z-axis is assumed to be common for accelerometer,
+     * gyroscope and magnetometer, false otherwise.
+     */
+    @Override
+    public boolean isCommonAxisUsed() {
+<span class="fc" id="L2121">        return mCommonAxisUsed;</span>
+    }
+
+    /**
+     * Specifies whether z-axis is assumed to be common for accelerometer and
+     * gyroscope.
+     * When enabled, this eliminates 3 variables from Mm matrix.
+     *
+     * @param commonAxisUsed true if z-axis is assumed to be common for
+     *                       accelerometer, gyroscope and magnetometer, false
+     *                       otherwise.
+     * @throws LockedException if estimator is currently running.
+     */
+    @Override
+    public void setCommonAxisUsed(final boolean commonAxisUsed)
+            throws LockedException {
+<span class="fc bfc" id="L2137" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2138">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2141">        mCommonAxisUsed = commonAxisUsed;</span>
+<span class="fc" id="L2142">    }</span>
+
+    /**
+     * Gets listener to handle events raised by this calibrator.
+     *
+     * @return listener to handle events raised by this calibrator.
+     */
+    public L getListener() {
+<span class="fc" id="L2150">        return mListener;</span>
+    }
+
+    /**
+     * Sets listener to handle events raised by this calibrator.
+     *
+     * @param listener listener to handle events raised by this calibrator.
+     * @throws LockedException if calibrator is currently running.
+     */
+    public void setListener(final L listener)
+            throws LockedException {
+<span class="fc bfc" id="L2161" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2162">            throw new LockedException();</span>
+        }
+
+<span class="fc" id="L2165">        mListener = listener;</span>
+<span class="fc" id="L2166">    }</span>
+
+    /**
+     * Gets minimum number of required measurements.
+     *
+     * @return minimum number of required measurements.
+     */
+    @Override
+    public int getMinimumRequiredMeasurements() {
+<span class="fc bfc" id="L2175" title="All 2 branches covered.">        return mCommonAxisUsed ? MINIMUM_MEASUREMENTS_COMMON_Z_AXIS :</span>
+<span class="fc" id="L2176">                MINIMUM_MEASUREMENTS_GENERAL;</span>
+    }
+
+    /**
+     * Indicates whether calibrator is ready to start.
+     *
+     * @return true if calibrator is ready, false otherwise.
+     */
+    @Override
+    public boolean isReady() {
+<span class="fc bfc" id="L2186" title="All 4 branches covered.">        return mMeasurements != null &amp;&amp; mMeasurements.size() &gt;= getMinimumRequiredMeasurements();</span>
+    }
+
+    /**
+     * Indicates whether calibrator is currently running or not.
+     *
+     * @return true if calibrator is running, false otherwise.
+     */
+    @Override
+    public boolean isRunning() {
+<span class="fc" id="L2196">        return mRunning;</span>
+    }
+
+    /**
+     * Estimates magnetometer calibration parameters containing scale factors
+     * and cross-coupling errors.
+     *
+     * @throws LockedException      if calibrator is currently running.
+     * @throws NotReadyException    if calibrator is not ready.
+     * @throws CalibrationException if calibration fails for numerical reasons.
+     */
+    @Override
+    public void calibrate() throws LockedException, NotReadyException,
+            CalibrationException {
+<span class="fc bfc" id="L2210" title="All 2 branches covered.">        if (mRunning) {</span>
+<span class="fc" id="L2211">            throw new LockedException();</span>
+        }
+
+<span class="pc bpc" id="L2214" title="1 of 2 branches missed.">        if (!isReady()) {</span>
+<span class="nc" id="L2215">            throw new NotReadyException();</span>
+        }
+
+        try {
+<span class="fc" id="L2219">            mRunning = true;</span>
+
+<span class="fc" id="L2221">            onBeforeCalibrate();</span>
+
+<span class="fc bfc" id="L2223" title="All 2 branches covered.">            if (mListener != null) {</span>
+                //noinspection unchecked
+<span class="fc" id="L2225">                mListener.onCalibrateStart((C) this);</span>
+            }
+
+<span class="fc bfc" id="L2228" title="All 2 branches covered.">            if (mCommonAxisUsed) {</span>
+<span class="fc" id="L2229">                calibrateCommonAxis();</span>
+            } else {
+<span class="fc" id="L2231">                calibrateGeneral();</span>
+            }
+
+<span class="fc bfc" id="L2234" title="All 2 branches covered.">            if (mListener != null) {</span>
+                //noinspection unchecked
+<span class="fc" id="L2236">                mListener.onCalibrateEnd((C) this);</span>
+            }
+
+<span class="fc" id="L2239">        } catch (final AlgebraException | FittingException</span>
+                       | com.irurueta.numerical.NotReadyException e) {
+<span class="fc" id="L2241">            throw new CalibrationException(e);</span>
+        } finally {
+<span class="fc" id="L2243">            mRunning = false;</span>
+        }
+<span class="fc" id="L2245">    }</span>
+
+    /**
+     * Gets array containing x,y,z components of estimated magnetometer
+     * hard-iron biases expressed in Teslas (T).
+     *
+     * @return array containing x,y,z components of estimated magnetometer
+     * hard-iron biases.
+     */
+    @Override
+    public double[] getEstimatedHardIron() {
+<span class="fc" id="L2256">        return mEstimatedHardIron;</span>
+    }
+
+    /**
+     * Gets array containing x,y,z components of estimated magnetometer
+     * hard-iron biases expressed in Teslas (T).
+     *
+     * @param result instance where estimated magnetometer biases will be
+     *               stored.
+     * @return true if result instance was updated, false otherwise (when
+     * estimation is not yet available).
+     */
+    @Override
+    public boolean getEstimatedHardIron(final double[] result) {
+<span class="pc bpc" id="L2270" title="1 of 2 branches missed.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L2271">            System.arraycopy(mEstimatedHardIron, 0, result,</span>
+                    0, mEstimatedHardIron.length);
+<span class="fc" id="L2273">            return true;</span>
+        } else {
+<span class="nc" id="L2275">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets column matrix containing x,y,z components of estimated
+     * magnetometer hard-iron biases expressed in Teslas (T).
+     *
+     * @return column matrix containing x,y,z components of estimated
+     * magnetometer hard-iron biases.
+     */
+    @Override
+    public Matrix getEstimatedHardIronAsMatrix() {
+<span class="fc bfc" id="L2288" title="All 2 branches covered.">        return mEstimatedHardIron != null ? Matrix.newFromArray(mEstimatedHardIron) : null;</span>
+    }
+
+    /**
+     * Gets column matrix containing x,y,z components of estimated
+     * magnetometer hard-iron biases expressed in Teslas (T).
+     *
+     * @param result instance where result data will be stored.
+     * @return true if result was updated, false otherwise.
+     * @throws WrongSizeException if provided result instance has invalid size.
+     */
+    @Override
+    public boolean getEstimatedHardIronAsMatrix(final Matrix result)
+            throws WrongSizeException {
+<span class="fc bfc" id="L2302" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L2303">            result.fromArray(mEstimatedHardIron);</span>
+<span class="fc" id="L2304">            return true;</span>
+        } else {
+<span class="fc" id="L2306">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets x coordinate of estimated magnetometer bias expressed in
+     * Teslas (T).
+     *
+     * @return x coordinate of estimated magnetometer bias or null if not
+     * available.
+     */
+    @Override
+    public Double getEstimatedHardIronX() {
+<span class="fc bfc" id="L2319" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[0] : null;</span>
+    }
+
+    /**
+     * Gets y coordinate of estimated magnetometer bias expressed in
+     * Teslas (T).
+     *
+     * @return y coordinate of estimated magnetometer bias or null if not
+     * available.
+     */
+    @Override
+    public Double getEstimatedHardIronY() {
+<span class="fc bfc" id="L2331" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[1] : null;</span>
+    }
+
+    /**
+     * Gets z coordinate of estimated magnetometer bias expressed in
+     * Teslas (T).
+     *
+     * @return z coordinate of estimated magnetometer bias or null if not
+     * available.
+     */
+    @Override
+    public Double getEstimatedHardIronZ() {
+<span class="fc bfc" id="L2343" title="All 2 branches covered.">        return mEstimatedHardIron != null ? mEstimatedHardIron[2] : null;</span>
+    }
+
+    /**
+     * Gets x coordinate of estimated magnetometer bias.
+     *
+     * @return x coordinate of estimated magnetometer bias.
+     */
+    @Override
+    public MagneticFluxDensity getEstimatedHardIronXAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2353" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L2354">                new MagneticFluxDensity(mEstimatedHardIron[0], MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets x coordinate of estimated magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if estimated magnetometer bias is available, false otherwise.
+     */
+    @Override
+    public boolean getEstimatedHardIronXAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2365" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L2366">            result.setValue(mEstimatedHardIron[0]);</span>
+<span class="fc" id="L2367">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2368">            return true;</span>
+        } else {
+<span class="fc" id="L2370">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets y coordinate of estimated magnetometer bias.
+     *
+     * @return y coordinate of estimated magnetometer bias.
+     */
+    @Override
+    public MagneticFluxDensity getEstimatedHardIronYAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2381" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L2382">                new MagneticFluxDensity(mEstimatedHardIron[1], MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets y coordinate of estimated magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if estimated magnetometer bias is available, false otherwise.
+     */
+    @Override
+    public boolean getEstimatedHardIronYAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2393" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L2394">            result.setValue(mEstimatedHardIron[1]);</span>
+<span class="fc" id="L2395">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2396">            return true;</span>
+        } else {
+<span class="fc" id="L2398">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets z coordinate of estimated magnetometer bias.
+     *
+     * @return z coordinate of estimated magnetometer bias.
+     */
+    @Override
+    public MagneticFluxDensity getEstimatedHardIronZAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2409" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L2410">                new MagneticFluxDensity(mEstimatedHardIron[2], MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets z coordinate of estimated magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if estimated magnetometer bias is available, false otherwise.
+     */
+    @Override
+    public boolean getEstimatedHardIronZAsMagneticFluxDensity(final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2421" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L2422">            result.setValue(mEstimatedHardIron[2]);</span>
+<span class="fc" id="L2423">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2424">            return true;</span>
+        } else {
+<span class="fc" id="L2426">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated magnetometer bias.
+     *
+     * @return estimated magnetometer bias or null if not available.
+     */
+    @Override
+    public MagneticFluxDensityTriad getEstimatedHardIronAsTriad() {
+<span class="fc bfc" id="L2437" title="All 2 branches covered.">        return mEstimatedHardIron != null ?</span>
+<span class="fc" id="L2438">                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
+<span class="fc" id="L2439">                        mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2]) : null;</span>
+    }
+
+    /**
+     * Gets estimated magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if estimated magnetometer bias is available and result was
+     * modified, false otherwise.
+     */
+    @Override
+    public boolean getEstimatedHardIronAsTriad(final MagneticFluxDensityTriad result) {
+<span class="fc bfc" id="L2451" title="All 2 branches covered.">        if (mEstimatedHardIron != null) {</span>
+<span class="fc" id="L2452">            result.setValueCoordinatesAndUnit(</span>
+                    mEstimatedHardIron[0], mEstimatedHardIron[1], mEstimatedHardIron[2],
+                    MagneticFluxDensityUnit.TESLA);
+<span class="fc" id="L2455">            return true;</span>
+        } else {
+<span class="fc" id="L2457">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets estimated magnetometer soft-iron matrix containing scale factors
+     * and cross coupling errors.
+     * This is the product of matrix Tm containing cross coupling errors and Km
+     * containing scaling factors.
+     * So tat:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km
+     *          [myx   sy   myz]
+     *          [mzx   mzy  sz ]
+     * &lt;/pre&gt;
+     * Where:
+     * &lt;pre&gt;
+     *     Km = [sx 0   0 ]
+     *          [0  sy  0 ]
+     *          [0  0   sz]
+     * &lt;/pre&gt;
+     * and
+     * &lt;pre&gt;
+     *     Tm = [1          -alphaXy    alphaXz ]
+     *          [alphaYx    1           -alphaYz]
+     *          [-alphaZx   alphaZy     1       ]
+     * &lt;/pre&gt;
+     * Hence:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz] = Tm*Km =  [sx             -sy * alphaXy   sz * alphaXz ]
+     *          [myx   sy   myz]            [sx * alphaYx   sy              -sz * alphaYz]
+     *          [mzx   mzy  sz ]            [-sx * alphaZx  sy * alphaZy    sz           ]
+     * &lt;/pre&gt;
+     * This instance allows any 3x3 matrix however, typically alphaYx, alphaZx and alphaZy
+     * are considered to be zero if the accelerometer z-axis is assumed to be the same
+     * as the body z-axis. When this is assumed, myx = mzx = mzy = 0 and the Mm matrix
+     * becomes upper diagonal:
+     * &lt;pre&gt;
+     *     Mm = [sx    mxy  mxz]
+     *          [0     sy   myz]
+     *          [0     0    sz ]
+     * &lt;/pre&gt;
+     * Values of this matrix are unit-less.
+     *
+     * @return estimated magnetometer soft-iron scale factors and cross coupling errors,
+     * or null if not available.
+     */
+    @Override
+    public Matrix getEstimatedMm() {
+<span class="fc" id="L2506">        return mEstimatedMm;</span>
+    }
+
+    /**
+     * Gets estimated x-axis scale factor.
+     *
+     * @return estimated x-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSx() {
+<span class="fc bfc" id="L2516" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2517">                mEstimatedMm.getElementAt(0, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-axis scale factor.
+     *
+     * @return estimated y-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSy() {
+<span class="fc bfc" id="L2527" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2528">                mEstimatedMm.getElementAt(1, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-axis scale factor.
+     *
+     * @return estimated z-axis scale factor or null if not available.
+     */
+    @Override
+    public Double getEstimatedSz() {
+<span class="fc bfc" id="L2538" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2539">                mEstimatedMm.getElementAt(2, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated x-y cross-coupling error.
+     *
+     * @return estimated x-y cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMxy() {
+<span class="fc bfc" id="L2549" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2550">                mEstimatedMm.getElementAt(0, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated x-z cross-coupling error.
+     *
+     * @return estimated x-z cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMxz() {
+<span class="fc bfc" id="L2560" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2561">                mEstimatedMm.getElementAt(0, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-x cross-coupling error.
+     *
+     * @return estimated y-x cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMyx() {
+<span class="fc bfc" id="L2571" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2572">                mEstimatedMm.getElementAt(1, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated y-z cross-coupling error.
+     *
+     * @return estimated y-z cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMyz() {
+<span class="fc bfc" id="L2582" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2583">                mEstimatedMm.getElementAt(1, 2) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-x cross-coupling error.
+     *
+     * @return estimated z-x cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMzx() {
+<span class="fc bfc" id="L2593" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2594">                mEstimatedMm.getElementAt(2, 0) : null;</span>
+    }
+
+    /**
+     * Gets estimated z-y cross-coupling error.
+     *
+     * @return estimated z-y cross-coupling error or null if not available.
+     */
+    @Override
+    public Double getEstimatedMzy() {
+<span class="fc bfc" id="L2604" title="All 2 branches covered.">        return mEstimatedMm != null ?</span>
+<span class="fc" id="L2605">                mEstimatedMm.getElementAt(2, 1) : null;</span>
+    }
+
+    /**
+     * Gets estimated covariance matrix for estimated calibration parameters.
+     * Diagonal elements of the matrix contains variance for the following
+     * parameters (following indicated order): bx, by, bz, sx, sy, sz,
+     * mxy, mxz, myx, myz, mzx, mzy.
+     *
+     * @return estimated covariance matrix for estimated calibration parameters.
+     */
+    @Override
+    public Matrix getEstimatedCovariance() {
+<span class="fc" id="L2618">        return mEstimatedCovariance;</span>
+    }
+
+    /**
+     * Gets estimated chi square value.
+     *
+     * @return estimated chi square value.
+     */
+    @Override
+    public double getEstimatedChiSq() {
+<span class="fc" id="L2628">        return mEstimatedChiSq;</span>
+    }
+
+    /**
+     * Gets estimated mean square error respect to provided measurements.
+     *
+     * @return estimated mean square error respect to provided measurements.
+     */
+    @Override
+    public double getEstimatedMse() {
+<span class="fc" id="L2638">        return mEstimatedMse;</span>
+    }
+
+    /**
+     * Gets variance of estimated x coordinate of magnetometer bias expressed in
+     * squared Teslas (T^2).
+     *
+     * @return variance of estimated x coordinate of magnetometer bias or null if
+     * not available.
+     */
+    public Double getEstimatedHardIronXVariance() {
+<span class="fc bfc" id="L2649" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(0, 0) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated x coordinate of magnetometer bias
+     * expressed in Teslas (T).
+     *
+     * @return standard deviation of estimated x coordinate of magnetometer bias
+     * or null if not available.
+     */
+    public Double getEstimatedHardIronXStandardDeviation() {
+<span class="fc" id="L2660">        final Double variance = getEstimatedHardIronXVariance();</span>
+<span class="fc bfc" id="L2661" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated x coordinate of magnetometer bias.
+     *
+     * @return standard deviation of estimated x coordinate of magnetometer bias
+     * or null if not available.
+     */
+    public MagneticFluxDensity getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2671" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2672">                new MagneticFluxDensity(getEstimatedHardIronXStandardDeviation(),</span>
+<span class="fc" id="L2673">                        MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated x coordinate of magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if standard deviation of estimated x coordinate of
+     * magnetometer bias is available, false otherwise.
+     */
+    public boolean getEstimatedHardIronXStandardDeviationAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2685" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2686">            result.setValue(getEstimatedHardIronXStandardDeviation());</span>
+<span class="fc" id="L2687">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2688">            return true;</span>
+        } else {
+<span class="fc" id="L2690">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets variance of estimated y coordinate of magnetometer bias expressed in
+     * squared Teslas (T^2).
+     *
+     * @return variance of estimated y coordinate of magnetometer bias or null if
+     * not available.
+     */
+    public Double getEstimatedHardIronYVariance() {
+<span class="fc bfc" id="L2702" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(1, 1) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated y coordinate of magnetometer bias
+     * expressed in Teslas (T).
+     *
+     * @return standard deviation of estimated y coordinate of magnetometer bias
+     * or null if not available.
+     */
+    public Double getEstimatedHardIronYStandardDeviation() {
+<span class="fc" id="L2713">        final Double variance = getEstimatedHardIronYVariance();</span>
+<span class="fc bfc" id="L2714" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated y coordinate of magnetometer bias.
+     *
+     * @return standard deviation of estimated y coordinate of magnetometer bias
+     * or null if not available.
+     */
+    public MagneticFluxDensity getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2724" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2725">                new MagneticFluxDensity(getEstimatedHardIronYStandardDeviation(),</span>
+<span class="fc" id="L2726">                        MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated y coordinate of magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if standard deviation of estimated y coordinate of
+     * magnetometer bias is available, false otherwise.
+     */
+    public boolean getEstimatedHardIronYStandardDeviationAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2738" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2739">            result.setValue(getEstimatedHardIronYStandardDeviation());</span>
+<span class="fc" id="L2740">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2741">            return true;</span>
+        } else {
+<span class="fc" id="L2743">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets variance of estimated z coordinate of magnetometer bias expressed in
+     * squared Teslas (T^2).
+     *
+     * @return variance of estimated z coordinate of magnetometer bias or null if
+     * not available.
+     */
+    public Double getEstimatedHardIronZVariance() {
+<span class="fc bfc" id="L2755" title="All 2 branches covered.">        return mEstimatedCovariance != null ? mEstimatedCovariance.getElementAt(2, 2) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated z coordinate of magnetometer bias
+     * expressed in Teslas (T).
+     *
+     * @return standard deviation of estimated z coordinate of magnetometer bias
+     * or null if not available.
+     */
+    public Double getEstimatedHardIronZStandardDeviation() {
+<span class="fc" id="L2766">        final Double variance = getEstimatedHardIronZVariance();</span>
+<span class="fc bfc" id="L2767" title="All 2 branches covered.">        return variance != null ? Math.sqrt(variance) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated z coordinate of magnetometer bias.
+     *
+     * @return standard deviation of estimated z coordinate of magnetometer bias
+     * or null if not available.
+     */
+    public MagneticFluxDensity getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2777" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2778">                new MagneticFluxDensity(getEstimatedHardIronZStandardDeviation(),</span>
+<span class="fc" id="L2779">                        MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated z coordinate of magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if standard deviation of estimated z coordinate of
+     * magnetometer bias is available, false otherwise.
+     */
+    public boolean getEstimatedHardIronZStandardDeviationAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2791" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2792">            result.setValue(getEstimatedHardIronZStandardDeviation());</span>
+<span class="fc" id="L2793">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2794">            return true;</span>
+        } else {
+<span class="fc" id="L2796">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets standard deviation of estimated magnetometer bias coordinates.
+     *
+     * @return standard deviation of estimated magnetometer bias coordinates.
+     */
+    public MagneticFluxDensityTriad getEstimatedHardIronStandardDeviation() {
+<span class="pc bpc" id="L2806" title="1 of 2 branches missed.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2807">                new MagneticFluxDensityTriad(MagneticFluxDensityUnit.TESLA,</span>
+<span class="fc" id="L2808">                        getEstimatedHardIronXStandardDeviation(),</span>
+<span class="fc" id="L2809">                        getEstimatedHardIronYStandardDeviation(),</span>
+<span class="pc" id="L2810">                        getEstimatedHardIronZStandardDeviation()) : null;</span>
+    }
+
+    /**
+     * Gets standard deviation of estimated magnetometer bias coordinates.
+     *
+     * @param result instance where result will be stored.
+     * @return true if standard deviation of magnetometer bias was available,
+     * false otherwise.
+     */
+    public boolean getEstimatedHardIronStandardDeviation(final MagneticFluxDensityTriad result) {
+<span class="pc bpc" id="L2821" title="1 of 2 branches missed.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2822">            result.setValueCoordinatesAndUnit(</span>
+<span class="fc" id="L2823">                    getEstimatedHardIronXStandardDeviation(),</span>
+<span class="fc" id="L2824">                    getEstimatedHardIronYStandardDeviation(),</span>
+<span class="fc" id="L2825">                    getEstimatedHardIronZStandardDeviation(),</span>
+                    MagneticFluxDensityUnit.TESLA);
+<span class="fc" id="L2827">            return true;</span>
+        } else {
+<span class="nc" id="L2829">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets average of estimated standard deviation of magnetometer bias coordinates
+     * expressed in Teslas (T).
+     *
+     * @return average of estimated standard deviation of magnetometer bias coordinates,
+     * or null if not available.
+     */
+    public Double getEstimatedHardIronStandardDeviationAverage() {
+<span class="fc bfc" id="L2841" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2842">                (getEstimatedHardIronXStandardDeviation() +</span>
+<span class="fc" id="L2843">                        getEstimatedHardIronYStandardDeviation() +</span>
+<span class="fc" id="L2844">                        getEstimatedHardIronZStandardDeviation()) / 3.0 : null;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of magnetometer bias coordinates.
+     *
+     * @return average of estimated standard deviation of magnetometer bias coordinates,
+     * or null if not available.
+     */
+    public MagneticFluxDensity getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2854" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2855">                new MagneticFluxDensity(getEstimatedHardIronStandardDeviationAverage(),</span>
+<span class="fc" id="L2856">                        MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets average of estimated standard deviation of magnetometer bias coordinates.
+     *
+     * @param result instance where result will be stored.
+     * @return true if average of estimated standard deviation of magnetometer bias is available,
+     * false otherwise.
+     */
+    public boolean getEstimatedHardIronStandardDeviationAverageAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2868" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2869">            result.setValue(getEstimatedHardIronStandardDeviationAverage());</span>
+<span class="fc" id="L2870">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2871">            return true;</span>
+        } else {
+<span class="fc" id="L2873">            return false;</span>
+        }
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of magnetometer bias expressed in
+     * Teslas (T).
+     *
+     * @return norm of estimated standard deviation of magnetometer bias or null
+     * if not available.
+     */
+    public Double getEstimatedHardIronStandardDeviationNorm() {
+<span class="fc bfc" id="L2885" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2886">                Math.sqrt(getEstimatedHardIronXVariance()</span>
+<span class="fc" id="L2887">                        + getEstimatedHardIronYVariance()</span>
+<span class="fc" id="L2888">                        + getEstimatedHardIronZVariance()) : null;</span>
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of magnetometer bias.
+     *
+     * @return norm of estimated standard deviation of magnetometer bias or null
+     * if not available.
+     */
+    public MagneticFluxDensity getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity() {
+<span class="fc bfc" id="L2898" title="All 2 branches covered.">        return mEstimatedCovariance != null ?</span>
+<span class="fc" id="L2899">                new MagneticFluxDensity(getEstimatedHardIronStandardDeviationNorm(),</span>
+<span class="fc" id="L2900">                        MagneticFluxDensityUnit.TESLA) : null;</span>
+    }
+
+    /**
+     * Gets norm of estimated standard deviation of magnetometer bias.
+     *
+     * @param result instance where result will be stored.
+     * @return true if norm of estimated standard deviation of magnetometer bias
+     * is available, false otherwise.
+     */
+    public boolean getEstimatedHardIronStandardDeviationNormAsMagneticFluxDensity(
+            final MagneticFluxDensity result) {
+<span class="fc bfc" id="L2912" title="All 2 branches covered.">        if (mEstimatedCovariance != null) {</span>
+<span class="fc" id="L2913">            result.setValue(getEstimatedHardIronStandardDeviationNorm());</span>
+<span class="fc" id="L2914">            result.setUnit(MagneticFluxDensityUnit.TESLA);</span>
+<span class="fc" id="L2915">            return true;</span>
+        } else {
+<span class="fc" id="L2917">            return false;</span>
+        }
+    }
+
+    /**
+     * Called before calibration occurs.
+     * This can be overridden by subclasses.
+     *
+     * @throws CalibrationException if anything fails.
+     */
+<span class="fc" id="L2927">    protected void onBeforeCalibrate() throws CalibrationException { }</span>
+
+    /**
+     * Internally sets ground truth magnetic flux density norm to be expected at location where
+     * measurements have been made, expressed in Teslas (T).
+     *
+     * @param groundTruthMagneticFluxDensityNorm ground truth magnetic flux density norm or null if undefined.
+     * @throws IllegalArgumentException if provided value is negative.
+     */
+    protected void internalSetGroundTruthMagneticFluxDensityNorm(final Double groundTruthMagneticFluxDensityNorm) {
+<span class="fc bfc" id="L2937" title="All 4 branches covered.">        if (groundTruthMagneticFluxDensityNorm != null &amp;&amp; groundTruthMagneticFluxDensityNorm &lt; 0.0) {</span>
+<span class="fc" id="L2938">            throw new IllegalArgumentException();</span>
+        }
+<span class="fc" id="L2940">        mGroundTruthMagneticFluxDensityNorm = groundTruthMagneticFluxDensityNorm;</span>
+<span class="fc" id="L2941">    }</span>
+
+    /**
+     * Sets input data into Levenberg-Marquardt fitter.
+     *
+     * @throws WrongSizeException never happens.
+     */
+    protected void setInputData() throws WrongSizeException {
+<span class="fc" id="L2949">        final double b = mGroundTruthMagneticFluxDensityNorm;</span>
+<span class="fc" id="L2950">        final double b2 = b * b;</span>
+
+<span class="fc" id="L2952">        final int numMeasurements = mMeasurements.size();</span>
+<span class="fc" id="L2953">        final Matrix x = new Matrix(numMeasurements,</span>
+                BodyMagneticFluxDensity.COMPONENTS);
+<span class="fc" id="L2955">        final double[] y = new double[numMeasurements];</span>
+<span class="fc" id="L2956">        final double[] specificForceStandardDeviations = new double[numMeasurements];</span>
+<span class="fc" id="L2957">        int i = 0;</span>
+<span class="fc bfc" id="L2958" title="All 2 branches covered.">        for (final StandardDeviationBodyMagneticFluxDensity measurement : mMeasurements) {</span>
+<span class="fc" id="L2959">            final BodyMagneticFluxDensity measuredMagneticFluxDensity =</span>
+<span class="fc" id="L2960">                    measurement.getMagneticFluxDensity();</span>
+
+<span class="fc" id="L2962">            final double bmeasX = measuredMagneticFluxDensity.getBx();</span>
+<span class="fc" id="L2963">            final double bmeasY = measuredMagneticFluxDensity.getBy();</span>
+<span class="fc" id="L2964">            final double bmeasZ = measuredMagneticFluxDensity.getBz();</span>
+
+<span class="fc" id="L2966">            x.setElementAt(i, 0, bmeasX);</span>
+<span class="fc" id="L2967">            x.setElementAt(i, 1, bmeasY);</span>
+<span class="fc" id="L2968">            x.setElementAt(i, 2, bmeasZ);</span>
+
+<span class="fc" id="L2970">            y[i] = b2;</span>
+
+<span class="fc" id="L2972">            specificForceStandardDeviations[i] =</span>
+<span class="fc" id="L2973">                    measurement.getMagneticFluxDensityStandardDeviation();</span>
+
+<span class="fc" id="L2975">            i++;</span>
+<span class="fc" id="L2976">        }</span>
+
+<span class="fc" id="L2978">        mFitter.setInputData(x, y, specificForceStandardDeviations);</span>
+<span class="fc" id="L2979">    }</span>
+
+    /**
+     * Internal method to perform general calibration.
+     *
+     * @throws FittingException                         if Levenberg-Marquardt fails for numerical reasons.
+     * @throws AlgebraException                         if there are numerical instabilities that prevent
+     *                                                  matrix inversion.
+     * @throws com.irurueta.numerical.NotReadyException never happens.
+     */
+    private void calibrateGeneral() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException {
+        // The magnetometer model is:
+        // bmeas = ba + (I + Mm) * btrue + w
+
+        // Ideally a least squares solution tries to minimize noise component, so:
+        // bmeas = ba + (I + Mm) * btrue
+
+        // For convergence purposes of the Levenberg-Marquardt algorithm, the
+        // magnetometer model can be better expressed as:
+        // bmeas = T*K*(btrue + b)
+        // bmeas = M*(btrue + b)
+        // bmeas = M*btrue + M*b
+
+        // where:
+        // M = I + Mm
+        // bm = M*b = (I + Mm)*b --&gt; b = M^-1*bm
+
+        // We know that the norm of the true body magnetic flux density
+        // is equal to the amount of Earth magnetic flux density at provided
+        // position and timestamp
+        // ||btrue|| = ||bEarth|| --&gt; from 30 µT to 60 µT
+
+        // Hence:
+        // bmeas - M*b = M*btrue
+
+        // M^-1 * (bmeas - M*b) = btrue
+
+        // ||bEarth||^2 = ||btrue||^2 = (M^-1 * (bmeas - M*b))^T * (M^-1 * (bmeas - M*b))
+        // ||bEarth||^2 = (bmeas - M*b)^T*(M^-1)^T * M^-1 * (bmeas - M*b)
+        // ||bEarth||^2 = (bmeas - M * b)^T * ||M^-1||^2 * (bmeas - M * b)
+        // ||bEarth||^2 = ||bmeas - M * b||^2 * ||M^-1||^2
+
+        // Where:
+
+        // b = [bx]
+        //     [by]
+        //     [bz]
+
+        // M = [m11 	m12 	m13]
+        //     [m21 	m22 	m23]
+        //     [m31 	m32 	m33]
+
+<span class="fc" id="L3032">        final GradientEstimator gradientEstimator = new GradientEstimator(</span>
+<span class="fc" id="L3033">                new MultiDimensionFunctionEvaluatorListener() {</span>
+                    @Override
+                    public double evaluate(final double[] point)
+                            throws EvaluationException {
+<span class="fc" id="L3037">                        return evaluateGeneral(point);</span>
+                    }
+                });
+
+<span class="fc" id="L3041">        final Matrix initialM = Matrix.identity(BodyMagneticFluxDensity.COMPONENTS,</span>
+                BodyMagneticFluxDensity.COMPONENTS);
+<span class="fc" id="L3043">        initialM.add(getInitialMm());</span>
+
+<span class="fc" id="L3045">        final Matrix invInitialM = Utils.inverse(initialM);</span>
+<span class="fc" id="L3046">        final Matrix initialBm = getInitialHardIronAsMatrix();</span>
+<span class="fc" id="L3047">        final Matrix initialB = invInitialM.multiplyAndReturnNew(initialBm);</span>
+
+<span class="fc" id="L3049">        mFitter.setFunctionEvaluator(</span>
+<span class="fc" id="L3050">                new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+                    @Override
+                    public int getNumberOfDimensions() {
+                        // Input points are measured magnetic flux density coordinates
+<span class="fc" id="L3054">                        return BodyMagneticFluxDensity.COMPONENTS;</span>
+                    }
+
+                    @Override
+                    public double[] createInitialParametersArray() {
+<span class="fc" id="L3059">                        final double[] initial = new double[GENERAL_UNKNOWNS];</span>
+
+                        // biases b
+<span class="fc bfc" id="L3062" title="All 2 branches covered.">                        for (int i = 0; i &lt; BodyMagneticFluxDensity.COMPONENTS; i++) {</span>
+<span class="fc" id="L3063">                            initial[i] = initialB.getElementAtIndex(i);</span>
+                        }
+
+                        // cross coupling errors M
+<span class="fc" id="L3067">                        final int num = BodyMagneticFluxDensity.COMPONENTS</span>
+                                * BodyMagneticFluxDensity.COMPONENTS;
+<span class="fc bfc" id="L3069" title="All 2 branches covered.">                        for (int i = 0, j = BodyMagneticFluxDensity.COMPONENTS; i &lt; num; i++, j++) {</span>
+<span class="fc" id="L3070">                            initial[j] = initialM.getElementAtIndex(i);</span>
+                        }
+
+<span class="fc" id="L3073">                        return initial;</span>
+                    }
+
+                    @Override
+                    public double evaluate(
+                            final int i, final double[] point,
+                            final double[] params, final double[] derivatives)
+                            throws EvaluationException {
+
+<span class="fc" id="L3082">                        mBmeasX = point[0];</span>
+<span class="fc" id="L3083">                        mBmeasY = point[1];</span>
+<span class="fc" id="L3084">                        mBmeasZ = point[2];</span>
+
+<span class="fc" id="L3086">                        gradientEstimator.gradient(params, derivatives);</span>
+
+<span class="fc" id="L3088">                        return evaluateGeneral(params);</span>
+                    }
+                });
+
+<span class="fc" id="L3092">        setInputData();</span>
+
+<span class="fc" id="L3094">        mFitter.fit();</span>
+
+<span class="fc" id="L3096">        final double[] result = mFitter.getA();</span>
+
+<span class="fc" id="L3098">        final double bx = result[0];</span>
+<span class="fc" id="L3099">        final double by = result[1];</span>
+<span class="fc" id="L3100">        final double bz = result[2];</span>
+
+<span class="fc" id="L3102">        final double m11 = result[3];</span>
+<span class="fc" id="L3103">        final double m21 = result[4];</span>
+<span class="fc" id="L3104">        final double m31 = result[5];</span>
+
+<span class="fc" id="L3106">        final double m12 = result[6];</span>
+<span class="fc" id="L3107">        final double m22 = result[7];</span>
+<span class="fc" id="L3108">        final double m32 = result[8];</span>
+
+<span class="fc" id="L3110">        final double m13 = result[9];</span>
+<span class="fc" id="L3111">        final double m23 = result[10];</span>
+<span class="fc" id="L3112">        final double m33 = result[11];</span>
+
+<span class="fc" id="L3114">        final Matrix b = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                1);
+<span class="fc" id="L3116">        b.setElementAtIndex(0, bx);</span>
+<span class="fc" id="L3117">        b.setElementAtIndex(1, by);</span>
+<span class="fc" id="L3118">        b.setElementAtIndex(2, bz);</span>
+
+<span class="fc" id="L3120">        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                BodyMagneticFluxDensity.COMPONENTS);
+<span class="fc" id="L3122">        m.setElementAtIndex(0, m11);</span>
+<span class="fc" id="L3123">        m.setElementAtIndex(1, m21);</span>
+<span class="fc" id="L3124">        m.setElementAtIndex(2, m31);</span>
+
+<span class="fc" id="L3126">        m.setElementAtIndex(3, m12);</span>
+<span class="fc" id="L3127">        m.setElementAtIndex(4, m22);</span>
+<span class="fc" id="L3128">        m.setElementAtIndex(5, m32);</span>
+
+<span class="fc" id="L3130">        m.setElementAtIndex(6, m13);</span>
+<span class="fc" id="L3131">        m.setElementAtIndex(7, m23);</span>
+<span class="fc" id="L3132">        m.setElementAtIndex(8, m33);</span>
+
+<span class="fc" id="L3134">        setResult(m, b);</span>
+
+        // at this point covariance is expressed in terms of b and M, and must
+        // be expressed in terms of ba and Ma.
+        // We know that:
+
+        // b = [bx]
+        //     [by]
+        //     [bz]
+
+        // M = [m11 	m12 	m13]
+        //     [m21 	m22 	m23]
+        //     [m31 	m32 	m33]
+
+        // and that ba and Ma are expressed as:
+        // Mm = M - I
+        // bm = M * b
+
+        // Mm = [m11 - 1    m12         m13    ] =  [sx     mxy     mxz]
+        //      [m21        m22 - 1     m23    ]    [myx    sy      myz]
+        //      [m31        m32         m33 - 1]    [mzx    mzy     sz ]
+
+        // bm = [m11 * bx + m12 * by + m13 * bz] = 	[bmx]
+        //      [m21 * bx + m22 * by + m23 * bz]	[bmy]
+        //      [m31 * bx + m32 * by + m33 * bz]	[bmz]
+
+        // Defining the linear application:
+        // F(b, M) = F(bx, by, bz, m11, m21, m31, m12, m22, m32, m13, m23, m33)
+        // as:
+        // [bmx] = [m11 * bx + m12 * by + m13 * bz]
+        // [bmy]   [m21 * bx + m22 * by + m23 * bz]
+        // [bmz]   [m31 * bx + m32 * by + m33 * bz]
+        // [sx]	   [m11 - 1]
+        // [sy]	   [m22 - 1]
+        // [sz]	   [m33 -1]
+        // [mxy]   [m12]
+        // [mxz]   [m13]
+        // [myx]   [m21]
+        // [myz]   [m23]
+        // [mzx]   [m31]
+        // [mzy]   [m32]
+
+        // Then the Jacobian of F(b, M) is:
+        // J = 	[m11  m12  m13  bx  0   0   by  0   0   bz  0   0 ]
+        //	    [m21  m22  m23  0   bx  0   0   by  0   0   bz  0 ]
+        //	    [m31  m32  m33  0   0   bx  0   0   by  0   0   bz]
+        //	    [0    0    0    1   0   0   0   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   1   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   0   0   0   1 ]
+        //	    [0    0    0    0   0   0   1   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   0   1   0   0 ]
+        //	    [0    0    0    0   1   0   0   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   0   0   1   0 ]
+        //	    [0    0    0    0   0   1   0   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   1   0   0   0 ]
+
+        // We know that the propagated covariance is J * Cov * J', hence:
+<span class="fc" id="L3191">        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, GENERAL_UNKNOWNS);</span>
+
+<span class="fc" id="L3193">        jacobian.setElementAt(0, 0, m11);</span>
+<span class="fc" id="L3194">        jacobian.setElementAt(1, 0, m21);</span>
+<span class="fc" id="L3195">        jacobian.setElementAt(2, 0, m31);</span>
+
+<span class="fc" id="L3197">        jacobian.setElementAt(0, 1, m12);</span>
+<span class="fc" id="L3198">        jacobian.setElementAt(1, 1, m22);</span>
+<span class="fc" id="L3199">        jacobian.setElementAt(2, 1, m32);</span>
+
+<span class="fc" id="L3201">        jacobian.setElementAt(0, 2, m13);</span>
+<span class="fc" id="L3202">        jacobian.setElementAt(1, 2, m23);</span>
+<span class="fc" id="L3203">        jacobian.setElementAt(2, 2, m33);</span>
+
+<span class="fc" id="L3205">        jacobian.setElementAt(0, 3, bx);</span>
+<span class="fc" id="L3206">        jacobian.setElementAt(3, 3, 1.0);</span>
+
+<span class="fc" id="L3208">        jacobian.setElementAt(1, 4, bx);</span>
+<span class="fc" id="L3209">        jacobian.setElementAt(8, 4, 1.0);</span>
+
+<span class="fc" id="L3211">        jacobian.setElementAt(2, 5, bx);</span>
+<span class="fc" id="L3212">        jacobian.setElementAt(10, 5, 1.0);</span>
+
+<span class="fc" id="L3214">        jacobian.setElementAt(0, 6, by);</span>
+<span class="fc" id="L3215">        jacobian.setElementAt(6, 6, 1.0);</span>
+
+<span class="fc" id="L3217">        jacobian.setElementAt(1, 7, by);</span>
+<span class="fc" id="L3218">        jacobian.setElementAt(4, 7, 1.0);</span>
+
+<span class="fc" id="L3220">        jacobian.setElementAt(2, 8, by);</span>
+<span class="fc" id="L3221">        jacobian.setElementAt(11, 8, 1.0);</span>
+
+<span class="fc" id="L3223">        jacobian.setElementAt(0, 9, bz);</span>
+<span class="fc" id="L3224">        jacobian.setElementAt(7, 9, 1.0);</span>
+
+<span class="fc" id="L3226">        jacobian.setElementAt(1, 10, bz);</span>
+<span class="fc" id="L3227">        jacobian.setElementAt(9, 10, 1.0);</span>
+
+<span class="fc" id="L3229">        jacobian.setElementAt(2, 11, bz);</span>
+<span class="fc" id="L3230">        jacobian.setElementAt(5, 11, 1.0);</span>
+
+<span class="fc" id="L3232">        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();</span>
+<span class="fc" id="L3233">        jacobian.multiply(mEstimatedCovariance);</span>
+<span class="fc" id="L3234">        jacobian.multiply(jacobianTrans);</span>
+<span class="fc" id="L3235">        mEstimatedCovariance = jacobian;</span>
+<span class="fc" id="L3236">    }</span>
+
+    /**
+     * Internal method to perform calibration when common z-axis is assumed for both
+     * the accelerometer and gyroscope.
+     *
+     * @throws FittingException                         if Levenberg-Marquardt fails for numerical reasons.
+     * @throws AlgebraException                         if there are numerical instabilities that prevent
+     *                                                  matrix inversion.
+     * @throws com.irurueta.numerical.NotReadyException never happens.
+     */
+    private void calibrateCommonAxis() throws AlgebraException, FittingException,
+            com.irurueta.numerical.NotReadyException {
+        // The magnetometer model is:
+        // bmeas = bm + (I + Mm) * btrue + w
+
+        // Ideally a least squares solution tries to minimize noise component, so:
+        // bmeas = bm + (I + Mm) * btrue
+
+        // For convergence purposes of the Levenberg-Marquardt algorithm, the
+        // magnetometer model can be better expressed as:
+        // bmeas = T*K*(btrue + b)
+        // bmeas = M*(btrue + b)
+        // bmeas = M*btrue + M*b
+
+        //where:
+        // M = I + Mm
+        // bm = M*b = (I + Mm)*b --&gt; b = M^-1*bm
+
+        // We know that the norm of the true body magnetic flux density
+        // is equal to the amount of Earth magnetic flux density at provided
+        // position and timestamp
+        // ||btrue|| = ||bEarth|| --&gt; from 30 µT to 60 µT
+
+        // Hence:
+        // bmeas - M*b = M*btrue
+
+        // M^-1 * (bmeas - M*b) = btrue
+
+        // ||bEarth||^2 = ||btrue||^2 = (M^-1 * (bmeas - M*b))^T * (M^-1 * (bmeas - M*b))
+        // ||bEarth||^2 = (bmeas - M*b)^T*(M^-1)^T * M^-1 * (bmeas - M*b)
+        // ||bEarth||^2 = (bmeas - M * b)^T * ||M^-1||^2 * (bmeas - M * b)
+        // ||bEarth||^2 = ||bmeas - M * b||^2 * ||M^-1||^2
+
+        // Where:
+
+        // b = [bx]
+        //     [by]
+        //     [bz]
+
+        // M = [m11 	m12 	m13]
+        //     [0 		m22 	m23]
+        //     [0 	 	0 		m33]
+
+
+<span class="fc" id="L3291">        final GradientEstimator gradientEstimator = new GradientEstimator(</span>
+<span class="fc" id="L3292">                new MultiDimensionFunctionEvaluatorListener() {</span>
+                    @Override
+                    public double evaluate(final double[] point)
+                            throws EvaluationException {
+<span class="fc" id="L3296">                        return evaluateCommonAxis(point);</span>
+                    }
+                });
+
+<span class="fc" id="L3300">        final Matrix initialM = Matrix.identity(</span>
+                BodyMagneticFluxDensity.COMPONENTS,
+                BodyMagneticFluxDensity.COMPONENTS);
+<span class="fc" id="L3303">        initialM.add(getInitialMm());</span>
+
+        // Force initial M to be upper diagonal
+<span class="fc" id="L3306">        initialM.setElementAt(1, 0, 0.0);</span>
+<span class="fc" id="L3307">        initialM.setElementAt(2, 0, 0.0);</span>
+<span class="fc" id="L3308">        initialM.setElementAt(2, 1, 0.0);</span>
+
+<span class="fc" id="L3310">        final Matrix invInitialM = Utils.inverse(initialM);</span>
+<span class="fc" id="L3311">        final Matrix initialBm = getInitialHardIronAsMatrix();</span>
+<span class="fc" id="L3312">        final Matrix initialB = invInitialM.multiplyAndReturnNew(initialBm);</span>
+
+<span class="fc" id="L3314">        mFitter.setFunctionEvaluator(</span>
+<span class="fc" id="L3315">                new LevenbergMarquardtMultiDimensionFunctionEvaluator() {</span>
+                    @Override
+                    public int getNumberOfDimensions() {
+                        // Input points are measured magnetic flux density coordinates
+<span class="fc" id="L3319">                        return BodyKinematics.COMPONENTS;</span>
+                    }
+
+                    @Override
+                    public double[] createInitialParametersArray() {
+<span class="fc" id="L3324">                        final double[] initial = new double[COMMON_Z_AXIS_UNKNOWNS];</span>
+
+                        // biases b
+<span class="fc bfc" id="L3327" title="All 2 branches covered.">                        for (int i = 0; i &lt; BodyMagneticFluxDensity.COMPONENTS; i++) {</span>
+<span class="fc" id="L3328">                            initial[i] = initialB.getElementAtIndex(i);</span>
+                        }
+
+                        // upper diagonal cross coupling errors M
+<span class="fc" id="L3332">                        int k = BodyMagneticFluxDensity.COMPONENTS;</span>
+<span class="fc bfc" id="L3333" title="All 2 branches covered.">                        for (int j = 0; j &lt; BodyMagneticFluxDensity.COMPONENTS; j++) {</span>
+<span class="fc bfc" id="L3334" title="All 2 branches covered.">                            for (int i = 0; i &lt; BodyMagneticFluxDensity.COMPONENTS; i++) {</span>
+<span class="fc bfc" id="L3335" title="All 2 branches covered.">                                if (i &lt;= j) {</span>
+<span class="fc" id="L3336">                                    initial[k] = initialM.getElementAt(i, j);</span>
+<span class="fc" id="L3337">                                    k++;</span>
+                                }
+                            }
+                        }
+
+<span class="fc" id="L3342">                        return initial;</span>
+                    }
+
+                    @Override
+                    public double evaluate(
+                            final int i, final double[] point,
+                            final double[] params, final double[] derivatives)
+                            throws EvaluationException {
+
+<span class="fc" id="L3351">                        mBmeasX = point[0];</span>
+<span class="fc" id="L3352">                        mBmeasY = point[1];</span>
+<span class="fc" id="L3353">                        mBmeasZ = point[2];</span>
+
+<span class="fc" id="L3355">                        gradientEstimator.gradient(params, derivatives);</span>
+
+<span class="fc" id="L3357">                        return evaluateCommonAxis(params);</span>
+                    }
+                });
+
+<span class="fc" id="L3361">        setInputData();</span>
+
+<span class="fc" id="L3363">        mFitter.fit();</span>
+
+<span class="fc" id="L3365">        final double[] result = mFitter.getA();</span>
+
+<span class="fc" id="L3367">        final double bx = result[0];</span>
+<span class="fc" id="L3368">        final double by = result[1];</span>
+<span class="fc" id="L3369">        final double bz = result[2];</span>
+
+<span class="fc" id="L3371">        final double m11 = result[3];</span>
+
+<span class="fc" id="L3373">        final double m12 = result[4];</span>
+<span class="fc" id="L3374">        final double m22 = result[5];</span>
+
+<span class="fc" id="L3376">        final double m13 = result[6];</span>
+<span class="fc" id="L3377">        final double m23 = result[7];</span>
+<span class="fc" id="L3378">        final double m33 = result[8];</span>
+
+<span class="fc" id="L3380">        final Matrix b = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                1);
+<span class="fc" id="L3382">        b.setElementAtIndex(0, bx);</span>
+<span class="fc" id="L3383">        b.setElementAtIndex(1, by);</span>
+<span class="fc" id="L3384">        b.setElementAtIndex(2, bz);</span>
+
+<span class="fc" id="L3386">        final Matrix m = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                BodyMagneticFluxDensity.COMPONENTS);
+<span class="fc" id="L3388">        m.setElementAtIndex(0, m11);</span>
+<span class="fc" id="L3389">        m.setElementAtIndex(1, 0.0);</span>
+<span class="fc" id="L3390">        m.setElementAtIndex(2, 0.0);</span>
+
+<span class="fc" id="L3392">        m.setElementAtIndex(3, m12);</span>
+<span class="fc" id="L3393">        m.setElementAtIndex(4, m22);</span>
+<span class="fc" id="L3394">        m.setElementAtIndex(5, 0.0);</span>
+
+<span class="fc" id="L3396">        m.setElementAtIndex(6, m13);</span>
+<span class="fc" id="L3397">        m.setElementAtIndex(7, m23);</span>
+<span class="fc" id="L3398">        m.setElementAtIndex(8, m33);</span>
+
+<span class="fc" id="L3400">        setResult(m, b);</span>
+
+        // at this point covariance is expressed in terms of b and M, and must
+        // be expressed in terms of ba and Ma.
+        // We know that:
+
+        // b = [bx]
+        //     [by]
+        //     [bz]
+
+        // M = [m11 	m12 	m13]
+        //     [0    	m22 	m23]
+        //     [0    	0    	m33]
+
+        // m21 = m31 = m32 = 0
+
+        // and that ba and Ma are expressed as:
+        // Ma = M - I
+        // ba = M * b
+
+        // Ma = [m11 - 1    m12         m13    ] =  [sx     mxy     mxz]
+        //      [0          m22 - 1     m23    ]    [0      sy      myz]
+        //      [0          0           m33 - 1]    [0      0       sz ]
+
+        // ba = [m11 * bx + m12 * by + m13 * bz] = 	[bax]
+        //      [           m22 * by + m23 * bz]	[bay]
+        //      [                      m33 * bz]	[baz]
+
+        // Defining the linear application:
+        // F(b, M) = F(bx, by, bz, m11, m12, m22, m13, m23, m33)
+        // as:
+        // [bax] = [m11 * bx + m12 * by + m13 * bz]
+        // [bay]   [m22 * by + m23 * bz]
+        // [baz]   [m33 * bz]
+        // [sx]	   [m11 - 1]
+        // [sy]	   [m22 - 1]
+        // [sz]	   [m33 -1]
+        // [mxy]   [m12]
+        // [mxz]   [m13]
+        // [myx]   [0]
+        // [myz]   [m23]
+        // [mzx]   [0]
+        // [mzy]   [0]
+
+        // Then the Jacobian of F(b, M) is:
+        // J = 	[m11  m12  m13  bx  by  0   bz  0   0 ]
+        //	    [0    m22  m23  0   0   by  0   bz  0 ]
+        //	    [0    0    m33  0   0   0   0   0   bz]
+        //	    [0    0    0    1   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   1   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   1 ]
+        //	    [0    0    0    0   1   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   1   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   1   0 ]
+        //	    [0    0    0    0   0   0   0   0   0 ]
+        //	    [0    0    0    0   0   0   0   0   0 ]
+
+        // We know that the propagated covariance is J * Cov * J', hence:
+<span class="fc" id="L3459">        final Matrix jacobian = new Matrix(GENERAL_UNKNOWNS, COMMON_Z_AXIS_UNKNOWNS);</span>
+
+<span class="fc" id="L3461">        jacobian.setElementAt(0, 0, m11);</span>
+
+<span class="fc" id="L3463">        jacobian.setElementAt(0, 1, m12);</span>
+<span class="fc" id="L3464">        jacobian.setElementAt(1, 1, m22);</span>
+
+<span class="fc" id="L3466">        jacobian.setElementAt(0, 2, m13);</span>
+<span class="fc" id="L3467">        jacobian.setElementAt(1, 2, m23);</span>
+<span class="fc" id="L3468">        jacobian.setElementAt(2, 2, m33);</span>
+
+<span class="fc" id="L3470">        jacobian.setElementAt(0, 3, bx);</span>
+<span class="fc" id="L3471">        jacobian.setElementAt(3, 3, 1.0);</span>
+
+<span class="fc" id="L3473">        jacobian.setElementAt(0, 4, by);</span>
+<span class="fc" id="L3474">        jacobian.setElementAt(6, 4, 1.0);</span>
+
+<span class="fc" id="L3476">        jacobian.setElementAt(1, 5, by);</span>
+<span class="fc" id="L3477">        jacobian.setElementAt(4, 5, 1.0);</span>
+
+<span class="fc" id="L3479">        jacobian.setElementAt(0, 6, bz);</span>
+<span class="fc" id="L3480">        jacobian.setElementAt(7, 6, 1.0);</span>
+
+<span class="fc" id="L3482">        jacobian.setElementAt(1, 7, bz);</span>
+<span class="fc" id="L3483">        jacobian.setElementAt(9, 7, 1.0);</span>
+
+<span class="fc" id="L3485">        jacobian.setElementAt(2, 8, bz);</span>
+<span class="fc" id="L3486">        jacobian.setElementAt(5, 8, 1.0);</span>
+
+<span class="fc" id="L3488">        final Matrix jacobianTrans = jacobian.transposeAndReturnNew();</span>
+<span class="fc" id="L3489">        jacobian.multiply(mEstimatedCovariance);</span>
+<span class="fc" id="L3490">        jacobian.multiply(jacobianTrans);</span>
+<span class="fc" id="L3491">        mEstimatedCovariance = jacobian;</span>
+<span class="fc" id="L3492">    }</span>
+
+    /**
+     * Makes proper conversion of internal cross-coupling and bias matrices.
+     *
+     * @param m internal cross-coupling matrix.
+     * @param b internal bias matrix.
+     * @throws AlgebraException if a numerical instability occurs.
+     */
+    private void setResult(final Matrix m, final Matrix b) throws AlgebraException {
+        // Because:
+        // M = I + Mm
+        // b = M^-1*bm
+
+        // Then:
+        // Mm = M - I
+        // bm = M*b
+
+<span class="fc bfc" id="L3510" title="All 2 branches covered.">        if (mEstimatedHardIron == null) {</span>
+<span class="fc" id="L3511">            mEstimatedHardIron = new double[</span>
+                    BodyMagneticFluxDensity.COMPONENTS];
+        }
+
+<span class="fc" id="L3515">        final Matrix bm = m.multiplyAndReturnNew(b);</span>
+<span class="fc" id="L3516">        bm.toArray(mEstimatedHardIron);</span>
+
+<span class="fc bfc" id="L3518" title="All 2 branches covered.">        if (mEstimatedMm == null) {</span>
+<span class="fc" id="L3519">            mEstimatedMm = m;</span>
+        } else {
+<span class="fc" id="L3521">            mEstimatedMm.copyFrom(m);</span>
+        }
+
+<span class="fc bfc" id="L3524" title="All 2 branches covered.">        for (int i = 0; i &lt; BodyMagneticFluxDensity.COMPONENTS; i++) {</span>
+<span class="fc" id="L3525">            mEstimatedMm.setElementAt(i, i,</span>
+<span class="fc" id="L3526">                    mEstimatedMm.getElementAt(i, i) - 1.0);</span>
+        }
+
+<span class="fc" id="L3529">        mEstimatedCovariance = mFitter.getCovar();</span>
+<span class="fc" id="L3530">        mEstimatedChiSq = mFitter.getChisq();</span>
+<span class="fc" id="L3531">        mEstimatedMse = mFitter.getMse();</span>
+<span class="fc" id="L3532">    }</span>
+
+    /**
+     * Computes estimated true magnetic flux density squared norm using current measured
+     * body magnetic flux density and provided parameters for the general case.
+     * This method is internally executed during gradient estimation and
+     * Levenberg-Marquardt fitting needed for calibration computation.
+     *
+     * @param params array containing current parameters for the general purpose case.
+     *               Must have length 12.
+     * @return estimated true specific force squared norm.
+     * @throws EvaluationException if there are numerical instabilities.
+     */
+    private double evaluateGeneral(final double[] params) throws EvaluationException {
+<span class="fc" id="L3546">        final double bx = params[0];</span>
+<span class="fc" id="L3547">        final double by = params[1];</span>
+<span class="fc" id="L3548">        final double bz = params[2];</span>
+
+<span class="fc" id="L3550">        final double m11 = params[3];</span>
+<span class="fc" id="L3551">        final double m21 = params[4];</span>
+<span class="fc" id="L3552">        final double m31 = params[5];</span>
+
+<span class="fc" id="L3554">        final double m12 = params[6];</span>
+<span class="fc" id="L3555">        final double m22 = params[7];</span>
+<span class="fc" id="L3556">        final double m32 = params[8];</span>
+
+<span class="fc" id="L3558">        final double m13 = params[9];</span>
+<span class="fc" id="L3559">        final double m23 = params[10];</span>
+<span class="fc" id="L3560">        final double m33 = params[11];</span>
+
+<span class="fc" id="L3562">        return evaluate(bx, by, bz, m11, m21, m31, m12, m22, m32,</span>
+                m13, m23, m33);
+    }
+
+    /**
+     * Computes estimated true magnetic flux density squared norm using current measured
+     * body magnetic flux density and provided parameters when common z-axis is assumed.
+     * This method is internally executed during gradient estimation and
+     * Levenberg-Marquardt fitting needed for calibration computation.
+     *
+     * @param params array containing current parameters for the common z-axis case.
+     *               Must have length 9.
+     * @return estimated true specific force squared norm.
+     * @throws EvaluationException if there are numerical instabilities.
+     */
+    private double evaluateCommonAxis(final double[] params) throws EvaluationException {
+<span class="fc" id="L3578">        final double bx = params[0];</span>
+<span class="fc" id="L3579">        final double by = params[1];</span>
+<span class="fc" id="L3580">        final double bz = params[2];</span>
+
+<span class="fc" id="L3582">        final double m11 = params[3];</span>
+
+<span class="fc" id="L3584">        final double m12 = params[4];</span>
+<span class="fc" id="L3585">        final double m22 = params[5];</span>
+
+<span class="fc" id="L3587">        final double m13 = params[6];</span>
+<span class="fc" id="L3588">        final double m23 = params[7];</span>
+<span class="fc" id="L3589">        final double m33 = params[8];</span>
+
+<span class="fc" id="L3591">        return evaluate(bx, by, bz, m11, 0.0, 0.0, m12, m22, 0.0,</span>
+                m13, m23, m33);
+    }
+
+    /**
+     * Computes estimated true magnetic flux density squared norm using current measured
+     * body magnetic flux density and provided parameters.
+     * This method is internally executed during gradient estimation and
+     * Levenberg-Marquardt fitting needed for calibration computation.
+     *
+     * @param bx  x-coordinate of bias.
+     * @param by  y-coordinate of bias.
+     * @param bz  z-coordinate of bias.
+     * @param m11 element 1,1 of cross-coupling error matrix.
+     * @param m21 element 2,1 of cross-coupling error matrix.
+     * @param m31 element 3,1 of cross-coupling error matrix.
+     * @param m12 element 1,2 of cross-coupling error matrix.
+     * @param m22 element 2,2 of cross-coupling error matrix.
+     * @param m32 element 3,2 of cross-coupling error matrix.
+     * @param m13 element 1,3 of cross-coupling error matrix.
+     * @param m23 element 2,3 of cross-coupling error matrix.
+     * @param m33 element 3,3 of cross-coupling error matrix.
+     * @return estimated true specific force squared norm.
+     * @throws EvaluationException if there are numerical instabilities.
+     */
+    private double evaluate(final double bx, final double by, final double bz,
+                            final double m11, final double m21, final double m31,
+                            final double m12, final double m22, final double m32,
+                            final double m13, final double m23, final double m33)
+            throws EvaluationException {
+
+        // bmeas = M*(btrue + b)
+
+        // btrue = M^-1*bmeas - b
+
+        try {
+<span class="fc bfc" id="L3627" title="All 2 branches covered.">            if (mBmeas == null) {</span>
+<span class="fc" id="L3628">                mBmeas = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                        1);
+            }
+<span class="fc bfc" id="L3631" title="All 2 branches covered.">            if (mM == null) {</span>
+<span class="fc" id="L3632">                mM = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                        BodyMagneticFluxDensity.COMPONENTS);
+            }
+<span class="fc bfc" id="L3635" title="All 2 branches covered.">            if (mInvM == null) {</span>
+<span class="fc" id="L3636">                mInvM = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                        BodyMagneticFluxDensity.COMPONENTS);
+            }
+<span class="fc bfc" id="L3639" title="All 2 branches covered.">            if (mB == null) {</span>
+<span class="fc" id="L3640">                mB = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                        1);
+            }
+<span class="fc bfc" id="L3643" title="All 2 branches covered.">            if (mBtrue == null) {</span>
+<span class="fc" id="L3644">                mBtrue = new Matrix(BodyMagneticFluxDensity.COMPONENTS,</span>
+                        1);
+            }
+
+<span class="fc" id="L3648">            mBmeas.setElementAtIndex(0, mBmeasX);</span>
+<span class="fc" id="L3649">            mBmeas.setElementAtIndex(1, mBmeasY);</span>
+<span class="fc" id="L3650">            mBmeas.setElementAtIndex(2, mBmeasZ);</span>
+
+<span class="fc" id="L3652">            mM.setElementAt(0, 0, m11);</span>
+<span class="fc" id="L3653">            mM.setElementAt(1, 0, m21);</span>
+<span class="fc" id="L3654">            mM.setElementAt(2, 0, m31);</span>
+
+<span class="fc" id="L3656">            mM.setElementAt(0, 1, m12);</span>
+<span class="fc" id="L3657">            mM.setElementAt(1, 1, m22);</span>
+<span class="fc" id="L3658">            mM.setElementAt(2, 1, m32);</span>
+
+<span class="fc" id="L3660">            mM.setElementAt(0, 2, m13);</span>
+<span class="fc" id="L3661">            mM.setElementAt(1, 2, m23);</span>
+<span class="fc" id="L3662">            mM.setElementAt(2, 2, m33);</span>
+
+<span class="fc" id="L3664">            Utils.inverse(mM, mInvM);</span>
+
+<span class="fc" id="L3666">            mB.setElementAtIndex(0, bx);</span>
+<span class="fc" id="L3667">            mB.setElementAtIndex(1, by);</span>
+<span class="fc" id="L3668">            mB.setElementAtIndex(2, bz);</span>
+
+<span class="fc" id="L3670">            mInvM.multiply(mBmeas, mBtrue);</span>
+<span class="fc" id="L3671">            mBtrue.subtract(mB);</span>
+
+<span class="fc" id="L3673">            final double norm = Utils.normF(mBtrue);</span>
+<span class="fc" id="L3674">            return norm * norm;</span>
+
+<span class="nc" id="L3676">        } catch (final AlgebraException e) {</span>
+<span class="nc" id="L3677">            throw new EvaluationException(e);</span>
+        }
+    }
+
+    /**
+     * Converts magnetic flux density value and unit to Teslas.
+     *
+     * @param value magnetic flux density value.
+     * @param unit  unit of magnetic flux density value.
+     * @return converted value.
+     */
+    private static double convertMagneticFluxDensity(final double value, final MagneticFluxDensityUnit unit) {
+<span class="fc" id="L3689">        return MagneticFluxDensityConverter.convert(value, unit,</span>
+                MagneticFluxDensityUnit.TESLA);
+    }
+
+    /**
+     * Converts magnetic flux density instance to Teslas.
+     *
+     * @param magneticFluxDensity magnetic flux density instance to be converted.
+     * @return converted value.
+     */
+    private static double convertMagneticFluxDensity(final MagneticFluxDensity magneticFluxDensity) {
+<span class="fc" id="L3700">        return convertMagneticFluxDensity(magneticFluxDensity.getValue().doubleValue(),</span>
+<span class="fc" id="L3701">                magneticFluxDensity.getUnit());</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>

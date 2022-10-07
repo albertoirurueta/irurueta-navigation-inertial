@@ -1,0 +1,2428 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>NEDVelocityEstimator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">com.irurueta:irurueta-navigation-inertial</a> &gt; <a href="index.source.html" class="el_package">com.irurueta.navigation.inertial.estimators</a> &gt; <span class="el_source">NEDVelocityEstimator.java</span></div><h1>NEDVelocityEstimator.java</h1><pre class="source lang-java linenums">/*
+ * Copyright (C) 2019 Alberto Irurueta Carro (alberto@irurueta.com)
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *         http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+package com.irurueta.navigation.inertial.estimators;
+
+import com.irurueta.navigation.frames.NEDFrame;
+import com.irurueta.navigation.frames.NEDPosition;
+import com.irurueta.navigation.frames.NEDVelocity;
+import com.irurueta.navigation.inertial.RadiiOfCurvature;
+import com.irurueta.units.*;
+
+/**
+ * Estimates velocity by differentiating latitude, longitude and height over
+ * a time interval.
+ * This implementation is based on the equations defined in &quot;Principles of GNSS, Inertial, and Multisensor
+ * Integrated Navigation Systems, Second Edition&quot; and on the companion software available at:
+ * https://github.com/ymjdz/MATLAB-Codes/blob/master/Velocity_from_curvilinear.m
+ */
+<span class="fc" id="L31">public class NEDVelocityEstimator {</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final double oldLatitude,
+                         final double oldLongitude, final double oldHeight,
+                         final double oldVn, final double oldVe, final double oldVd,
+                         final double latitude, final double longitude,
+                         final double height, final NEDVelocity result) {
+<span class="fc" id="L60">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L62">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final double oldLatitude,
+                         final double oldLongitude, final double oldHeight,
+                         final double oldVn, final double oldVe, final double oldVd,
+                         final double latitude, final double longitude,
+                         final double height, final NEDVelocity result) {
+<span class="fc" id="L91">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L93">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final Angle oldLatitude,
+                         final Angle oldLongitude, final Distance oldHeight,
+                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L122">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L124">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final Angle oldLatitude,
+                         final Angle oldLongitude, final Distance oldHeight,
+                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L153">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L155">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final Angle oldLatitude,
+                         final Angle oldLongitude, final Distance oldHeight,
+                         final double oldVn, final double oldVe, final double oldVd,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L184">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L186">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final Angle oldLatitude,
+                         final Angle oldLongitude, final Distance oldHeight,
+                         final double oldVn, final double oldVe, final double oldVd,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L215">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L217">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final double oldLatitude,
+                         final double oldLongitude, final double oldHeight,
+                         final NEDVelocity oldVelocity,
+                         final double latitude, final double longitude,
+                         final double height, final NEDVelocity result) {
+<span class="fc" id="L243">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L245">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final double oldLatitude,
+                         final double oldLongitude, final double oldHeight,
+                         final NEDVelocity oldVelocity,
+                         final double latitude, final double longitude,
+                         final double height, final NEDVelocity result) {
+<span class="fc" id="L271">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L273">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final Angle oldLatitude,
+                         final Angle oldLongitude, final Distance oldHeight,
+                         final NEDVelocity oldVelocity,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L299">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L301">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final Angle oldLatitude,
+                         final Angle oldLongitude, final Distance oldHeight,
+                         final NEDVelocity oldVelocity,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L327">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L329">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final NEDFrame oldFrame,
+                         final double latitude, final double longitude,
+                         final double height, final NEDVelocity result) {
+<span class="fc" id="L349">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L350">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final NEDFrame oldFrame,
+                         final double latitude, final double longitude,
+                         final double height, final NEDVelocity result) {
+<span class="fc" id="L370">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L371">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final NEDFrame oldFrame,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L391">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L392">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final NEDFrame oldFrame,
+                         final Angle latitude, final Angle longitude,
+                         final Distance height, final NEDVelocity result) {
+<span class="fc" id="L412">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L413">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final NEDPosition oldPosition,
+                         final double oldVn, final double oldVe, final double oldVd,
+                         final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L438">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L440">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final NEDPosition oldPosition,
+                         final double oldVn, final double oldVe, final double oldVd,
+                         final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L465">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L467">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final NEDPosition oldPosition,
+                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                         final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L492">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L494">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final NEDPosition oldPosition,
+                         final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                         final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L519">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L521">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final NEDPosition oldPosition,
+                         final NEDVelocity oldVelocity, final NEDPosition position,
+                         final NEDVelocity result) {
+<span class="fc" id="L543">        estimateVelocity(timeInterval, oldPosition, oldVelocity, position, result);</span>
+<span class="fc" id="L544">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final NEDPosition oldPosition,
+                         final NEDVelocity oldVelocity, final NEDPosition position,
+                         final NEDVelocity result) {
+<span class="fc" id="L566">        estimateVelocity(timeInterval, oldPosition, oldVelocity, position, result);</span>
+<span class="fc" id="L567">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final double timeInterval, final NEDFrame oldFrame,
+                         final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L585">        estimateVelocity(timeInterval, oldFrame, position, result);</span>
+<span class="fc" id="L586">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public void estimate(final Time timeInterval, final NEDFrame oldFrame,
+                         final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L604">        estimateVelocity(timeInterval, oldFrame, position, result);</span>
+<span class="fc" id="L605">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final double oldLatitude,
+                                            final double oldLongitude, final double oldHeight,
+                                            final double oldVn, final double oldVe, final double oldVd,
+                                            final double latitude, final double longitude,
+                                            final double height) {
+<span class="fc" id="L633">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final double oldLatitude,
+                                            final double oldLongitude, final double oldHeight,
+                                            final double oldVn, final double oldVe, final double oldVd,
+                                            final double latitude, final double longitude,
+                                            final double height) {
+<span class="fc" id="L664">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final Angle oldLatitude,
+                                            final Angle oldLongitude, final Distance oldHeight,
+                                            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L695">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final Angle oldLatitude,
+                                            final Angle oldLongitude, final Distance oldHeight,
+                                            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L726">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final Angle oldLatitude,
+                                            final Angle oldLongitude, final Distance oldHeight,
+                                            final double oldVn, final double oldVe, final double oldVd,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L757">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final Angle oldLatitude,
+                                            final Angle oldLongitude, final Distance oldHeight,
+                                            final double oldVn, final double oldVe, final double oldVd,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L788">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVn, oldVe, oldVd,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final double oldLatitude,
+                                            final double oldLongitude, final double oldHeight,
+                                            final NEDVelocity oldVelocity,
+                                            final double latitude, final double longitude,
+                                            final double height) {
+<span class="fc" id="L816">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final double oldLatitude,
+                                            final double oldLongitude, final double oldHeight,
+                                            final NEDVelocity oldVelocity,
+                                            final double latitude, final double longitude,
+                                            final double height) {
+<span class="fc" id="L844">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final Angle oldLatitude,
+                                            final Angle oldLongitude, final Distance oldHeight,
+                                            final NEDVelocity oldVelocity,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L872">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final Angle oldLatitude,
+                                            final Angle oldLongitude, final Distance oldHeight,
+                                            final NEDVelocity oldVelocity, final Angle latitude,
+                                            final Angle longitude, final Distance height) {
+<span class="fc" id="L899">        return estimateVelocityAndReturnNew(timeInterval,</span>
+                oldLatitude, oldLongitude, oldHeight, oldVelocity,
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final NEDFrame oldFrame,
+                                            final double latitude, final double longitude,
+                                            final double height) {
+<span class="fc" id="L921">        return estimateVelocityAndReturnNew(timeInterval, oldFrame, latitude, longitude, height);</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final NEDFrame oldFrame,
+                                            final double latitude, final double longitude,
+                                            final double height) {
+<span class="fc" id="L941">        return estimateVelocityAndReturnNew(timeInterval, oldFrame, latitude, longitude, height);</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final NEDFrame oldFrame,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L961">        return estimateVelocityAndReturnNew(timeInterval, oldFrame,</span>
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final NEDFrame oldFrame,
+                                            final Angle latitude, final Angle longitude,
+                                            final Distance height) {
+<span class="fc" id="L982">        return estimateVelocityAndReturnNew(timeInterval, oldFrame,</span>
+                latitude, longitude, height);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final NEDPosition oldPosition,
+                                            final double oldVn, final double oldVe, final double oldVd,
+                                            final NEDPosition position) {
+<span class="fc" id="L1008">        return estimateVelocityAndReturnNew(timeInterval, oldPosition,</span>
+                oldVn, oldVe, oldVd, position);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final NEDPosition oldPosition,
+                                            final double oldVn, final double oldVe, final double oldVd,
+                                            final NEDPosition position) {
+<span class="fc" id="L1034">        return estimateVelocityAndReturnNew(timeInterval, oldPosition,</span>
+                oldVn, oldVe, oldVd, position);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final NEDPosition oldPosition,
+                                            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                            final NEDPosition position) {
+<span class="fc" id="L1060">        return estimateVelocityAndReturnNew(timeInterval, oldPosition,</span>
+                oldVn, oldVe, oldVd, position);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final NEDPosition oldPosition,
+                                            final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                            final NEDPosition position) {
+<span class="fc" id="L1086">        return estimateVelocityAndReturnNew(timeInterval, oldPosition,</span>
+                oldVn, oldVe, oldVd, position);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final NEDPosition oldPosition,
+                                            final NEDVelocity oldVelocity,
+                                            final NEDPosition position) {
+<span class="fc" id="L1109">        return estimateVelocityAndReturnNew(timeInterval, oldPosition, oldVelocity,</span>
+                position);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final NEDPosition oldPosition,
+                                            final NEDVelocity oldVelocity,
+                                            final NEDPosition position) {
+<span class="fc" id="L1132">        return estimateVelocityAndReturnNew(timeInterval, oldPosition, oldVelocity,</span>
+                position);
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final double timeInterval, final NEDFrame oldFrame,
+                                            final NEDPosition position) {
+<span class="fc" id="L1151">        return estimateVelocityAndReturnNew(timeInterval, oldFrame, position);</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public NEDVelocity estimateAndReturnNew(final Time timeInterval, final NEDFrame oldFrame,
+                                            final NEDPosition position) {
+<span class="fc" id="L1169">        return estimateVelocityAndReturnNew(timeInterval, oldFrame, position);</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final double oldLatitude,
+                                        final double oldLongitude, final double oldHeight,
+                                        final double oldVn, final double oldVe, final double oldVd,
+                                        final double latitude, final double longitude,
+                                        final double height, final NEDVelocity result) {
+
+<span class="fc bfc" id="L1200" title="All 2 branches covered.">        if (timeInterval &lt;= 0.0) {</span>
+<span class="fc" id="L1201">            throw new IllegalArgumentException();</span>
+        }
+
+        // Calculate meridian and transverse radii of curvature
+<span class="fc" id="L1205">        final RadiiOfCurvature oldRadii = RadiiOfCurvatureEstimator</span>
+<span class="fc" id="L1206">                .estimateRadiiOfCurvatureAndReturnNew(oldLatitude);</span>
+<span class="fc" id="L1207">        final double oldRn = oldRadii.getRn();</span>
+<span class="fc" id="L1208">        final double oldRe = oldRadii.getRe();</span>
+
+<span class="fc" id="L1210">        final RadiiOfCurvature radii = RadiiOfCurvatureEstimator</span>
+<span class="fc" id="L1211">                .estimateRadiiOfCurvatureAndReturnNew(latitude);</span>
+<span class="fc" id="L1212">        final double re = radii.getRe();</span>
+
+        // Differentiate latitude, longitude, and height
+<span class="fc" id="L1215">        final double latRate = (latitude - oldLatitude) / timeInterval;</span>
+<span class="fc" id="L1216">        final double longRate = (longitude - oldLongitude) / timeInterval;</span>
+<span class="fc" id="L1217">        final double heightRate = (height - oldHeight) / timeInterval;</span>
+
+        // Derive the current velocity using (5.56)
+<span class="fc" id="L1220">        final double vn = (oldRn + height) * (2.0 * latRate - oldVn / (oldRn + oldHeight));</span>
+<span class="fc" id="L1221">        final double ve = ((re + height) * Math.cos(latitude))</span>
+<span class="fc" id="L1222">                * (2.0 * longRate - oldVe / ((oldRe + oldHeight) * Math.cos(oldLatitude)));</span>
+<span class="fc" id="L1223">        final double vd = -2.0 * heightRate - oldVd;</span>
+
+<span class="fc" id="L1225">        result.setCoordinates(vn, ve, vd);</span>
+<span class="fc" id="L1226">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final double oldLatitude,
+                                        final double oldLongitude, final double oldHeight,
+                                        final double oldVn, final double oldVe, final double oldVd,
+                                        final double latitude, final double longitude,
+                                        final double height, final NEDVelocity result) {
+<span class="fc" id="L1255">        estimateVelocity(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1257">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final Angle oldLatitude,
+                                        final Angle oldLongitude, final Distance oldHeight,
+                                        final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1286">        estimateVelocity(timeInterval, convertAngleToDouble(oldLatitude),</span>
+<span class="fc" id="L1287">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
+<span class="fc" id="L1288">                convertSpeedToDouble(oldVn), convertSpeedToDouble(oldVe),</span>
+<span class="fc" id="L1289">                convertSpeedToDouble(oldVd), convertAngleToDouble(latitude),</span>
+<span class="fc" id="L1290">                convertAngleToDouble(longitude), convertDistanceToDouble(height), result);</span>
+<span class="fc" id="L1291">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final Angle oldLatitude,
+                                        final Angle oldLongitude, final Distance oldHeight,
+                                        final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1320">        estimateVelocity(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1322">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final Angle oldLatitude,
+                                        final Angle oldLongitude, final Distance oldHeight,
+                                        final double oldVn, final double oldVe, final double oldVd,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1351">        estimateVelocity(timeInterval, convertAngleToDouble(oldLatitude),</span>
+<span class="fc" id="L1352">                convertAngleToDouble(oldLongitude), convertDistanceToDouble(oldHeight),</span>
+<span class="fc" id="L1353">                oldVn, oldVe, oldVd, convertAngleToDouble(latitude),</span>
+<span class="fc" id="L1354">                convertAngleToDouble(longitude), convertDistanceToDouble(height), result);</span>
+<span class="fc" id="L1355">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final Angle oldLatitude,
+                                        final Angle oldLongitude, final Distance oldHeight,
+                                        final double oldVn, final double oldVe, final double oldVd,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1384">        estimateVelocity(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1386">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final double oldLatitude,
+                                        final double oldLongitude, final double oldHeight,
+                                        final NEDVelocity oldVelocity,
+                                        final double latitude, final double longitude,
+                                        final double height, final NEDVelocity result) {
+<span class="fc" id="L1412">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1413">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+                latitude, longitude, height, result);
+<span class="fc" id="L1415">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final double oldLatitude,
+                                        final double oldLongitude, final double oldHeight,
+                                        final NEDVelocity oldVelocity,
+                                        final double latitude, final double longitude,
+                                        final double height, final NEDVelocity result) {
+<span class="fc" id="L1441">        estimateVelocity(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L1443">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final Angle oldLatitude,
+                                        final Angle oldLongitude, final Distance oldHeight,
+                                        final NEDVelocity oldVelocity,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1469">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+<span class="fc" id="L1470">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+                latitude, longitude, height, result);
+<span class="fc" id="L1472">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final Angle oldLatitude,
+                                        final Angle oldLongitude, final Distance oldHeight,
+                                        final NEDVelocity oldVelocity,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1498">        estimateVelocity(convertTimeToDouble(timeInterval), oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L1500">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final NEDFrame oldFrame,
+                                        final double latitude, final double longitude,
+                                        final double height, final NEDVelocity result) {
+<span class="fc" id="L1520">        estimateVelocity(timeInterval, oldFrame.getLatitude(), oldFrame.getLongitude(),</span>
+<span class="fc" id="L1521">                oldFrame.getHeight(), oldFrame.getVn(), oldFrame.getVe(), oldFrame.getVd(),</span>
+                latitude, longitude, height, result);
+<span class="fc" id="L1523">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final NEDFrame oldFrame,
+                                        final double latitude, final double longitude,
+                                        final double height, final NEDVelocity result) {
+<span class="fc" id="L1543">        estimateVelocity(convertTimeToDouble(timeInterval), oldFrame, latitude, longitude, height,</span>
+                result);
+<span class="fc" id="L1545">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final NEDFrame oldFrame,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1565">        estimateVelocity(timeInterval, oldFrame, convertAngleToDouble(latitude),</span>
+<span class="fc" id="L1566">                convertAngleToDouble(longitude), convertDistanceToDouble(height), result);</span>
+<span class="fc" id="L1567">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final NEDFrame oldFrame,
+                                        final Angle latitude, final Angle longitude,
+                                        final Distance height, final NEDVelocity result) {
+<span class="fc" id="L1587">        estimateVelocity(convertTimeToDouble(timeInterval), oldFrame, latitude, longitude,</span>
+                height, result);
+<span class="fc" id="L1589">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final NEDPosition oldPosition,
+                                        final double oldVn, final double oldVe, final double oldVd,
+                                        final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L1614">        estimateVelocity(timeInterval, oldPosition.getLatitude(), oldPosition.getLongitude(),</span>
+<span class="fc" id="L1615">                oldPosition.getHeight(), oldVn, oldVe, oldVd, position.getLatitude(),</span>
+<span class="fc" id="L1616">                position.getLongitude(), position.getHeight(), result);</span>
+<span class="fc" id="L1617">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final NEDPosition oldPosition,
+                                        final double oldVn, final double oldVe, final double oldVd,
+                                        final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L1642">        estimateVelocity(convertTimeToDouble(timeInterval), oldPosition, oldVn, oldVe, oldVd,</span>
+                position, result);
+<span class="fc" id="L1644">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final NEDPosition oldPosition,
+                                        final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                        final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L1669">        estimateVelocity(timeInterval, oldPosition, convertSpeedToDouble(oldVn),</span>
+<span class="fc" id="L1670">                convertSpeedToDouble(oldVe), convertSpeedToDouble(oldVd), position, result);</span>
+<span class="fc" id="L1671">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final NEDPosition oldPosition,
+                                        final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                        final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L1696">        estimateVelocity(convertTimeToDouble(timeInterval), oldPosition, oldVn, oldVe, oldVd,</span>
+                position, result);
+<span class="fc" id="L1698">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final NEDPosition oldPosition,
+                                        final NEDVelocity oldVelocity,
+                                        final NEDPosition position,
+                                        final NEDVelocity result) {
+<span class="fc" id="L1721">        estimateVelocity(timeInterval, oldPosition,</span>
+<span class="fc" id="L1722">                oldVelocity.getVn(), oldVelocity.getVe(), oldVelocity.getVd(),</span>
+                position, result);
+<span class="fc" id="L1724">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final NEDPosition oldPosition,
+                                        final NEDVelocity oldVelocity,
+                                        final NEDPosition position,
+                                        final NEDVelocity result) {
+<span class="fc" id="L1747">        estimateVelocity(convertTimeToDouble(timeInterval), oldPosition, oldVelocity,</span>
+                position, result);
+<span class="fc" id="L1749">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final double timeInterval, final NEDFrame oldFrame,
+                                        final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L1767">        estimateVelocity(timeInterval, oldFrame, position.getLatitude(), position.getLongitude(),</span>
+<span class="fc" id="L1768">                position.getHeight(), result);</span>
+<span class="fc" id="L1769">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param result       instance where updated velocity with respect the Earth, resolved
+     *                     about north, east and down and expressed in meters per second (m/s) will
+     *                     be stored.
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static void estimateVelocity(final Time timeInterval, final NEDFrame oldFrame,
+                                        final NEDPosition position, final NEDVelocity result) {
+<span class="fc" id="L1787">        estimateVelocity(convertTimeToDouble(timeInterval), oldFrame, position, result);</span>
+<span class="fc" id="L1788">    }</span>
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final double oldLatitude,
+                                                           final double oldLongitude, final double oldHeight,
+                                                           final double oldVn, final double oldVe, final double oldVd,
+                                                           final double latitude, final double longitude,
+                                                           final double height) {
+<span class="fc" id="L1816">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L1817">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1819">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final double oldLatitude,
+                                                           final double oldLongitude, final double oldHeight,
+                                                           final double oldVn, final double oldVe, final double oldVd,
+                                                           final double latitude, final double longitude,
+                                                           final double height) {
+<span class="fc" id="L1848">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L1849">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1851">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final Angle oldLatitude,
+                                                           final Angle oldLongitude, final Distance oldHeight,
+                                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L1880">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L1881">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1883">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final Angle oldLatitude,
+                                                           final Angle oldLongitude, final Distance oldHeight,
+                                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L1912">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L1913">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1915">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final Angle oldLatitude,
+                                                           final Angle oldLongitude, final Distance oldHeight,
+                                                           final double oldVn, final double oldVe, final double oldVd,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L1944">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L1945">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1947">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final Angle oldLatitude,
+                                                           final Angle oldLongitude, final Distance oldHeight,
+                                                           final double oldVn, final double oldVe, final double oldVd,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L1976">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L1977">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVn, oldVe, oldVd, latitude, longitude, height, result);
+<span class="fc" id="L1979">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final double oldLatitude,
+                                                           final double oldLongitude, final double oldHeight,
+                                                           final NEDVelocity oldVelocity,
+                                                           final double latitude, final double longitude,
+                                                           final double height) {
+<span class="fc" id="L2005">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2006">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity,</span>
+                latitude, longitude, height, result);
+<span class="fc" id="L2008">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude expressed in radians (rad).
+     * @param oldLongitude previous longitude expressed in radians (rad).
+     * @param oldHeight    previous height expressed in meters (m).
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final double oldLatitude,
+                                                           final double oldLongitude, final double oldHeight,
+                                                           final NEDVelocity oldVelocity,
+                                                           final double latitude, final double longitude,
+                                                           final double height) {
+<span class="fc" id="L2034">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2035">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight, oldVelocity,</span>
+                latitude, longitude, height, result);
+<span class="fc" id="L2037">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final Angle oldLatitude,
+                                                           final Angle oldLongitude, final Distance oldHeight,
+                                                           final NEDVelocity oldVelocity,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L2063">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2064">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L2066">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldLatitude  previous latitude.
+     * @param oldLongitude previous longitude.
+     * @param oldHeight    previous height.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final Angle oldLatitude,
+                                                           final Angle oldLongitude, final Distance oldHeight,
+                                                           final NEDVelocity oldVelocity, final Angle latitude,
+                                                           final Angle longitude, final Distance height) {
+<span class="fc" id="L2091">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2092">        estimateVelocity(timeInterval, oldLatitude, oldLongitude, oldHeight,</span>
+                oldVelocity, latitude, longitude, height, result);
+<span class="fc" id="L2094">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final NEDFrame oldFrame,
+                                                           final double latitude, final double longitude,
+                                                           final double height) {
+<span class="fc" id="L2114">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2115">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L2116">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude expressed in radians (rad).
+     * @param longitude    current longitude expressed in radians (rad).
+     * @param height       current height expressed in meters (m).
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final NEDFrame oldFrame,
+                                                           final double latitude, final double longitude,
+                                                           final double height) {
+<span class="fc" id="L2136">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2137">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L2138">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final NEDFrame oldFrame,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L2158">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2159">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L2160">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param latitude     current latitude.
+     * @param longitude    current longitude.
+     * @param height       current height.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final NEDFrame oldFrame,
+                                                           final Angle latitude, final Angle longitude,
+                                                           final Distance height) {
+<span class="fc" id="L2180">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2181">        estimateVelocity(timeInterval, oldFrame, latitude, longitude, height, result);</span>
+<span class="fc" id="L2182">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final NEDPosition oldPosition,
+                                                           final double oldVn, final double oldVe, final double oldVd,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2207">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2208">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L2210">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis and expressed in meters per second (m/s).
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis and expressed in meters per second (m/s).
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis and expressed in meters per second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final NEDPosition oldPosition,
+                                                           final double oldVn, final double oldVe, final double oldVd,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2235">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2236">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L2238">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final NEDPosition oldPosition,
+                                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2263">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2264">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L2266">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVn        previous velocity of body with respect the Earth, resolved about
+     *                     north-axis.
+     * @param oldVe        previous velocity of body with respect the Earth, resolved about
+     *                     east-axis.
+     * @param oldVd        previous velocity of body with respect the Earth, resolved about
+     *                     down-axis.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final NEDPosition oldPosition,
+                                                           final Speed oldVn, final Speed oldVe, final Speed oldVd,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2291">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2292">        estimateVelocity(timeInterval, oldPosition, oldVn, oldVe, oldVd, position,</span>
+                result);
+<span class="fc" id="L2294">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final NEDPosition oldPosition,
+                                                           final NEDVelocity oldVelocity,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2316">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2317">        estimateVelocity(timeInterval, oldPosition, oldVelocity, position, result);</span>
+<span class="fc" id="L2318">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldPosition  previous body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @param oldVelocity  previous velocity of body with respect the Earth, resolved
+     *                     about north, east and down axes and expressed in meters per
+     *                     second (m/s).
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final NEDPosition oldPosition,
+                                                           final NEDVelocity oldVelocity,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2340">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2341">        estimateVelocity(timeInterval, oldPosition, oldVelocity, position,</span>
+                result);
+<span class="fc" id="L2343">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs expressed in seconds (s).
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final double timeInterval, final NEDFrame oldFrame,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2361">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2362">        estimateVelocity(timeInterval, oldFrame, position, result);</span>
+<span class="fc" id="L2363">        return result;</span>
+    }
+
+    /**
+     * Estimates velocity from curvilinear position changes and taking into account previous
+     * velocity respect NED frame.
+     *
+     * @param timeInterval time interval between epochs.
+     * @param oldFrame     previous frame containing position and velocity of body with
+     *                     respect Earth and resolved about north, east and down axes.
+     * @param position     current body position with respect the Earth, resolved about
+     *                     north, east and down axes.
+     * @return estimated updated velocity with respect the Earth, resolved about north,
+     * east and down and expressed in meters per second (m/s).
+     * @throws IllegalArgumentException if provided time interval is negative or zero.
+     */
+    public static NEDVelocity estimateVelocityAndReturnNew(final Time timeInterval, final NEDFrame oldFrame,
+                                                           final NEDPosition position) {
+<span class="fc" id="L2381">        final NEDVelocity result = new NEDVelocity();</span>
+<span class="fc" id="L2382">        estimateVelocity(timeInterval, oldFrame, position, result);</span>
+<span class="fc" id="L2383">        return result;</span>
+    }
+
+    /**
+     * Converts provided time instance to seconds (s).
+     *
+     * @param time time instance to be converted.
+     * @return provided time value expressed in seconds.
+     */
+    private static double convertTimeToDouble(final Time time) {
+<span class="fc" id="L2393">        return TimeConverter.convert(time.getValue().doubleValue(), time.getUnit(), TimeUnit.SECOND);</span>
+    }
+
+    /**
+     * Converts provided angle instance to radians (rad).
+     *
+     * @param angle angle instance to be converted.
+     * @return provided angle value expressed in radians.
+     */
+    private static double convertAngleToDouble(final Angle angle) {
+<span class="fc" id="L2403">        return AngleConverter.convert(angle.getValue().doubleValue(), angle.getUnit(), AngleUnit.RADIANS);</span>
+    }
+
+    /**
+     * Converts provided distance instance to meters (m).
+     *
+     * @param distance distance instance to be converted.
+     * @return provided distance value expressed in meters.
+     */
+    private static double convertDistanceToDouble(final Distance distance) {
+<span class="fc" id="L2413">        return DistanceConverter.convert(distance.getValue().doubleValue(), distance.getUnit(),</span>
+                DistanceUnit.METER);
+    }
+
+    /**
+     * Converts provided speed instance to meters per second (m/s).
+     *
+     * @param speed speed instance to be converted.
+     * @return provided speed value expressed in meters per second.
+     */
+    private static double convertSpeedToDouble(final Speed speed) {
+<span class="fc" id="L2424">        return SpeedConverter.convert(speed.getValue().doubleValue(), speed.getUnit(),</span>
+                SpeedUnit.METERS_PER_SECOND);
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.6.202009150832</span></div></body></html>
